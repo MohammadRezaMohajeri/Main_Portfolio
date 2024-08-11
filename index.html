@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
@@ -112,53 +112,28 @@
 		/* Main Content Styles */
 		.main-content {
 		       display: flex;
-		}
-		
-		/* Sidebar Styles */
-		.sidebar {
-			width: 30%;
-			background-color: #f1f1f1;
-			padding: 10px;
-		  }
-		
-		.sidebar .tab {
-		        display: block;
-		        padding: 10px;
-		        background-color: #EEE;
-		        transition: background-color 0.3s;
-		        cursor: pointer;
-		        margin-bottom: 5px;
-			font-size: 20px; /* Adjust the font size as desired */
-			text-align: center;
-			text-decoration: none; /* Remove the underline */
-			color: #000; /* Change the color to black or your preferred color */
-		}
-		
-		.sidebar .tab:hover {
-		        background-color: #90d1a7;
-		}
-
-		.tabs {
-		       width: 70%;
-		       display: flex;
 		       flex-direction: column;
-		       align-items: flex-start;
+		       align-items: stretch;
+		       width: 100%;
 		       padding: 10px;
 		}
-
-		.tabs .tab {
-		       padding: 10px;
+		
+		/* Vertical Tabs Styles */
+		.tab {
+		       padding: 20px;
 		       background-color: #EEE;
 		       transition: background-color 0.3s;
 		       cursor: pointer;
-		       margin-bottom: 5px;
-		       width: 99%; /* Adjust the width as desired */
+		       margin-bottom: 10px;
+		       width: 100%; /* Full width */
 		       font-size: 20px; /* Adjust the font size as desired */
 		       text-align: center;
 		       color: #14140b; /* Color of text of tabs on sidebar and content tabs */
+		       text-decoration: none; /* Remove underline */
+		       box-sizing: border-box;
 		}
 
-		.tabs .tab:hover {
+		.tab:hover {
 		       background-color: #8cafba;
 		}
 		
@@ -221,18 +196,11 @@
 	</div>
 
 	<div class="main-content">
-        <div class="sidebar">
-            <a href="https://mohammadrezamohajeri.github.io/Breast-Cancer-Gene-Expression-Biomarker-Analysis/Pages/Project_Summary.html" class="tab">The Project Summary</a>
-            <a href="https://mohammadrezamohajeri.github.io/Breast-Cancer-Gene-Expression-Biomarker-Analysis/Pages/R_Code.html" class="tab">R Code</a>
-            <a href="#" class="tab"><!-- Upcoming --></a>
-            <a href="#" class="tab"><!-- Upcoming --></a>
-        </div>
-
-       <div class="tabs">
-		        <a href="project-goals.html" class="tab">Introduction (Under Development)</a>
-		        <a href="methodology.html" class="tab">Methodology (Under Development)</a>
-		        <a href="results.html" class="tab">Results (Under Development)</a>
-		        <a href="discussion-conclusion.html" class="tab">Discussion &amp; Conclusion (Under Development)(Under Development)</a>
+        <a href="tab1.html" class="tab">Tab 1</a>
+        <a href="tab2.html" class="tab">Tab 2</a>
+        <a href="tab3.html" class="tab">Tab 3</a>
+        <a href="tab4.html" class="tab">Tab 4</a>
+        <a href="tab5.html" class="tab">Tab 5</a>
 	</div>
 
 	<footer class="footer">
