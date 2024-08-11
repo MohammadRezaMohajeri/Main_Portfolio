@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extracting Text from a PDF to a Word Document using PyPDF2 & pdfplumber</title>
+
+    <!-- Prism.js CSS for syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+
+    <style>
+        /* Basic Styles */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f9f9f9;
+        }
+
+        /* Header Style */
+        .header {
+            background-color: #01031f;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        /* Title Style */
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        /* Explanation Text Style */
+        .explanation {
+            margin-bottom: 20px;
+        }
+
+        /* Code Block Style */
+        .code-block {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Other Works & Innovations</h1>
+    </div>
+
+    <div class="title">
+        Extracting text from a PDF to a Word Document using PyPDF2 & pdfplumber libraries in Python
+    </div>
+
+    <div class="body">
+        <div class="explanation">
+            <h3>1. Importing Required Libraries</h3>
+            <p>First, we need to import the necessary libraries that will help us manipulate PDF files and create a Word document. The libraries we are using are:</p>
+            <ul>
+                <li><strong>PyPDF2</strong>: Used for reading and working with PDF files.</li>
+                <li><strong>pdfplumber</strong>: Provides a more robust way to extract text from PDFs.</li>
+                <li><strong>python-docx</strong>: Allows us to create and manipulate Word documents (.docx files).</li>
+            </ul>
+            <p>Here's the code to import these libraries:</p>
+        </div>
+
+        <div class="code-block">
+            <pre><code class="language-python">
+# ================== Importing Required Libraries ==================
+# Import necessary libraries for PDF processing and Word document creation
+import PyPDF2
+import pdfplumber
+from docx import Document
+            </code></pre>
+        </div>
+
+        <div class="explanation">
+            <h3>2. Defining File Paths and Page Range</h3>
+            <p>Next, the user needs to define the file paths for the input PDF and output Word document, as well as the range of pages they wish to extract. This step sets the variables that will be used throughout the process:</p>
+            <ul>
+                <li><strong>file_name</strong>: The full path to the PDF file.</li>
+                <li><strong>output_word_file</strong>: The full path for the output Word document, including the .docx extension.</li>
+                <li><strong>page_range</strong>: The range of pages to extract, specified as a string (e.g., '1-12' for pages 1 to 12).</li>
+            </ul>
+            <p>Here's the code for this section:</p>
+        </div>
+
+        <div class="code-block">
+            <pre><code class="language-python">
+# ================== Define File Paths and Page Range ==================
+# Define the path to the PDF file, the output Word file, and the range of pages to extract
+file_name = r'C:\\Users\\omidm\\OneDrive\\Desktop\\Clifton_Agreement.pdf'
+output_word_file = r'C:\\Users\\omidm\\OneDrive\\Desktop\\extracted_Clifton_Agreement2.docx'
+page_range = '1-12'  # Specify the page range to extract, e.g., '1-12' for pages 1 to 12
+            </code></pre>
+        </div>
+
+        <div class="explanation">
+            <h3>3. Function to Extract PDF Pages and Save as Word</h3>
+            <p>This is the main function of the script. It performs the following tasks:</p>
+            <ul>
+                <li><strong>Opening the PDF File</strong>: It opens the PDF file in binary read mode.</li>
+                <li><strong>Parsing the Page Range</strong>: The page range is parsed to handle both single pages and ranges of pages.</li>
+                <li><strong>Adjusting for Zero-Indexing</strong>: PyPDF2 uses zero-based indexing, so the page numbers are adjusted accordingly.</li>
+                <li><strong>Validating the Page Range</strong>: It checks if the specified page range is valid within the document.</li>
+                <li><strong>Creating a Word Document</strong>: Initializes a new Word document where the extracted text will be stored.</li>
+                <li><strong>Extracting and Adding Text</strong>: Extracts text from each page in the specified range and adds it to the Word document.</li>
+                <li><strong>Saving the Word Document</strong>: Finally, it saves the Word document to the specified location.</li>
+            </ul>
+            <p>Here’s the code for this function:</p>
+        </div>
+
+        <div class="code-block">
+            <pre><code class="language-python">
+# ================== Function to Extract PDF Pages and Save as Word ==================
+def extract_pdf_to_word(file_name, page_range, output_word_file):
+    # Open the PDF file in read-binary mode
+    with open(file_name, 'rb') as pdf_file:
+        pdf_reader = PyPDF2.PdfReader(pdf_file)
+        
+        # Parse the page range input
+        if '-' in page_range:
+            start_page, end_page = map(int, page_range.split('-'))  # Handle a range of pages
+        else:
+            start_page = end_page = int(page_range)  # Handle a single page
+
+        # Adjust for zero-indexing used by PyPDF2 (subtract 1 from each page number)
+        start_page -= 1
+        end_page -= 1
+
+        # Validate the page range
+        if start_page < 0 or end_page >= len(pdf_reader.pages) or start_page > end_page:
+            print("Invalid page range.")  # Print an error message if the range is invalid
+            return  # Exit the function if the range is not valid
+
+        # ================== Create a Word Document ==================
+        doc = Document()  # Initialize a new Word document
+
+        # ================== Extract and Add Text from Each Page ==================
+        with pdfplumber.open(file_name) as pdf:  # Open the PDF with pdfplumber
+            for page_num in range(start_page, end_page + 1):
+                page = pdf.pages[page_num]  # Access the page
+                text = page.extract_text()  # Extract text from the page
+                if text:
+                    doc.add_paragraph(text)  # Add the extracted text to the Word document
+                else:
+                    doc.add_paragraph("No text found on page.")  # Handle pages with no text
+
+        # ================== Save the Word Document ==================
+        doc.save(output_word_file)  # Save the Word document to the specified file
+        print(f"Pages {start_page + 1} to {end_page + 1} have been extracted to {output_word_file}")  # Confirmation message
+            </code></pre>
+        </div>
+
+        <div class="explanation">
+            <h3>4. Calling the Function</h3>
+            <p>Finally, the script calls the <strong>extract_pdf_to_word</strong> function with the predefined variables. This triggers the entire process of extracting text from the PDF and saving it into a Word document.</p>
+            <p>Here’s the code to call the function:</p>
+        </div>
+
+        <div class="code-block">
+            <pre><code class="language-python">
+# ================== Call the Function with Predefined Variables ==================
+extract_pdf_to_word(file_name, page_range, output_word_file)  # Call the function with the specified inputs
+            </code></pre>
+        </div>
+
+        <div class="explanation">
+            <h3>Summary</h3>
+            <p><strong>Importing Required Libraries</strong>: The first step involves importing the necessary libraries.</p>
+            <p><strong>Defining File Paths and Page Range</strong>: The user specifies the input/output file paths and the page range.</p>
+            <p><strong>Main Function</strong>: This function handles the core tasks of extracting the specified pages and saving them to a Word document.</p>
+            <p><strong>Function Call</strong>: The script concludes by calling the function with the predefined settings, executing the extraction process.</p>
+            <p>This structured explanation and corresponding code sections make it easier to understand the flow of the script and the purpose of each part.</p>
+        </div>
+    </div>
+
+    <!-- Prism.js library for syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/prism.min.js"></script>
+    <!-- Load Python language support for Prism -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-python.min.js"></script>
+</body>
+</html>
