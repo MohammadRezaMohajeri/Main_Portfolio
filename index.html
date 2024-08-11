@@ -1,250 +1,241 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>Meta-Analysis of Breast Cancer Gene Expression Profiles: Identifying Pathways and Biomarkers for Diagnosis and Prognosis</title>
-	<style>
-		/* Header Styles  */
-		
-		.header {
-			display: grid;
-			grid-template-columns: 12% 18% 70%;
-			background-color: #01031f; /* GREEN  */
-			padding: 10px;
-		}
+    <meta charset="UTF-8">
+    <title>Meta-Analysis of Breast Cancer Gene Expression Profiles: Identifying Pathways and Biomarkers for Diagnosis and Prognosis</title>
+    <style>
+        /* Header Styles  */
+        .header {
+            display: grid;
+            grid-template-columns: 12% 18% 70%;
+            background-color: #01031f; /* GREEN */
+            padding: 10px;
+        }
 
-		.left-section {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-		}
+        .left-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-		.left-section img {
-			width: 200px; /* Adjust the width as desired */
-			height: 200px; /* Adjust the height as desired */
-			object-fit: cover; /* Adjust the object-fit property as desired */
-		}
-		
-		.middle-section {
-			  display: flex;
-			  flex-direction: column;
-			  align-items: flex-end;
-			  justify-content: space-between;
-			  padding: 0 10px;
-			  background-color: black;
-			  color: white;
-		}
+        .left-section img {
+            width: 200px; /* Adjust the width as desired */
+            height: 200px; /* Adjust the height as desired */
+            object-fit: cover; /* Adjust the object-fit property as desired */
+        }
 
-		.text-above-buttons {
-		         margin-bottom: 5px;
-		}
+        .middle-section {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            justify-content: space-between;
+            padding: 0 10px;
+            background-color: black;
+            color: white;
+        }
 
-		.button-container {
-		  	display: flex;
-			justify-content: center; /* Align buttons horizontally at the center */
-			margin-top: 10px; /* Add margin to separate the buttons from the text */
-			align-items: center; /* Align items vertically at the center */
-		}
-		
-		
-		.button {
-			  padding: 5px 10px;
-			  background-color: #DAF7A6;
-			  color: darkblue;
-			  border: none;
-			  cursor: pointer;
-			  width: 100px; /* Adjust the width as desired */
-		}
+        .text-above-buttons {
+            margin-bottom: 5px;
+        }
 
-		.right-section {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-		}
+        .button-container {
+            display: flex;
+            justify-content: center; /* Align buttons horizontally at the center */
+            margin-top: 10px; /* Add margin to separate the buttons from the text */
+            align-items: center; /* Align items vertically at the center */
+        }
 
-		.right-section h1 {
-			font-size: 30px;
-			color: #f0f0f7;
-			font-weight: bold;
-			text-align: center; /* Align the title in the center */
-		}
+        .button {
+            padding: 5px 10px;
+            background-color: #DAF7A6;
+            color: darkblue;
+            border: none;
+            cursor: pointer;
+            width: 100px; /* Adjust the width as desired */
+        }
 
-		.right-section img {
-			width: 150px;
-			height: 150px;
-			margin-right: 10px;
-			float: left;
-		}
+        .right-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-		/* Navbar Styles */
-		.navbar {
-			background-color: #57bbbd;
-			padding: 10px;
-		}
+        .right-section h1 {
+            font-size: 30px;
+            color: #f0f0f7;
+            font-weight: bold;
+            text-align: center; /* Align the title in the center */
+        }
 
-		.menu {
-			list-style-type: none;
-			margin: 0;
-			padding: 0;
-		    margin-right: 20px; /* Add a margin to the right side of the menu */
-		}
+        .right-section img {
+            width: 150px;
+            height: 150px;
+            margin-right: 10px;
+            float: left;
+        }
 
-		.menu li {
-			display: inline-block;
-			margin-right: 100px; /* I changed this from 10 to 100; therefore, the spacing between tabs on navbar will be increased */
-			width: 100px; /* Adjust the width as desired */
-		}
+        /* Navbar Styles */
+        .navbar {
+            background-color: #57bbbd;
+            padding: 10px;
+        }
 
-		.menu li a {
-			display: block;
-			padding: 10px;
-			background-color: #DAF7A6; /* green */
-			color: darkblue; /* Change the color to dark blue */
-			text-decoration: none;
-		}
+        .menu {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            margin-right: 20px; /* Add a margin to the right side of the menu */
+        }
 
-		.menu li a:hover {
-			background-color: #787ec4; /*  */ 
-			color: #fff;
-			text-decoration: none;
-		}
+        .menu li {
+            display: inline-block;
+            margin-right: 100px; /* I changed this from 10 to 100; therefore, the spacing between tabs on navbar will be increased */
+            width: 100px; /* Adjust the width as desired */
+        }
 
-		/* Main Content Styles */
-		.main-content {
-		       display: flex;
-		       flex-direction: column;
-		       align-items: stretch;
-		       width: 100%;
-		       padding: 10px;
-		}
-		
-		/* Tab and Dropdown Menu Styles */
-		.tab {
-		       padding: 20px;
-		       background-color: #EEE;
-		       transition: background-color 0.3s;
-		       cursor: pointer;
-		       margin-bottom: 10px;
-		       width: 100%; /* Full width */
-		       font-size: 20px; /* Adjust the font size as desired */
-		       text-align: center;
-		       color: #14140b; /* Color of text of tabs on sidebar and content tabs */
-		       text-decoration: none; /* Remove underline */
-		       box-sizing: border-box;
-		       position: relative;
-		}
+        .menu li a {
+            display: block;
+            padding: 10px;
+            background-color: #DAF7A6; /* green */
+            color: darkblue; /* Change the color to dark blue */
+            text-decoration: none;
+        }
 
-		.tab:hover {
-		       background-color: #8cafba;
-		}
+        .menu li a:hover {
+            background-color: #787ec4;
+            color: #fff;
+            text-decoration: none;
+        }
 
-		
-		/* Dropdown container - hidden by default */
-		.dropdown-content {
-			display: none;
-			position: absolute;
-			left: 0;
-			top: 100%;
-			width: 100%;
-			background-color: #f1f1f1;
-			box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-			z-index: 1;
-			flex-direction: column;
-			margin: 0 25mm; /* Adding margin to reduce width by 5mm on left and right */
+        /* Main Content Styles */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            width: 100%;
+            padding: 10px;
+        }
 
-		}  
+        /* Tab and Dropdown Menu Styles */
+        .tab {
+            padding: 20px;
+            background-color: #EEE;
+            transition: background-color 0.3s;
+            cursor: pointer;
+            margin-bottom: 10px;
+            width: 100%; /* Full width */
+            font-size: 20px; /* Adjust the font size as desired */
+            text-align: center;
+            color: #14140b; /* Color of text of tabs on sidebar and content tabs */
+            text-decoration: none; /* Remove underline */
+            box-sizing: border-box;
+            position: relative;
+        }
 
-			
-		/* Show the dropdown menu on hover */
-		.tab:hover .dropdown-content {
-			display: flex;
-		}
+        .tab:hover {
+            background-color: #8cafba;
+        }
 
-		/* Dropdown menu items */
-		.dropdown-content a {
-			color: #14140b;
-			padding: 12px 16px;
-			text-decoration: none;
-			display: block;
-			background-color: #d0d0d0;
-			text-align: center;
-		}
+        /* Dropdown container - hidden by default */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            left: 0;
+            top: 100%;
+            width: 100%;
+            background-color: #f1f1f1;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            flex-direction: column;
+            margin: 0 25mm; /* Adding margin to reduce width by 25mm on left and right */
+        }
 
-		.dropdown-content a:hover {
-			background-color: #b0b0b0;
-		}
+        /* Show the dropdown menu on hover */
+        .tab:hover .dropdown-content {
+            display: flex;
+        }
 
-		/* Footer Styles */
-		.footer {
-		       background-color: #333;
-		       color: #fff;
-		       padding: 10px;
-		       text-align: center;
-		       position: fixed; /* Change the position to fixed */
-		       left: 0;
-		       bottom: 0;
-		       width: 100%;
-		}
+        /* Dropdown menu items */
+        .dropdown-content a {
+            color: #14140b;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            background-color: #d0d0d0;
+            text-align: center;
+        }
 
-		/* To highlight different parts of the text in red, green, and blue, you can use the <span> element and apply CSS styles to it */ 
-		
-		.orange-text {
-			color: orange;
-			font-weight: bold;
-		}
-		.dark-yellow-text {
-			color: hsl(50, 100%, 30%); /* Adjust the hue and saturation values as needed */
-			font-weight: bold;
-		}
-		.brown-text {
-			color: hsl(30, 100%, 30%); /* Adjust the hue and saturation values as needed */
-			font-weight: bold;
-		}
-		.green-text {
-			color: green;
-			font-weight: bold;
-		}
-		.purple-text {
-			color: purple;
-			font-weight: bold;
-		}
-		.blue-text {
-			color: blue;
-			font-weight: bold;
-		}
+        .dropdown-content a:hover {
+            background-color: #b0b0b0;
+        }
 
+        /* Footer Styles */
+        .footer {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+        }
 
+        /* To highlight different parts of the text in red, green, and blue, you can use the <span> element and apply CSS styles to it */
 
+        .orange-text {
+            color: orange;
+            font-weight: bold;
+        }
+        .dark-yellow-text {
+            color: hsl(50, 100%, 30%); /* Adjust the hue and saturation values as needed */
+            font-weight: bold;
+        }
+        .brown-text {
+            color: hsl(30, 100%, 30%); /* Adjust the hue and saturation values as needed */
+            font-weight: bold;
+        }
+        .green-text {
+            color: green;
+            font-weight: bold;
+        }
+        .purple-text {
+            color: purple;
+            font-weight: bold;
+        }
+        .blue-text {
+            color: blue;
+            font-weight: bold;
+        }
 
-		
-		/* Add the new CSS rules here */
+        /* Add the new CSS rules here */
         
-	    /* Dropdown container for Tab 1 - Transcriptomic */
-	    .tab:nth-child(1) .dropdown-content {
-	        background-color: #f1c40f; /* Yellow */
-            }
+        /* Dropdown container for Tab 1 - Transcriptomic */
+        .tab:nth-child(1) .dropdown-content {
+            background-color: #f1c40f; /* Yellow */
+        }
 
-	    /* Dropdown container for Tab 2 - AI/DL/ML Models */
-	    .tab:nth-child(2) .dropdown-content {
-	        background-color: #e74c3c; /* Red */
-            }
+        /* Dropdown container for Tab 2 - AI/DL/ML Models */
+        .tab:nth-child(2) .dropdown-content {
+            background-color: #e74c3c; /* Red */
+        }
 
-	    /* Dropdown container for Tab 3 - Web Applications */
-	    .tab:nth-child(3) .dropdown-content {
-	        background-color: #2ecc71; /* Green */
-            }
+        /* Dropdown container for Tab 3 - Web Applications */
+        .tab:nth-child(3) .dropdown-content {
+            background-color: #2ecc71; /* Green */
+        }
 
-	    /* Dropdown container for Tab 4 - Bioinformatics Pipeline & Tools */
-	    .tab:nth-child(4) .dropdown-content {
-	        background-color: #3498db; /* Blue */
-            }
+        /* Dropdown container for Tab 4 - Bioinformatics Pipeline & Tools */
+        .tab:nth-child(4) .dropdown-content {
+            background-color: #3498db; /* Blue */
+        }
 
-	    /* Dropdown container for Tab 5 - Other Works & Innovations */
-	    .tab:nth-child(5) .dropdown-content {
-	        background-color: #9b59b6; /* Purple */
-	    }
-		
-	</style>
+        /* Dropdown container for Tab 5 - Other Works & Innovations */
+        .tab:nth-child(5) .dropdown-content {
+            background-color: #9b59b6; /* Purple */
+        }
+
+    </style>
 </head>
 <body>
 	<div class="header">
