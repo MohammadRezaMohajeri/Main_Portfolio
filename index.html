@@ -137,24 +137,23 @@
         }
 
         /* Dropdown container - hidden by default */
-.dropdown-content {
-    display: none;
-    position: absolute;
-    left: 0;
-    top: 100%;
-    width: 100%;
-    background-color: #3498db; /* Set a single color for all dropdowns, e.g., Blue */
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-    flex-direction: column;
-    margin: 0 25mm; /* Adding margin to reduce width by 25mm on left and right */
-}
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            left: 0;
+            top: 100%;
+            width: 100%;
+            background-color: #f1f1f1;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            flex-direction: column;
+            margin: 0 25mm; /* Adding margin to reduce width by 25mm on left and right */
+        }
 
-/* Show the dropdown menu on hover */
-.tab:hover .dropdown-content {
-    display: flex;
-}
-
+        /* Show the dropdown menu on hover */
+        .tab:hover .dropdown-content {
+            display: flex;
+        }
 
         /* Dropdown menu items */
         .dropdown-content a {
