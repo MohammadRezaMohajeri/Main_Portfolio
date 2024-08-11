@@ -8,7 +8,7 @@
         .header {
             display: grid;
             grid-template-columns: 12% 18% 70%;
-            background-color: #01031f; /* GREEN */
+            background-color: #01031f;
             padding: 10px;
         }
 
@@ -19,9 +19,9 @@
         }
 
         .left-section img {
-            width: 200px; /* Adjust the width as desired */
-            height: 200px; /* Adjust the height as desired */
-            object-fit: cover; /* Adjust the object-fit property as desired */
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
         }
 
         .middle-section {
@@ -40,9 +40,9 @@
 
         .button-container {
             display: flex;
-            justify-content: center; /* Align buttons horizontally at the center */
-            margin-top: 10px; /* Add margin to separate the buttons from the text */
-            align-items: center; /* Align items vertically at the center */
+            justify-content: center;
+            margin-top: 10px;
+            align-items: center;
         }
 
         .button {
@@ -51,7 +51,7 @@
             color: darkblue;
             border: none;
             cursor: pointer;
-            width: 100px; /* Adjust the width as desired */
+            width: 100px;
         }
 
         .right-section {
@@ -64,7 +64,7 @@
             font-size: 30px;
             color: #f0f0f7;
             font-weight: bold;
-            text-align: center; /* Align the title in the center */
+            text-align: center;
         }
 
         .right-section img {
@@ -84,20 +84,20 @@
             list-style-type: none;
             margin: 0;
             padding: 0;
-            margin-right: 20px; /* Add a margin to the right side of the menu */
+            margin-right: 20px;
         }
 
         .menu li {
             display: inline-block;
-            margin-right: 100px; /* I changed this from 10 to 100; therefore, the spacing between tabs on navbar will be increased */
-            width: 100px; /* Adjust the width as desired */
+            margin-right: 100px;
+            width: 100px;
         }
 
         .menu li a {
             display: block;
             padding: 10px;
-            background-color: #DAF7A6; /* green */
-            color: darkblue; /* Change the color to dark blue */
+            background-color: #DAF7A6;
+            color: darkblue;
             text-decoration: none;
         }
 
@@ -123,11 +123,11 @@
             transition: background-color 0.3s;
             cursor: pointer;
             margin-bottom: 10px;
-            width: 100%; /* Full width */
-            font-size: 20px; /* Adjust the font size as desired */
+            width: 100%;
+            font-size: 20px;
             text-align: center;
-            color: #14140b; /* Color of text of tabs on sidebar and content tabs */
-            text-decoration: none; /* Remove underline */
+            color: #14140b;
+            text-decoration: none;
             box-sizing: border-box;
             position: relative;
         }
@@ -147,7 +147,7 @@
             box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
             z-index: 1;
             flex-direction: column;
-            margin: 0 25mm; /* Adding margin to reduce width by 25mm on left and right */
+            margin: 0 25mm;
         }
 
         /* Show the dropdown menu on hover */
@@ -181,76 +181,49 @@
             width: 100%;
         }
 
-        /* To highlight different parts of the text in red, green, and blue, you can use the <span> element and apply CSS styles to it */
-
-        .orange-text {
-            color: orange;
-            font-weight: bold;
-        }
-        .dark-yellow-text {
-            color: hsl(50, 100%, 30%); /* Adjust the hue and saturation values as needed */
-            font-weight: bold;
-        }
-        .brown-text {
-            color: hsl(30, 100%, 30%); /* Adjust the hue and saturation values as needed */
-            font-weight: bold;
-        }
-        .green-text {
-            color: green;
-            font-weight: bold;
-        }
-        .purple-text {
-            color: purple;
-            font-weight: bold;
-        }
-        .blue-text {
-            color: blue;
-            font-weight: bold;
-        }
-
         /* Ensure that each dropdown has its own unique background color */
-.tab:nth-child(1) .dropdown-content {
-    background-color: #f1c40f !important; /* Yellow */
-}
+        .tab:nth-child(1) .dropdown-content {
+            background-color: #f1c40f !important; /* Yellow */
+        }
 
-.tab:nth-child(2) .dropdown-content {
-    background-color: #e74c3c !important; /* Red */
-}
+        .tab:nth-child(2) .dropdown-content {
+            background-color: #e74c3c !important; /* Red */
+        }
 
-.tab:nth-child(3) .dropdown-content {
-    background-color: #2ecc71 !important; /* Green */
-}
+        .tab:nth-child(3) .dropdown-content {
+            background-color: #2ecc71 !important; /* Green */
+        }
 
-.tab:nth-child(4) .dropdown-content {
-    background-color: #3498db !important; /* Blue */
-}
+        .tab:nth-child(4) .dropdown-content {
+            background-color: #3498db !important; /* Blue */
+        }
 
-.tab:nth-child(5) .dropdown-content {
-    background-color: #9b59b6 !important; /* Purple */
-}
+        .tab:nth-child(5) .dropdown-content {
+            background-color: #9b59b6 !important; /* Purple */
+        }
 
     </style>
 </head>
 <body>
-	<div class="header">
-		  <div class="left-section">
-			    <img src="https://mohammadrezamohajeri.github.io/Breast-Cancer-Gene-Expression-Biomarker-Analysis/Images/Linkedin_Photo.jpg" alt="Your Photo">
-			  </div>
-			  <div class="middle-section">
-			    <p class="text-above-buttons">Results-oriented and motivated bioinformatician with rich experience in bioinformatics tools and programming.</p>
-			    <div class="button-container">
-			       <a href="https://mohammadrezamohajeri.github.io/Breast-Cancer-Gene-Expression-Biomarker-Analysis/Document/Mohajeri_O_CV.pdf" target="_blank"><button class="button">CV</button></a>
-     			       <a href="https://www.linkedin.com/in/mohammad-reza-mohajeri-24240a12b" target="_blank"><button class="button">LinkedIn</button></a>
-			    </div>
-			  </div> <!-- Close the middle-section div here -->
-			  <div class="right-section">
-			    <h1>Meta-Analysis of Breast Cancer Gene Expression Profiles: Identifying Pathways and Biomarkers for Diagnosis and Prognosis</h1>
-		  </div>
-	</div>
+    <div class="header">
+        <div class="left-section">
+            <img src="https://mohammadrezamohajeri.github.io/Breast-Cancer-Gene-Expression-Biomarker-Analysis/Images/Linkedin_Photo.jpg" alt="Your Photo">
+        </div>
+        <div class="middle-section">
+            <p class="text-above-buttons">Results-oriented and motivated bioinformatician with rich experience in bioinformatics tools and programming.</p>
+            <div class="button-container">
+                <a href="https://mohammadrezamohajeri.github.io/Breast-Cancer-Gene-Expression-Biomarker-Analysis/Document/Mohajeri_O_CV.pdf" target="_blank"><button class="button">CV</button></a>
+                <a href="https://www.linkedin.com/in/mohammad-reza-mohajeri-24240a12b" target="_blank"><button class="button">LinkedIn</button></a>
+            </div>
+        </div>
+        <div class="right-section">
+            <h1>Meta-Analysis of Breast Cancer Gene Expression Profiles: Identifying Pathways and Biomarkers for Diagnosis and Prognosis</h1>
+        </div>
+    </div>
 
-	<div class="main-content">
+    <div class="main-content">
         <div class="tab">Transcriptomic
-            <div class="dropdown-content">
+            <div class="dropdown-content" style="background-color: #f1c40f;">
                 <a href="https://mohammadrezamohajeri.github.io/Breast-Cancer-Gene-Expression-Biomarker-Analysis/index.html">Meta-Analysis of Breast Cancer Gene Expression Profiles</a>
                 <a href="#">Option 2</a>
                 <a href="#">Option 3</a>
@@ -284,10 +257,10 @@
                 <a href="#">Option 3</a>
             </div>
         </div>
-	</div>
+    </div>
 
-	<footer class="footer">
-    			<p>&copy; 2023 Mohammad Reza Mohajeri. All rights reserved.</p>
-	</footer>
+    <footer class="footer">
+        <p>&copy; 2023 Mohammad Reza Mohajeri. All rights reserved.</p>
+    </footer>
 </body>
 </html>
