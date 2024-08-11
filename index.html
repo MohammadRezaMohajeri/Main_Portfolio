@@ -1,8 +1,8 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>Give a title here </title>
+	<title>Meta-Analysis of Breast Cancer Gene Expression Profiles: Identifying Pathways and Biomarkers for Diagnosis and Prognosis</title>
 	<style>
 		/* Header Styles  */
 		
@@ -118,7 +118,7 @@
 		       padding: 10px;
 		}
 		
-		/* Vertical Tabs Styles */
+		/* Tab and Dropdown Menu Styles */
 		.tab {
 		       padding: 20px;
 		       background-color: #EEE;
@@ -131,12 +131,45 @@
 		       color: #14140b; /* Color of text of tabs on sidebar and content tabs */
 		       text-decoration: none; /* Remove underline */
 		       box-sizing: border-box;
+		       position: relative;
 		}
 
 		.tab:hover {
 		       background-color: #8cafba;
 		}
-		
+
+		/* Dropdown container - hidden by default */
+		.dropdown-content {
+			display: none;
+			position: absolute;
+			left: 0;
+			top: 100%;
+			width: 100%;
+			background-color: #f1f1f1;
+			box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+			z-index: 1;
+			flex-direction: column;
+		}
+
+		/* Show the dropdown menu on hover */
+		.tab:hover .dropdown-content {
+			display: flex;
+		}
+
+		/* Dropdown menu items */
+		.dropdown-content a {
+			color: #14140b;
+			padding: 12px 16px;
+			text-decoration: none;
+			display: block;
+			background-color: #d0d0d0;
+			text-align: center;
+		}
+
+		.dropdown-content a:hover {
+			background-color: #b0b0b0;
+		}
+
 		/* Footer Styles */
 		.footer {
 		       background-color: #333;
@@ -196,11 +229,41 @@
 	</div>
 
 	<div class="main-content">
-        <a href="tab1.html" class="tab">Tab 1</a>
-        <a href="tab2.html" class="tab">Tab 2</a>
-        <a href="tab3.html" class="tab">Tab 3</a>
-        <a href="tab4.html" class="tab">Tab 4</a>
-        <a href="tab5.html" class="tab">Tab 5</a>
+        <div class="tab">Transcriptomic
+            <div class="dropdown-content">
+                <a href="https://mohammadrezamohajeri.github.io/Breast-Cancer-Gene-Expression-Biomarker-Analysis/index.html">Meta-Analysis of Breast Cancer Gene Expression Profiles</a>
+                <a href="#">Option 2</a>
+                <a href="#">Option 3</a>
+            </div>
+        </div>
+        <div class="tab">AI/DL/ML Models
+            <div class="dropdown-content">
+                <a href="#">Option 1</a>
+                <a href="#">Option 2</a>
+                <a href="#">Option 3</a>
+            </div>
+        </div>
+        <div class="tab">Web Applications
+            <div class="dropdown-content">
+                <a href="#">Option 1</a>
+                <a href="#">Option 2</a>
+                <a href="#">Option 3</a>
+            </div>
+        </div>
+        <div class="tab">Bioinformatics Pipeline & Tools
+            <div class="dropdown-content">
+                <a href="#">Option 1</a>
+                <a href="#">Option 2</a>
+                <a href="#">Option 3</a>
+            </div>
+        </div>
+        <div class="tab">Other Works & Innovations
+            <div class="dropdown-content">
+                <a href="#">Option 1</a>
+                <a href="#">Option 2</a>
+                <a href="#">Option 3</a>
+            </div>
+        </div>
 	</div>
 
 	<footer class="footer">
