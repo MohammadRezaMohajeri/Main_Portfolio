@@ -7,52 +7,42 @@
         /* Header Styles  */
         .header {
             display: grid;
-            grid-template-columns: 12% 18% 70%;
-            background-color: #01031f; /* GREEN */
-	    height: 500px; /* Set a fixed height */
-            padding: 10px; /* Header Styles  */  /* Increased padding from 10px to 20px */
+            grid-template-columns: 50% 50%; /* Two equal sections */
+            background-color: #01031f; /* Background color */
+            padding: 20px; /* Padding */
+            height: auto; /* Height adjusts based on content */
         }
 
         .left-section {
             display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .left-section img {
-            width: 200px; /* Adjust the width as desired */
-            height: 200px; /* Adjust the height as desired */
-            object-fit: cover; /* Adjust the object-fit property as desired */
-        }
-
-        .middle-section {
-            display: flex;
             flex-direction: column;
-            align-items: flex-end;
-            justify-content: space-between;
-            padding: 0 10px;
-            background-color: black;
+            justify-content: center;
             color: white;
+            padding-right: 20px;
         }
 
-        .text-above-buttons {
-            margin-bottom: 5px;
+        .left-section p {
+            font-size: 36px; /* Large font size for main text */
+            margin: 0 0 20px 0; /* Space below the text */
+            line-height: 1.4;
         }
 
         .button-container {
             display: flex;
-            justify-content: center; /* Align buttons horizontally at the center */
-            margin-top: 10px; /* Add margin to separate the buttons from the text */
-            align-items: center; /* Align items vertically at the center */
+            gap: 10px; /* Space between buttons */
+            margin-top: 20px; /* Space above buttons */
         }
 
         .button {
-            padding: 5px 10px;
+            padding: 10px 15px;
             background-color: #DAF7A6;
             color: darkblue;
             border: none;
             cursor: pointer;
-            width: 100px; /* Adjust the width as desired */
+            text-decoration: none;
+            text-align: center;
+            font-size: 16px;
+            border-radius: 5px; /* Rounded corners */
         }
 
         .right-section {
@@ -61,18 +51,10 @@
             justify-content: center;
         }
 
-        .right-section h1 {
-            font-size: 30px;
-            color: #f0f0f7;
-            font-weight: bold;
-            text-align: center; /* Align the title in the center */
-        }
-
         .right-section img {
-            width: 150px;
-            height: 150px;
-            margin-right: 10px;
-            float: left;
+            width: 400px; /* Adjust the width as desired */
+            height: auto; /* Maintain aspect ratio */
+            object-fit: cover; /* Ensures the image covers the space */
         }
 
         /* Navbar Styles */
@@ -212,62 +194,29 @@
     </style>
 </head>
 <body>
-	<div class="header">
-		  <div class="left-section">
-			    <img src="https://mohammadrezamohajeri.github.io/Breast-Cancer-Gene-Expression-Biomarker-Analysis/Images/Linkedin_Photo.jpg" alt="Your Photo">
-			  </div>
-			  <div class="middle-section">
-			    <p class="text-above-buttons">Results-oriented and motivated bioinformatician with rich experience in bioinformatics tools and programming.</p>
-			    <div class="button-container">
-			       <a href="https://mohammadrezamohajeri.github.io/Breast-Cancer-Gene-Expression-Biomarker-Analysis/Document/Mohajeri_O_CV.pdf" target="_blank"><button class="button">CV</button></a>
-     			       <a href="https://www.linkedin.com/in/mohammad-reza-mohajeri-24240a12b" target="_blank"><button class="button">LinkedIn</button></a>
-			    </div>
-			  </div> <!-- Close the middle-section div here -->
-			  <div class="right-section">
-			    <h1>Meta-Analysis of Breast Cancer Gene Expression Profiles: Identifying Pathways and Biomarkers for Diagnosis and Prognosis</h1>
-		  </div>
-	</div>
+    <div class="header">
+        <div class="left-section">
+            <p>WELCOME TO MY WORLD</p>
+            <p>Hi, I'm <span style="color: red;">Mohammad Reza Mohajeri</span><br>a Bioinformatician.</p>
+            <p>I use bioinformatics and computational biology to analyze and interpret complex biological data, turning data into actionable insights. I specialize in developing bioinformatics tools, pipelines, and web applications.</p>
+            
+            <div class="button-container">
+                <a href="https://mohammadrezamohajeri.github.io/Breast-Cancer-Gene-Expression-Biomarker-Analysis/Document/Mohajeri_O_CV.pdf" target="_blank" class="button">CV</a>
+                <a href="https://www.linkedin.com/in/mohammad-reza-mohajeri-24240a12b" target="_blank" class="button">LinkedIn</a>
+                <a href="https://github.com/MohammadRezaMohajeri" target="_blank" class="button">GitHub</a>
+            </div>
+        </div>
+        <div class="right-section">
+            <img src="Pictures/My_Pics/1.JPG" alt="Mohammad Reza Mohajeri">
+        </div>
+    </div>
 
-	<div class="main-content">
-        <div class="tab">Transcriptomics
-            <div class="dropdown-content">
-                <a href="https://mohammadrezamohajeri.github.io/Breast-Cancer-Gene-Expression-Biomarker-Analysis/index.html">Meta-Analysis of Breast Cancer Gene Expression Profiles</a>
-                <a href="#">Option 2</a>
-                <a href="#">Option 3</a>
-            </div>
-        </div>
-        <div class="tab">AI/DL/ML Models
-            <div class="dropdown-content">
-                <a href="#">Option 1</a>
-                <a href="#">Option 2</a>
-                <a href="#">Option 3</a>
-            </div>
-        </div>
-        <div class="tab">Web Applications
-            <div class="dropdown-content">
-                <a href="#">Option 1</a>
-                <a href="#">Option 2</a>
-                <a href="#">Option 3</a>
-            </div>
-        </div>
-        <div class="tab">Bioinformatics Pipeline & Tools
-            <div class="dropdown-content">
-                <a href="#">Option 1</a>
-                <a href="#">Option 2</a>
-                <a href="#">Option 3</a>
-            </div>
-        </div>
-        <div class="tab">Other Works & Innovations
-            <div class="dropdown-content">
-                <a href="#">Option 1</a>
-                <a href="#">Option 2</a>
-                <a href="#">Option 3</a>
-            </div>
-        </div>
-	</div>
+    <div class="main-content">
+        <!-- Main content here -->
+    </div>
 
-	<footer class="footer">
-    			<p>&copy; 2023 Mohammad Reza Mohajeri. All rights reserved.</p>
-	</footer>
+    <footer class="footer">
+        <p>&copy; 2023 Mohammad Reza Mohajeri. All rights reserved.</p>
+    </footer>
 </body>
 </html>
