@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Extracting Text from a PDF to a Word Document using PyPDF2 & pdfplumber</title>
+
+    <!-- Prism.js CSS for syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+
     <style>
         /* Basic Styles */
         body {
@@ -23,7 +27,7 @@
 
         /* Title Style */
         .title {
-            font-size: 24px;
+            font-size: 32px;
             font-weight: bold;
             margin: 20px 0;
             text-align: center;
@@ -31,24 +35,27 @@
 
         /* Explanation Text Style */
         .explanation {
+            font-size: 24px; /* Increased explanation font size */
             margin-bottom: 20px;
         }
 
         /* Code Block Style */
         .code-block {
-            background-color: #f4f4f4;
-            padding: 15px;
-            border-left: 5px solid #333;
-            font-family: "Courier New", Courier, monospace;
             margin-bottom: 20px;
-            white-space: pre-wrap; /* Preserve whitespace and line breaks */
+            font-size: 24px; /* Increased code block font size */
+        }
+
+        /* Prism.js Code Block Font Size */
+        pre[class*="language-"] {
+            font-size: 24px; /* Increase font size for Prism.js code blocks */
         }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <h1>Other Works & Innovations</h1>
+        <h1> Extracting Text from a PDF (Python) 
+</h1>
     </div>
 
     <div class="title">
@@ -68,11 +75,13 @@
         </div>
 
         <div class="code-block">
-            # ================== Importing Required Libraries ==================<br>
-            # Import necessary libraries for PDF processing and Word document creation<br>
-            import PyPDF2<br>
-            import pdfplumber<br>
-            from docx import Document
+            <pre><code class="language-python">
+# ================== Importing Required Libraries ==================
+# Import necessary libraries for PDF processing and Word document creation
+import PyPDF2
+import pdfplumber
+from docx import Document
+            </code></pre>
         </div>
 
         <div class="explanation">
@@ -87,11 +96,13 @@
         </div>
 
         <div class="code-block">
-            # ================== Define File Paths and Page Range ==================<br>
-            # Define the path to the PDF file, the output Word file, and the range of pages to extract<br>
-            file_name = r'C:\\Users\\omidm\\OneDrive\\Desktop\\Clifton_Agreement.pdf'<br>
-            output_word_file = r'C:\\Users\\omidm\\OneDrive\\Desktop\\extracted_Clifton_Agreement2.docx'<br>
-            page_range = '1-12'  # Specify the page range to extract, e.g., '1-12' for pages 1 to 12
+            <pre><code class="language-python">
+# ================== Define File Paths and Page Range ==================
+# Define the path to the PDF file, the output Word file, and the range of pages to extract
+file_name = r'C:\\Users\\omidm\\OneDrive\\Desktop\\Clifton_Agreement.pdf'
+output_word_file = r'C:\\Users\\omidm\\OneDrive\\Desktop\\extracted_Clifton_Agreement2.docx'
+page_range = '1-12'  # Specify the page range to extract, e.g., '1-12' for pages 1 to 12
+            </code></pre>
         </div>
 
         <div class="explanation">
@@ -110,43 +121,45 @@
         </div>
 
         <div class="code-block">
-            # ================== Function to Extract PDF Pages and Save as Word ==================<br>
-            def extract_pdf_to_word(file_name, page_range, output_word_file):<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;# Open the PDF file in read-binary mode<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;with open(file_name, 'rb') as pdf_file:<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pdf_reader = PyPDF2.PdfReader(pdf_file)<br><br>
+            <pre><code class="language-python">
+# ================== Function to Extract PDF Pages and Save as Word ==================
+def extract_pdf_to_word(file_name, page_range, output_word_file):
+    # Open the PDF file in read-binary mode
+    with open(file_name, 'rb') as pdf_file:
+        pdf_reader = PyPDF2.PdfReader(pdf_file)
+        
+        # Parse the page range input
+        if '-' in page_range:
+            start_page, end_page = map(int, page_range.split('-'))  # Handle a range of pages
+        else:
+            start_page = end_page = int(page_range)  # Handle a single page
 
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Parse the page range input<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if '-' in page_range:<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start_page, end_page = map(int, page_range.split('-'))  # Handle a range of pages<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else:<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start_page = end_page = int(page_range)  # Handle a single page<br><br>
+        # Adjust for zero-indexing used by PyPDF2 (subtract 1 from each page number)
+        start_page -= 1
+        end_page -= 1
 
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Adjust for zero-indexing used by PyPDF2 (subtract 1 from each page number)<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start_page -= 1<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end_page -= 1<br><br>
+        # Validate the page range
+        if start_page < 0 or end_page >= len(pdf_reader.pages) or start_page > end_page:
+            print("Invalid page range.")  # Print an error message if the range is invalid
+            return  # Exit the function if the range is not valid
 
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Validate the page range<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if start_page < 0 or end_page >= len(pdf_reader.pages) or start_page > end_page:<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Invalid page range.")  # Print an error message if the range is invalid<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return  # Exit the function if the range is not valid<br><br>
+        # ================== Create a Word Document ==================
+        doc = Document()  # Initialize a new Word document
 
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# ================== Create a Word Document ==================<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;doc = Document()  # Initialize a new Word document<br><br>
+        # ================== Extract and Add Text from Each Page ==================
+        with pdfplumber.open(file_name) as pdf:  # Open the PDF with pdfplumber
+            for page_num in range(start_page, end_page + 1):
+                page = pdf.pages[page_num]  # Access the page
+                text = page.extract_text()  # Extract text from the page
+                if text:
+                    doc.add_paragraph(text)  # Add the extracted text to the Word document
+                else:
+                    doc.add_paragraph("No text found on page.")  # Handle pages with no text
 
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# ================== Extract and Add Text from Each Page ==================<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;with pdfplumber.open(file_name) as pdf:  # Open the PDF with pdfplumber<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for page_num in range(start_page, end_page + 1):<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;page = pdf.pages[page_num]  # Access the page<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text = page.extract_text()  # Extract text from the page<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if text:<br>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;doc.add_paragraph(text)  # Add the extracted text to the Word document<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else:<br>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;doc.add_paragraph("No text found on page.")  # Handle pages with no text<br><br>
-
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# ================== Save the Word Document ==================<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;doc.save(output_word_file)  # Save the Word document to the specified file<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(f"Pages {start_page + 1} to {end_page + 1} have been extracted to {output_word_file}")  # Confirmation message<br>
+        # ================== Save the Word Document ==================
+        doc.save(output_word_file)  # Save the Word document to the specified file
+        print(f"Pages {start_page + 1} to {end_page + 1} have been extracted to {output_word_file}")  # Confirmation message
+            </code></pre>
         </div>
 
         <div class="explanation">
@@ -156,8 +169,10 @@
         </div>
 
         <div class="code-block">
-            # ================== Call the Function with Predefined Variables ==================<br>
-            extract_pdf_to_word(file_name, page_range, output_word_file)  # Call the function with the specified inputs
+            <pre><code class="language-python">
+# ================== Call the Function with Predefined Variables ==================
+extract_pdf_to_word(file_name, page_range, output_word_file)  # Call the function with the specified inputs
+            </code></pre>
         </div>
 
         <div class="explanation">
@@ -170,5 +185,9 @@
         </div>
     </div>
 
+    <!-- Prism.js library for syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/prism.min.js"></script>
+    <!-- Load Python language support for Prism -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-python.min.js"></script>
 </body>
 </html>
