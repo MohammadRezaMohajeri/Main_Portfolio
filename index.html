@@ -6,13 +6,12 @@
     <style>
         /* Header Styles  */
         .header {
-              display: grid;
-              grid-template-columns: 12% 18% 70%;
-              background-color: #01031f;
-              height: 70vh; /* Responsive height */
-              padding: 10px;
+            display: grid;
+            grid-template-columns: 50% 50%; /* Two equal sections */
+            background-color: #01031f; /* Background color */
+            padding: 20px; /* Padding */
+            height: auto; /* Height adjusts based on content */
         }
-
 
         .left-section {
             display: flex;
@@ -22,12 +21,11 @@
             padding-right: 20px;
         }
 
-       .left-section p {
-           font-size: 3vw; /* Responsive font size */
-           margin: 0 0 20px 0; /* Space below the text */
-           line-height: 1.4;
+        .left-section p {
+            font-size: 36px; /* Large font size for main text */
+            margin: 0 0 20px 0; /* Space below the text */
+            line-height: 1.4;
         }
-
 
         .button-container {
             display: flex;
@@ -54,7 +52,7 @@
         }
 
         .right-section img {
-            width: 400px; /* Adjust the width as desired */ 
+            width: 400px; /* Adjust the width as desired */
             height: auto; /* Maintain aspect ratio */
             object-fit: cover; /* Ensures the image covers the space */
         }
