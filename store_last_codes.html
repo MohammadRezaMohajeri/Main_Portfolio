@@ -1832,3 +1832,269 @@
     </footer>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+========================== 8 Header & body (all my web)/ good but header is too big ===
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Meta-Analysis of Breast Cancer Gene Expression Profiles: Identifying Pathways and Biomarkers for Diagnosis and Prognosis</title>
+    <style>
+        /* Header Styles  */
+        .header {
+            display: grid;
+            grid-template-columns: 50% 50%; /* Two equal sections */
+            background-color: #01031f; /* Background color */
+            padding: 20px; /* Padding */
+            height: auto; /* Height adjusts based on content */
+        }
+
+        .left-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: white;
+            padding-right: 20px;
+        }
+
+        .left-section p {
+            font-size: 36px; /* Large font size for main text */
+            margin: 0 0 20px 0; /* Space below the text */
+            line-height: 1.4;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 10px; /* Space between buttons */
+            margin-top: 20px; /* Space above buttons */
+        }
+
+        .button {
+            padding: 10px 15px;
+            background-color: #DAF7A6;
+            color: darkblue;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            font-size: 16px;
+            border-radius: 5px; /* Rounded corners */
+        }
+
+        .right-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .right-section img {
+            width: 400px; /* Adjust the width as desired */
+            height: auto; /* Maintain aspect ratio */
+            object-fit: cover; /* Ensures the image covers the space */
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background-color: #57bbbd;
+            padding: 10px;
+        }
+
+        .menu {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            margin-right: 20px; /* Add a margin to the right side of the menu */
+        }
+
+        .menu li {
+            display: inline-block;
+            margin-right: 100px; /* I changed this from 10 to 100; therefore, the spacing between tabs on navbar will be increased */
+            width: 100px; /* Adjust the width as desired */
+        }
+
+        .menu li a {
+            display: block;
+            padding: 10px;
+            background-color: #DAF7A6; /* green */
+            color: darkblue; /* Change the color to dark blue */
+            text-decoration: none;
+        }
+
+        .menu li a:hover {
+            background-color: #787ec4;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            width: 100%;
+            padding: 10px;
+        }
+
+        /* Tab and Dropdown Menu Styles */
+        .tab {
+            padding: 20px;
+            background-color: #EEE;
+            transition: background-color 0.3s;
+            cursor: pointer;
+            margin-bottom: 10px;
+            width: 100%; /* Full width */
+            font-size: 20px; /* Adjust the font size as desired */
+            text-align: center;
+            color: #14140b; /* Color of text of tabs on sidebar and content tabs */
+            text-decoration: none; /* Remove underline */
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .tab:hover {
+            background-color: #8cafba;
+        }
+
+        /* Dropdown container - hidden by default */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            left: 0;
+            top: 100%;
+            width: 100%; 
+            background-color: #9b59b6;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            flex-direction: column;
+            margin: 0 25mm; /* Adding margin to reduce width by 25mm on left and right */
+        }
+
+        /* Show the dropdown menu on hover */
+        .tab:hover .dropdown-content {
+            display: flex;
+        }
+
+        /* Dropdown menu items */
+        .dropdown-content a {
+            color: #14140b;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            background-color: #dee851; /* #d0d0d0; */
+            text-align: center;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #b0b0b0;
+        }
+
+        /* Footer Styles */
+        .footer {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+        }
+
+        /* To highlight different parts of the text in red, green, and blue, you can use the <span> element and apply CSS styles to it */
+
+        .orange-text {
+            color: orange;
+            font-weight: bold;
+        }
+        .dark-yellow-text {
+            color: hsl(50, 100%, 30%); /* Adjust the hue and saturation values as needed */
+            font-weight: bold;
+        }
+        .brown-text {
+            color: hsl(30, 100%, 30%); /* Adjust the hue and saturation values as needed */
+            font-weight: bold;
+        }
+        .green-text {
+            color: green;
+            font-weight: bold;
+        }
+        .purple-text {
+            color: purple;
+            font-weight: bold;
+        }
+        .blue-text {
+            color: blue;
+            font-weight: bold;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="left-section">
+            <p>WELCOME TO MY WORLD</p>
+            <p>Hi, I'm <span style="color: red;">Mohammad Reza Mohajeri</span><br>a Bioinformatician.</p>
+            <p>I use bioinformatics and computational biology to analyze and interpret complex biological data, turning data into actionable insights. I specialize in developing bioinformatics tools, pipelines, and web applications.</p>
+            
+            <div class="button-container">
+                <a href="https://mohammadrezamohajeri.github.io/Breast-Cancer-Gene-Expression-Biomarker-Analysis/Document/Mohajeri_O_CV.pdf" target="_blank" class="button">CV</a>
+                <a href="https://www.linkedin.com/in/mohammad-reza-mohajeri-24240a12b" target="_blank" class="button">LinkedIn</a>
+                <a href="https://github.com/MohammadRezaMohajeri" target="_blank" class="button">GitHub</a>
+            </div>
+        </div>
+        <div class="right-section">
+            <img src="Pictures/My_Pics/1.JPG" alt="Mohammad Reza Mohajeri">
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="tab">Transcriptomics
+            <div class="dropdown-content">
+                <a href="https://mohammadrezamohajeri.github.io/Breast-Cancer-Gene-Expression-Biomarker-Analysis/index.html">Meta-Analysis of Breast Cancer Gene Expression Profiles</a>
+                <a href="#">Option 2</a>
+                <a href="#">Option 3</a>
+            </div>
+        </div>
+        <div class="tab">AI/DL/ML Models
+            <div class="dropdown-content">
+                <a href="#">Option 1</a>
+                <a href="#">Option 2</a>
+                <a href="#">Option 3</a>
+            </div>
+        </div>
+        <div class="tab">Web Applications
+            <div class="dropdown-content">
+                <a href="#">Option 1</a>
+                <a href="#">Option 2</a>
+                <a href="#">Option 3</a>
+            </div>
+        </div>
+        <div class="tab">Bioinformatics Pipeline & Tools
+            <div class="dropdown-content">
+                <a href="#">Option 1</a>
+                <a href="#">Option 2</a>
+                <a href="#">Option 3</a>
+            </div>
+        </div>
+        <div class="tab">Other Works & Innovations
+            <div class="dropdown-content">
+                <a href="#">Option 1</a>
+                <a href="#">Option 2</a>
+                <a href="#">Option 3</a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2023 Mohammad Reza Mohajeri. All rights reserved.</p>
+    </footer>
+</body>
+</html>
