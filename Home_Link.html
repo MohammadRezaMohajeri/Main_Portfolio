@@ -1,3 +1,43 @@
 Add a home link:
 
 
+1- in "Header Style", set an appropriate height (height: 500px;) & add position: relative;
+
+
+ /* Header Style */
+        .header {
+            font-size: 46px;
+            background-color: #01031f;
+            color: white;
+            height: 500px; /* Set an explicit height */
+            padding: 10px 0;
+            text-align: center;
+            position: relative; /* Add relative positioning here */
+        }
+
+2- add the bellow completely
+
+  /* Home Link Style */
+        .home-link {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            text-decoration: none; /* Remove underline */
+            z-index: 1; /* Ensures it appears above other content */
+        }
+
+
+3- In the html section, in the body, immediately after <div class="header">, add from <a> to </a> 
+<body>
+
+    <div class="header">
+
+        <!-- the positioning of the "Home" icon -->
+        <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/index.html" class="home-link">
+            <img src="Pictures/Home_Link_JPG/1.jpg" alt="Home" style="width:50px; height:auto;">
+        </a>
+        
+        <h1> Extracting Text from a PDF (Python) 
+</h1>
+
+
