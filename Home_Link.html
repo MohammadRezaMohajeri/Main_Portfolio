@@ -1,7 +1,18 @@
 Add a home link:
+1- in .header {, you need to add 	position: relative;
 
+    position: relative; /* Ensure the header is the reference point for absolutely positioned elements */
 
-1- in "Header Style", set an appropriate height (height: 500px;) & add position: relative;
+.header {
+			background-color: #040459; /* Dark blue navy for header  */
+		 height: 300px; /* Set an explicit height */
+			padding: 10px;
+			text-align: center; /* Center-align the header content */
+			position: relative; /* Ensure the header is the reference point for absolutely positioned elements */
+
+		}
+
+2- in "Header Style", set an appropriate height (height: 500px;) & add position: relative;
 
 
  /* Header Style */
@@ -15,7 +26,7 @@ Add a home link:
             position: relative; /* Add relative positioning here */
         }
 
-2- add the bellow completely
+3- add the bellow completely
 
   /* Home Link Style */
         .home-link {
@@ -27,7 +38,7 @@ Add a home link:
         }
 
 
-3- In the html section, in the body, immediately after <div class="header">, add from <a> to </a> 
+4- In the html section, in the body, immediately after <div class="header">, add from <a> to </a> 
 <body>
 
     <div class="header">
