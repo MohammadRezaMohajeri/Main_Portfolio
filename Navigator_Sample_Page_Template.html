@@ -54,10 +54,19 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
+     
+         /* Header Style */
         .header {
+            font-size: 46px;
+            background-color: #01031f;
+            color: white;
+            height: 500px;                 /* Set an explicit height */
+            padding: 10px 0;
             text-align: center;
-            margin-bottom: 30px;
+            position: relative;           /* Add relative positioning here */
         }
+
+
 
         .header h1 {
             font-size: 2.5em;
@@ -68,6 +77,17 @@
             font-size: 1.2em;
             color: #666;
         }
+
+
+         /* Home Link Style */
+        .home-link {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            text-decoration: none; /* Remove underline */
+            z-index: 1; /* Ensures it appears above other content */
+        }
+        
 
         .content-list {
             display: flex;
@@ -110,6 +130,12 @@
 <body>
 
     <div class="container">
+
+           <!-- the positioning of the "Home" icon -->
+	        <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/index.html" class="home-link">
+	            <img src="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/Home_Link_JPG/1.jpg" alt="Home" style="width:50px; height:auto;">
+	        </a>
+        
         <header class="header">
             <h1>Content Navigator</h1>
             <h1>(RNA-SEQ/ scRNA-Seq/ DL/ ML/ Relevant Coding Projects/ General Coding page/Video Presentations)</h1>
