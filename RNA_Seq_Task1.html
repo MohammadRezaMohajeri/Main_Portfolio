@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Differential Gene Expression Analysis in Atopic Dermatitis Using DESeq2</title>
+
+    <!-- Prism.js CSS for syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.5.0/prism-shades-of-purple.min.css" rel="stylesheet">
+
+    <style>
+        /* Basic Styles */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f9f9f9;
+        }
+
+        /* Header Style */
+        .header {
+            font-size: 46px;
+            background-color: #01031f;
+            color: white;
+            height: 500px; /* Set an explicit height */
+            padding: 10px 0;
+            text-align: center;
+            position: relative; /* Add relative positioning here */
+        }
+
+        /* Home Link Style */
+        .home-link {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            text-decoration: none; /* Remove underline */
+            z-index: 1; /* Ensures it appears above other content */
+        }
+
+        /* Title Style */
+        .title {
+            font-size: 26px;
+            font-weight: bold;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        /* Explanation Text Style */
+        .explanation {
+            font-size: 24px; /* Increased explanation font size */
+            margin-bottom: 20px;
+        }
+
+        /* Code Block Style */
+        .code-block {
+            margin-bottom: 20px;
+            font-size: 24px; /* Increased code block font size */
+        }
+
+        /* Prism.js Code Block Font Size */
+        pre[class*="language-"] {
+            font-size: 24px; /* Increase font size for Prism.js code blocks */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+
+        <!-- the positioning of the "Home" icon -->
+        <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/index.html" class="home-link">
+            <img src="Pictures/Home_Link_JPG/1.jpg" alt="Home" style="width:50px; height:auto;">
+        </a>
+        
+        <h1>Differential Gene Expression Analysis in Atopic Dermatitis Using DESeq2</h1>
+    </div>
+    
+
+    <div class="title">
+        Comprehensive Analysis of Gene Expression Changes in Atopic Dermatitis Patients Using the GSE157194 Dataset
+    </div>
+    
+    <div class="body">
+        <div class="explanation">
+            <h3>Introduction</h3>
+            <p>In this analysis, we perform a comprehensive Differential Gene Expression (DEG) analysis using DESeq2 on the GSE157194 dataset, which contains RNA-seq data from Atopic Dermatitis (AD) patients. The dataset includes samples from lesional and non-lesional skin of the same patients, providing valuable insights into gene expression changes in AD without any specific treatment.</p>
+            <ul>
+                <li><strong>Dataset Selection (GSE157194)</strong>: A carefully selected RNA-seq dataset from GEO.</li>
+                <li><strong>Disease Context</strong>: Atopic Dermatitis (AD), a chronic inflammatory skin disease.</li>
+                <li><strong>Objective</strong>: Identify differentially expressed genes between lesional and non-lesional skin samples.</li>
+                <li><strong>Analysis Outputs</strong>: Gene lists, visualizations (PCA, volcano plots, etc.), and pathway enrichment results.</li>
+            </ul>
+        </div>
+
+        <div class="explanation">
+            <h3>1. Load Necessary Libraries</h3>
+            <p>We begin by loading the essential R libraries needed for data manipulation, DEG analysis, and visualization.</p>
+        </div>
+
+        <div class="code-block">
+            <pre><code class="language-r">
+# Load Required Libraries
+library(DESeq2)
+library(data.table)
+library(umap)
+library(ggplot2)
+library(clusterProfiler)
+library(org.Hs.eg.db)
+library(VennDiagram)
+library(knitr)
+library(tinytex)
+            </code></pre>
+        </div>
+
+        <div class="explanation">
+            <h3>2. Load and Prepare Data</h3>
+            <p>This step involves downloading the count data and gene annotations from GEO. We convert these into suitable formats for further analysis.</p>
+        </div>
+
+        <div class="code-block">
+            <pre><code class="language-r">
+# Load counts table from GEO
+urld <- "https://www.ncbi.nlm.nih.gov/geo/download/?format=file&type=rnaseq_counts"
+path <- paste(urld, "acc=GSE157194", "file=GSE157194_raw_counts_GRCh38.p13_NCBI.tsv.gz", sep="&")
+tbl <- as.matrix(data.table::fread(path, header=T, colClasses="integer"), rownames="GeneID")
+
+# Load gene annotations 
+apath <- paste(urld, "type=rnaseq_counts", "file=Human.GRCh38.p13.annot.tsv.gz", sep="&")
+annot <- data.table::fread(apath, header=T, quote="", stringsAsFactors=F, data.table=F)
+rownames(annot) <- annot$GeneID
+            </code></pre>
+        </div>
+
+        <div class="explanation">
+            <h3>3. Sample Selection and Group Assignment</h3>
+            <p>This step filters the samples and assigns them to the Lesional or Non-Lesional groups based on predefined group labels.</p>
+        </div>
+
+        <div class="code-block">
+            <pre><code class="language-r">
+# Sample selection
+gsms <- paste0("01101001010101011010011001011001011001101001011010",
+               "01100101011010101001011001010101010010101010101001",
+               "01100100110XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+               "XXXXXXXXXXXXXXXX")
+sml <- strsplit(gsms, split="")[[1]]
+
+# Filter out excluded samples (marked as "X")
+sel <- which(sml != "X")
+sml <- sml[sel]
+tbl <- tbl[ ,sel]
+
+# Group membership for samples
+gs <- factor(sml)
+groups <- make.names(c("Lesional","Non-Lesional"))
+levels(gs) <- groups
+sample_info <- data.frame(Group = gs, row.names = colnames(tbl))
+            </code></pre>
+        </div>
+
+        <div class="explanation">
+            <h3>4. Data Pre-Filtering</h3>
+            <p>To improve analysis accuracy, we filter out genes with low counts across samples.</p>
+        </div>
+
+        <div class="code-block">
+            <pre><code class="language-r">
+# Pre-filter low count genes
+keep <- rowSums(tbl >= 10) >= min(table(gs))
+tbl <- tbl[keep, ]
+            </code></pre>
+        </div>
+
+        <div class="explanation">
+            <h3>5. Exploratory Data Analysis</h3>
+            <p>Before proceeding with differential expression analysis, we perform a PCA to explore the variance in the dataset and ensure that the samples group as expected.</p>
+        </div>
+
+        <div class="code-block">
+            <pre><code class="language-r">
+# PCA Plot
+vsd <- vst(ds, blind=FALSE)
+pcaData <- plotPCA(vsd, intgroup="Group", returnData=TRUE)
+percentVar <- round(100 * attr(pcaData, "percentVar"))
+
+ggplot(pcaData, aes(PC1, PC2, color=Group)) +
+  geom_point(size=3) +
+  xlab(paste0("PC1: ", percentVar[1], "% variance")) +
+  ylab(paste0("PC2: ", percentVar[2], "% variance")) +
+  coord_fixed() +
+  theme_minimal()
+            </code></pre>
+        </div>
+
+        <div class="explanation">
+            <h3>6. Create DESeqDataSet and Run Differential Expression Analysis</h3>
+            <p>We create a <code>DESeqDataSet</code> object, normalize the data, and run the differential expression analysis using DESeq2. This model tests for differences in gene expression between the Lesional and Non-Lesional groups.</p>
+        </div>
+
+        <div class="code-block">
+            <pre><code class="language-r">
+# Create DESeqDataSet and run DESeq2
+ds <- DESeqDataSetFromMatrix(countData=tbl, colData=sample_info, design= ~Group)
+ds <- DESeq(ds, test="Wald", sfType="poscount")
+            </code></pre>
+        </div>
+
+        <div class="explanation">
+            <h3>7. Extract and Process Results</h3>
+            <p>We extract the results from DESeq2, separating the differentially expressed genes (DEGs) into upregulated and downregulated categories, and prepare the top genes for further analysis.</p>
+        </div>
+
+        <div class="code-block">
+            <pre><code class="language-r">
+# Extract results for top genes
+r <- results(ds, contrast = c("Group", groups[1], groups[2]), alpha = 0.01, pAdjustMethod = "fdr")
+
+# Separate downregulated and upregulated DEGs
+downregulated <- r[r$log2FoldChange < 0 & r$padj < 0.01, ]
+upregulated <- r[r$log2FoldChange > 0 & r$padj < 0.01, ]
+
+# Take the top 10 genes for downregulated and upregulated
+top_downregulated <- downregulated[order(downregulated$log2FoldChange)[1:10], ]
+top_upregulated <- upregulated[order(upregulated$log2FoldChange, decreasing = TRUE)[1:10], ]
+
+# Merge with gene annotations
+top_downregulated <- merge(as.data.frame(top_downregulated), annot, by = 0, sort = FALSE)
+top_upregulated <- merge(as.data.frame(top_upregulated), annot, by = 0, sort = FALSE)
+
+# Round "padj" and "log2FoldChange" columns for readability
+top_downregulated <- within(top_downregulated, {
+  padj <- sprintf("%.4f", round(padj, 2))
+  log2FoldChange <- sprintf("%.4f", round(log2FoldChange, 2))
+})
+
+top_upregulated <- within(top_upregulated, {
+  padj <- sprintf("%.4f", round(padj, 2))
+  log2FoldChange <- sprintf("%.4f", round(log2FoldChange, 2))
+})
+
+# Print the top_downregulated table using kable
+kable(top_downregulated, format = "markdown")
+kable(top_upregulated, format = "markdown")
+            </code></pre>
+        </div>
+
+        <div class="explanation">
+            <h3>8. General Data Visualization</h3>
+            <p>We generate various plots to visualize the data and the results of the differential expression analysis.</p>
+
+            <h4>8.1 Box Plot</h4>
+        </div>
+
+        <div class="code-block">
+            <pre><code class="language-r">
+# Box-and-whisker plot
+dat <- log10(counts(ds, normalized = T) + 1)
+ord <- order(gs)
+palette(c("#1B9E77", "#7570B3"))
+par(mar=c(7,4,2,1))
+boxplot(dat[,ord], boxwex=0.6, notch=T, main="GSE157194", ylab="lg(norm.counts)", outline=F, las=2, col=gs[ord])
+legend("topleft", groups, fill=palette(), bty="n")
+            </code></pre>
+        </div>
+
+        <div class="explanation">
+            <h4>8.2 Dispersion Estimates</h4>
+        </div>
+
+        <div class="code-block">
+            <pre><code class="language-r">
+# Dispersion estimates plot
+plotDispEsts(ds, main="GSE157194 Dispersion Estimates")
+            </code></pre>
+        </div>
+
+        <div class="explanation">
+            <h4>8.3 UMAP Plot</h4>
+        </div>
+
+        <div class="code-block">
+            <pre><code class="language-r">
+# UMAP plot
+dat <- dat[!duplicated(dat), ]
+par(mar=c(3,3,2,6), xpd=TRUE, cex.main=1.5)
+ump <- umap(t(dat), n_neighbors = 15, random_state = 123)
+plot(ump$layout, main="UMAP plot, nbrs=15", xlab="", ylab="", col=gs, pch=20, cex=1.5)
+legend("topright", inset=c(-0.15,0), legend=groups, pch=20, col=1:length(groups), title="Group", pt.cex=1.5)
+            </code></pre>
+        </div>
+
+        <div class="explanation">
+            <h4>8.4 Histogram of P-values</h4>
+        </div>
+
+        <div class="code-block">
+            <pre><code class="language-r">
+# Histogram of adjusted p-values
+hist(r$padj, breaks=seq(0, 1, length = 21), col = "grey", border = "white", 
+     xlab = "", ylab = "", main = "GSE157194 Frequencies of padj-values")
+            </code></pre>
+        </div>
+
+        <div class="explanation">
+            <h4>8.5 Volcano Plot</h4>
+        </div>
+
+        <div class="code-block">
+            <pre><code class="language-r">
+# Volcano plot
+old.pal <- palette(c("#00BFFF", "#FF3030"))
+par(mar=c(4,4,2,1), cex.main=1.5)
+plot(r$log2FoldChange, -log10(r$padj), main=paste(groups[1], "vs", groups[2]),
+     xlab="log2FC", ylab="-log10(Padj)", pch=20, cex=0.5)
+with(subset(r, padj<0.01 & abs(log2FoldChange) >= 1.5),
+     points(log2FoldChange, -log10(padj), pch=20, col=(sign(log2FoldChange) + 3)/2, cex=1))
+legend("bottomleft", title=paste("Padj<", 0.01, sep=""), legend=c("down", "up"), pch=20,col=1:2)
+            </code></pre>
+        </div>
+
+        <div class="explanation">
+            <h4>8.6 MA Plot</h4>
+        </div>
+
+        <div class="code-block">
+            <pre><code class="language-r">
+# MA plot
+par(mar=c(4,4,2,1), cex.main=1.5)
+plot(log10(r$baseMean), r$log2FoldChange, main=paste(groups[1], "vs", groups[2]),
+     xlab="log10(mean of normalized counts)", ylab="log2FoldChange", pch=20, cex=0.5)
+with(subset(r, padj<0.01 & abs(log2FoldChange) >= 1.5),
+     points(log10(baseMean), log2FoldChange, pch=20, col=(sign(log2FoldChange) + 3)/2, cex=1))
+legend("bottomleft", title=paste("Padj<", 0.01, sep=""), legend=c("down", "up"), pch=20,col=1:2)
+abline(h=0)
+palette(old.pal)
+            </code></pre>
+        </div>
+
+        <div class="explanation">
+            <h3>9. Functional Annotation and Pathway Analysis</h3>
+            <p>After identifying DEGs, we perform GO and KEGG pathway enrichment analyses to understand the biological significance of the results.</p>
+
+            <h4>9.1 Gene Ontology (GO) Enrichment Analysis</h4>
+        </div>
+
+        <div class="code-block">
+            <pre><code class="language-r">
+# GO enrichment analysis for upregulated and downregulated genes
+up_genes <- top_upregulated$GeneID
+down_genes <- top_downregulated$GeneID
+
+# GO enrichment for upregulated genes
+ego_up <- enrichGO(gene = up_genes, OrgDb = org.Hs.eg.db, keyType = "ENSEMBL",
+                   ont = "BP", pAdjustMethod = "fdr", qvalueCutoff = 0.05)
+
+# GO enrichment for downregulated genes
+ego_down <- enrichGO(gene = down_genes, OrgDb = org.Hs.eg.db, keyType = "ENSEMBL",
+                     ont = "BP", pAdjustMethod = "fdr", qvalueCutoff = 0.05)
+
+# Plotting the top GO terms
+barplot(ego_up, showCategory=10, title="Top GO terms for Upregulated Genes", drop=TRUE)
+barplot(ego_down, showCategory=10, title="Top GO terms for Downregulated Genes", drop=TRUE)
+            </code></pre>
+        </div>
+
+        <div class="explanation">
+            <h4>9.2 KEGG Pathway Enrichment Analysis</h4>
+        </div>
+
+        <div class="code-block">
+            <pre><code class="language-r">
+# KEGG pathway enrichment analysis for upregulated and downregulated genes
+kegg_up <- enrichKEGG(gene = up_genes, organism = "hsa", pAdjustMethod = "fdr", qvalueCutoff = 0.05)
+kegg_down <- enrichKEGG(gene = down_genes, organism = "hsa", pAdjustMethod = "fdr", qvalueCutoff = 0.05)
+
+# Plotting the top KEGG pathways
+barplot(kegg_up, showCategory=10, title="Top KEGG Pathways for Upregulated Genes")
+barplot(kegg_down, showCategory=10, title="Top KEGG Pathways for Downregulated Genes")
+            </code></pre>
+        </div>
+
+        <div class="explanation">
+            <h3>10. Venn Diagram for Gene Sets</h3>
+            <p>We visualize the overlap between different gene sets (total, upregulated, downregulated) using a Venn diagram.</p>
+        </div>
+
+        <div class="code-block">
+            <pre><code class="language-r">
+# Venn diagram for gene sets
+total_genes <- rownames(tbl)
+upregulated_genes <- rownames(top_upregulated)
+downregulated_genes <- rownames(top_downregulated)
+
+venn_data <- list(
+  Total = total_genes,
+  Upregulated = upregulated_genes,
+  Downregulated = downregulated_genes
+)
+
+venn_plot <- venn.diagram(
+  x = venn_data,
+  category.names = c("Total", "Upregulated", "Downregulated"),
+  filename = NULL,
+  margin = 0,
+  cex.prop = 0.8,
+  offset.prop = 0.2
+)
+
+grid.draw(venn_plot)
+            </code></pre>
+        </div>
+
+        <div class="explanation">
+            <h3>11. Extract Top 20 Genes and Print Results</h3>
+            <p>Finally, we extract the top 20 differentially expressed genes from both categories and print the results.</p>
+        </div>
+
+        <div class="code-block">
+            <pre><code class="language-r">
+# Extract results for top genes table (rounded)
+r <- results(ds, contrast = c("Group", groups[1], groups[2]), alpha = 0.01, pAdjustMethod = "fdr")
+
+# Separate downregulated and upregulated DEGs
+downregulated <- r[r$log2FoldChange < 0 & r$padj < 0.01, ]
+upregulated <- r[r$log2FoldChange > 0 & r$padj < 0.01, ]
+
+# Take the top 20 genes for downregulated and upregulated
+top_downregulated <- downregulated[order(downregulated$log2FoldChange)[1:20], ]
+top_upregulated <- upregulated[order(upregulated$log2FoldChange, decreasing = TRUE)[1:20], ]
+
+# Merge with gene annotations
+top_downregulated <- merge(as.data.frame(top_downregulated), annot, by = 0, sort = FALSE)
+top_upregulated <- merge(as.data.frame(top_upregulated), annot, by = 0, sort = FALSE)
+
+# Round "padj" and "log2FoldChange" columns
+top_downregulated <- within(top_downregulated, {
+  padj <- sprintf("%.4f", round(padj, 4))
+  log2FoldChange <- sprintf("%.4f", round(log2FoldChange, 4))
+ })
+
+top_upregulated <- within(top_upregulated, {
+  padj <- sprintf("%.4f", round(padj, 4))
+  log2FoldChange <- sprintf("%.4f", round(log2FoldChange, 4))
+})
+
+# Print the top_downregulated table using kable
+kable(top_downregulated, format = "markdown") 
+kable(top_upregulated, format = "markdown")
+            </code></pre>
+        </div>
+
+        <div class="explanation">
+            <h3>Conclusion</h3>
+            <p>This complete pipeline guides you through performing differential gene expression analysis on the GSE157194 dataset using DESeq2. The analysis identifies significant gene expression changes between lesional and non-lesional skin samples from Atopic Dermatitis patients, and includes essential data visualizations and enrichment analyses to interpret the results biologically.</p>
+        </div>
+    </div>
+
+    <!-- Prism.js library for syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/prism.min.js"></script>
+    <!-- Load Python language support for Prism -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-python.min.js"></script>
+</body>
+</html>
