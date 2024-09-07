@@ -90,25 +90,48 @@
 
         <!-- ================================================================== -->
         <div class="explanation">
-            
-            <h3>Introduction</h3>
-            <p>In this analysis, we perform a comprehensive Differential Gene Expression (DEG) analysis using DESeq2 on the GSE157194 dataset, which includes RNA-seq data from 166 samples of Atopic Dermatitis (AD) patients. The dataset comprises samples from 57 patients with moderate to severe AD: 111 samples taken before therapy from both lesional (AL) and non-lesional (AN) skin biopsies, and 55 samples taken 3 months after systemic treatment with dupilumab or cyclosporine. These paired lesional and non-lesional biopsies provide a unique opportunity to explore the molecular distinctions in AD without the influence of treatment.</p>
+          <h3>Introduction to Differential Gene Expression in Atopic Dermatitis (AD)</h3>
+          <p>
+            In this analysis, we perform <strong>Differential Gene Expression (DEG) analysis</strong> using the <strong>DESeq2</strong> package on the <strong>GSE157194</strong> dataset, which consists of RNA-seq data from patients with <strong>Atopic Dermatitis (AD)</strong>. This dataset includes a total of <strong>166 samples</strong> obtained from <strong>57 patients</strong> with moderate to severe AD, prior to and after systemic treatment.
+          </p>
+          
+          <h4>Dataset Overview:</h4>
+          <ul>
+            <li><strong>GSE157194</strong>: RNA-seq data from AD patients.</li>
+            <li><strong>111 samples before treatment</strong>: Includes <strong>lesional (AL)</strong> and <strong>non-lesional (AN)</strong> skin biopsies. Non-lesional samples were taken at least 5 cm from the active lesion, ensuring that the comparison between these conditions captures the underlying gene expression differences in the disease state before any intervention.</li>
+            <li><strong>40 samples post-treatment with Dupilumab</strong> (3 months).</li>
+            <li><strong>15 samples post-treatment with Cyclosporine</strong> (3 months).</li>
+          </ul>
         
-            <ul>
-                <li><strong>Dataset (GSE157194)</strong>: Selected from GEO, it includes RNA-seq data from lesional and non-lesional skin biopsies of AD patients.</li>
-                <li><strong>Disease Context</strong>: Atopic Dermatitis (AD) – a chronic inflammatory skin disease affecting millions worldwide.</li>
-                <li><strong>Objective</strong>: Identify differentially expressed genes between lesional and non-lesional skin biopsies before treatment to understand the underlying molecular mechanisms driving lesion formation.</li>
-                <li><strong>Potential Applications</strong>: The identified DEGs and enriched pathways could help in understanding AD pathology, discovering biomarkers for diagnostics, and informing therapeutic targets for future drug development.</li>
-                <li><strong>Comprehensive Analysis</strong>: This study incorporates numerous analyses and visualizations, such as PCA, volcano plots, gene lists, and functional enrichment (GSEA and ORA for KEGG and GO terms). While some of these methods may suffice for specific insights, this comprehensive approach is meant to serve as a detailed reference for a complete DEG analysis pipeline.</li>
-            </ul>
+          <h4>Objective of This Analysis:</h4>
+          <p>
+            Our primary focus is to conduct a differential expression analysis between the <strong>lesional (AL)</strong> and <strong>non-lesional (AN)</strong> skin samples <strong>before treatment</strong>. This helps in identifying key <strong>differentially expressed genes (DEGs)</strong> and associated <strong>pathways</strong> that distinguish diseased skin from non-diseased skin. Insights gained from this comparison can:
+          </p>
+          <ul>
+            <li>Reveal potential <strong>biomarkers</strong> for AD diagnosis and monitoring.</li>
+            <li>Highlight novel <strong>therapeutic targets</strong> or <strong>pathways</strong> relevant to AD pathogenesis.</li>
+            <li>Provide groundwork for <strong>drug discovery</strong> and personalized medicine by identifying pathways that could respond to specific therapeutic interventions.</li>
+          </ul>
         
+          <h4>Comprehensive Analysis Approach:</h4>
+          <p>
+            This analysis incorporates various bioinformatics techniques and <strong>visualization tools</strong> (e.g., <strong>PCA</strong>, <strong>volcano plots</strong>, etc.) to ensure a holistic understanding of the gene expression profiles. While some aspects of the analysis may provide standalone insights, the goal is to create a <strong>comprehensive reference</strong> for <strong>DEG analysis using DESeq2</strong>. This can serve as a <strong>functional analysis resource</strong> for future studies.
+          </p>
+          <p>
+            In addition to the DEG analysis, we also perform pathway and gene enrichment analysis, including:
+          </p>
+          <ul>
+            <li><strong>KEGG</strong> and <strong>GO term</strong> analyses.</li>
+            <li><strong>Gene Set Enrichment Analysis (GSEA)</strong> and <strong>Overrepresentation Analysis (ORA)</strong> to explore the biological processes, molecular functions, and cellular components involved in AD.</li>
+          </ul>
         </div>
+
         
-        <div class="explanation">
+        
 
         <!-- ================================================================== -->
 
-            
+        <div class="explanation">
             <h3>1. Load Necessary Libraries</h3>
             <p>We begin by loading the essential R libraries needed for data manipulation, DEG analysis, and visualization.</p>
         </div>
