@@ -87,18 +87,28 @@
     </div>
     
     <div class="body">
-        <div class="explanation">
-            <h3>Introduction</h3>
-            <p>In this analysis, we perform a comprehensive Differential Gene Expression (DEG) analysis using DESeq2 on the GSE157194 dataset, which contains RNA-seq data from Atopic Dermatitis (AD) patients. The dataset includes samples from lesional and non-lesional skin of the same patients, providing valuable insights into gene expression changes in AD without any specific treatment.</p>
-            <ul>
-                <li><strong>Dataset: (GSE157194)</strong>(selected from GEO).</li>
-                <li><strong>Disease Context</strong>: Atopic Dermatitis (AD), a chronic inflammatory skin disease.</li>
-                <li><strong>Objective</strong>: Identify differentially expressed genes between lesional and non-lesional skin samples.</li>
-                <li><strong>Analysis Outputs</strong>: Gene lists, visualizations (PCA, volcano plots, etc.), and pathway enrichment results.</li>
-            </ul>
-        </div>
 
+        <!-- ================================================================== -->
         <div class="explanation">
+            
+            <h3>Introduction</h3>
+            <p>In this analysis, we perform a comprehensive Differential Gene Expression (DEG) analysis using DESeq2 on the GSE157194 dataset, which includes RNA-seq data from 166 samples of Atopic Dermatitis (AD) patients. The dataset comprises samples from 57 patients with moderate to severe AD: 111 samples taken before therapy from both lesional (AL) and non-lesional (AN) skin biopsies, and 55 samples taken 3 months after systemic treatment with dupilumab or cyclosporine. These paired lesional and non-lesional biopsies provide a unique opportunity to explore the molecular distinctions in AD without the influence of treatment.</p>
+        
+            <ul>
+                <li><strong>Dataset (GSE157194)</strong>: Selected from GEO, it includes RNA-seq data from lesional and non-lesional skin biopsies of AD patients.</li>
+                <li><strong>Disease Context</strong>: Atopic Dermatitis (AD) – a chronic inflammatory skin disease affecting millions worldwide.</li>
+                <li><strong>Objective</strong>: Identify differentially expressed genes between lesional and non-lesional skin biopsies before treatment to understand the underlying molecular mechanisms driving lesion formation.</li>
+                <li><strong>Potential Applications</strong>: The identified DEGs and enriched pathways could help in understanding AD pathology, discovering biomarkers for diagnostics, and informing therapeutic targets for future drug development.</li>
+                <li><strong>Comprehensive Analysis</strong>: This study incorporates numerous analyses and visualizations, such as PCA, volcano plots, gene lists, and functional enrichment (GSEA and ORA for KEGG and GO terms). While some of these methods may suffice for specific insights, this comprehensive approach is meant to serve as a detailed reference for a complete DEG analysis pipeline.</li>
+            </ul>
+        
+        </div>
+        
+        <div class="explanation">
+
+        <!-- ================================================================== -->
+
+            
             <h3>1. Load Necessary Libraries</h3>
             <p>We begin by loading the essential R libraries needed for data manipulation, DEG analysis, and visualization.</p>
         </div>
