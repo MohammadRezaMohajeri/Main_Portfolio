@@ -259,14 +259,17 @@
 		     </li>
 		    </ul> 
 		</div>
-<!-- ============================================== -->
+<!-- =================== 3.1. explanation =========================== -->
+		<div class="explanation">
 		    <h4>3.1 Metadata Exploration</h4>
 		    <ul>
 	   	      <li>
 		       We can extract and explore the <strong>metadata</strong> (<strong>phenotype</strong> data) associated with the dataset to understand the key characteristics of the samples.
-		</li>
+		      </li>
 		     </ul> 
-		
+		</div>
+<!-- ======= 3.1. code chunk =========== -->
+
 		<div class="code-block">
 		    <pre><code class="language-r">
 
@@ -285,18 +288,36 @@
 		View(selected_metadata)
 		    </code></pre>
 		</div>
-		 <!-- ================================================================ -->
+<!-- ======== 3.1. image ========== -->
 		 <!-- 10- Insert the image (Changing the Background Color Around the Image -->
     		 <img src="Pictures/RNA_Seq_Task1/Selected_metadata_GSE157194.png" alt="Extract Text Image" style="display: block; margin: auto; background-color: #f0f0f0; padding: 20px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);">
+		 <!-- ============================= = =================================== --> 
+
+
+<!-- =================== 3.2. explanation =========================== -->
+	<div class="explanation">
+	    <h4>3.2 Exploring the Count Matrix</h4>
+	    <ul>
+	        <li>
+	            We examine the <strong>count matrix</strong>, which contains raw gene expression counts for each sample. This step helps us understand the structure of the data, including whether it is normalized or not, and allows us to check the <strong>column names</strong> (samples) and <strong>row names</strong> (genes) to ensure the data is formatted correctly for the next steps of differential expression analysis.
+	        </li>
+	    </ul>
+	</div>
+
+
+<!-- ======= 3.2. code chunk =========== -->
+        <div class="code-block">
+	    <pre><code class="language-r">
+	# View the first few rows of the count matrix
+	# This allows us to inspect the raw gene expression data for each sample.
+	View(counts_matrix)
+	    </code></pre>
+	</div>
+
+<!-- =======3.2. Image =========== -->
+ <!-- 10- Insert the image (Changing the Background Color Around the Image -->
+    		 <img src="Pictures/RNA_Seq_Task1/counts_matrix_GSE157194.png" alt="Extract Text Image" style="display: block; margin: auto; background-color: #f0f0f0; padding: 20px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);">
 		 <!-- ================================================================ --> 
-
-
-
-
-
-
-
-	
 	    
 
 
