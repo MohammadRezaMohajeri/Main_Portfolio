@@ -332,6 +332,39 @@
 		 <!-- ================================================================ --> 
 	    
 
+	<!-- =================== 3.3. Check Distribution of Samples Across Key Metadata Variables =========================== -->
+	<div class="explanation">
+	    <h4>3.3. Check Distribution of Samples Across Key Metadata Variables</h4>
+	    <ul>
+	        <li>
+	            In this step, we examine the distribution of samples across key <strong>metadata variables</strong>, such as <strong>patient groups</strong> and <strong>timepoints</strong>. This exploration helps to ensure that the dataset is well-balanced and appropriately structured for the upcoming <strong>differential expression analysis</strong>. By looking at the sample counts across these variables, we can check for any potential <strong>imbalances</strong> that might affect the results.
+	        </li>
+	    </ul>
+	</div>
+
+	<!-- ======= 3.3. code chunk =========== -->
+	<div class="code-block">
+	    <pre><code class="language-r">
+# Table of samples by patient group (e.g., lesional vs non-lesional)
+group_table <- table(metadata$source_name_ch1)
+kable(group_table, format = "html", col.names = c("Patient Group", "Count"))
+
+# Table of samples by timepoints (e.g., baseline vs post-treatment)
+timepoint_table <- table(metadata$characteristics_ch1.2)
+kable(timepoint_table, format = "html", col.names = c("Timepoint", "Count"))
+	    </code></pre>
+	</div>
+
+	<!-- ======== 3.3. image ========== -->
+	<!-- 10- Insert the image (Changing the Background Color Around the Image -->
+	<img src="Pictures/RNA_Seq_Task1/Samples_Distribution_GSE157194.png" alt="Samples Distribution Image" style="display: block; margin: auto; background-color: #f0f0f0; padding: 20px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);">
+	<!-- ================================================================================= -->
+
+
+
+
+
+		
 
  <!-- ====================== the bellow should be changed============================== -->
  <!-- ================================================================ -->
