@@ -182,6 +182,92 @@
 		<!-- Add a horizontal line above the introduction -->
 		<hr style="border: none; border-top: 1px solid black; margin: 20px 0;">
 		 <!-- =================================================== -->
+	  <!-- ================================================================== -->
+	<div class="explanation">
+	    <h3>1. Load Necessary Libraries</h3>
+	    <p>Before starting the analysis, we need to load the essential R libraries required for <strong>data manipulation</strong>, <strong>visualization</strong>, and performing <strong>differential gene expression (DEG) analysis</strong>.</p>
+	</div>
+	
+	<div class="code-block">
+	    <pre><code class="language-r">
+	# Load necessary libraries for RNA-seq analysis and visualization
+	library(DESeq2)          # For differential expression analysis
+	library(data.table)      # Efficient data manipulation
+	library(umap)            # Dimensionality reduction for visualization
+	library(ggplot2)         # General-purpose plotting
+	library(clusterProfiler) # For functional enrichment analysis
+	library(org.Hs.eg.db)    # Human genome annotations
+	library(VennDiagram)     # Venn diagram visualization
+	library(knitr)           # Report generation
+	library(tinytex)         # LaTeX support for report generation
+	    </code></pre>
+	</div>
+	
+	<!-- ================================================================== -->
+	<div class="explanation">
+	    <h3>2. Load and Prepare Data</h3>
+	    <p>In this step, we download the <strong>raw gene expression data</strong> (count matrix) and sample metadata (<strong>phenotype data</strong>) from the <strong>Gene Expression Omnibus (GEO)</strong> using GEO's accession ID <strong>GSE157194</strong>. The count matrix contains raw gene expression counts, while the phenotype data contains metadata for each sample (such as treatment groups and sample type).</p>
+	    <p>We use the following functions:</p>
+	    <ul>
+	        <li><strong>getGEOSuppFiles()</strong>: Retrieves supplementary files like the raw count matrix.</li>
+	        <li><strong>getGEO()</strong>: Downloads the GEO series matrix, which contains phenotype and metadata.</li>
+	    </ul>
+	</div>
+	
+	<div class="code-block">
+	    <pre><code class="language-r">
+	# 2.1: Download Supplementary Files for the Count Matrix
+	# ======================================
+	# Define the GEO accession ID
+	gse_id <- "GSE157194"
+	
+	# Download the supplementary files for this GEO dataset
+	getGEOSuppFiles(gse_id)
+	
+	# Check the list of files downloaded
+	list.files(gse_id)
+	
+	# ================================
+	
+	# Path to the downloaded file
+	supp_file_path <- paste0(gse_id, "/", "GSE157194_Raw_gene_counts_matrix.txt.gz")
+	
+	# Unzip and load the file into R as a data frame (counts matrix)
+	counts_matrix <- read.table(gzfile(supp_file_path), header = TRUE, row.names = 1)
+	
+	# ======================================
+	
+	# 2.2: Download Phenotype Data
+	# ====================================
+	# Specify the GEO accession number
+	gse_id <- "GSE157194"
+	
+	# Download the phenotype data (GEO series matrix)
+	gse_data <- getGEO(gse_id, GSEMatrix = TRUE, AnnotGPL = TRUE)
+	
+	# If multiple series are available, choose the first one
+	gse_data <- gse_data[[1]]
+	    </code></pre>
+	</div>
+
+
+
+
+
+
+
+
+	
+	    
+
+
+ <!-- ====================== the bellow should be changed============================== -->
+ <!-- ================================================================ -->
+ <!-- ================================================================ -->
+ <!-- ============== A horizontal line ================== -->
+		<!-- Add a horizontal line above the introduction -->
+		<hr style="border: none; border-top: 1px solid black; margin: 20px 0;">
+<!-- =================================================== -->
         
 
         <!-- ================================================================== -->
