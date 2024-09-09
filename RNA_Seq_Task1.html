@@ -260,7 +260,13 @@
 		
 		<div class="code-block">
 		    <pre><code class="language-r">
-		# View all column names in the metadata
+
+		# Extract metadata from the GEO dataset
+		# We access the metadata (also known as phenotype data) stored in the 'phenoData' slot of the GEO object.
+		metadata <- gse_data@phenoData@data
+			
+		# View all column names in the metadata to select relevant columns for analysis
+		# This step helps us to explore the structure of the metadata and understand which columns are available.		
 		colnames(metadata)
 		
 		# Select relevant columns for analysis based on the experiment
