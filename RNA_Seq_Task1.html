@@ -299,7 +299,7 @@
 		colnames(metadata)
 		
 		# Select relevant columns for analysis based on the experiment
-		selected_metadata <- metadata[, c("title", "geo_accession", "therapy:ch1", "timepoint:ch1")]
+		selected_metadata <- metadata[, c("geo_accession", "title", "source_name_ch1", "characteristics_ch1.2", "timepoint:ch1", "therapy:ch1")]
 		
 		# Open the selected metadata in a viewer for further exploration
 		View(selected_metadata)
