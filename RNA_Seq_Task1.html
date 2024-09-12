@@ -382,20 +382,24 @@ kable(timepoint_table, format = "html", col.names = c("Timepoint", "Count"))
 
 
 		<div class="explanation">
-  <h3>3.4. Assessing Sample Characteristics for Experimental Design</h3>
+  
   <ul>
-    <li>
-      By exploring key metadata columns, we can gather critical information for designing experiments and comparing treatment groups for differential expression analysis. These columns provide insight into the conditions of each sample, the treatment they received, and the specific timepoints at which the samples were collected.
-    </li>
-    <li>
-      For example, the <strong>source_name_ch1</strong> column shows the distribution of samples across various experimental conditions, such as baseline samples (m0) for both lesional (AL) and non-lesional (AN) skin, as well as samples taken post-treatment with Cyclosporine and Dupilumab. For example, there are 57 lesional (m0_AL) and 54 non-lesional (m0_AN) baseline samples, which are key to our current analysis. Additionally, there are 8 lesional and 7 non-lesional samples from patients treated with Cyclosporine, as well as 21 lesional and 19 non-lesional samples from patients treated with Dupilumab. This data can be useful for exploring treatment effects in future experiments.
-    </li>
-    <li>
-      <strong>characteristics_ch1.2</strong> provides information on timepoints, such as baseline (m0) and 3 months post-treatment (m3). This is crucial for analyzing how gene expression changes over time, particularly in response to therapies like Cyclosporine and Dupilumab. In this dataset, 55 samples were collected 3 months post-treatment, and 111 samples were collected at baseline.
-    </li>
+    
+    
+    
     <li>
       The <strong>characteristics_ch1.3</strong> column provides information about the treatment each patient received. It shows that 15 samples were treated with Cyclosporine and 40 samples with Dupilumab, while the remaining 111 samples represent baseline conditions (m0_AL and m0_AN combined). This is important for distinguishing between treatment groups when analyzing differential expression across conditions.
     </li>
+
+	  <figure>
+    <img src="your-image-path.png" alt="Patient Treatment Distribution">
+    <figcaption>
+        The <strong>characteristics_ch1.3</strong> column provides information about the treatment each patient received. It shows that 15 samples were treated with <strong>Cyclosporine</strong> and 40 samples with <strong>Dupilumab</strong>, while the remaining 111 samples represent baseline conditions (m0_AL and m0_AN combined). This is important for distinguishing between treatment groups when analyzing differential expression across conditions.
+    </figcaption>
+	</figure>
+
+
+	  
     <li>
       The <strong>patient id:ch1</strong> column helps track individual patients across different conditions. Some patients may have samples from multiple conditions (e.g., lesional, non-lesional, and post-treatment with both Cyclosporine and Dupilumab), allowing for longitudinal analyses within the same individuals. For researchers, this provides an opportunity to focus on patients who have undergone multiple treatments, reducing variability and enhancing the accuracy of comparative analyses.
     </li>
