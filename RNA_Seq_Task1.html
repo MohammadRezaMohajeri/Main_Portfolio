@@ -375,69 +375,68 @@ kable(timepoint_table, format = "html", col.names = c("Timepoint", "Count"))
   <h3>3.4. Assessing Sample Characteristics for Experimental Design</h3>
   <ul>
     <li>
-      By exploring key metadata columns such as <strong>source_name_ch1</strong>, <strong>characteristics_ch1.3</strong>, <strong>characteristics_ch1.2</strong>, <strong>therapy:ch1</strong>, and <strong>patient id:ch1</strong>, we can gather critical information for designing experiments or subsetting the data. 
+      By exploring key metadata columns, we can gather critical information for designing experiments and comparing treatment groups for differential expression analysis. These columns provide insight into the conditions of each sample, the treatment they received, and the specific timepoints at which the samples were collected.
     </li>
     <li>
-      These columns provide insight into the conditions of each sample, the treatment they received, and the specific timepoints at which the samples were collected.
+      For example, the <strong>source_name_ch1</strong> column shows the distribution of samples across various experimental conditions, such as baseline samples (m0) for both lesional (AL) and non-lesional (AN) skin, as well as samples taken post-treatment with Cyclosporine and Dupilumab. For example, there are 57 lesional (m0_AL) and 54 non-lesional (m0_AN) baseline samples, which are key to our current analysis. Additionally, there are 8 lesional and 7 non-lesional samples from patients treated with Cyclosporine, as well as 21 lesional and 19 non-lesional samples from patients treated with Dupilumab. This data can be useful for exploring treatment effects in future experiments.
     </li>
     <li>
-      For example, the <strong>source_name_ch1</strong> column shows the distribution of samples across different patient groups (lesional vs non-lesional), which are relevant to baseline conditions (e.g., m0_AL, m0_AN). This is crucial for understanding which samples can be used for our baseline-focused analysis, and which samples received post-treatment (e.g., cyclosporine or dupilumab) can be used in future analyses.
+      <strong>characteristics_ch1.2</strong> provides information on timepoints, such as baseline (m0) and 3 months post-treatment (m3). This is crucial for analyzing how gene expression changes over time, particularly in response to therapies like Cyclosporine and Dupilumab. In this dataset, 55 samples were collected 3 months post-treatment, and 111 samples were collected at baseline.
     </li>
     <li>
-      The <strong>timepoint:ch1</strong> column provides details on when the samples were collected, such as baseline or 3 months post-treatment. This information allows us to filter samples for longitudinal studies or time-specific analyses.
+      The <strong>characteristics_ch1.3</strong> column provides information about the treatment each patient received. It shows that 15 samples were treated with Cyclosporine and 40 samples with Dupilumab, while the remaining 111 samples represent baseline conditions (m0_AL and m0_AN combined). This is important for distinguishing between treatment groups when analyzing differential expression across conditions.
     </li>
     <li>
-      The <strong>patient id:ch1</strong> column indicates the number of conditions each patient has undergone. Some patients may have samples across all conditions (lesional, non-lesional, dupilumab, and cyclosporine), which allows for more homogeneous groupings, while others may only have baseline samples.
+      The <strong>patient id:ch1</strong> column helps track individual patients across different conditions. Some patients may have samples from multiple conditions (e.g., lesional, non-lesional, and post-treatment with both Cyclosporine and Dupilumab), allowing for longitudinal analyses within the same individuals. For researchers, this provides an opportunity to focus on patients who have undergone multiple treatments, reducing variability and enhancing the accuracy of comparative analyses.
     </li>
     <li>
-      These metadata columns help in deciding which samples are best suited for different experiments, ensuring the dataset is well-balanced for comparing treatment responses or exploring longitudinal effects.
+      In addition to these, other metadata columns can provide insights into the experimental setup and data processing. For example, <strong>platform_id</strong> shows all utilized platforms (GPL21290 in this experiment), <strong>extract_protocol_ch1</strong> and <strong>extract_protocol_ch1.1</strong> describe how the RNA was extracted and processed in the lab, and how the RNA libraries were prepared for sequencing. Furthermore, <strong>data_processing</strong> and its related fields provide detailed information on how the sequencing data was processed, from basecalling using Illumina software to trimming primers with cutadapt and mapping reads to the human reference genome with Tophat2 and Bowtie2. The use of Samtools to clean and sort the reads, and HTSeq to count reads per gene, ensures the data is accurately prepared for downstream analysis. The genome build used for mapping is GRCh38, and the raw count data is stored in a tab-delimited format.
     </li>
   </ul>
 </div>
 
-<!-- =================== 3.4. code chunk =========================== -->
+<!-- 3.4 Code Chunk -->
 <div class="code-block">
-<pre><code class="language-r">
-# List of all relevant columns
-columns <- c("source_name_ch1",
-             "characteristics_ch1.3",
-             "characteristics_ch1.2",
-             "therapy:ch1",
-             "patient id:ch1", 
-             "platform_id", 
-             "extract_protocol_ch1", 
-             "extract_protocol_ch1.1", 
-             "data_processing", 
-             "data_processing.1", 
-             "data_processing.2", 
-             "data_processing.3", 
-             "data_processing.4", 
-             "data_processing.5", 
-             "data_processing.6"
-             )
+  <pre><code class="language-r">
+    # ======================
+     # List of all relevant columns
+    columns <- c("source_name_ch1",
+                 "characteristics_ch1.2",
+                 "characteristics_ch1.3",
+                 "therapy:ch1",
+                 "patient id:ch1", 
+                 "platform_id", 
+                 "extract_protocol_ch1", 
+                 "extract_protocol_ch1.1", 
+                 "data_processing", 
+                 "data_processing.1", 
+                 "data_processing.2", 
+                 "data_processing.3", 
+                 "data_processing.4", 
+                 "data_processing.5", 
+                 "data_processing.6"
+                 )
 
-# Loop through each column and generate table
-for (col in columns) {
-  if (col %in% colnames(metadata)) {  # Ensure column exists in metadata
-    group_table <- table(metadata[[col]])  # Access each column by name
-    print(kable(group_table))              # Display the table
-  } else {
-    print(paste("Column", col, "does not exist in the metadata"))
-  }
-}
-</code></pre>
+    # ==========
+
+      
+    # ==========
+
+    # Loop through each column and generate table
+    for (col in columns) {
+      if (col %in% colnames(metadata)) {  # Ensure column exists in metadata
+        group_table <- table(metadata[[col]])  # Access each column by name
+        print(kable(group_table))              # Display the table
+      } else {
+        print(paste("Column", col, "does not exist in the metadata"))
+      }
+    }
+  </code></pre>
 </div>
 
-<!-- ======== 3.4. images ========== -->
-<!-- 10- Insert the images with Changing the Background Color Around the Image -->
- <img src="Pictures/RNA_Seq_Task1/Samples_Distribution_Patient_Group.png" alt="Patient Group Distribution" style="display: block; margin: auto; background-color: #f0f0f0; padding: 20px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);">
- 
- <img src="Pictures/RNA_Seq_Task1/Samples_Distribution_Therapy.png" alt="Therapy Distribution" style="display: block; margin: auto; background-color: #f0f0f0; padding: 20px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);">
- 
- <img src="Pictures/RNA_Seq_Task1/Samples_Distribution_Timepoint.png" alt="Timepoint Distribution" style="display: block; margin: auto; background-color: #f0f0f0; padding: 20px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);">
- 
- <img src="Pictures/RNA_Seq_Task1/Samples_Distribution_PatientID.png" alt="Patient ID Distribution" style="display: block; margin: auto; background-color: #f0f0f0; padding: 20px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);">
-
+<!-- 3.4. Image -->
+<!-- Insert the image (Changing the Background Color Around the Image -->
+<img src="Pictures/RNA_Seq_Task1/Samples_Distribution_GSE157194.png" alt="Samples Distribution GSE157194" style="display: block; margin: auto; background-color: #f0f0f0; padding: 20px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);">
 
 
 
