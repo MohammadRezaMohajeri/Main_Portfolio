@@ -295,10 +295,10 @@ PE html>
 		
 <!-- ========================================= 3. ======================================== -->
 		<div class="explanation">
-		    <h3>3. Exploratory Data Analysis (EDA)</h3>
+		    <h3>3. Exploratory Data Analysis (EDA)- Before DESeq Object Creation</h3>
 		    <ul>
 	   	      <li>
-			<strong>EDA</strong> is essential before performing <strong>DEA</strong> to gain insights into the <strong>structure</strong> and <strong>distribution</strong> of the data. This step involves exploring both the <strong>metadata</strong> and the <strong>count matrix</strong> to ensure that the dataset is well-prepared for downstream analysis.		     
+			<strong>EDA</strong> is essential before performing <strong>DEA</strong> (Differential Expression Analysis) to gain insights into the <strong>structure</strong> and <strong>distribution</strong> of the data. This step involves exploring both the <strong>metadata</strong> and the <strong>count matrix</strong> to ensure that the dataset is well-prepared for downstream analysis.		     
 		      </li>
 		    </ul> 
 		</div>
@@ -337,35 +337,11 @@ PE html>
 		 <!-- ============================= = =================================== --> 
 
 
-<!-- =================== 3.2. explanation =========================== -->
+
+		
+	<!-- ===================  Check Distribution of Samples Across Key Metadata Variables =========================== -->
 	<div class="explanation">
-	    <h4>3.2. Exploring the Count Matrix</h4>
-	    <ul>
-	        <li>
-	            We examine the <strong>count matrix</strong>, which contains raw gene expression counts for each sample. This step helps us understand the structure of the data, including whether it is normalized or not, and allows us to check the <strong>column names</strong> (samples) and <strong>row names</strong> (<strong><a href="https://www.ebi.ac.uk/training/online/courses/ensembl-browsing-genomes/navigating-ensembl/investigating-a-gene/#:~:text=Ensembl%20gene%20IDs%20begin%20with,of%20species%20other%20than%20human." target="_blank">Ensembl Gene Identifiers</a></strong>) to ensure the data is formatted correctly for the next steps of differential expression analysis.
-	        </li>
-	    </ul>
-	</div>
-
-
-<!-- ======= 3.2. code chunk =========== -->
-        <div class="code-block">
-	    <pre><code class="language-r">
-	# View the first few rows of the count matrix
-	# This allows us to inspect the raw gene expression data for each sample.
-	View(counts_matrix)
-	    </code></pre>
-	</div>
-
-<!-- =======3.2. Image =========== -->
- <!-- 10- Insert the image (Changing the Background Color Around the Image -->
-    		 <img src="Pictures/RNA_Seq_Task1/counts_matrix_GSE157194.png" alt="Extract Text Image" style="display: block; margin: auto; background-color: #f0f0f0; padding: 20px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);">
-		 <!-- ================================================================ --> 
-	    
-
-	<!-- =================== 3.3. Check Distribution of Samples Across Key Metadata Variables =========================== -->
-	<div class="explanation">
-	    <h4>3.3. Check Distribution of Samples Across Key Metadata Variables</h4>
+	    <h4>Check Distribution of Samples Across Key Metadata Variables</h4>
 	    <ul>
 	        <li>
 	            By exploring key <strong>metadata variables</strong> such as <strong>sample type</strong> (e.g., <strong>lesional</strong> vs <strong>non-lesional</strong> or <strong>treated</strong> vs <strong>untreated</strong>), <strong>timepoints</strong> (e.g., <strong>baseline</strong> vs <strong>post-treatment</strong>), and <strong>therapy groups</strong> (e.g., <strong>Cyclosporine</strong> and <strong>Dupilumab</strong>), we gain insights into <strong>the distribution of the samples</strong>  across different conditions. This exploration also helps to ensure that the dataset is well-balanced and appropriately structured for the upcoming <strong>differential expression analysis</strong>. 
@@ -468,9 +444,6 @@ kable(timepoint_table, format = "html", col.names = c("Timepoint", "Count"))
 
     # ==========
 
-      
-    # ==========
-
     # Loop through each column and generate table
     for (col in columns) {
       if (col %in% colnames(metadata)) {  # Ensure column exists in metadata
@@ -487,6 +460,36 @@ kable(timepoint_table, format = "html", col.names = c("Timepoint", "Count"))
 <!-- Insert the image (Changing the Background Color Around the Image -->
 <img src="Pictures/RNA_Seq_Task1/Samples_Distribution_GSE157194.png" alt="Samples Distribution GSE157194" style="display: block; margin: auto; background-color: #f0f0f0; padding: 20px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);">
 
+
+
+
+
+		
+<!-- =================== 3.2. explanation =========================== -->
+	<div class="explanation">
+	    <h4>3.2. Exploring & visualization of the Count Matrix</h4>
+	    <ul>
+	        <li>
+	            We examine the <strong>count matrix</strong>, which contains raw gene expression counts for each sample. This step helps us understand the structure of the data, including whether it is normalized or not, and allows us to check the <strong>column names</strong> (samples) and <strong>row names</strong> (<strong><a href="https://www.ebi.ac.uk/training/online/courses/ensembl-browsing-genomes/navigating-ensembl/investigating-a-gene/#:~:text=Ensembl%20gene%20IDs%20begin%20with,of%20species%20other%20than%20human." target="_blank">Ensembl Gene Identifiers</a></strong>) to ensure the data is formatted correctly for the next steps of differential expression analysis.
+	        </li>
+	    </ul>
+	</div>
+
+
+<!-- ======= 3.2. code chunk =========== -->
+        <div class="code-block">
+	    <pre><code class="language-r">
+	# View the first few rows of the count matrix
+	# This allows us to inspect the raw gene expression data for each sample.
+	View(counts_matrix)
+	    </code></pre>
+	</div>
+
+<!-- =======3.2. Image =========== -->
+ <!-- 10- Insert the image (Changing the Background Color Around the Image -->
+    		 <img src="Pictures/RNA_Seq_Task1/counts_matrix_GSE157194.png" alt="Extract Text Image" style="display: block; margin: auto; background-color: #f0f0f0; padding: 20px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);">
+		 <!-- ================================================================ --> 
+	    
 
 
 		
