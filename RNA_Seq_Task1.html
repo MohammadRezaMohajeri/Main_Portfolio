@@ -562,6 +562,170 @@ ggplot(data.frame(Genes = 1:length(cum_variance), CumulativeVariance = cum_varia
 </div>
 
 
+		<div class="explanation">
+    <h4>Exploratory Heatmaps for Gene Expression Data</h4>
+    <ul>
+        <li>
+            In this section, we present a series of <strong>heatmaps</strong> to explore and visualize the count data before proceeding with differential expression analysis (DEA) using <strong>DESeq2</strong>. These heatmaps allow us to understand the structure and relationships within the data, helping identify patterns such as clustering of samples, variations across experimental conditions, or potential batch effects.
+        </li>
+        <li>
+            We employ two types of heatmaps for this exploratory phase: 
+            <strong>Unsupervised Gene Expression Heatmaps</strong> and <strong>Grouped Gene Expression Heatmaps</strong>.
+        </li>
+        <li>
+            <strong>Unsupervised Gene Expression Heatmaps</strong>: The data is clustered purely based on gene expression patterns, without taking the predefined experimental conditions into account. This provides an unbiased view of the data, revealing natural groupings and potential outliers.
+        </li>
+        <li>
+            <strong>Grouped Gene Expression Heatmaps</strong>: These heatmaps focus on specific groups of interest, allowing for a more targeted comparison between predefined conditions (e.g., lesional vs. non-lesional samples, or treatment vs. baseline). This can provide insight into how specific groups of samples behave in relation to one another.
+        </li>
+        <li>
+            For all heatmaps, we focus on the top 300 most variable genes, as this strikes a balance between capturing sufficient variation and maintaining clarity in the visualizations.
+        </li>
+    </ul>
+</div>
+
+<div class="explanation">
+    <h4>Unsupervised Gene Expression Heatmaps</h4>
+    <ul>
+        <li>
+            <strong>1. Heatmap for All Samples (166 samples)</strong>: This heatmap clusters all 166 samples based on the expression of the top 300 most variable genes. The counts matrix is log-transformed, and both rows (genes) and columns (samples) are clustered.
+        </li>
+        <li>
+            In this code, we begin by loading the <strong>matrixStats</strong> library to work with matrix data and the <strong>pheatmap</strong> library for generating heatmaps. First, the <strong>as.matrix()</strong> function converts the counts_matrix into a matrix format if it was originally a data frame, ensuring compatibility with downstream operations. Then, we apply a <strong>log2 transformation</strong> to the matrix to reduce the dynamic range and make the data more suitable for visualization. Next, the top 300 most variable genes are selected based on row variance calculated from the log-transformed counts. Finally, a heatmap is generated using <strong>pheatmap()</strong>, with options to cluster rows and columns, adjust axis label angles, and font size, and the output is saved as an image file.
+        </li>
+    </ul>
+</div>
+
+<!-- Caption for the code block -->
+<p class="code-caption">Code Block 3.2.2. Unsupervised Heatmap for All Samples (166 samples)</p>
+
+<div class="code-block">
+    <pre><code class="language-r">
+# ============ Load Required Libraries ============
+# Load the required libraries for matrix operations and heatmap generation
+library(matrixStats)  # Ensure matrixStats is loaded for row variance calculation
+library(pheatmap)     # For generating heatmaps
+
+# ============ Step 1: Convert counts_matrix to Matrix ============
+# Convert counts_matrix to a matrix if it is currently a data frame
+counts_matrix <- as.matrix(counts_matrix)  # Ensures compatibility with downstream functions
+
+# ============ Step 2: Log2 Transformation of Counts ============
+# Apply a log2 transformation to reduce the dynamic range of the count data
+counts_matrix_log <- log2(counts_matrix + 1)  # Adding 1 to avoid log(0) issues
+
+# ============ Step 3: Identify Top Variable Genes ============
+# Recalculate the most variable genes based on the log-transformed counts
+# We select the top 300 most variable genes using row variance
+top_var_genes_log <- head(order(rowVars(counts_matrix_log), decreasing = TRUE), 300)  
+
+# ============ Step 4: Generate Heatmap and Save ============
+# Create the heatmap for all 166 samples based on the top 300 most variable genes
+# Adjust clustering and visual parameters such as label angles and font sizes
+pheatmap(counts_matrix_log[top_var_genes_log, ], 
+         cluster_rows = TRUE, cluster_cols = TRUE, 
+         show_rownames = FALSE, show_colnames = TRUE,  
+         angle_col = 90,  # Rotate x-axis labels for better readability
+         fontsize_col = 4,  # Reduce font size for the column labels
+         filename = "path/to/your/output/V1_300_Genes_heatmap_variable_genes.png")  # Save the heatmap as an image
+    </code></pre>
+</div>
+
+<!-- Heatmap Figure -->
+<figure style="text-align: justify;">
+    <img src="Pictures/RNA_Seq_Task1/Unsupervised_Heatmap_166_Samples_300_Genes.png" alt="Cumulative Variance Plot" style="display: block; background-color: #f0f0f0; padding: 20px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); max-width: 50%;">
+    <figcaption>Figure 3.2.3. Unsupervised Gene Expression Heatmaps for All Samples (166 samples) with the top 300 most variable genes.</figcaption>
+</figure>
+
+<div class="explanation">
+    <ul>
+        <li>
+            <strong>Interpretation:</strong> This heatmap (Figure 3.2.3) provides an overview of how the gene expression patterns vary across all samples. It shows distinct clusters of samples based solely on their expression data, without considering any experimental conditions. This type of unsupervised clustering can reveal natural groupings within the data or highlight potential outliers.
+        </li>
+    </ul>
+</div>
+
+
+
+
+		<div class="explanation">
+    <h4>2. Heatmap for Baseline Lesional and Non-lesional Samples (111 samples)</h4>
+    <ul>
+        <li>
+            This heatmap focuses on a subset of 111 samples (<strong>lesional</strong> and <strong>non-lesional</strong>) to compare expression patterns between baseline lesional and non-lesional samples.
+        </li>
+        <li>
+            In this code, the <strong>matrixStats</strong> and <strong>pheatmap</strong> libraries are loaded to handle matrix operations and create heatmaps. We start by subsetting the metadata to include only lesional (<strong>AL_m0</strong>) and non-lesional (<strong>AN_m0</strong>) samples by filtering based on <strong>metadata$title</strong>. These two subsets are then combined into one dataset.
+        </li>
+        <li>
+            Next, the <strong>counts_matrix</strong> is filtered to include only the selected lesional and non-lesional samples by matching the sample names from <strong>metadata$title</strong>. A <strong>log2 transformation</strong> is applied to the filtered count matrix to reduce the dynamic range of the data. Then, the top 300 most variable genes are selected based on variance from the log-transformed counts.
+        </li>
+        <li>
+            Finally, a heatmap is generated, with options for clustering rows and columns, adjusting label angles and font size, and the output is saved as an image file.
+        </li>
+    </ul>
+</div>
+
+<!-- Caption for the code block -->
+<p class="code-caption">Code Block 3.2.3. Heatmap for Baseline Lesional and Non-lesional Samples (111 samples)</p>
+
+<div class="code-block">
+    <pre><code class="language-r">
+# ============ Load Required Libraries ============
+# Load the required libraries for matrix operations and heatmap generation
+library(matrixStats)  # Ensure matrixStats is loaded for row variance calculation
+library(pheatmap)     # For generating heatmaps
+
+# ============ Step 1: Subset Metadata for Lesional and Non-lesional Samples ============
+# Subset the metadata to include only the baseline lesional (AL_m0) and non-lesional (AN_m0) samples
+lesional_samples <- metadata[grepl("AL_m0", metadata$title), ]  # Filter metadata for lesional samples
+non_lesional_samples <- metadata[grepl("AN_m0", metadata$title), ]  # Filter metadata for non-lesional samples
+
+# Combine lesional and non-lesional samples into one dataset for comparison
+selected_samples <- rbind(lesional_samples, non_lesional_samples)
+
+# ============ Step 2: Subset the Count Matrix ============
+# Subset the count matrix to include only the lesional and non-lesional samples
+# Assuming the sample names (columns) in counts_matrix match those in metadata$title
+selected_sample_names <- selected_samples$title
+counts_matrix_filtered <- counts_matrix[, selected_sample_names]  # Filter the count matrix for the selected samples
+
+# ============ Step 3: Log2 Transformation of Filtered Counts ============
+# Apply a log2 transformation to the filtered count matrix to reduce the dynamic range
+counts_matrix_log <- log2(as.matrix(counts_matrix_filtered) + 1)  # Adding 1 to avoid log(0) issues
+
+# ============ Step 4: Identify Top Variable Genes ============
+# Recalculate the most variable genes based on the log-transformed counts
+# Select the top 300 most variable genes
+top_var_genes_log <- head(order(rowVars(counts_matrix_log), decreasing = TRUE), 300)  
+
+# ============ Step 5: Generate Heatmap and Save ============
+# Create a heatmap for the lesional and non-lesional samples based on the top 300 most variable genes
+# Adjust clustering and visual parameters such as label angles and font sizes
+pheatmap(counts_matrix_log[top_var_genes_log, ], 
+         cluster_rows = TRUE, cluster_cols = TRUE, 
+         show_rownames = FALSE, show_colnames = TRUE,  
+         angle_col = 90,  # Rotate x-axis labels for better readability
+         fontsize_col = 4,  # Reduce font size for the column labels
+         filename = "path/to/your/output/V1.1_300_Genes_Lesional_NonLesional_heatmap.png")  # Save the heatmap as an image
+    </code></pre>
+</div>
+
+<!-- Heatmap Figure -->
+<figure style="text-align: justify;">
+    <img src="Pictures/RNA_Seq_Task1/Unsupervised_Heatmap_111_Samples_300_Genes.png" alt="Cumulative Variance Plot" style="display: block; background-color: #f0f0f0; padding: 20px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); max-width: 50%;">
+    <figcaption>3.2.4. Unsupervised Gene Expression Heatmaps for Baseline Lesional and Non-lesional Samples (111 samples) with the top 300 most variable genes.</figcaption>
+</figure>
+
+<div class="explanation">
+    <ul>
+        <li>
+            <strong>Interpretation:</strong> This unsupervised heatmap (Figure 3.2.4) specifically examines how gene expression varies between baseline lesional and non-lesional samples. The clustering shows whether the lesional and non-lesional samples form distinct groups based on their gene expression, helping to assess the strength of separation between these two conditions.
+        </li>
+    </ul>
+</div>
+
+
 
 		
 
