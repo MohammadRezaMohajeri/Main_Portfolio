@@ -416,7 +416,9 @@ kable(timepoint_table, format = "html", col.names = c("Timepoint", "Count"))
   
   <ul>
     
-    
+    <li>
+    Other metadata columns can also be explored (Code Block 3.1.3):      
+    </li>
     
     <li>
       The <strong>characteristics_ch1.3</strong> column provides information about the treatment each patient received. It shows that 15 samples were treated with Cyclosporine and 40 samples with Dupilumab, while the remaining 111 samples represent baseline conditions (m0_AL and m0_AN combined). This is important for distinguishing between treatment groups when analyzing differential expression across conditions.
@@ -440,46 +442,43 @@ kable(timepoint_table, format = "html", col.names = c("Timepoint", "Count"))
 <!-- =============== 3.1.3. Code Chunk ================  -->
 <div class="code-block">
   <pre><code class="language-r">
-    # ======================
-     # List of all relevant columns
-    columns <- c("source_name_ch1",
-                 "characteristics_ch1.2",
-                 "characteristics_ch1.3",
-                 "therapy:ch1",
-                 "patient id:ch1", 
-                 "platform_id", 
-                 "extract_protocol_ch1", 
-                 "extract_protocol_ch1.1", 
-                 "data_processing", 
-                 "data_processing.1", 
-                 "data_processing.2", 
-                 "data_processing.3", 
-                 "data_processing.4", 
-                 "data_processing.5", 
-                 "data_processing.6"
-                 )
+    # Code Block 3.1.3. Assessing Sample Characteristics for Experimental Design
 
-    # ==========
+# ======================
+# List of all relevant columns
+# These columns are selected based on the characteristics of the experiment, 
+# including metadata features like source names, patient IDs, and data processing details.
+columns <- c("source_name_ch1",              # Source of the sample
+             "characteristics_ch1.2",        # Experimental characteristic 1
+             "characteristics_ch1.3",        # Experimental characteristic 2
+             "therapy:ch1",                  # Therapy information
+             "patient id:ch1",               # Patient ID
+             "platform_id",                  # Platform used for data generation
+             "extract_protocol_ch1",         # Sample extraction protocol 1
+             "extract_protocol_ch1.1",       # Sample extraction protocol 2
+             "data_processing",              # Data processing detail 1
+             "data_processing.1",            # Data processing detail 2
+             "data_processing.2",            # Data processing detail 3
+             "data_processing.3",            # Data processing detail 4
+             "data_processing.4",            # Data processing detail 5
+             "data_processing.5",            # Data processing detail 6
+             "data_processing.6"             # Data processing detail 7
+)
 
-    # Loop through each column and generate table
-    for (col in columns) {
-      if (col %in% colnames(metadata)) {  # Ensure column exists in metadata
-        group_table <- table(metadata[[col]])  # Access each column by name
-        print(kable(group_table))              # Display the table
-      } else {
-        print(paste("Column", col, "does not exist in the metadata"))
-      }
-    }
+# ==========
+# Loop through each column and generate a summary table for each
+# The loop checks if each column exists in the 'metadata' dataframe and prints a table of its unique values and frequencies.
+for (col in columns) {
+  if (col %in% colnames(metadata)) {  # Ensure the column exists in the metadata dataframe
+    group_table <- table(metadata[[col]])  # Access and count the occurrences of each unique value in the column
+    print(kable(group_table))              # Display the table using kable for a nicely formatted output
+  } else {
+    print(paste("Column", col, "does not exist in the metadata"))  # Handle cases where the column doesn't exist
+  }
+}
+
   </code></pre>
 </div>
-
-<!-- 3.4. Image -->
-<!-- Insert the image (Changing the Background Color Around the Image -->
-<img src="Pictures/RNA_Seq_Task1/Samples_Distribution_GSE157194.png" alt="Samples Distribution GSE157194" style="display: block; margin: auto; background-color: #f0f0f0; padding: 20px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);">
-
-
-
-
 
 		
 <!-- =================== 3.2. explanation =========================== -->
