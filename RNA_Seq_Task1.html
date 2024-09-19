@@ -422,20 +422,6 @@ kable(timepoint_table, format = "html", col.names = c("Timepoint", "Count"))
       The <strong>characteristics_ch1.3</strong> column provides information about the treatment each patient received. It shows that 15 samples were treated with Cyclosporine and 40 samples with Dupilumab, while the remaining 111 samples represent baseline conditions (m0_AL and m0_AN combined). This is important for distinguishing between treatment groups when analyzing differential expression across conditions.
     </li>
 
-	  <!-- =========================== Figure 3.1.3. ============================================ -->
-	  <figure style="text-align: justify;">
-	    <!-- Add a clickable link to enlarge the image -->
-	    <a href="Pictures/RNA_Seq_Task1/Samples_Distribution_GSE157194.png" target="_blank">
-	        <img src="Pictures/RNA_Seq_Task1/Samples_Distribution_GSE157194.png" alt="Cumulative Variance Plot" style="display: block; background-color: #f0f0f0; padding: 20px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); max-width: 90%;">
-	    </a>
-	    <figcaption>
-	       Figure 3.1.3. Distribution of samples treated with Cyclosporine and Dupilumab along with baseline conditions.
-	    </figcaption>
-	</figure>
-
-
-
-
 	  
     <li>
       The <strong>patient id:ch1</strong> column helps track individual patients across different conditions. Some patients may have samples from multiple conditions (e.g., lesional, non-lesional, and post-treatment with both Cyclosporine and Dupilumab), allowing for longitudinal analyses within the same individuals. For researchers, this provides an opportunity to focus on patients who have undergone multiple treatments, reducing variability and enhancing the accuracy of comparative analyses.
@@ -446,7 +432,12 @@ kable(timepoint_table, format = "html", col.names = c("Timepoint", "Count"))
   </ul>
 </div>
 
-<!-- 3.4 Code Chunk -->
+ 
+
+<!-- Caption for the code block 3.1.3. -->
+<p class="code-caption">Code Block 3.1.3. Assessing Sample Characteristics for Experimental Design</p>
+		
+<!-- =============== 3.1.3. Code Chunk ================  -->
 <div class="code-block">
   <pre><code class="language-r">
     # ======================
