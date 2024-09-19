@@ -304,7 +304,7 @@ PE html>
 		</div>
 <!-- =================== 3.1. explanation =========================== -->
 		<div class="explanation">
-		    <h4>3.1. Metadata Exploration</h4>
+		    <h3>3.1. Metadata Exploration</h3>
 		    <ul>
 	   	      <li>
 		       We can extract and explore the <strong>metadata</strong> (<strong>phenotype</strong> data) associated with the dataset to understand the key characteristics of the samples (Code Block 3.1.1.; Figure 3.1.1).
@@ -482,7 +482,9 @@ for (col in columns) {
 		
 <!-- =================== 3.2. explanation =========================== -->
 	<div class="explanation">
-	    <h4>3.2. Exploring & visualization of the Count Matrix</h4>
+	    <h3>3.2. Exploring & visualization of the Count Matrix</h3>
+		<h4>3.2.1. Inspecting the Count Matrix for Gene Expression Analysis</h4>
+
 	    <ul>
 	        <li>
 	            We examine the <strong>count matrix</strong>, which contains raw gene expression counts for each sample. This step helps us understand the structure of the data, including whether it is normalized or not, and allows us to check the <strong>column names</strong> (samples) and <strong>row names</strong> (<strong><a href="https://www.ebi.ac.uk/training/online/courses/ensembl-browsing-genomes/navigating-ensembl/investigating-a-gene/#:~:text=Ensembl%20gene%20IDs%20begin%20with,of%20species%20other%20than%20human." target="_blank">Ensembl Gene Identifiers</a></strong>) to ensure the data is formatted correctly for the next steps of differential expression analysis (Code Block 3.2.1; Figure 3.2.1).
@@ -517,7 +519,7 @@ for (col in columns) {
 <!-- ================================================================ --> 
 
 		<div class="explanation">
-    <h4>3.2. Exploratory Analysis of Gene Expression Data</h4>
+    <h4>3.2.2. Exploratory Analysis of Gene Expression Data</h4>
     <ul>
         <li>
             <strong>Heatmaps</strong> are primarily exploratory tools to visually assess patterns in the data. The goal is to select enough genes to reveal meaningful clusters without overcomplicating the visualization. If too many genes are included, the heatmap can become cluttered and less informative. On the other hand, if too few are used, important patterns may be missed. Typically, 100 to 500 of the most variable genes are used for exploratory heatmaps in <strong>RNA-seq studies</strong>. To ensure clarity, we often start by testing heatmaps with the top 100, 200, 300, and 500 most variable genes, assessing how well they cluster and separate groups.
