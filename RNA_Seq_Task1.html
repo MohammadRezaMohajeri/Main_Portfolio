@@ -766,32 +766,17 @@ pheatmap(counts_matrix_log[top_var_genes_log, ],
 
 
 
-
 	<!-- Grouped Gene Expression Heatmaps -->
 <div class="explanation">
     <h3>Grouped Gene Expression Heatmaps</h3>
     <ul>
-        <li>In this section, we present a series of heatmaps to explore and visualize the count data before proceeding with <strong>differential expression analysis (DEA)</strong> using <strong>DESeq2</strong>. These heatmaps allow us to understand the structure and relationships within the data, helping identify patterns such as clustering of samples, variations across experimental conditions, or potential batch effects.</li>
+        <li><strong>Code Overview:</strong> This heatmap compares six different groups (<strong>baseline lesional</strong>, <strong>baseline non-lesional</strong>, <strong>cyclosporine lesional</strong>, <strong>cyclosporine non-lesional</strong>, <strong>dupilumab lesional</strong>, and <strong>dupilumab non-lesional</strong>).</li>
         
-        <li>We employ two types of heatmaps for this exploratory phase:
-        <ul>
-            <li><strong>Unsupervised Gene Expression Heatmaps</strong>: Here, the data is clustered purely based on gene expression patterns, without taking the predefined experimental conditions into account. This provides an unbiased view of the data, revealing natural groupings and potential outliers.</li>
-            
-            <li><strong>Grouped Gene Expression Heatmaps</strong>: These heatmaps focus on specific groups of interest, allowing for a more targeted comparison between predefined conditions (e.g., lesional vs. non-lesional samples, or treatment vs. baseline). This can provide insight into how specific groups of samples behave in relation to one another.</li>
-        </ul>
-        </li>
+        <li>In this code, we begin by loading the <strong>matrixStats</strong> and <strong>pheatmap</strong> libraries to handle matrix operations and generate heatmaps. First, we apply a <strong>log2 transformation</strong> to the <strong>counts_matrix</strong> to reduce the dynamic range of the data. Next, the <strong>sample_groups</strong> are extracted from <strong>metadata$source_name_ch1</strong>, representing the original group labels. We then define a <strong>new_labels</strong> vector, which maps the original group names (e.g., 'm0_AL') to more descriptive labels (e.g., 'Baseline Lesional').</li>
         
-        <li>For all heatmaps, we focus on the <strong>top 300 most variable genes</strong>, as this strikes a balance between capturing sufficient variation and maintaining clarity in the visualizations.</li>
-    </ul>
-</div>
-
-<!-- Heatmap for All Groups -->
-<div class="explanation">
-    <h4>3. Heatmap for All Groups</h4>
-    <ul>
-        <li>Code Overview: This heatmap compares six different groups (baseline lesional, baseline non-lesional, cyclosporine lesional, cyclosporine non-lesional, dupilumab lesional, and dupilumab non-lesional).</li>
+        <li>The <strong>selected_groups</strong> vector allows for different comparisons that provide insights into the data: <strong>Lesional vs. Non-lesional</strong> comparisons (e.g., baseline, cyclosporine, dupilumab) explore how gene expression differs between affected and unaffected skin; <strong>Therapy Comparisons</strong> (e.g., baseline lesional vs. cyclosporine or dupilumab) investigate how lesional samples respond to different treatments; and <strong>Pre-treatment vs. Post-treatment comparisons</strong> assess cyclosporine or dupilumab effectiveness by examining gene expression changes before and after treatment. These comparisons are crucial for understanding both disease pathology and treatment effects.</li>
         
-        <li>In this code, we load the required libraries and perform <strong>log2 transformation</strong> on the <strong>counts_matrix</strong>. We then extract sample groups from the metadata, define new descriptive labels, and generate the heatmap for the top 300 most variable genes. This heatmap helps explore how gene expression differs across different groups, such as <strong>lesional vs. non-lesional</strong>, <strong>therapy comparisons</strong>, and <strong>pre-treatment vs. post-treatment</strong> comparisons.</li>
+        <li>Afterward, the columns of <strong>counts_matrix_log</strong> are reordered based on the selected groups, and the column names are updated using the new descriptive labels. The <strong>top 300 most variable genes</strong> are selected based on the variance of the log-transformed counts. Finally, a heatmap is generated with the updated column labels, and the output is saved as an image file.</li>
     </ul>
 </div>
 
@@ -835,28 +820,29 @@ top_var_genes_log <- head(order(rowVars(counts_matrix_log), decreasing = TRUE), 
 pheatmap(counts_matrix_log[top_var_genes_log, ], 
          cluster_rows = TRUE, cluster_cols = TRUE,
          show_rownames = FALSE, show_colnames = TRUE,
-         angle_col = 45, fontsize_col = 8, 
+         angle = 45, vjust = 0.5, hjust = 0.6,
+         fontsize_col = 8, 
          filename = "your/path/here/V5.1.All_groups_heatmap_300Genes.png")
     </code></pre>
 </div>
 
-<!-- Interpretation of Heatmap for All Groups -->
+<!-- Interpretation for Heatmap for All Groups -->
 <div class="explanation">
     <ul>
-        <li><strong>Interpretation</strong>: This unsupervised heatmap shows how gene expression varies across the six groups. It helps identify whether the samples cluster naturally or based on their treatment conditions, such as <strong>lesional vs. non-lesional</strong> or <strong>pre-treatment vs. post-treatment</strong>.</li>
+        <li><strong>Interpretation:</strong> This unsupervised heatmap specifically examines how gene expression varies between baseline lesional and non-lesional samples. The clustering shows whether the lesional and non-lesional samples form distinct groups based on their gene expression, helping to assess the strength of separation between these two conditions.</li>
     </ul>
 </div>
 
-<!-- Heatmap for Baseline Lesional and Non-lesional Samples -->
+<!-- Further Comparisons -->
 <div class="explanation">
-    <h4>4. Heatmap for Baseline Lesional and Non-lesional Samples</h4>
+    <h4>4. Compare "Baseline Lesional" with "Baseline Non-lesional"</h4>
     <ul>
-        <li><strong>Code Overview</strong>: This heatmap focuses on comparing baseline lesional and non-lesional samples.</li>
-        <li>By examining gene expression differences between these two conditions, we can better understand the inherent differences in skin conditions before treatment.</li>
+        <li><strong>Code Overview:</strong> This heatmap focuses on comparing baseline lesional and baseline non-lesional samples.</li>
+        <li>This comparison helps visualize how gene expression differs in the absence of treatment. This is crucial for understanding the inherent differences between these two conditions.</li>
     </ul>
 </div>
 
-<!-- Code Block for Baseline Lesional vs. Non-lesional Samples -->
+<!-- Code Block for Baseline Lesional vs. Non-lesional -->
 <p class="code-caption">Code Block 3.2.6. Compare Baseline Lesional with Baseline Non-lesional</p>
 <div class="code-block">
     <pre><code class="language-r">
@@ -866,22 +852,97 @@ selected_groups <- c("m0_AN", "m0_AL")
     </code></pre>
 </div>
 
-<!-- Interpretation for Baseline Lesional vs. Non-lesional -->
+<!-- Further Comparisons for Cyclosporine, Dupilumab -->
 <div class="explanation">
+    <h4>5. Compare Cyclosporine Lesional vs. Cyclosporine Non-lesional</h4>
     <ul>
-        <li><strong>Interpretation</strong>: This heatmap shows the differences in gene expression between baseline lesional and non-lesional samples, providing insights into how the two conditions differ at the molecular level.</li>
+        <li><strong>Code Overview:</strong> This heatmap compares lesional and non-lesional samples treated with cyclosporine.</li>
+        <li>By examining gene expression between these two conditions, we can assess how cyclosporine affects both lesional and non-lesional skin.</li>
     </ul>
 </div>
 
-<!-- Similar sections for Cyclosporine Lesional vs. Non-lesional, Dupilumab Lesional vs. Non-lesional, etc. -->
+<p class="code-caption">Code Block 3.2.7. Compare Cyclosporine Lesional vs. Non-lesional</p>
+<div class="code-block">
+    <pre><code class="language-r">
+# ============================
+selected_groups <- c("cyclosporine_m3_AN", "cyclosporine_m3_AL")
+# ============================
+    </code></pre>
+</div>
 
-<!-- Heatmap Figure for Baseline Lesional vs. Non-lesional Samples -->
-<figure style="text-align: justify;">
-    <a href="Pictures/RNA_Seq_Task1/Unsupervised_Heatmap_111_Samples_300_Genes.png" target="_blank">
-        <img src="Pictures/RNA_Seq_Task1/Unsupervised_Heatmap_111_Samples_300_Genes.png" alt="Cumulative Variance Plot" style="display: block; background-color: #f0f0f0; padding: 20px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); max-width: 50%;">
-    </a>
-    <figcaption>3.2.4. Unsupervised Gene Expression Heatmaps for Baseline Lesional and Non-lesional Samples (111 samples) with the top 300 most variable genes.</figcaption>
-</figure>
+<!-- Continue with Dupilumab, Therapy Comparisons -->
+<div class="explanation">
+    <h4>6. Compare Dupilumab Lesional vs. Dupilumab Non-lesional</h4>
+    <ul>
+        <li><strong>Code Overview:</strong> This heatmap reveals how <strong>dupilumab treatment</strong> impacts gene expression across lesional and non-lesional samples.</li>
+        <li>This is useful to understand whether dupilumab affects these two conditions differently.</li>
+    </ul>
+</div>
+
+<p class="code-caption">Code Block 3.2.8. Compare Dupilumab Lesional vs. Dupilumab Non-lesional</p>
+<div class="code-block">
+    <pre><code class="language-r">
+# ============================
+selected_groups <- c("dupilumab_m3_AN", "dupilumab_m3_AL")
+# ============================
+    </code></pre>
+</div>
+
+<!-- Therapy Comparisons -->
+<div class="explanation">
+    <h4>7. Therapy Comparisons: Compare Baseline Lesional, Cyclosporine Lesional, and Dupilumab Lesional</h4>
+    <ul>
+        <li><strong>Code Overview:</strong> This heatmap compares <strong>lesional samples</strong> across three conditions: baseline, cyclosporine, and dupilumab treatment. This comparison helps us to understand how <strong>lesional samples</strong> respond to different therapies.</li>
+    </ul>
+</div>
+
+<p class="code-caption">Code Block 3.2.9. Compare Baseline Lesional, Cyclosporine Lesional, and Dupilumab Lesional</p>
+<div class="code-block">
+    <pre><code class="language-r">
+# ============================
+selected_groups <- c("m0_AL", "cyclosporine_m3_AL", "dupilumab_m3_AL")
+# ============================
+    </code></pre>
+</div>
+
+<!-- Dupilumab vs Cyclosporine -->
+<div class="explanation">
+    <h4>8. Compare Dupilumab Lesional vs. Cyclosporine Lesional</h4>
+    <ul>
+        <li><strong>Code Overview:</strong> This heatmap compares <strong>lesional samples</strong> treated with <strong>dupilumab</strong> versus <strong>cyclosporine</strong>. This comparison allows you to directly assess how gene expression varies between <strong>dupilumab</strong> and <strong>cyclosporine treatments</strong> in lesional samples.</li>
+        <li>This direct comparison provides insight into how the two treatments differ in their impact on gene expression.</li>
+    </ul>
+</div>
+
+<p class="code-caption">Code Block 3.2.10. Compare Dupilumab Lesional vs. Cyclosporine Lesional</p>
+<div class="code-block">
+    <pre><code class="language-r">
+# ============================
+selected_groups <- c("dupilumab_m3_AL", "cyclosporine_m3_AL")
+# ============================
+    </code></pre>
+</div>
+
+<!-- Pre-treatment vs. Post-treatment -->
+<div class="explanation">
+    <h4>9. Pre-treatment vs. Post-treatment (Baseline vs. Cyclosporine Lesional)</h4>
+    <ul>
+        <li><strong>Code Overview:</strong> This heatmap compares <strong>pre-treatment</strong> (baseline lesional) to <strong>post-treatment</strong> (cyclosporine lesional) samples.</li>
+        <li>This comparison helps assess the impact of <strong>cyclosporine treatment</strong> by comparing gene expression before and after treatment in lesional samples.</li>
+    </ul>
+</div>
+
+<p class="code-caption">Code Block 3.2.11. Compare Pre-treatment vs. Post-treatment</p>
+<div class="code-block">
+    <pre><code class="language-r">
+# ============================
+selected_groups <- c("m0_AL", "cyclosporine_m3_AL")
+# ============================
+    </code></pre>
+</div>
+
+
+
 
 
 
