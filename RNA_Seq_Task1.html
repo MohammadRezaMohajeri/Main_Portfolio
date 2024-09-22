@@ -594,20 +594,20 @@ ggplot(data.frame(Genes = 1:length(cum_variance), CumulativeVariance = cum_varia
     <h4>3.2.3. Exploratory Heatmaps for Gene Expression Data</h4>
     <ul>
         <li> 
-            In this section, we present a series of <strong>heatmaps</strong> to explore and visualize the <strong>count data</strong> before proceeding with differential expression analysis (DEA) using <strong>DESeq2</strong>. These heatmaps allow us to understand <strong>the structure and relationships within the data</strong>, helping identify patterns such as "clustering of samples", "variations across experimental conditions", or potential "batch effects".
+            In this section, we present a series of <strong>heatmaps</strong> to explore and visualize the <strong>count data</strong> before proceeding with differential expression analysis (DEA) using <strong>DESeq2</strong>. These heatmaps allow us to understand "the structure and relationships within the data", helping identify patterns such as "clustering of samples", "variations across experimental conditions", or potential "batch effects".
         </li>
         <li>
             We employ two types of heatmaps for this exploratory phase: 
-            <strong>"Unsupervised Gene Expression Heatmaps"</strong> and <strong>"Grouped Gene Expression Heatmaps"</strong>.
+            <strong>"Unsupervised</strong> Gene Expression Heatmaps" and <strong>"Grouped</strong> Gene Expression Heatmaps".
         </li>
         <li> 
             <strong>1. Unsupervised Gene Expression Heatmaps</strong>: The data is clustered purely based on "gene expression patterns", without taking the predefined  "experimental conditions" into account. This provides an  unbiased "view of the data", revealing "natural groupings" and potential  "outliers".
         </li>
         <li>
-            <strong>2. Grouped Gene Expression Heatmaps</strong>: These heatmaps focus on "specific groups" of interest, allowing for a more targeted comparison between predefined conditions (e.g., lesional vs. non-lesional samples, or treatment vs. baseline). This can provide insight into how specific groups of samples behave in relation to one another.
+            <strong>2. Grouped Gene Expression Heatmaps</strong>: These heatmaps focus on "specific groups" of interest, allowing for a "more targeted comparison between predefined conditions" (e.g., lesional vs. non-lesional samples, or treatment vs. baseline). This can provide insight into how specific groups of samples behave in relation to one another.
         </li>
         <li>
-            For all heatmaps, we focus on the top 300 most variable genes, as this strikes a balance between capturing sufficient variation and maintaining clarity in the visualizations.
+            For all heatmaps, we focus on the "top 300 most variable genes", as this strikes a balance between capturing "sufficient variation" and maintaining "clarity in the visualizations".
         </li>
     </ul>
 </div>
@@ -616,10 +616,10 @@ ggplot(data.frame(Genes = 1:length(cum_variance), CumulativeVariance = cum_varia
     <h4>3.2.3.1. Unsupervised Gene Expression Heatmaps</h4>
     <ul>
         <li>
-            <strong>1. Heatmap for All Samples (166 samples)</strong>: This heatmap clusters all 166 samples based on the expression of the top 300 most variable genes. The counts matrix is log-transformed, and both rows (genes) and columns (samples) are clustered.
+            <strong>1. Heatmap for All Samples (166 samples)</strong>: This heatmap clusters all 166 "samples" based on the expression of the top 300 most variable "genes." The counts matrix is "log-transformed", and both rows ("genes") and columns ("samples") are clustered.
         </li>
         <li>
-            In this code, we begin by loading the <strong>matrixStats</strong> library to work with matrix data and the <strong>pheatmap</strong> library for generating heatmaps. First, the <strong>as.matrix()</strong> function converts the counts_matrix into a matrix format if it was originally a data frame, ensuring compatibility with downstream operations. Then, we apply a <strong>log2 transformation</strong> to the matrix to reduce the dynamic range and make the data more suitable for visualization. Next, the top 300 most variable genes are selected based on row variance calculated from the log-transformed counts. Finally, a heatmap is generated using <strong>pheatmap()</strong>, with options to cluster rows and columns, adjust axis label angles, and font size, and the output is saved as an image file.
+            In this code, we begin by loading the "<strong>matrixStats</strong> library" to work with matrix data and the "<strong>pheatmap</strong> library" for generating heatmaps. First (Step 1), the "<strong>as.matrix()</strong> function" converts the counts_matrix into a matrix format if it was originally a data frame, ensuring compatibility with downstream operations. Then (Step 2), we apply a "<strong>log2 transformation</strong>" to the matrix to "reduce the dynamic range" and "make the data more suitable for visualization". Next (Step 3), the top 300 most variable genes are selected based on row variance calculated from the log-transformed counts. Finally (Step 4), a heatmap is generated using <strong>pheatmap()</strong>, with options to cluster rows and columns, adjust axis label angles, and font size, and the output is saved as an image file.
         </li>
     </ul>
 </div>
