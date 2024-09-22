@@ -782,7 +782,7 @@ pheatmap(counts_matrix_log[top_var_genes_log, ],
 	<!-- Grouped Gene Expression Heatmaps -->
 <div class="explanation">
     <h4>3.2.3.2. Grouped Gene Expression Heatmaps <br>
-	1. Heatmap for All Groups"</h4>
+	1. Heatmap for All Groups</h4>
     <ul>
         <li><strong>Code Overview:</strong> This heatmap compares six different groups (<strong>baseline lesional</strong>, <strong>baseline non-lesional</strong>, <strong>cyclosporine lesional</strong>, <strong>cyclosporine non-lesional</strong>, <strong>dupilumab lesional</strong>, and <strong>dupilumab non-lesional</strong>).</li>
         
@@ -817,10 +817,38 @@ new_labels <- c(
   "cyclosporine_m3_AL" = "Cyclosporine Lesional",
   "dupilumab_m3_AL" = "Dupilumab Lesional"
 )
-
+	
+# =================================================================================
 # =========== Step 3.1: Select Groups for Analysis ===========
 selected_groups <- c("m0_AN", "cyclosporine_m3_AN", "dupilumab_m3_AN", "m0_AL", "cyclosporine_m3_AL", "dupilumab_m3_AL")
 
+	# ===== we replace the above selected_groups with one of the bellow  ===== 
+# 1. Heatmap for all groups:
+# c("m0_AN", "cyclosporine_m3_AN", "dupilumab_m3_AN", "m0_AL", "cyclosporine_m3_AL", "dupilumab_m3_AL")
+
+# 2. (Lesional vs. Non-lesiona) Compare "Baseline Lesional" with "Baseline Non-lesional": 
+# c("m0_AN", "m0_AL")
+
+# 3. (Lesional vs. Non-lesiona) Compare Cyclosporine Lesional with Cyclosporine Non-lesional:
+# c("cyclosporine_m3_AN", "cyclosporine_m3_AL") 
+
+# 4. (Lesional vs. Non-lesiona) Compare Dupilumab Lesional with Dupilumab Non-lesional:
+# c("dupilumab_m3_AN", "dupilumab_m3_AL") 
+
+# 5. (Therapy Comparisons) Compare Baseline Lesional, Cyclosporine Lesional, and Dupilumab Lesional to see how the lesional samples respond to different treatments.
+# c("m0_AL", "cyclosporine_m3_AL", "dupilumab_m3_AL") 
+
+# 6. (Therapy Comparisons) Compare Dupilumab Lesional and Cyclosporine Lesional. This comparison would allow you to directly assess how gene expression varies between Dupilumab and Cyclosporine treatments in lesional samples.   
+# c("dupilumab_m3_AL", "cyclosporine_m3_AL")
+
+# 7. (Pre-treatment vs. Post-treatment): 
+# c("m0_AL", "cyclosporine_m3_AL")
+
+# 8. (Pre-treatment vs. Post-treatment): 
+# c("m0_AL", "dupilumab_m3_AL")
+# =================================================================================
+
+	
 # =========== Step 4: Reorder Columns Based on Group Selection ===========
 desired_order <- selected_groups
 reordered_columns <- match(desired_order, sample_groups)
@@ -868,7 +896,7 @@ selected_groups <- c("m0_AN", "m0_AL")
 
 <!-- Further Comparisons for Cyclosporine, Dupilumab -->
 <div class="explanation">
-    <h4>(Lesional vs. Non-lesiona) 3. Compare Cyclosporine Lesional vs. Cyclosporine Non-lesional</h4>
+    <h4>3.(Lesional vs. Non-lesional) Compare Cyclosporine Lesional vs. Cyclosporine Non-lesional</h4>
     <ul>
         <li><strong>Code Overview:</strong> This heatmap compares lesional and non-lesional samples treated with cyclosporine.</li>
         <li>By examining gene expression between these two conditions, we can assess how cyclosporine affects both lesional and non-lesional skin.</li>
@@ -886,7 +914,7 @@ selected_groups <- c("cyclosporine_m3_AN", "cyclosporine_m3_AL")
 
 <!-- Continue with Dupilumab, Therapy Comparisons -->
 <div class="explanation">
-    <h4>(Lesional vs. Non-lesiona) 4. Compare Dupilumab Lesional vs. Dupilumab Non-lesional</h4>
+    <h4>4. (Lesional vs. Non-lesiona) Compare Dupilumab Lesional vs. Dupilumab Non-lesional</h4>
     <ul>
         <li><strong>Code Overview:</strong> This heatmap reveals how <strong>dupilumab treatment</strong> impacts gene expression across lesional and non-lesional samples.</li>
         <li>This is useful to understand whether dupilumab affects these two conditions differently.</li>
@@ -948,7 +976,7 @@ selected_groups <- c("dupilumab_m3_AN", "dupilumab_m3_AL")
 
 <!-- 5. Therapy Comparisons -->
 <div class="explanation">
-    <h4>(Therapy Comparisons) 5. Therapy Comparisons: Compare Baseline Lesional, Cyclosporine Lesional, and Dupilumab Lesional:</h4>
+    <h4>5. (Therapy Comparisons) Therapy Comparisons: Compare Baseline Lesional, Cyclosporine Lesional, and Dupilumab Lesional:</h4>
     <ul>
         <li><strong>Code Overview:</strong> This heatmap compares <strong>lesional samples</strong> across three conditions: baseline, cyclosporine, and dupilumab treatment. This comparison helps us to understand how <strong>lesional samples</strong> respond to different therapies.</li>
     </ul>
@@ -965,7 +993,7 @@ selected_groups <- c("m0_AL", "cyclosporine_m3_AL", "dupilumab_m3_AL")
 
 <!-- Dupilumab vs Cyclosporine -->
 <div class="explanation">
-    <h4>(Therapy Comparisons) 6. Compare Dupilumab Lesional vs. Cyclosporine Lesional</h4>
+    <h4>6. (Therapy Comparisons) Compare Dupilumab Lesional vs. Cyclosporine Lesional</h4>
     <ul>
         <li><strong>Code Overview:</strong> This heatmap compares <strong>lesional samples</strong> treated with <strong>dupilumab</strong> versus <strong>cyclosporine</strong>. This comparison allows you to directly assess how gene expression varies between <strong>dupilumab</strong> and <strong>cyclosporine treatments</strong> in lesional samples.</li>
         <li>This direct comparison provides insight into how the two treatments differ in their impact on gene expression.</li>
