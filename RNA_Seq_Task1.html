@@ -690,7 +690,7 @@ pheatmap(counts_matrix_log[top_var_genes_log, ],
 <div class="explanation">
     <ul>
         <li>
-            <strong>Interpretation:</strong> This heatmap (Figure 3.2.3) provides an overview of how the "gene expression patterns" vary across all "samples." It shows "distinct clusters of samples" (at the top of the heatmap) based solely on their expression data (genes on the left of the heatmap), without considering any experimental conditions. This type of unsupervised clustering can reveal natural groupings within the data or highlight potential outliers.
+            <strong>Interpretation:</strong> This heatmap (Figure 3.2.3) provides an overview of how the "gene expression patterns" vary across all "samples." It shows "distinct clusters of samples" (at the top of the heatmap) based solely on their expression data (genes on the left of the heatmap), without considering any experimental conditions. This type of unsupervised clustering can reveal "natural groupings" within the data or highlight potential "outliers."
         </li>
     </ul>
 </div>
@@ -715,6 +715,16 @@ pheatmap(counts_matrix_log[top_var_genes_log, ],
         </li>
     </ul>
 </div>
+
+
+		<div class="explanation">
+		  <ul>
+		    <li>
+		      This code focuses on comparing baseline lesional and non-lesional samples for gene expression analysis. <strong>(Step 1)</strong>: The required libraries, <code><a href="https://cran.r-project.org/web/packages/matrixStats/index.html" target="_blank">matrixStats</a></code> and <code><a href="https://cran.r-project.org/web/packages/pheatmap/index.html" target="_blank">pheatmap</a></code>, are loaded for matrix operations and heatmap generation. <strong>(Step 2)</strong>: The metadata is subset to include only baseline lesional (AL_m0) and non-lesional (AN_m0) samples by filtering based on <code>metadata$title</code>, and the count matrix is similarly subset for these samples. <strong>(Step 3)</strong>: A log2 transformation is applied to the count matrix using <code>log2()</code> to reduce the dynamic range and make the data more suitable for analysis. <strong>(Step 4)</strong>: The top 300 most variable genes are identified based on variance using <code><a href="https://www.rdocumentation.org/packages/matrixStats/versions/0.62.0/topics/rowVars" target="_blank">rowVars()</a></code>. <strong>(Step 5)</strong>: A heatmap is generated using <code><a href="https://cran.r-project.org/web/packages/pheatmap/index.html" target="_blank">pheatmap</a></code>, with rows and columns clustered to visualize the relationship between samples and gene expression, and adjustments made for label angles and font size. The final heatmap is saved as an image file.
+		    </li>
+		  </ul>
+		</div>
+
 
 <!-- Caption for the code block -->
 <p class="code-caption">Code Block 3.2.4. Heatmap for Baseline Lesional and Non-lesional Samples (111 samples)</p>
