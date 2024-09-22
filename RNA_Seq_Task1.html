@@ -531,6 +531,44 @@ for (col in columns) {
     </ul>
 
 
+
+
+			<div class="explanation">
+    
+    <ul>
+        <li>
+            <strong>Step 1</strong>: Required libraries like 
+            <code><a href="https://cran.r-project.org/web/packages/matrixStats/index.html" target="_blank">matrixStats</a></code> 
+            and 
+            <code><a href="https://ggplot2.tidyverse.org/" target="_blank">ggplot2</a></code> 
+            are loaded for variance calculations and plotting.
+        </li>
+        <li>
+            <strong>Step 2</strong>: The gene expression data in 
+            <code>counts_matrix</code> is log2-transformed to reduce its dynamic range, making it easier to interpret.
+        </li>
+        <li>
+            <strong>Step 3</strong>: Using the 
+            <code><a href="https://www.rdocumentation.org/packages/matrixStats/versions/0.62.0/topics/rowVars" target="_blank">rowVars()</a></code> 
+            function, the variance of each gene across all samples is calculated, identifying highly variable genes for further analysis.
+        </li>
+        <li>
+            <strong>Step 4</strong>: The cumulative variance is computed by sorting these variances and calculating their cumulative sum, which helps assess how much variability is captured by the top genes.
+        </li>
+        <li>
+            <strong>Step 5</strong>: Finally, a line plot is generated using 
+            <code><a href="https://ggplot2.tidyverse.org/" target="_blank">ggplot2</a></code> 
+            to visualize the cumulative variance explained by an increasing number of genes, aiding in the selection of the optimal number of genes for further analysis.
+        </li>
+    </ul>
+
+</div>
+
+			
+
+
+
+			
 	<!-- Caption for the code block -->
 	<p class="code-caption">Code Block 3.2.2. Cumulative Variance Plot to Determine Optimal Gene Count for Heatmap</p>
 			
