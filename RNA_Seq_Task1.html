@@ -794,7 +794,7 @@ pheatmap(counts_matrix_log[top_var_genes_log, ],
         
         <li>In Step 3.1, the <strong>selected_groups</strong> vector allows for different comparisons that provide insights into the data. For example, <strong>Lesional vs. Non-lesional</strong> comparisons (e.g., baseline (Figure 3.2.6), cyclosporine (Figure 3.2.7), dupilumab ((Figure 3.2.8)) explore how gene expression differs between affected and unaffected skin; <strong>Therapy Comparisons</strong> (e.g., "Baseline Lesional", "Cyclosporine Lesional", and "Dupilumab Lesional") investigate how lesional samples respond to different treatments (Figure 3.2.5); and <strong>Pre-treatment vs. Post-treatment comparisons</strong> assess cyclosporine or dupilumab effectiveness by examining gene expression changes before and after treatment (Figure 3.2.7 & 3.2.8) . These comparisons are crucial for understanding both disease pathology and treatment effects.</li>
         
-        <li>Afterward, the columns of <strong>counts_matrix_log</strong> are reordered based on the selected groups, and the column names are updated using the new descriptive labels. The <strong>top 300 most variable genes</strong> are selected based on the variance of the log-transformed counts. Finally, a heatmap is generated with the updated column labels, and the output is saved as an image file.</li>
+        <li>Afterward (Step 4), the columns of <strong>counts_matrix_log</strong> are reordered based on the selected groups, and the column names are updated using the new descriptive labels. In (Step 4), then the <strong>top 300 most variable genes</strong> are selected based on the variance of the log-transformed counts. Finally (Step 5), a heatmap is generated with the updated column labels, and the output is saved as an image file.</li>
     </ul>
 </div>
 
@@ -868,7 +868,7 @@ pheatmap(counts_matrix_log[top_var_genes_log, ],
          show_rownames = FALSE, show_colnames = TRUE,
          angle = 45, vjust = 0.5, hjust = 0.6,
          fontsize_col = 8, 
-         filename = "your/path/here/V5.1.All_groups_heatmap_300Genes.png")
+         filename = "your/path/here/1_Grouped_Heatmap_for_All_Groups.png")
     </code></pre>
 </div>
 
