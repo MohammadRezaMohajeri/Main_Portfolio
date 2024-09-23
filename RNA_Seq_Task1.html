@@ -675,18 +675,31 @@ pheatmap(counts_matrix_log[top_var_genes_log, ],
     </code></pre>
 </div>
 
- 	<!-- Heatmap Figure with Click-to-Enlarge Feature -->
-	<figure style="text-align: justify;">
-	    <!-- Add a clickable link to enlarge the image -->
-	    <a href="Pictures/RNA_Seq_Task1/Unsupervised_Heatmap_166_Samples_300_Genes.png" target="_blank">
-	        <img src="Pictures/RNA_Seq_Task1/Unsupervised_Heatmap_166_Samples_300_Genes.png" alt="Cumulative Variance Plot" style="display: block; background-color: #f0f0f0; padding: 20px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); max-width: 50%;">
-	    </a>
-	    <figcaption>
-	        Figure 3.2.3. Unsupervised Gene Expression Heatmaps for All Samples (166 samples) with the top 300 most variable genes.
-	    </figcaption>
-	</figure>
+
+		
+ 	<!-- Heatmaps Row with Click-to-Enlarge Feature -->
+	<div style="display: flex; justify-content: space-around;">
+	    
+	    <!-- Heatmap 1 (166/unsupervised) -->
+	    <figure style="text-align: justify; margin: 10px;">
+	        <a href="Pictures/RNA_Seq_Task1/Unsupervised_Heatmap_166_Samples_300_Genes.png" target="_blank">
+	            <img src="Pictures/RNA_Seq_Task1/Unsupervised_Heatmap_166_Samples_300_Genes.png" alt="Heatmap 1" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
+	        </a>
+	        <figcaption>Figure 3.2.3. Unsupervised Gene Expression Heatmaps for All Samples (166 samples) with the top 300 most variable genes.</figcaption>
+	    </figure>
+	
+	    <!-- Heatmap 2 (111/unsupervised) -->
+	    <figure style="text-align: justify; margin: 10px;">
+	        <a href="Pictures/RNA_Seq_Task1/Unsupervised_Heatmap_111_Samples_300_Genes.png" target="_blank">
+	            <img src="Pictures/RNA_Seq_Task1/Unsupervised_Heatmap_111_Samples_300_Genes.png" alt="Heatmap 2" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
+	        </a>
+	        <figcaption>3.2.4. Unsupervised Gene Expression Heatmaps for Baseline Lesional and Non-lesional Samples (111 samples) with the top 300 most variable genes.</figcaption>
+	    </figure>
+	
+	</div>
 
 
+		
 <div class="explanation">
     <ul>
         <li>
@@ -758,15 +771,6 @@ pheatmap(counts_matrix_log[top_var_genes_log, ],
          filename = "path/to/your/output/V1.1_300_Genes_Lesional_NonLesional_heatmap.png")  # Save the heatmap as an image
     </code></pre>
 </div>
-
-<!-- Heatmap Figure with Click-to-Enlarge Feature -->
-<figure style="text-align: justify;">
-    <!-- Wrap the image with a clickable link -->
-    <a href="Pictures/RNA_Seq_Task1/Unsupervised_Heatmap_111_Samples_300_Genes.png" target="_blank">
-        <img src="Pictures/RNA_Seq_Task1/Unsupervised_Heatmap_111_Samples_300_Genes.png" alt="Cumulative Variance Plot" style="display: block; background-color: #f0f0f0; padding: 20px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); max-width: 50%;">
-    </a>
-    <figcaption>3.2.4. Unsupervised Gene Expression Heatmaps for Baseline Lesional and Non-lesional Samples (111 samples) with the top 300 most variable genes.</figcaption>
-</figure>
 
 
 <div class="explanation">
