@@ -307,7 +307,7 @@ PE html>
 		    <h3>3.1. Metadata Exploration</h3>
 		    <ul>
 	   	      <li>
-		       We can extract and explore the <strong>metadata</strong> (<strong>phenotype</strong> data) associated with the dataset to understand the key characteristics of the samples (Code Block 3.1.1.; Figure 3.1.1).
+		       We can extract and explore the <strong>metadata</strong> (<strong>phenotype</strong> data) associated with the dataset to understand the key characteristics of the samples (Code Block 3.1.1.; <a href="#figure-3-2-6">Figure 3.1.1</a>).
 		      </li>
 		     </ul> 
 		</div>
@@ -339,7 +339,7 @@ PE html>
 
 		
                  <!-- ======== 3.1. image ========================================================== -->
-		<figure style="text-align: justify;">
+		<figure id="figure-3-1-1" style="text-align: justify;">
 		    <!-- Add a clickable link to enlarge the image -->
 		    <a href="Pictures/RNA_Seq_Task1/Selected_metadata_GSE157194.png" target="_blank">
 		        <img src="Pictures/RNA_Seq_Task1/Selected_metadata_GSE157194.png" alt="Cumulative Variance Plot" style="display: block; background-color: #f0f0f0; padding: 20px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); max-width: 90%;">
@@ -362,12 +362,12 @@ PE html>
 	        </li>
 		    
 	        <li>
-		    For example, the <strong>source_name_ch1</strong> column in metadata shows the distribution of samples across various experimental conditions (Code Block 3.1.2; Figure 3.1.2 a), such as <strong>baseline samples</strong> (m0) for both lesional (AL) (<strong>m0_AL</strong>: 57 samples) and non-lesional (AN) (<strong>m0_AN</strong>: 54 samples) skin, which are key to our current analysis, as well as samples taken post-treatment with <strong>Cyclosporine</strong> (8 lesional & 7 non-lesional) and <strong>Dupilumab</strong> (21 lesional & 19 non-lesional samples). This data can be useful for exploring treatment effects in future experiments.
+		    For example, the <strong>source_name_ch1</strong> column in metadata shows the distribution of samples across various experimental conditions (Code Block 3.1.2; <a href="#figure-3-2-6">Figure 3.1.2</a> a), such as <strong>baseline samples</strong> (m0) for both lesional (AL) (<strong>m0_AL</strong>: 57 samples) and non-lesional (AN) (<strong>m0_AN</strong>: 54 samples) skin, which are key to our current analysis, as well as samples taken post-treatment with <strong>Cyclosporine</strong> (8 lesional & 7 non-lesional) and <strong>Dupilumab</strong> (21 lesional & 19 non-lesional samples). This data can be useful for exploring treatment effects in future experiments.
 	        </li>
 
 		    		    
 	        <li>
-		    In addition, <strong>characteristics_ch1.2</strong> (Code Block 3.1.2; Figure 3.1.2 b) provides information on the <strong>timepoints</strong> (e.g., <strong>baseline</strong> or <strong>post-treatment</strong>). This is crucial for analyzing how gene expression changes over time, particularly in response to therapies like <strong>Cyclosporine</strong> and <strong>Dupilumab</strong>. In this dataset, 55 samples were collected 3 months post-treatment, and 111 samples were collected at baseline.
+		    In addition, <strong>characteristics_ch1.2</strong> (Code Block 3.1.2; <a href="#figure-3-2-6">Figure 3.1.2</a> b) provides information on the <strong>timepoints</strong> (e.g., <strong>baseline</strong> or <strong>post-treatment</strong>). This is crucial for analyzing how gene expression changes over time, particularly in response to therapies like <strong>Cyclosporine</strong> and <strong>Dupilumab</strong>. In this dataset, 55 samples were collected 3 months post-treatment, and 111 samples were collected at baseline.
 	        </li>
 		    
 		    
@@ -394,7 +394,7 @@ kable(timepoint_table, format = "html", col.names = c("Timepoint", "Count"))
 
 	<!-- ======= 3.3. image with caption =========== -->
 	
-		<figure style="text-align: justify;">
+		<figure id="figure-3-1-2" style="text-align: justify;">
 		    <!-- Add a clickable link to enlarge the image -->
 		    <a href="Pictures/RNA_Seq_Task1/Samples_Distribution_GSE157194.png" target="_blank">
 	        <img src="Pictures/RNA_Seq_Task1/Samples_Distribution_GSE157194.png" alt="Cumulative Variance Plot" style="display: block; background-color: #f0f0f0; padding: 20px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); max-width: 90%;">
@@ -487,7 +487,7 @@ for (col in columns) {
 
 	    <ul>
 	        <li>
-	            We examine the <strong>count matrix</strong>, which contains raw gene expression counts for each sample. This step helps us understand the structure of the data, including whether it is normalized or not, and allows us to check the <strong>column names</strong> (samples) and <strong>row names</strong> (<strong><a href="https://www.ebi.ac.uk/training/online/courses/ensembl-browsing-genomes/navigating-ensembl/investigating-a-gene/#:~:text=Ensembl%20gene%20IDs%20begin%20with,of%20species%20other%20than%20human." target="_blank">Ensembl Gene Identifiers</a></strong>) to ensure the data is formatted correctly for the next steps of differential expression analysis (Code Block 3.2.1; Figure 3.2.1).
+	            We examine the <strong>count matrix</strong>, which contains raw gene expression counts for each sample. This step helps us understand the structure of the data, including whether it is normalized or not, and allows us to check the <strong>column names</strong> (samples) and <strong>row names</strong> (<strong><a href="https://www.ebi.ac.uk/training/online/courses/ensembl-browsing-genomes/navigating-ensembl/investigating-a-gene/#:~:text=Ensembl%20gene%20IDs%20begin%20with,of%20species%20other%20than%20human." target="_blank">Ensembl Gene Identifiers</a></strong>) to ensure the data is formatted correctly for the next steps of differential expression analysis (Code Block 3.2.1; <a href="#figure-3-2-6">Figure 3.2.1</a>).
 	        </li>
 	    </ul>
 	</div>
@@ -507,7 +507,7 @@ for (col in columns) {
 	</div>
 
 <!-- ============================== 3.2. Image ====================== -->
-	 <figure style="text-align: justify;">
+	 <figure id="figure-3-2-1" style="text-align: justify;">
 	    <!-- Add a clickable link to enlarge the image -->
 	    <a href="Pictures/RNA_Seq_Task1/counts_matrix_GSE157194.png" target="_blank">
 	        <img src="Pictures/RNA_Seq_Task1/counts_matrix_GSE157194.png" alt="Cumulative Variance Plot" style="display: block; background-color: #f0f0f0; padding: 20px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); max-width: 90%;">
@@ -536,7 +536,7 @@ for (col in columns) {
 	<div class="explanation">
     <ul>
         <li>
-            This code (Code Block 3.2.2) focuses on analyzing gene expression variability. <strong>(Step 1)</strong>: Required libraries like <code><a href="https://cran.r-project.org/web/packages/matrixStats/index.html" target="_blank">matrixStats</a></code> and <code><a href="https://ggplot2.tidyverse.org/" target="_blank">ggplot2</a></code> are loaded for variance calculations and plotting. <strong>(Step 2)</strong>: The gene expression data in <code>counts_matrix</code> is log2-transformed to reduce its dynamic range, making it easier to interpret. <strong>(Step 3)</strong>: Using the <code><a href="https://www.rdocumentation.org/packages/matrixStats/versions/0.62.0/topics/rowVars" target="_blank">rowVars()</a></code> function, the variance of each gene across all samples is calculated, identifying highly variable genes for further analysis. <strong>(Step 4)</strong>: The cumulative variance is computed by sorting these variances and calculating their cumulative sum, which helps assess how much variability is captured by the top genes. <strong>(Step 5)</strong>: Finally, a line plot is generated using <code><a href="https://ggplot2.tidyverse.org/" target="_blank">ggplot2</a></code> to visualize the cumulative variance explained by an increasing number of genes, aiding in the selection of the optimal number of genes for further analysis.
+            This code (Code Block 3.2.2) focuses on analyzing gene expression variability. <strong>(Step 1)</strong>: Required libraries like <code><a href="https://cran.r-project.org/web/packages/matrixStats/index.html" target="_blank">matrixStats</a></code> and <code><a href="https://ggplot2.tidyverse.org/" target="_blank">ggplot2</a></code> are loaded for variance calculations and plotting. <strong>(Step 2)</strong>: The gene expression data in <code>counts_matrix</code> is log2-transformed to reduce its dynamic range, making it easier to interpret. <strong>(Step 3)</strong>: Using the <code><a href="https://www.rdocumentation.org/packages/matrixStats/versions/0.62.0/topics/rowVars" target="_blank">rowVars()</a></code> function, the variance of each gene across all samples is calculated, identifying highly variable genes for further analysis. <strong>(Step 4)</strong>: The cumulative variance is computed by sorting these variances and calculating their cumulative sum, which helps assess how much variability is captured by the top genes. <strong>(Step 5)</strong>: Finally, a line plot is generated (<a href="#figure-3-2-6">Figure 3.2.2</a>) using <code><a href="https://ggplot2.tidyverse.org/" target="_blank">ggplot2</a></code> to visualize the cumulative variance explained by an increasing number of genes, aiding in the selection of the optimal number of genes for further analysis.
         </li>
     </ul>
 	</div> 
@@ -584,7 +584,7 @@ ggplot(data.frame(Genes = 1:length(cum_variance), CumulativeVariance = cum_varia
 </div>
 
 	<!-- ======= 3.2.2 image with caption =========== -->
-	<figure style="text-align: justify;">
+	<figure id="figure-3-2-2" style="text-align: justify;">
 	    <!-- Add a clickable link to enlarge the image -->
 	    <a href="Pictures/RNA_Seq_Task1/optimal_gene_count_heatmap_cumulative_variance.png" target="_blank">
 	        <img src="Pictures/RNA_Seq_Task1/optimal_gene_count_heatmap_cumulative_variance.png" alt="Cumulative Variance Plot" style="display: block; background-color: #f0f0f0; padding: 20px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); max-width: 90%;">
@@ -632,10 +632,10 @@ ggplot(data.frame(Genes = 1:length(cum_variance), CumulativeVariance = cum_varia
     <h4>3.2.3.1. Unsupervised Gene Expression Heatmaps</h4>
     <ul>
         <li>
-            <strong>1. Heatmap for All Samples (166 samples)</strong>: This heatmap clusters all 166 "samples" based on the expression of the top 300 most variable "genes". The counts matrix is "log-transformed", and both rows ("genes") and columns ("samples") are clustered.
+            <strong>1. Heatmap for All Samples (166 samples)</strong>: As is shown in <a href="#figure-3-2-6">Figure 3.2.3</a>, this heatmap clusters all 166 "samples" based on the expression of the top 300 most variable "genes". The counts matrix is "log-transformed", and both rows ("genes") and columns ("samples") are clustered.
         </li>
         <li>
-            In this code (Code Block 3.2.3), we begin by loading the "<strong>matrixStats</strong> library" to work with matrix data and the "<strong>pheatmap</strong> library" for generating heatmaps. First (Step 1), the "<strong>as.matrix()</strong> function" converts the counts_matrix into a matrix format if it was originally a data frame, ensuring compatibility with downstream operations. Then (Step 2), we apply a "<strong>log2 transformation</strong>" to the matrix to "reduce the dynamic range" and "make the data more suitable for visualization". Next (Step 3), the top 300 most variable genes are selected based on row variance calculated from the log-transformed counts. Finally (Step 4), a heatmap is generated using <strong>pheatmap()</strong>, with options to cluster rows and columns, adjust axis label angles, and font size, and the output is saved as an image file.
+            In this code (Code Block 3.2.3), we begin by loading the "<strong>matrixStats</strong> library" to work with matrix data and the "<strong>pheatmap</strong> library" for generating heatmaps. First (Step 1), the "<strong>as.matrix()</strong> function" converts the counts_matrix into a matrix format if it was originally a data frame, ensuring compatibility with downstream operations. Then (Step 2), we apply a "<strong>log2 transformation</strong>" to the matrix to "reduce the dynamic range" and "make the data more suitable for visualization". Next (Step 3), the top 300 most variable genes are selected based on row variance calculated from the log-transformed counts. Finally (Step 4), a heatmap is generated (<a href="#figure-3-2-6">Figure 3.2.3</a>) using <strong>pheatmap()</strong>, with options to cluster rows and columns, adjust axis label angles, and font size, and the output is saved as an image file.
         </li>
     </ul>
 </div>
@@ -698,7 +698,7 @@ pheatmap(counts_matrix_log[top_var_genes_log, ],
 	
 	</div>
 
-
+<br>
 		
 <div class="explanation">
     <ul>
@@ -942,7 +942,7 @@ selected_groups <- c("dupilumab_m3_AN", "dupilumab_m3_AL")
 <div style="display: flex; justify-content: space-around;">
     
     <!-- Heatmap 1 (1_Heatmap_for_All_Groups) -->
-    <figure style="text-align: justify; margin: 10px;">
+    <figure id="figure-3-2-5" style="text-align: justify; margin: 10px;">
         <a href="Pictures/RNA_Seq_Task1/1_Heatmap_for_All_Groups.png" target="_blank">
             <img src="Pictures/RNA_Seq_Task1/1_Heatmap_for_All_Groups.png" alt="Heatmap 1" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
         </a>
@@ -950,7 +950,7 @@ selected_groups <- c("dupilumab_m3_AN", "dupilumab_m3_AL")
     </figure>
 
     <!-- Heatmap 2 (2_Baseline_Lesional_VS_Baseline_Non_lesional) -->
-    <figure style="text-align: justify; margin: 10px;">
+    <figure id="figure-3-2-6" style="text-align: justify; margin: 10px;">
         <a href="Pictures/RNA_Seq_Task1/2_Baseline_Lesional_VS_Baseline_Non_lesional.png" target="_blank">
             <img src="Pictures/RNA_Seq_Task1/2_Baseline_Lesional_VS_Baseline_Non_lesional.png" alt="Heatmap 2" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
         </a>
@@ -958,7 +958,7 @@ selected_groups <- c("dupilumab_m3_AN", "dupilumab_m3_AL")
     </figure>
 
     <!-- Heatmap 3 (3_Cyclosporine_Lesional_VS_Cyclosporine_Non_lesional)-->
-    <figure style="text-align: justify; margin: 10px;">
+    <figure id="figure-3-2-7" style="text-align: justify; margin: 10px;">
         <a href="Pictures/RNA_Seq_Task1/3_Cyclosporine_Lesional_VS_Cyclosporine_Non_lesional.png" target="_blank">
             <img src="Pictures/RNA_Seq_Task1/3_Cyclosporine_Lesional_VS_Cyclosporine_Non_lesional.png" alt="Heatmap 3" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
         </a>
@@ -1048,7 +1048,7 @@ selected_groups <- c("m0_AL", "cyclosporine_m3_AL")
 <div style="display: flex; justify-content: space-around;">
     
     <!-- Heatmap 5 (5_Baseline_Lesional_AND_Cyclosporine_Lesional_AND_Dupilumab_Lesional) -->
-    <figure style="text-align: justify; margin: 10px;">
+    <figure id="figure-3-2-9" style="text-align: justify; margin: 10px;">
         <a href="Pictures/RNA_Seq_Task1/5_Baseline_Lesional_AND_Cyclosporine_Lesional_AND_Dupilumab_Lesional.png" target="_blank">
             <img src="Pictures/RNA_Seq_Task1/5_Baseline_Lesional_AND_Cyclosporine_Lesional_AND_Dupilumab_Lesional.png" alt="Heatmap 1" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
         </a>
@@ -1056,7 +1056,7 @@ selected_groups <- c("m0_AL", "cyclosporine_m3_AL")
     </figure>
 
     <!-- Heatmap 6 (6_Dupilumab_Lesional_VS_Cyclosporine_Lesional) -->
-    <figure style="text-align: justify; margin: 10px;">
+    <figure id="figure-3-3-0" style="text-align: justify; margin: 10px;">
         <a href="Pictures/RNA_Seq_Task1/6_Dupilumab_Lesional_VS_Cyclosporine_Lesional.png" target="_blank">
             <img src="Pictures/RNA_Seq_Task1/6_Dupilumab_Lesional_VS_Cyclosporine_Lesional.png" alt="Heatmap 2" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
         </a>
@@ -1064,7 +1064,7 @@ selected_groups <- c("m0_AL", "cyclosporine_m3_AL")
     </figure>
 
     <!-- Heatmap 7 (7_Baseline_Lesional_VS_Cyclosporine_Lesional) -->
-    <figure style="text-align: justify; margin: 10px;">
+    <figure id="figure-3-3-1" style="text-align: justify; margin: 10px;">
         <a href="Pictures/RNA_Seq_Task1/7_Baseline_Lesional_VS_Cyclosporine_Lesional.png" target="_blank">
             <img src="Pictures/RNA_Seq_Task1/7_Baseline_Lesional_VS_Cyclosporine_Lesional.png" alt="Heatmap 3" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
         </a>
@@ -1122,7 +1122,7 @@ library(tinytex)
 <div style="display: flex; justify-content: space-around;">
     
     <!-- Heatmap 1 (166/unsupervised) -->
-    <figure style="text-align: justify; margin: 10px;">
+    <figure id="figure-3-2-3" style="text-align: justify; margin: 10px;">
         <a href="Pictures/RNA_Seq_Task1/Unsupervised_Heatmap_166_Samples_300_Genes.png" target="_blank">
             <img src="Pictures/RNA_Seq_Task1/Unsupervised_Heatmap_166_Samples_300_Genes.png" alt="Heatmap 1" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
         </a>
@@ -1130,7 +1130,7 @@ library(tinytex)
     </figure>
 
     <!-- Heatmap 2 (111/unsupervised) -->
-    <figure style="text-align: justify; margin: 10px;">
+    <figure id="figure-3-2-4" style="text-align: justify; margin: 10px;">
         <a href="Pictures/RNA_Seq_Task1/Unsupervised_Heatmap_111_Samples_300_Genes.png" target="_blank">
             <img src="Pictures/RNA_Seq_Task1/Unsupervised_Heatmap_111_Samples_300_Genes.png" alt="Heatmap 2" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
         </a>
