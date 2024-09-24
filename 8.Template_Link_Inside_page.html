@@ -1,0 +1,61 @@
+1- after <style> we add this: 
+
+/*  =============================================================================================================   */ 
+/*  ====================== To highlight the figure or caption when a user clicks on the link:  ================   */ 
+	    /*  ====================== Step 1: Add a CSS class for highlighting  ================   */ 
+       
+        .highlight {
+	    animation: highlightAnimation 5s ease-out;
+	  }
+	
+	  @keyframes highlightAnimation {
+	    from {
+	      background-color: yellow;
+	    }
+	    to {
+	      background-color: transparent;
+	    }
+	  }
+       
+/*  =============================================================================================================   */ 
+
+
+2- before </body> , we add this:
+
+
+<script>
+  function highlightFigure(figureId) {
+    var figureCaption = document.getElementById("figure-caption-" + figureId);
+    figureCaption.classList.add('highlight');
+    setTimeout(function() {
+      figureCaption.classList.remove('highlight');
+    }, 2000);  // Highlight lasts for 5 seconds
+  }
+</script>
+
+
+
+=============
+for Figure 3.2.6.: 
+3- we add (id="figure-3-2-6) in <figure id="figure-3-2-6" style="text-align: justify; margin: 10px;">
+    & 
+we add (id="figure-caption-3-2-6")  in <figcaption id="figure-caption-3-2-6">
+
+
+
+
+<figure id="figure-3-2-6" style="text-align: justify; margin: 10px;">
+  <a href="Pictures/RNA_Seq_Task1/2_Baseline_Lesional_VS_Baseline_Non_lesional.png" target="_blank">
+    <img src="Pictures/RNA_Seq_Task1/2_Baseline_Lesional_VS_Baseline_Non_lesional.png" alt="Heatmap 2" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
+  </a>
+  <figcaption id="figure-caption-3-2-6"><strong>Figure 3.2.6.</strong> Grouped Gene Expression Heatmap comparing Baseline Lesional and Baseline Non-lesional samples.</figcaption>
+</figure>
+
+
+
+===================
+
+4- in our in-text we replace Figure 3.2.6 with the bellow
+
+
+<a href="#figure-3-2-6" onclick="highlightFigure('3-2-6')">Figure 3.2.6</a>
