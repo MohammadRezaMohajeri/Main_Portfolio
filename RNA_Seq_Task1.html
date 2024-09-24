@@ -26,7 +26,29 @@ PE html>
 
 	
     <style>
-   
+
+
+/*  =============================================================================================================   */ 
+/*  ====================== To highlight the figure or caption when a user clicks on the link:  ================   */ 
+	    /*  ====================== Step 1: Add a CSS class for highlighting  ================   */ 
+       
+        .highlight {
+	    animation: highlightAnimation 5s ease-out;
+	  }
+	
+	  @keyframes highlightAnimation {
+	    from {
+	      background-color: yellow;
+	    }
+	    to {
+	      background-color: transparent;
+	    }
+	  }
+       
+/*  =============================================================================================================   */ 
+
+
+
 	    
 	/*  =================== the text color when is selected  ==============   */ 
 	    /* To change the color of text selection on a webpage (like the blue or yellow highlight  ), 
@@ -307,7 +329,7 @@ PE html>
 		    <h3>3.1. Metadata Exploration</h3>
 		    <ul>
 	   	      <li>
-		       We can extract and explore the <strong>metadata</strong> (<strong>phenotype</strong> data) associated with the dataset to understand the key characteristics of the samples (Code Block 3.1.1.; <a href="#figure-3-1-1">Figure 3.1.1</a>).
+		       We can extract and explore the <strong>metadata</strong> (<strong>phenotype</strong> data) associated with the dataset to understand the key characteristics of the samples (Code Block 3.1.1.; <a href="#figure-3-1-1" onclick="highlightFigure('figure-3-1-1')">Figure 3.1.1</a>).
 		      </li>
 		     </ul> 
 		</div>
@@ -1496,7 +1518,21 @@ kable(top_upregulated, format = "markdown")
     <!-- Load R language support for Prism -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-r.min.js"></script>
 
-   
+
+	  
+/*  =============================================================================================================   */ 
+/*  ====================== To highlight the figure or caption when a user clicks on the link:  ================   */ 
+	    /*  ====================== Step 2: Add JavaScript to apply the class  ================   */ 
+	<script>
+	  function highlightFigure(figureId) {
+	    var figure = document.getElementById(figureId);
+	    figure.classList.add('highlight');
+	    setTimeout(function() {
+	      figure.classList.remove('highlight');
+	    }, 2000); // Highlight lasts for 5 seconds
+	  }
+	</script>  
+/*  =============================================================================================================   */ 
 
 
  
