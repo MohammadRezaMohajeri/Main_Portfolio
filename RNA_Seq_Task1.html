@@ -306,6 +306,11 @@ PE html>
 	
 	# If multiple series are available, choose the first one
 	gse_data <- gse_data[[1]]
+
+	# Extract metadata from the GEO dataset
+	# We access the metadata (also known as phenotype data) stored in the 'phenoData' slot of the GEO object.
+	metadata <- gse_data@phenoData@data
+			
 	    </code></pre>
 	</div>
 
@@ -342,10 +347,6 @@ PE html>
 
 		<div class="code-block">
 		    <pre><code class="language-r">
-
-		# Extract metadata from the GEO dataset
-		# We access the metadata (also known as phenotype data) stored in the 'phenoData' slot of the GEO object.
-		metadata <- gse_data@phenoData@data
 			
 		# View all column names in the metadata to select relevant columns for analysis
 		# This step helps us to explore the structure of the metadata and understand which columns are available.		
