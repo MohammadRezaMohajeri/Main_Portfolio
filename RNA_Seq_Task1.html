@@ -266,11 +266,13 @@ PE html>
 	<div class="explanation">
 	    <h3>2. Load and Prepare Data</h3>
 		<h4 style="margin-top: 5px;">2.1. Retrieving Data from GEO</h4>
-	    <p>In this step, we download the <strong>raw gene expression data</strong> (count matrix) and  <strong>the sample information</strong> (referred to as <strong>metadata</strong> or <strong>phenotype data</strong>) from the <strong>Gene Expression Omnibus (GEO)</strong> using GEO's accession ID <strong>GSE157194</strong>. The count matrix contains raw gene expression counts, while the phenotype data contains metadata for each sample (such as treatment groups and sample type).</p>
-	    <p>We use the following functions:</p>
+
+	    <ul>	
+		In this step, we download the <strong>raw gene expression data</strong> (count matrix) and  <strong>the sample information</strong> (referred to as <strong>metadata</strong> or <strong>phenotype data</strong>) from the <strong>Gene Expression Omnibus (GEO)</strong> using GEO's accession ID <strong>GSE157194</strong>. The count matrix contains raw gene expression counts, while the phenotype data contains metadata for each sample (such as treatment groups and sample type).</p>
+	    </ul>
+		
 	    <ul>
-	        <li><strong>getGEOSuppFiles()</strong>: Retrieves supplementary files like the raw count matrix.</li>
-	        <li><strong>getGEO()</strong>: Downloads the GEO series matrix, which contains phenotype and metadata.</li>
+	        <li>In this code (Code Block 2.1), we begin by downloading and preparing the dataset for analysis. Step 1 involves defining the GEO accession ID (gse_id <- "GSE157194") and using getGEOSuppFiles() from the GEOquery library to download the supplementary count matrix, which is then loaded into R using read.table() after decompressing the .gz file. In Step 2, the phenotype data (metadata) is obtained using getGEO() from GEOquery, and stored in metadata. The metadata provides additional descriptive information about the samples in the count matrix. Step 3 prints summary information (  <a href="#figure-2-1" onclick="highlightFigure('2-1')">Figure 2.1</a>)), including the number of genes and samples in the count matrix and the number of samples and features in the metadata, for a quick overview of the dataset.</li>
 	    </ul>
 	</div>
 
@@ -280,8 +282,10 @@ PE html>
 	    
 	<div class="code-block">
 	    <pre><code class="language-r">
-	# 2.1: Download Supplementary Files for the Count Matrix
-	# ======================================
+	# ===================================================================
+	# Step 1. Download Supplementary Files for the Count Matrix
+	# ===================================================================
+
 	# Define the GEO accession ID
 	gse_id <- "GSE157194"
 	
@@ -292,33 +296,64 @@ PE html>
 	list.files(gse_id)
 	
 	# ================================
-	
 	# Path to the downloaded file
 	supp_file_path <- paste0(gse_id, "/", "GSE157194_Raw_gene_counts_matrix.txt.gz")
 	
 	# Unzip and load the file into R as a data frame (counts matrix)
 	counts_matrix <- read.table(gzfile(supp_file_path), header = TRUE, row.names = 1)
-	
-	# ======================================
-	
-	# 2.2: Download Phenotype Data
-	# ====================================
+ 
+	# ===================================================================
+	# Step 2. Download Phenotype Data
+	# ===================================================================
 	# Specify the GEO accession number
 	gse_id <- "GSE157194"
+	
 	
 	# Download the phenotype data (GEO series matrix)
 	gse_data <- getGEO(gse_id, GSEMatrix = TRUE, AnnotGPL = TRUE)
 	
 	# If multiple series are available, choose the first one
 	gse_data <- gse_data[[1]]
-
+	
 	# Extract metadata from the GEO dataset
-	# We access the metadata (also known as phenotype data) stored in the 'phenoData' slot of the GEO object.
+	  # We access the metadata (also known as phenotype data) stored in the 'phenoData' slot of the GEO object.
 	metadata <- gse_data@phenoData@data
+	
+	# ===================================================================
+	  # Step 3. Print Summary Information about the Count Matrix and Metadata
+	# ===================================================================
+	  cat("\n\n# Summary Information of the Count Matrix and Metadata\n")
+	  cat("=========================================================\n")
+	  
+	  # Count matrix summary
+	  cat("\nCount Matrix Summary:\n")
+	  cat("---------------------------------------------------------\n")
+	  cat("Number of Genes (Rows): ", nrow(counts_matrix), "\n")
+	  cat("Number of Samples (Columns): ", ncol(counts_matrix), "\n\n")
+	  
+	  
+	  # Metadata summary
+	  cat("\nMetadata Summary:\n")
+	  cat("---------------------------------------------------------\n")
+	  cat("Number of Samples (Rows): ", nrow(metadata), "\n")
+	  cat("Number of Features (Columns): ", ncol(metadata), "\n\n")
+	  
+	  cat("\n=========================================================\n")
 			
 	    </code></pre>
 	</div>
 
+	<!-- Figure 2.1.Summary Information of the Count Matrix and Metadata   -->
+	    <figure id="figure-2-1" style="text-align: justify; margin: 10px;">
+	        <a href="Pictures/RNA_Seq_Task1/Figure2.1.Summary_Information_of_the_Count_Matrix_Metadata.png" target="_blank">
+	            <img src="Pictures/RNA_Seq_Task1/Figure2.1.Summary_Information_of_the_Count_Matrix_Metadata.png" alt="Heatmap 1" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
+	        </a>
+	        <figcaption id="figure-caption-2-1">
+			Figure 2.1. Summary Information of the Count Matrix and Metadata, showing the number of genes and samples in the count matrix and the number of samples and features in the metadata.
+		</figcaption>
+	    </figure>
+
+		
 
 			<div class="explanation">
 				<h4 style="margin-top: 5px;">2.2. Preparing Data</h4>
