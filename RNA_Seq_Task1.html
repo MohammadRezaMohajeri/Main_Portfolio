@@ -316,29 +316,29 @@ PE html>
 	gse_data <- gse_data[[1]]
 	
 	# Extract metadata from the GEO dataset
-	  # We access the metadata (also known as phenotype data) stored in the 'phenoData' slot of the GEO object.
+	# We access the metadata (also known as phenotype data) stored in the 'phenoData' slot of the GEO object.
 	metadata <- gse_data@phenoData@data
 	
 	# ===================================================================
-	  # Step 3. Print Summary Information about the Count Matrix and Metadata
+	# Step 3. Print Summary Information about the Count Matrix and Metadata
 	# ===================================================================
-	  cat("\n\n# Summary Information of the Count Matrix and Metadata\n")
-	  cat("=========================================================\n")
-	  
-	  # Count matrix summary
-	  cat("\nCount Matrix Summary:\n")
-	  cat("---------------------------------------------------------\n")
-	  cat("Number of Genes (Rows): ", nrow(counts_matrix), "\n")
-	  cat("Number of Samples (Columns): ", ncol(counts_matrix), "\n\n")
-	  
-	  
-	  # Metadata summary
-	  cat("\nMetadata Summary:\n")
-	  cat("---------------------------------------------------------\n")
-	  cat("Number of Samples (Rows): ", nrow(metadata), "\n")
-	  cat("Number of Features (Columns): ", ncol(metadata), "\n\n")
-	  
-	  cat("\n=========================================================\n")
+	cat("\n\n# Summary Information of the Count Matrix and Metadata\n")
+	cat("=========================================================\n")
+	
+	# Count matrix summary
+	cat("\nCount Matrix Summary:\n")
+	cat("---------------------------------------------------------\n")
+	cat("Number of Genes (Rows): ", nrow(counts_matrix), "\n")
+	cat("Number of Samples (Columns): ", ncol(counts_matrix), "\n\n")
+	
+	
+	# Metadata summary
+	cat("\nMetadata Summary:\n")
+	cat("---------------------------------------------------------\n")
+	cat("Number of Samples (Rows): ", nrow(metadata), "\n")
+	cat("Number of Features (Columns): ", ncol(metadata), "\n\n")
+	
+	cat("\n=========================================================\n")
 			
 	    </code></pre>
 	</div>
