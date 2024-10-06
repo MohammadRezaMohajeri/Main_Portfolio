@@ -272,7 +272,7 @@ PE html>
 	    </ul>
 		
 	    <ul>
-	        <li>In this code (Code Block 2.1), we begin by downloading and preparing the dataset for analysis. Step 1 involves defining the GEO accession ID (gse_id <- "GSE157194") and using <strong>getGEOSuppFiles()</strong> from the <strong>GEOquery</strong> library to download the supplementary count matrix, which is then loaded into R using <strong>read.table()</strong> after decompressing the .gz file. In Step 2, the phenotype data (metadata) is obtained using <strong>getGEO()</strong> from GEOquery, and stored in metadata. The metadata provides additional descriptive information about the samples in the count matrix. Step 3 prints summary information (  <a href="#figure-2-1" onclick="highlightFigure('2-1')">Figure 2.1</a>), including the number of genes and samples in the count matrix and the number of samples and features in the metadata, for a quick overview of the dataset.</li>
+	        <li>In this code (Code Block 2.1), we begin by downloading and preparing the dataset for analysis. Step 1 involves defining the GEO accession ID (gse_id <- "GSE157194") and using <strong>getGEOSuppFiles()</strong> from the <strong>GEOquery</strong> library to download the supplementary count matrix, which is then loaded into R using <strong>read.table()</strong> after decompressing the .gz file. In Step 2, the phenotype data (metadata) is obtained using <strong>getGEO()</strong> from GEOquery, and stored in metadata. The metadata provides additional descriptive information about the samples in the count matrix. Step 3 prints summary information (  <a href="#figure-2-1" onclick="highlightFigure('2-1')">Figure 2.1</a>), including the number of genes and samples in the count matrix and the number of samples and features in the metadata, after downloading the data from GEO, for a quick overview of the dataset.</li>
 	    </ul>
 	</div>
 
@@ -322,7 +322,7 @@ PE html>
 	# ===================================================================
 	# Step 3. Print Summary Information about the Count Matrix and Metadata
 	# ===================================================================
-	cat("\n\n# Summary Information of the Count Matrix and Metadata\n")
+	cat("\n\n# Summary Information of the Count Matrix and Metadata (Post-GEO Download)\n")
 	cat("=========================================================\n")
 	
 	# Count matrix summary
