@@ -355,13 +355,283 @@ PE html>
 
 		
 
+			<!-- ========================================= 2.2 ======================================== -->
 			<div class="explanation">
-				<h4 style="margin-top: 5px;">2.2. Preparing Data</h4>
+			    <h3>2.2. Preparing Data</h3>
 			    <ul>
-			        <li></li>
-			        <li></li>
+			        <li><strong>Effective data preparation</strong> is crucial for ensuring high-quality and accurate results in downstream analyses. This step includes identifying and removing potential outlier samples to avoid biases and pre-filtering low-count genes to enhance the overall data quality.</li>
+			    </ul>
+			    <h4>2.2.1. Identify and Remove Outlier Samples</h4>
+			    <ul>
+			        <li>Outlier samples, particularly those with significantly low or high library sizes, can introduce biases into the analysis and skew the results. Therefore, it is crucial to identify and remove such samples before conducting further data manipulations to ensure that the remaining data is representative of high-quality samples, allowing for reliable downstream analyses.</li>
+			        <li>Traditionally, removing samples below the lower threshold (calculated as Q1 - 1.5 * IQR) is a common practice, as these samples often indicate technical issues, such as failed sequencing or low quality. Samples above the upper threshold (Q3 + 1.5 * IQR) are typically retained, as they are often biologically meaningful (e.g., having high sequencing depth), and removing them could risk discarding valuable information. However, if it can be demonstrated that such samples introduce bias or are clearly problematic, it might be necessary to remove them to maintain data integrity.</li>
+			        <li>Based on the <a href="#figure-2-2-1-1" onclick="highlightFigure('2-2-1-1')">dot plot of library sizes</a>, we identified a total of six outlier samples from 166 original samples: three with significantly low counts (Patient_12_AN_m3, Patient_24_AN_m3, Patient_31_AL_m0) and three with significantly high counts (Patient_41_AL_m3, Patient_42_AL_m0, Patient_48_AL_m3). Although the high-count samples might be biologically distinct, their presence could mask potential biomarkers within the majority of the population by over-influencing the analysis. Therefore, to ensure that we focus on identifying biomarkers that are representative of the majority, we have decided to remove both lower and upper threshold outliers.</li>
+			        <li>The provided code is written to handle either scenario, allowing users to remove only the lower threshold outliers, or both lower and upper threshold outliers. Comments within the code explain which lines to uncomment or comment out based on the user's chosen approach. In this case, both thresholds are applied to remove the six outlier samples, resulting in a filtered dataset that better represents the core population.</li>
+			        <li>Not all the plots presented in the code are necessary to generate; they are provided here to demonstrate different ways of visualizing the effect of removing outlier samples.</li>
 			    </ul>
 			</div>
+			
+			<div class="explanation">
+			    <p>In this code (<strong>Code Block 2.2.1</strong>), we begin with <strong>Step 1</strong>, which involves calculating the library sizes for each sample using <code>colSums(counts_matrix)</code>. This operation returns the total count of all reads for each sample. The summary statistics (<code>summary(library_sizes)</code>) is then printed to provide an overview of the data distribution (Min= 9628756, 1st Qu=20647659, Median=22896256, Mean=23218539, 3rd Qu= 25719325, Max= 43076805).</p>
+			    <p>Next, in <strong>Step 1.1</strong>, we set two thresholds for outlier identification, using quantiles and the interquartile range (IQR). The first quartile (<code>quantile(library_sizes, 0.25)</code>) and the third quartile (<code>quantile(library_sizes, 0.75)</code>) represent the 25th and 75th percentiles of the data, respectively. The IQR (<code>IQR(library_sizes)</code>) indicates the spread of the central 50% of the data and helps to assess data variability. We then calculate the lower threshold as <code>Q1 - 1.5 * IQR</code>, which targets low outliers that may indicate poor-quality or problematic samples. Optionally, the upper threshold is calculated as <code>Q3 + 1.5 * IQR</code> to identify samples with unusually high counts, which may also be removed if deemed necessary.</p>
+			    <p>In <strong>Step 1.2</strong>, depending on the user's choice, either or both thresholds can be used to define outlier samples. These outliers are identified using logical conditions, and their indices are used to remove them from both <code>counts_matrix</code> and <code>metadata</code>, resulting in the creation of filtered versions (<code>counts_matrix_filtered</code> and <code>metadata_filtered</code>) (<strong>Step 3</strong>).</p>
+			    <p>After identifying the outliers, in <strong>Step 2</strong>, we store the original dimensions of both <code>counts_matrix</code> and <code>metadata</code> before filtering. This allows us to compare them against the dimensions after outlier removal, which we store in <strong>Step 3.3</strong>.</p>
+			    <p>In <strong>Step 3</strong>, we remove the outlier samples from the <code>counts_matrix</code> (<strong>Step 3.1</strong>) and <code>metadata</code> (<strong>Step 3.2</strong>), ensuring that the metadata matches the filtered <code>counts_matrix</code>. After filtering, we reassign the filtered versions back to <code>counts_matrix</code> and <code>metadata</code> to ensure consistency for subsequent analysis steps (<strong>Step 6</strong>).</p>
+			    <p>In <strong>Step 4</strong>, following the removal of outliers, we create various visualizations (<a href="#figure-2-2-1-1" onclick="highlightFigure('2-2-1-1')">dot plot</a>, bar plot, boxplot, density plot, and violin plot) to illustrate the changes in library sizes before and after filtering. These visualizations provide insights into the effects of outlier removal on the dataset. Specifically:
+			        <ul>
+			            <li><strong>Boxplots</strong> and <strong>Violin plots</strong> are used to compare the distributions of library sizes before and after filtering.</li>
+			            <li><strong>Dot plots</strong> annotate specific outlier samples that were removed.</li>
+			            <li><strong>Bar plots</strong> allow for a direct comparison of individual sample library sizes before and after filtering.</li>
+			            <li><strong>Density plots</strong> provide an overview of the entire distribution of library sizes.</li>
+			        </ul>
+			    </p>
+			    <p>In <strong>Step 5</strong>, we generate visualizations to confirm the changes in the dimensions of the <code>counts_matrix</code> and <code>metadata</code> before and after outlier removal. To achieve this, we create data frames representing the count matrix dimensions and metadata dimensions, both before and after filtering (<strong>Step 5.1</strong> and <strong>Step 5.2</strong>). These data frames are then used to generate four bar plots, which illustrate the number of genes, samples, and metadata features before and after filtering. These four plots are combined into a single figure using the <code>grid.arrange()</code> function from the <code>gridExtra</code> library (<strong>Step 5.3</strong>). This combined visualization provides a clear overview of how filtering affected the dataset dimensions.</p>
+			</div>
+
+
+		
+			<!-- Caption for the code block -->
+			<p class="code-caption">Code Block 2.2.1: Identifying and Removing Outlier Samples, and Visualizing the Impact</p>
+			
+			<div class="code-block">
+			    <pre><code class="language-r">
+			# ========================================================
+			# Load necessary libraries
+			# ========================================================
+			library(ggplot2)
+			library(gridExtra) # For arranging multiple plots in one figure
+			
+			# ========================================================
+			# Step 1: Calculate Library Size and Identify Outliers
+			# ========================================================
+			
+			# Calculate library sizes
+			library_sizes <- colSums(counts_matrix)
+			
+			# Optionally, print summary to check for anomalies
+			summary(library_sizes)
+			
+			# Identify potential outlier samples based on library size
+			# Step 1.1: Set thresholds for outlier identification
+			# Set the lower threshold to identify samples with low counts
+			lower_threshold <- quantile(library_sizes, 0.25) - 1.5 * IQR(library_sizes)
+			
+			# Set the upper threshold to identify samples with very high counts
+			upper_threshold <- quantile(library_sizes, 0.75) + 1.5 * IQR(library_sizes)
+			
+			
+			# Step 1.2: Find outlier samples
+			# Uncomment the corresponding line depending on whether you want to use:
+			# - Only the lower threshold
+			# - Only the upper threshold
+			# - Both lower and upper thresholds
+			
+			# Use only the lower threshold:
+			# outlier_samples <- colnames(counts_matrix)[library_sizes < lower_threshold]
+			
+			# Use both lower and upper thresholds:
+			outlier_samples <- colnames(counts_matrix)[library_sizes < lower_threshold | library_sizes > upper_threshold]
+			
+			# ========================================================
+			# Step 2: Store Original Dimensions Before Filtering (First  part for Plotting Dimensions of Count Matrix and Metadata)
+			# ========================================================
+			
+			# Store original dimensions before filtering
+			counts_matrix_before <- dim(counts_matrix)  # [number of genes, number of samples]
+			metadata_before <- dim(metadata)            # [number of samples, number of features]
+			
+			
+			# ========================================================
+			# Step 3: Remove Outlier Samples from Data
+			# ========================================================
+			
+			# Step 3.1: Remove outlier samples from counts matrix
+			counts_matrix_filtered <- counts_matrix[, !(colnames(counts_matrix) %in% outlier_samples)]
+			
+			# Step 3.2: Remove outlier samples from metadata
+			metadata_filtered <- metadata[colnames(counts_matrix_filtered), ]
+			
+			# Step 3.3: Store dimensions after filtering (Second part for Plotting Dimensions of Count Matrix and Metadata)
+			counts_matrix_after <- dim(counts_matrix_filtered)
+			metadata_after <- dim(metadata_filtered)
+			
+			# Step 3.4: Calculate filtered library sizes
+			filtered_library_sizes <- colSums(counts_matrix_filtered)
+			
+			# ========================================================
+			# Step 4: Plot the Filtered Library Sizes (Box, Violin, Dot, Bar, Density plots)
+			# ========================================================
+			# Step 4.1: Prepare Data for Plotting:
+			
+			# Combine original and filtered library sizes into a data frame for comparison
+			comparison_df <- data.frame(
+			  Sample = c(names(library_sizes), names(filtered_library_sizes)),
+			  Library_Size = c(library_sizes, filtered_library_sizes),
+			  Group = c(rep("Original", length(library_sizes)), rep("Filtered", length(filtered_library_sizes)))
+			)
+			
+			
+			# Step 4.2: Boxplot of Library Sizes Before and After Filtering
+			box_plot <- ggplot(comparison_df, aes(x = Group, y = Library_Size, fill = Group)) +
+			  geom_boxplot() +
+			  theme_minimal() +
+			  labs(title = "Boxplot of Library Sizes Before and After Removing Outliers",
+			       x = "Group", y = "Total Counts per Sample") +
+			  theme(legend.position = "none")
+			
+			ggsave("Figures/Figure2.2.1.3.Box_Plot_Library_Sizes.png", plot = box_plot, width = 8, height = 5, bg = "white")
+			
+			
+			# Step 4.3: Violin Plot of Library Sizes Before and After Filtering
+			violin_plot <- ggplot(comparison_df, aes(x = Group, y = Library_Size, fill = Group)) +
+			  geom_violin(trim = FALSE, alpha = 0.6) +
+			  theme_minimal() +
+			  labs(title = "Violin Plot of Library Sizes Before and After Removing Outliers",
+			       x = "Group", y = "Total Counts per Sample") +
+			  theme(legend.position = "none")
+			
+			ggsave("Figures/Figure2.2.1.5.Violin_Plot_Library_Sizes.png", plot = violin_plot, width = 8, height = 5, bg = "white")
+			
+			
+			
+			# Step 4.4: Dot Plot with Annotation of Outliers
+			dot_plot <- ggplot(comparison_df, aes(x = Sample, y = Library_Size, color = Group)) +
+			  geom_point() +
+			  theme_minimal() +
+			  labs(title = "Dot Plot of Library Sizes with Outlier Annotation", 
+			       x = "Sample", y = "Total Counts per Sample") +
+			  theme(axis.text.x = element_blank(), axis.ticks.x = element_blank()) +
+			  geom_text(data = subset(comparison_df, Group == "Original" & Sample %in% outlier_samples), 
+			            aes(label = Sample), vjust = -1, size = 3, color = "red", angle = 5)
+			
+			ggsave("Figures/Figure2.2.1.1.Dot_Plot_Library_Sizes.png", plot = dot_plot, width = 10, height = 5, bg = "white")
+			
+			
+			
+			# Step 4.5: Comparative Bar Plot Before and After Filtering
+			bar_plot <- ggplot(comparison_df, aes(x = Sample, y = Library_Size, fill = Group)) +
+			  geom_bar(stat = "identity", position = "dodge") +
+			  theme_minimal() +
+			  labs(title = "Comparative Bar Plot of Library Sizes Before and After Removing Outliers", 
+			       x = "Sample", y = "Total Counts per Sample") +
+			  theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+			
+			ggsave("Figures/Figure2.2.1.2.Bar_Plot_Library_Sizes.png", plot = bar_plot, width = 10, height = 5, bg = "white")
+			
+			
+			
+			# Step 4.6: Side-by-Side Density Plot Before and After Filtering
+			density_plot <- ggplot(comparison_df, aes(x = Library_Size, fill = Group)) +
+			  geom_density(alpha = 0.5) +
+			  theme_minimal() +
+			  labs(title = "Density Plot of Library Sizes Before and After Removing Outliers", 
+			       x = "Total Counts per Sample", y = "Density") +
+			  scale_x_log10() +
+			  theme(legend.position = "top")
+			
+			ggsave("Figures/Figure2.2.1.4.Density_Plot_Library_Sizes.png", plot = density_plot, width = 8, height = 5, bg = "white")
+			
+			
+			# ========================================================
+			# Step 5: Plot Dimensions of Count Matrix and Metadata (Third  part for Plotting Dimensions of Count Matrix and Metadata)
+			# ========================================================
+			
+			# Step 5.1: Create Data Frames for Count Matrix Dimensions
+			counts_matrix_dims <- data.frame(
+			  Measure = rep(c("Samples", "Genes"), each = 2),
+			  Stage = rep(c("Before Filtering", "After Filtering"), 2),
+			  Count = c(counts_matrix_before[2], counts_matrix_after[2],
+			            counts_matrix_before[1], counts_matrix_after[1])
+			)
+			
+			# Step 5.2: Create Data Frames for Count Matrix and Metadata Dimensions
+			metadata_dims <- data.frame(
+			  Measure = rep(c("Samples", "Features"), each = 2),
+			  Stage = rep(c("Before Filtering", "After Filtering"), 2),
+			  Count = c(metadata_before[1], metadata_after[1],
+			            metadata_before[2], metadata_after[2])
+			)
+			
+			
+			# Step 5.3: Generate and Combine Plots for Dimensions
+			
+			# Plot for count matrix samples before and after filtering
+			count_samples_plot <- ggplot(subset(counts_matrix_dims, Measure == "Samples"), aes(x = Stage, y = Count, fill = Stage)) +
+			  geom_bar(stat = "identity") +
+			  geom_text(aes(label = Count), vjust = -0.5) +  # Add count labels on top of bars
+			  theme_minimal() +
+			  labs(title = "Count Matrix: Number of Samples (Columns)", y = "Samples", x = "") +
+			  theme(legend.position = "none") +
+			  scale_fill_manual(values = c("Before Filtering" = "#4682B4", "After Filtering" = "#8A2BE2")) # Change colors
+			
+			# Plot for count matrix genes (transcripts) before and after filtering
+			count_genes_plot <- ggplot(subset(counts_matrix_dims, Measure == "Genes"), aes(x = Stage, y = Count, fill = Stage)) +
+			  geom_bar(stat = "identity") +
+			  geom_text(aes(label = Count), vjust = -0.5) +  # Add count labels on top of bars
+			  theme_minimal() +
+			  labs(title = "Count Matrix: Number of Genes (Rows)", y = "Genes (Transcripts)", x = "") +
+			  theme(legend.position = "none") +
+			  scale_fill_manual(values = c("Before Filtering" = "#4682B4", "After Filtering" = "#8A2BE2")) # Change colors
+			
+			# Plot for metadata samples before and after filtering
+			metadata_samples_plot <- ggplot(subset(metadata_dims, Measure == "Samples"), aes(x = Stage, y = Count, fill = Stage)) +
+			  geom_bar(stat = "identity") +
+			  geom_text(aes(label = Count), vjust = -0.5) +  # Add count labels on top of bars
+			  theme_minimal() +
+			  labs(title = "Metadata: Number of Samples (Rows)", y = "Count", x = "") +
+			  theme(legend.position = "none") +
+			  scale_fill_manual(values = c("Before Filtering" = "#32CD32", "After Filtering" = "#FFD700")) # Change colors
+			
+			# Plot for metadata features before and after filtering
+			metadata_features_plot <- ggplot(subset(metadata_dims, Measure == "Features"), aes(x = Stage, y = Count, fill = Stage)) +
+			  geom_bar(stat = "identity") +
+			  geom_text(aes(label = Count), vjust = -0.5) +  # Add count labels on top of bars
+			  theme_minimal() +
+			  labs(title = "Metadata: Number of Features (Columns)", y = "Sample Attributes", x = "") +
+			  theme(legend.position = "none") + 
+			  scale_fill_manual(values = c("Before Filtering" =  "#32CD32", "After Filtering" = "#FFD700")) # Change colors
+			
+			# Arrange the four plots in a grid
+			combined_plot <- grid.arrange(count_samples_plot, count_genes_plot,
+			                              metadata_samples_plot, metadata_features_plot,
+			                              ncol = 2)
+			
+			# Save the combined plot
+			ggsave("Figures/Figure2.2.1.6.Dimensions_Comparison.png", plot = combined_plot, width = 12, height = 10, bg = "white")
+			
+			
+			
+			# ========================================================
+			# Step 6: Reassign Filtered Data
+			# ========================================================
+			# Reassign filtered versions back to counts_matrix and metadata
+			counts_matrix <- counts_matrix_filtered
+			metadata <- metadata_filtered
+			
+			# ======================================
+			# Step 7. Print Summary Information about the Count Matrix and Metadata
+			# ======================================
+			cat("\n\n# Summary Information of the Count Matrix and Metadata (Post-Outlier Removal)\n")
+			cat("=========================================================\n")
+			
+			# Count matrix summary
+			cat("\nCount Matrix Summary:\n")
+			cat("---------------------------------------------------------\n")
+			cat("Number of Genes (Rows): ", nrow(counts_matrix), "\n")
+			cat("Number of Samples (Columns): ", ncol(counts_matrix), "\n\n")
+			
+			
+			# Metadata summary
+			cat("\nMetadata Summary:\n")
+			cat("---------------------------------------------------------\n")
+			cat("Number of Samples (Rows): ", nrow(metadata), "\n")
+			cat("Number of Features (Columns): ", ncol(metadata), "\n\n")
+			
+			cat("\n=========================================================\n")
+			    </code></pre>
+			</div>
+			
+
 		
 		
 
