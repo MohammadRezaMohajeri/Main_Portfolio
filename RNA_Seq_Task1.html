@@ -395,498 +395,341 @@ PE html>
 			
 			<div class="code-block">
 			    <pre><code class="language-r">
-		# ========================================================
-		# Load necessary libraries
-		# ========================================================
-		library(ggplot2)
-		library(gridExtra) # For arranging multiple plots in one figure
-		
-		# ========================================================
-		# Step 1: Calculate Library Size and Identify Outliers
-		# ========================================================
-		
-		# Calculate library sizes
-		library_sizes <- colSums(counts_matrix)
-		
-		# Optionally, print summary to check for anomalies
-		summary(library_sizes)
-		
-		# Identify potential outlier samples based on library size
-		# Step 1.1: Set thresholds for outlier identification
-		# Set the lower threshold to identify samples with low counts
-		lower_threshold <- quantile(library_sizes, 0.25) - 1.5 * IQR(library_sizes)
-		
-		# Set the upper threshold to identify samples with very high counts
-		upper_threshold <- quantile(library_sizes, 0.75) + 1.5 * IQR(library_sizes)
-		
-		
-		# Step 1.2: Find outlier samples
-		# Uncomment the corresponding line depending on whether you want to use:
-		# - Only the lower threshold
-		# - Only the upper threshold
-		# - Both lower and upper thresholds
-		
-		# Use only the lower threshold:
-		# outlier_samples <- colnames(counts_matrix)[library_sizes < lower_threshold]
-		
-		# Use both lower and upper thresholds:
-		outlier_samples <- colnames(counts_matrix)[library_sizes < lower_threshold | library_sizes > upper_threshold]
-		
-		# ========================================================
-		# Step 2: Store Original Dimensions Before Filtering (First  part for Plotting Dimensions of Count Matrix and Metadata)
-		# ========================================================
-		
-		# Store original dimensions before filtering
-		counts_matrix_before <- dim(counts_matrix)  # [number of genes, number of samples]
-		metadata_before <- dim(metadata)            # [number of samples, number of features]
-		
-		
-		# ========================================================
-		# Step 3: Remove Outlier Samples from Data
-		# ========================================================
-		
-		# Step 3.1: Remove outlier samples from counts matrix
-		counts_matrix_filtered <- counts_matrix[, !(colnames(counts_matrix) %in% outlier_samples)]
-		
-		# Step 3.2: Remove outlier samples from metadata
-		metadata_filtered <- metadata[colnames(counts_matrix_filtered), ]
-		
-		# Step 3.3: Store dimensions after filtering (Second part for Plotting Dimensions of Count Matrix and Metadata)
-		counts_matrix_after <- dim(counts_matrix_filtered)
-		metadata_after <- dim(metadata_filtered)
-		
-		# Step 3.4: Calculate filtered library sizes
-		filtered_library_sizes <- colSums(counts_matrix_filtered)
-		
-		# ========================================================
-		# Step 4: Plot the Filtered Library Sizes (Box, Violin, Dot, Bar, Density plots)
-		# ========================================================
-		# Step 4.1: Prepare Data for Plotting:
-		
-		# Combine original and filtered library sizes into a data frame for comparison
-		comparison_df <- data.frame(
-		  Sample = c(names(library_sizes), names(filtered_library_sizes)),
-		  Library_Size = c(library_sizes, filtered_library_sizes),
-		  Group = c(rep("Original", length(library_sizes)), rep("Filtered", length(filtered_library_sizes)))
-		)
-		
-		
-		# Step 4.2: Boxplot of Library Sizes Before and After Filtering
-		box_plot <- ggplot(comparison_df, aes(x = Group, y = Library_Size, fill = Group)) +
-		  geom_boxplot() +
-		  theme_minimal() +
-		  labs(title = "Boxplot of Library Sizes Before and After Removing Outliers",
-		       x = "Group", y = "Total Counts per Sample") +
-		  theme(legend.position = "none")
-		
-		ggsave("Figures/Figure2.2.1.3.Box_Plot_Library_Sizes.png", plot = box_plot, width = 8, height = 5, bg = "white")
-		
-		
-		# Step 4.3: Violin Plot of Library Sizes Before and After Filtering
-		violin_plot <- ggplot(comparison_df, aes(x = Group, y = Library_Size, fill = Group)) +
-		  geom_violin(trim = FALSE, alpha = 0.6) +
-		  theme_minimal() +
-		  labs(title = "Violin Plot of Library Sizes Before and After Removing Outliers",
-		       x = "Group", y = "Total Counts per Sample") +
-		  theme(legend.position = "none")
-		
-		ggsave("Figures/Figure2.2.1.5.Violin_Plot_Library_Sizes.png", plot = violin_plot, width = 8, height = 5, bg = "white")
-		
-		
-		
-		# Step 4.4: Dot Plot with Annotation of Outliers
-		dot_plot <- ggplot(comparison_df, aes(x = Sample, y = Library_Size, color = Group)) +
-		  geom_point() +
-		  theme_minimal() +
-		  labs(title = "Dot Plot of Library Sizes with Outlier Annotation", 
-		       x = "Sample", y = "Total Counts per Sample") +
-		  theme(axis.text.x = element_blank(), axis.ticks.x = element_blank()) +
-		  geom_text(data = subset(comparison_df, Group == "Original" & Sample %in% outlier_samples), 
-			    aes(label = Sample), vjust = -1, size = 3, color = "red", angle = 5)
-		
-		ggsave("Figures/Figure2.2.1.1.Dot_Plot_Library_Sizes.png", plot = dot_plot, width = 10, height = 5, bg = "white")
-		
-		
-		
-		# Step 4.5: Comparative Bar Plot Before and After Filtering
-		bar_plot <- ggplot(comparison_df, aes(x = Sample, y = Library_Size, fill = Group)) +
-		  geom_bar(stat = "identity", position = "dodge") +
-		  theme_minimal() +
-		  labs(title = "Comparative Bar Plot of Library Sizes Before and After Removing Outliers", 
-		       x = "Sample", y = "Total Counts per Sample") +
-		  theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
-		
-		ggsave("Figures/Figure2.2.1.2.Bar_Plot_Library_Sizes.png", plot = bar_plot, width = 10, height = 5, bg = "white")
-		
-		
-		
-		# Step 4.6: Side-by-Side Density Plot Before and After Filtering
-		density_plot <- ggplot(comparison_df, aes(x = Library_Size, fill = Group)) +
-		  geom_density(alpha = 0.5) +
-		  theme_minimal() +
-		  labs(title = "Density Plot of Library Sizes Before and After Removing Outliers", 
-		       x = "Total Counts per Sample", y = "Density") +
-		  scale_x_log10() +
-		  theme(legend.position = "top")
-		
-		ggsave("Figures/Figure2.2.1.4.Density_Plot_Library_Sizes.png", plot = density_plot, width = 8, height = 5, bg = "white")
-		
-		
-		# ========================================================
-		# Step 5: Plot Dimensions of Count Matrix and Metadata (Third  part for Plotting Dimensions of Count Matrix and Metadata)
-		# ========================================================
-		
-		# Step 5.1: Create Data Frames for Count Matrix Dimensions
-		counts_matrix_dims <- data.frame(
-		  Measure = rep(c("Samples", "Genes"), each = 2),
-		  Stage = rep(c("Before Filtering", "After Filtering"), 2),
-		  Count = c(counts_matrix_before[2], counts_matrix_after[2],
-			    counts_matrix_before[1], counts_matrix_after[1])
-		)
-		
-		# Step 5.2: Create Data Frames for Count Matrix and Metadata Dimensions
-		metadata_dims <- data.frame(
-		  Measure = rep(c("Samples", "Features"), each = 2),
-		  Stage = rep(c("Before Filtering", "After Filtering"), 2),
-		  Count = c(metadata_before[1], metadata_after[1],
-			    metadata_before[2], metadata_after[2])
-		)
-		
-		
-		# Step 5.3: Generate and Combine Plots for Dimensions
-		
-		# Plot for count matrix samples before and after filtering
-		count_samples_plot <- ggplot(subset(counts_matrix_dims, Measure == "Samples"), aes(x = Stage, y = Count, fill = Stage)) +
-		  geom_bar(stat = "identity") +
-		  geom_text(aes(label = Count), vjust = -0.5) +  # Add count labels on top of bars
-		  theme_minimal() +
-		  labs(title = "Count Matrix: Number of Samples (Columns)", y = "Samples", x = "") +
-		  theme(legend.position = "none") +
-		  scale_fill_manual(values = c("Before Filtering" = "#4682B4", "After Filtering" = "#8A2BE2")) # Change colors
-		
-		# Plot for count matrix genes (transcripts) before and after filtering
-		count_genes_plot <- ggplot(subset(counts_matrix_dims, Measure == "Genes"), aes(x = Stage, y = Count, fill = Stage)) +
-		  geom_bar(stat = "identity") +
-		  geom_text(aes(label = Count), vjust = -0.5) +  # Add count labels on top of bars
-		  theme_minimal() +
-		  labs(title = "Count Matrix: Number of Genes (Rows)", y = "Genes (Transcripts)", x = "") +
-		  theme(legend.position = "none") +
-		  scale_fill_manual(values = c("Before Filtering" = "#4682B4", "After Filtering" = "#8A2BE2")) # Change colors
-		
-		# Plot for metadata samples before and after filtering
-		metadata_samples_plot <- ggplot(subset(metadata_dims, Measure == "Samples"), aes(x = Stage, y = Count, fill = Stage)) +
-		  geom_bar(stat = "identity") +
-		  geom_text(aes(label = Count), vjust = -0.5) +  # Add count labels on top of bars
-		  theme_minimal() +
-		  labs(title = "Metadata: Number of Samples (Rows)", y = "Count", x = "") +
-		  theme(legend.position = "none") +
-		  scale_fill_manual(values = c("Before Filtering" = "#32CD32", "After Filtering" = "#FFD700")) # Change colors
-		
-		# Plot for metadata features before and after filtering
-		metadata_features_plot <- ggplot(subset(metadata_dims, Measure == "Features"), aes(x = Stage, y = Count, fill = Stage)) +
-		  geom_bar(stat = "identity") +
-		  geom_text(aes(label = Count), vjust = -0.5) +  # Add count labels on top of bars
-		  theme_minimal() +
-		  labs(title = "Metadata: Number of Features (Columns)", y = "Sample Attributes", x = "") +
-		  theme(legend.position = "none") + 
-		  scale_fill_manual(values = c("Before Filtering" =  "#32CD32", "After Filtering" = "#FFD700")) # Change colors
-		
-		# Arrange the four plots in a grid
-		combined_plot <- grid.arrange(count_samples_plot, count_genes_plot,
-					      metadata_samples_plot, metadata_features_plot,
-					      ncol = 2)
-		
-		# Save the combined plot
-		ggsave("Figures/Figure2.2.1.6.Dimensions_Comparison.png", plot = combined_plot, width = 12, height = 10, bg = "white")
-		
-		
-		
-		# ========================================================
-		# Step 6: Reassign Filtered Data
-		# ========================================================
-		# Reassign filtered versions back to counts_matrix and metadata
-		counts_matrix <- counts_matrix_filtered
-		metadata <- metadata_filtered
-		
-		# ======================================
-		# Step 7. Print Summary Information about the Count Matrix and Metadata
-		# ======================================
-		cat("\n\n# Summary Information of the Count Matrix and Metadata (Post-Outlier Removal)\n")
-		cat("=========================================================\n")
-		
-		# Count matrix summary
-		cat("\nCount Matrix Summary:\n")
-		cat("---------------------------------------------------------\n")
-		cat("Number of Genes (Rows): ", nrow(counts_matrix), "\n")
-		cat("Number of Samples (Columns): ", ncol(counts_matrix), "\n\n")
-		
-		
-		# Metadata summary
-		cat("\nMetadata Summary:\n")
-		cat("---------------------------------------------------------\n")
-		cat("Number of Samples (Rows): ", nrow(metadata), "\n")
-		cat("Number of Features (Columns): ", ncol(metadata), "\n\n")
+	# ========================================================
+	# Load necessary libraries
+	# ========================================================
+	library(ggplot2)
+	library(gridExtra) # For arranging multiple plots in one figure
+	
+	# ========================================================
+	# Step 1: Calculate Library Size and Identify Outliers
+	# ========================================================
+	
+	# Calculate library sizes
+	library_sizes <- colSums(counts_matrix)
+	
+	# Optionally, print summary to check for anomalies
+	summary(library_sizes)
+	
+	# Identify potential outlier samples based on library size
+	# Step 1.1: Set thresholds for outlier identification
+	# Set the lower threshold to identify samples with low counts
+	lower_threshold <- quantile(library_sizes, 0.25) - 1.5 * IQR(library_sizes)
+	
+	# Set the upper threshold to identify samples with very high counts
+	upper_threshold <- quantile(library_sizes, 0.75) + 1.5 * IQR(library_sizes)
+	
+	
+	# Step 1.2: Find outlier samples
+	# Uncomment the corresponding line depending on whether you want to use:
+	# - Only the lower threshold
+	# - Only the upper threshold
+	# - Both lower and upper thresholds
+	
+	# Use only the lower threshold:
+	# outlier_samples <- colnames(counts_matrix)[library_sizes < lower_threshold]
+	
+	# Use both lower and upper thresholds:
+	outlier_samples <- colnames(counts_matrix)[library_sizes < lower_threshold | library_sizes > upper_threshold]
+	
+	# ========================================================
+	# Step 2: Store Original Dimensions Before Filtering (First  part for Plotting Dimensions of Count Matrix and Metadata)
+	# ========================================================
+	
+	# Store original dimensions before filtering
+	counts_matrix_before <- dim(counts_matrix)  # [number of genes, number of samples]
+	metadata_before <- dim(metadata)            # [number of samples, number of features]
+	
+	
+	# ========================================================
+	# Step 3: Remove Outlier Samples from Data
+	# ========================================================
+	
+	# Step 3.1: Remove outlier samples from counts matrix
+	counts_matrix_filtered <- counts_matrix[, !(colnames(counts_matrix) %in% outlier_samples)]
+	
+	# Step 3.2: Remove outlier samples from metadata
+	metadata_filtered <- metadata[colnames(counts_matrix_filtered), ]
+	
+	# Step 3.3: Store dimensions after filtering (Second part for Plotting Dimensions of Count Matrix and Metadata)
+	counts_matrix_after <- dim(counts_matrix_filtered)
+	metadata_after <- dim(metadata_filtered)
+	
+	# Step 3.4: Calculate filtered library sizes
+	filtered_library_sizes <- colSums(counts_matrix_filtered)
+	
+	# ========================================================
+	# Step 4: Plot the Filtered Library Sizes (Box, Violin, Dot, Bar, Density plots)
+	# ========================================================
+	# Step 4.1: Prepare Data for Plotting:
+	
+	# Combine original and filtered library sizes into a data frame for comparison
+	comparison_df <- data.frame(
+	  Sample = c(names(library_sizes), names(filtered_library_sizes)),
+	  Library_Size = c(library_sizes, filtered_library_sizes),
+	  Group = c(rep("Original", length(library_sizes)), rep("Filtered", length(filtered_library_sizes)))
+	)
+	
+	
+	# Step 4.2: Boxplot of Library Sizes Before and After Filtering
+	box_plot <- ggplot(comparison_df, aes(x = Group, y = Library_Size, fill = Group)) +
+	  geom_boxplot() +
+	  theme_minimal() +
+	  labs(title = "Boxplot of Library Sizes Before and After Removing Outliers",
+	       x = "Group", y = "Total Counts per Sample") +
+	  theme(legend.position = "none")
+	
+	ggsave("Figures/Figure2.2.1.3.Box_Plot_Library_Sizes.png", plot = box_plot, width = 8, height = 5, bg = "white")
+	
+	
+	# Step 4.3: Violin Plot of Library Sizes Before and After Filtering
+	violin_plot <- ggplot(comparison_df, aes(x = Group, y = Library_Size, fill = Group)) +
+	  geom_violin(trim = FALSE, alpha = 0.6) +
+	  theme_minimal() +
+	  labs(title = "Violin Plot of Library Sizes Before and After Removing Outliers",
+	       x = "Group", y = "Total Counts per Sample") +
+	  theme(legend.position = "none")
+	
+	ggsave("Figures/Figure2.2.1.5.Violin_Plot_Library_Sizes.png", plot = violin_plot, width = 8, height = 5, bg = "white")
+	
+	
+	
+	# Step 4.4: Dot Plot with Annotation of Outliers
+	dot_plot <- ggplot(comparison_df, aes(x = Sample, y = Library_Size, color = Group)) +
+	  geom_point() +
+	  theme_minimal() +
+	  labs(title = "Dot Plot of Library Sizes with Outlier Annotation", 
+	       x = "Sample", y = "Total Counts per Sample") +
+	  theme(axis.text.x = element_blank(), axis.ticks.x = element_blank()) +
+	  geom_text(data = subset(comparison_df, Group == "Original" & Sample %in% outlier_samples), 
+		    aes(label = Sample), vjust = -1, size = 3, color = "red", angle = 5)
+	
+	ggsave("Figures/Figure2.2.1.1.Dot_Plot_Library_Sizes.png", plot = dot_plot, width = 10, height = 5, bg = "white")
+	
+	
+	
+	# Step 4.5: Comparative Bar Plot Before and After Filtering
+	bar_plot <- ggplot(comparison_df, aes(x = Sample, y = Library_Size, fill = Group)) +
+	  geom_bar(stat = "identity", position = "dodge") +
+	  theme_minimal() +
+	  labs(title = "Comparative Bar Plot of Library Sizes Before and After Removing Outliers", 
+	       x = "Sample", y = "Total Counts per Sample") +
+	  theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+	
+	ggsave("Figures/Figure2.2.1.2.Bar_Plot_Library_Sizes.png", plot = bar_plot, width = 10, height = 5, bg = "white")
+	
+	
+	
+	# Step 4.6: Side-by-Side Density Plot Before and After Filtering
+	density_plot <- ggplot(comparison_df, aes(x = Library_Size, fill = Group)) +
+	  geom_density(alpha = 0.5) +
+	  theme_minimal() +
+	  labs(title = "Density Plot of Library Sizes Before and After Removing Outliers", 
+	       x = "Total Counts per Sample", y = "Density") +
+	  scale_x_log10() +
+	  theme(legend.position = "top")
+	
+	ggsave("Figures/Figure2.2.1.4.Density_Plot_Library_Sizes.png", plot = density_plot, width = 8, height = 5, bg = "white")
+	
+	
+	# ========================================================
+	# Step 5: Plot Dimensions of Count Matrix and Metadata (Third  part for Plotting Dimensions of Count Matrix and Metadata)
+	# ========================================================
+	
+	# Step 5.1: Create Data Frames for Count Matrix Dimensions
+	counts_matrix_dims <- data.frame(
+	  Measure = rep(c("Samples", "Genes"), each = 2),
+	  Stage = rep(c("Before Filtering", "After Filtering"), 2),
+	  Count = c(counts_matrix_before[2], counts_matrix_after[2],
+		    counts_matrix_before[1], counts_matrix_after[1])
+	)
+	
+	# Step 5.2: Create Data Frames for Count Matrix and Metadata Dimensions
+	metadata_dims <- data.frame(
+	  Measure = rep(c("Samples", "Features"), each = 2),
+	  Stage = rep(c("Before Filtering", "After Filtering"), 2),
+	  Count = c(metadata_before[1], metadata_after[1],
+		    metadata_before[2], metadata_after[2])
+	)
+	
+	
+	# Step 5.3: Generate and Combine Plots for Dimensions
+	
+	# Plot for count matrix samples before and after filtering
+	count_samples_plot <- ggplot(subset(counts_matrix_dims, Measure == "Samples"), aes(x = Stage, y = Count, fill = Stage)) +
+	  geom_bar(stat = "identity") +
+	  geom_text(aes(label = Count), vjust = -0.5) +  # Add count labels on top of bars
+	  theme_minimal() +
+	  labs(title = "Count Matrix: Number of Samples (Columns)", y = "Samples", x = "") +
+	  theme(legend.position = "none") +
+	  scale_fill_manual(values = c("Before Filtering" = "#4682B4", "After Filtering" = "#8A2BE2")) # Change colors
+	
+	# Plot for count matrix genes (transcripts) before and after filtering
+	count_genes_plot <- ggplot(subset(counts_matrix_dims, Measure == "Genes"), aes(x = Stage, y = Count, fill = Stage)) +
+	  geom_bar(stat = "identity") +
+	  geom_text(aes(label = Count), vjust = -0.5) +  # Add count labels on top of bars
+	  theme_minimal() +
+	  labs(title = "Count Matrix: Number of Genes (Rows)", y = "Genes (Transcripts)", x = "") +
+	  theme(legend.position = "none") +
+	  scale_fill_manual(values = c("Before Filtering" = "#4682B4", "After Filtering" = "#8A2BE2")) # Change colors
+	
+	# Plot for metadata samples before and after filtering
+	metadata_samples_plot <- ggplot(subset(metadata_dims, Measure == "Samples"), aes(x = Stage, y = Count, fill = Stage)) +
+	  geom_bar(stat = "identity") +
+	  geom_text(aes(label = Count), vjust = -0.5) +  # Add count labels on top of bars
+	  theme_minimal() +
+	  labs(title = "Metadata: Number of Samples (Rows)", y = "Count", x = "") +
+	  theme(legend.position = "none") +
+	  scale_fill_manual(values = c("Before Filtering" = "#32CD32", "After Filtering" = "#FFD700")) # Change colors
+	
+	# Plot for metadata features before and after filtering
+	metadata_features_plot <- ggplot(subset(metadata_dims, Measure == "Features"), aes(x = Stage, y = Count, fill = Stage)) +
+	  geom_bar(stat = "identity") +
+	  geom_text(aes(label = Count), vjust = -0.5) +  # Add count labels on top of bars
+	  theme_minimal() +
+	  labs(title = "Metadata: Number of Features (Columns)", y = "Sample Attributes", x = "") +
+	  theme(legend.position = "none") + 
+	  scale_fill_manual(values = c("Before Filtering" =  "#32CD32", "After Filtering" = "#FFD700")) # Change colors
+	
+	# Arrange the four plots in a grid
+	combined_plot <- grid.arrange(count_samples_plot, count_genes_plot,
+				      metadata_samples_plot, metadata_features_plot,
+				      ncol = 2)
+	
+	# Save the combined plot
+	ggsave("Figures/Figure2.2.1.6.Dimensions_Comparison.png", plot = combined_plot, width = 12, height = 10, bg = "white")
+	
+	
+	
+	# ========================================================
+	# Step 6: Reassign Filtered Data
+	# ========================================================
+	# Reassign filtered versions back to counts_matrix and metadata
+	counts_matrix <- counts_matrix_filtered
+	metadata <- metadata_filtered
+	
+	# ======================================
+	# Step 7. Print Summary Information about the Count Matrix and Metadata
+	# ======================================
+	cat("\n\n# Summary Information of the Count Matrix and Metadata (Post-Outlier Removal)\n")
+	cat("=========================================================\n")
+	
+	# Count matrix summary
+	cat("\nCount Matrix Summary:\n")
+	cat("---------------------------------------------------------\n")
+	cat("Number of Genes (Rows): ", nrow(counts_matrix), "\n")
+	cat("Number of Samples (Columns): ", ncol(counts_matrix), "\n\n")
+	
+	
+	# Metadata summary
+	cat("\nMetadata Summary:\n")
+	cat("---------------------------------------------------------\n")
+	cat("Number of Samples (Rows): ", nrow(metadata), "\n")
+	cat("Number of Features (Columns): ", ncol(metadata), "\n\n")
 		
 			cat("\n=========================================================\n")
 			    </code></pre>
 			</div>
 			
- 
-	    
-			<!-- Dot Plot (Figure 2.2.1.1) -->
-			<figure id="figure-2-2-1-1" style="text-align: justify; margin: 10px;">
-			    <a href="Pictures/RNA_Seq_Task1/Figure2.2.1.1.Dot_Plot_Library_Sizes.png" target="_blank">
-			        <img src="Pictures/RNA_Seq_Task1/Figure2.2.1.1.Dot_Plot_Library_Sizes.png" alt="Dot Plot of Library Sizes with Outlier Annotation" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
-			    </a>
-			    <figcaption id="figure-caption-2-2-1-1">
-			        Figure 2.2.1.1. Dot Plot of Library Sizes with Outlier Annotation. This dot plot visualizes the library sizes for all samples before and after outlier removal. The outlier samples are clearly labeled to show their positions, with the filtered samples marked in red and labeled. It illustrates the rationale behind removing outliers by highlighting samples that significantly deviate from the main distribution.
-			    </figcaption>
-			</figure>
-			
-			<!-- Bar Plot (Figure 2.2.1.2) -->
-			<figure id="figure-2-2-1-2" style="text-align: justify; margin: 10px;">
-			    <a href="Pictures/RNA_Seq_Task1/Figure2.2.1.2.Bar_Plot_Library_Sizes.png" target="_blank">
-			        <img src="Pictures/RNA_Seq_Task1/Figure2.2.1.2.Bar_Plot_Library_Sizes.png" alt="Comparative Bar Plot of Library Sizes" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
-			    </a>
-			    <figcaption id="figure-caption-2-2-1-2">
-			        Figure 2.2.1.2. Comparative Bar Plot of Library Sizes Before and After Removing Outliers. This bar plot compares the total counts per sample before and after removing the identified outliers. It allows a direct comparison of individual library sizes, illustrating how outlier removal affects the data distribution.
-			    </figcaption>
-			</figure>
-			
-			<!-- Box Plot (Figure 2.2.1.3) -->
-			<figure id="figure-2-2-1-3" style="text-align: justify; margin: 10px;">
-			    <a href="Pictures/RNA_Seq_Task1/Figure2.2.1.3.Box_Plot_Library_Sizes.png" target="_blank">
-			        <img src="Pictures/RNA_Seq_Task1/Figure2.2.1.3.Box_Plot_Library_Sizes.png" alt="Boxplot of Library Sizes" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
-			    </a>
-			    <figcaption id="figure-caption-2-2-1-3">
-			        Figure 2.2.1.3. Boxplot of Library Sizes Before and After Removing Outliers. This boxplot provides a summary of the library size distributions for the original and filtered datasets. By comparing the interquartile ranges and identifying extreme values, it highlights how removing outliers impacts the spread of the data.
-			    </figcaption>
-			</figure>
-			
-			<!-- Density Plot (Figure 2.2.1.4) -->
-			<figure id="figure-2-2-1-4" style="text-align: justify; margin: 10px;">
-			    <a href="Pictures/RNA_Seq_Task1/Figure2.2.1.4.Density_Plot_Library_Sizes.png" target="_blank">
-			        <img src="Pictures/RNA_Seq_Task1/Figure2.2.1.4.Density_Plot_Library_Sizes.png" alt="Density Plot of Library Sizes" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
-			    </a>
-			    <figcaption id="figure-caption-2-2-1-4">
-			        Figure 2.2.1.4. Density Plot of Library Sizes Before and After Removing Outliers. The density plot shows the distribution of library sizes across all samples before and after outlier removal. The plot visualizes changes in the overall density, allowing us to observe shifts in data distribution and the effects of filtering extreme values.
-			    </figcaption>
-			</figure>
-			
-			<!-- Violin Plot (Figure 2.2.1.5) -->
-			<figure id="figure-2-2-1-5" style="text-align: justify; margin: 10px;">
-			    <a href="Pictures/RNA_Seq_Task1/Figure2.2.1.5.Violin_Plot_Library_Sizes.png" target="_blank">
-			        <img src="Pictures/RNA_Seq_Task1/Figure2.2.1.5.Violin_Plot_Library_Sizes.png" alt="Violin Plot of Library Sizes" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
-			    </a>
-			    <figcaption id="figure-caption-2-2-1-5">
-			        Figure 2.2.1.5. Violin Plot of Library Sizes Before and After Removing Outliers. This violin plot combines elements of a boxplot and a density plot to illustrate both the distribution and summary statistics of the library sizes before and after removing outliers. It helps visualize the spread and density of values, showing the differences between the original and filtered groups.
-			    </figcaption>
-			</figure>
-			
-			<!-- Dimensions Comparison (Figure 2.2.1.6) -->
-			<figure id="figure-2-2-1-6" style="text-align: justify; margin: 10px;">
-			    <a href="Pictures/RNA_Seq_Task1/Figure2.2.1.6.Dimensions_Comparison.png" target="_blank">
-			        <img src="Pictures/RNA_Seq_Task1/Figure2.2.1.6.Dimensions_Comparison.png" alt="Dimensions Comparison of Count Matrix and Metadata" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
-			    </a>
-			    <figcaption id="figure-caption-2-2-1-6">
-			        Figure 2.2.1.6. Dimensions Comparison: Four bar plots showing changes in the count matrix and metadata dimensions before and after outlier removal. Only the number of samples changed, confirming that outliers were removed, while genes and features remained unchanged.
-			    </figcaption>
-			</figure>
-			
-			<!-- Summary Information (Figure 2.2.1.7) -->
-			<figure id="figure-2-2-1-7" style="text-align: justify; margin: 10px;">
-			    <a href="Pictures/RNA_Seq_Task1/Figure2.2.1.7.Summary_Information_of_the_Count_Matrix_Metadata_After_Removing_Outlier_Samples.png" target="_blank">
-			        <img src="Pictures/RNA_Seq_Task1/Figure2.2.1.7.Summary_Information_of_the_Count_Matrix_Metadata_After_Removing_Outlier_Samples.png" alt="Summary Information of the Count Matrix and Metadata" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
-			    </a>
-			    <figcaption id="figure-caption-2-2-1-7">
-			        Figure 2.2.1.7. Summary Information of the Count Matrix and Metadata (Post-Outlier Removal), showing the updated number of genes, samples, and features after removing outlier samples.
-			    </figcaption>
-			</figure>
-			
-			
-						
-		
+
 		
 
-		 <!-- ============== A horizontal line ================== -->
+		
+
+
+
+ 
+
+			 <!-- Figures Row with Click-to-Enlarge Feature -->
+			<div style="display: flex; justify-content: space-around;">
+			    
+			    <!-- Dot Plot (Figure 2.2.1.1) -->
+			    <figure id="figure-2-2-1-1" style="text-align: justify; margin: 10px;">
+			        <a href="Pictures/RNA_Seq_Task1/Figure2.2.1.1.Dot_Plot_Library_Sizes.png" target="_blank">
+			            <img src="Pictures/RNA_Seq_Task1/Figure2.2.1.1.Dot_Plot_Library_Sizes.png" alt="Dot Plot of Library Sizes with Outlier Annotation" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%; height: 400px; object-fit: contain;">
+			
+			        </a>
+			        <figcaption id="figure-caption-2-2-1-1">
+			            <strong>Figure 2.2.1.1.</strong> Dot Plot of Library Sizes with Outlier Annotation. This dot plot visualizes the library sizes for all samples before and after outlier removal. The outlier samples are clearly labeled to show their positions, with the filtered samples marked in red and labeled. It illustrates the rationale behind removing outliers by highlighting samples that significantly deviate from the main distribution.
+			        </figcaption>
+			    </figure>
+			
+			    <!-- Bar Plot (Figure 2.2.1.2) -->
+			    <figure id="figure-2-2-1-2" style="text-align: justify; margin: 10px;">
+			        <a href="Pictures/RNA_Seq_Task1/Figure2.2.1.2.Bar_Plot_Library_Sizes.png" target="_blank">
+			            <img src="Pictures/RNA_Seq_Task1/Figure2.2.1.2.Bar_Plot_Library_Sizes.png" alt="Comparative Bar Plot of Library Sizes" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%; height: 400px; object-fit: contain;">
+			        </a>
+			        <figcaption id="figure-caption-2-2-1-2">
+			            <strong>Figure 2.2.1.2.</strong> Comparative Bar Plot of Library Sizes Before and After Removing Outliers. This bar plot compares the total counts per sample before and after removing the identified outliers. It allows a direct comparison of individual library sizes, illustrating how outlier removal affects the data distribution.
+			        </figcaption>
+			    </figure>
+			
+			    <!-- Box Plot (Figure 2.2.1.3) -->
+			    <figure id="figure-2-2-1-3" style="text-align: justify; margin: 10px;">
+			        <a href="Pictures/RNA_Seq_Task1/Figure2.2.1.3.Box_Plot_Library_Sizes.png" target="_blank">
+			            <img src="Pictures/RNA_Seq_Task1/Figure2.2.1.3.Box_Plot_Library_Sizes.png" alt="Boxplot of Library Sizes" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%; height: 400px; object-fit: contain;">
+			        </a>
+			        <figcaption id="figure-caption-2-2-1-3">
+			            <strong>Figure 2.2.1.3.</strong> Boxplot of Library Sizes Before and After Removing Outliers. This boxplot provides a summary of the library size distributions for the original and filtered datasets. By comparing the interquartile ranges and identifying extreme values, it highlights how removing outliers impacts the spread of the data.
+			        </figcaption>
+			    </figure>
+			
+			    <!-- Density Plot (Figure 2.2.1.4) -->
+			    <figure id="figure-2-2-1-4" style="text-align: justify; margin: 10px;">
+			        <a href="Pictures/RNA_Seq_Task1/Figure2.2.1.4.Density_Plot_Library_Sizes.png" target="_blank">
+			            <img src="Pictures/RNA_Seq_Task1/Figure2.2.1.4.Density_Plot_Library_Sizes.png" alt="Density Plot of Library Sizes" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%; height: 400px; object-fit: contain;">
+			        </a>
+			        <figcaption id="figure-caption-2-2-1-4">
+			            <strong>Figure 2.2.1.4.</strong> Density Plot of Library Sizes Before and After Removing Outliers. The density plot shows the distribution of library sizes across all samples before and after outlier removal. The plot visualizes changes in the overall density, allowing us to observe shifts in data distribution and the effects of filtering extreme values.
+			        </figcaption>
+			    </figure>
+			
+			</div>
+			
+			<div style="display: flex; justify-content: space-around;">
+			
+			    <!-- Violin Plot (Figure 2.2.1.5) -->
+			    <figure id="figure-2-2-1-5" style="text-align: justify; margin: 10px;">
+			        <a href="Pictures/RNA_Seq_Task1/Figure2.2.1.5.Violin_Plot_Library_Sizes.png" target="_blank">
+			            <img src="Pictures/RNA_Seq_Task1/Figure2.2.1.5.Violin_Plot_Library_Sizes.png" alt="Violin Plot of Library Sizes" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%; height: 400px; object-fit: contain;">
+			        </a>
+			        <figcaption id="figure-caption-2-2-1-5">
+			            <strong>Figure 2.2.1.5.</strong> Violin Plot of Library Sizes Before and After Removing Outliers. This violin plot combines elements of a boxplot and a density plot to illustrate both the distribution and summary statistics of the library sizes before and after removing outliers. It helps visualize the spread and density of values, showing the differences between the original and filtered groups.
+			        </figcaption>
+			    </figure>
+			
+			    <!-- Dimensions Comparison (Figure 2.2.1.6) -->
+			    <figure id="figure-2-2-1-6" style="text-align: justify; margin: 10px;">
+			        <a href="Pictures/RNA_Seq_Task1/Figure2.2.1.6.Dimensions_Comparison.png" target="_blank">
+			            <img src="Pictures/RNA_Seq_Task1/Figure2.2.1.6.Dimensions_Comparison.png" alt="Dimensions Comparison of Count Matrix and Metadata" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%; height: 400px; object-fit: contain;">
+			        </a>
+			        <figcaption id="figure-caption-2-2-1-6">
+			            <strong>Figure 2.2.1.6.</strong> Dimensions Comparison: Four bar plots showing changes in the count matrix and metadata dimensions before and after outlier removal. Only the number of samples changed, confirming that outliers were removed, while genes and features remained unchanged.
+			        </figcaption>
+			    </figure>
+			
+			
+			    <!-- Summary Information (Figure 2.2.1.7) -->
+			    <figure id="figure-2-2-1-7" style="text-align: justify; margin: 10px;">
+			        <a href="Pictures/RNA_Seq_Task1/Figure2.2.1.7.Summary_Information_of_the_Count_Matrix_Metadata_After_Removing_Outlier_Samples.png" target="_blank">
+			            <img src="Pictures/RNA_Seq_Task1/Figure2.2.1.7.Summary_Information_of_the_Count_Matrix_Metadata_After_Removing_Outlier_Samples.png" alt="Summary Information of the Count Matrix and Metadata" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%; height: 400px; object-fit: contain;">
+			        </a>
+			        <figcaption id="figure-caption-2-2-1-7">
+			            <strong>Figure 2.2.1.7.</strong> Summary Information of the Count Matrix and Metadata (Post-Outlier Removal), showing the updated number of genes, samples, and features after removing outlier samples.
+			        </figcaption>
+			    </figure>
+			
+			</div>
+
+
+
+ 
+
+ <!-- ============== A horizontal line ================== -->
 				<!-- Add a horizontal line above the introduction -->
 				<hr style="border: none; border-top: 1px solid black; margin: 20px 0;">
 		 <!-- =================================================== -->
 		 
-testi:
- <!-- Figures Row with Click-to-Enlarge Feature -->
-<div style="display: flex; justify-content: space-around;">
-    
-    <!-- Dot Plot (Figure 2.2.1.1) -->
-    <figure id="figure-2-2-1-1" style="text-align: justify; margin: 10px;">
-        <a href="Pictures/RNA_Seq_Task1/Figure2.2.1.1.Dot_Plot_Library_Sizes.png" target="_blank">
-            <img src="Pictures/RNA_Seq_Task1/Figure2.2.1.1.Dot_Plot_Library_Sizes.png" alt="Dot Plot of Library Sizes with Outlier Annotation" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
-        </a>
-        <figcaption id="figure-caption-2-2-1-1">
-            <strong>Figure 2.2.1.1.</strong> Dot Plot of Library Sizes with Outlier Annotation. This dot plot visualizes the library sizes for all samples before and after outlier removal. The outlier samples are clearly labeled to show their positions, with the filtered samples marked in red and labeled. It illustrates the rationale behind removing outliers by highlighting samples that significantly deviate from the main distribution.
-        </figcaption>
-    </figure>
-
-    <!-- Bar Plot (Figure 2.2.1.2) -->
-    <figure id="figure-2-2-1-2" style="text-align: justify; margin: 10px;">
-        <a href="Pictures/RNA_Seq_Task1/Figure2.2.1.2.Bar_Plot_Library_Sizes.png" target="_blank">
-            <img src="Pictures/RNA_Seq_Task1/Figure2.2.1.2.Bar_Plot_Library_Sizes.png" alt="Comparative Bar Plot of Library Sizes" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
-        </a>
-        <figcaption id="figure-caption-2-2-1-2">
-            <strong>Figure 2.2.1.2.</strong> Comparative Bar Plot of Library Sizes Before and After Removing Outliers. This bar plot compares the total counts per sample before and after removing the identified outliers. It allows a direct comparison of individual library sizes, illustrating how outlier removal affects the data distribution.
-        </figcaption>
-    </figure>
-
-</div>
-
-<div style="display: flex; justify-content: space-around;">
-
-    <!-- Box Plot (Figure 2.2.1.3) -->
-    <figure id="figure-2-2-1-3" style="text-align: justify; margin: 10px;">
-        <a href="Pictures/RNA_Seq_Task1/Figure2.2.1.3.Box_Plot_Library_Sizes.png" target="_blank">
-            <img src="Pictures/RNA_Seq_Task1/Figure2.2.1.3.Box_Plot_Library_Sizes.png" alt="Boxplot of Library Sizes" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
-        </a>
-        <figcaption id="figure-caption-2-2-1-3">
-            <strong>Figure 2.2.1.3.</strong> Boxplot of Library Sizes Before and After Removing Outliers. This boxplot provides a summary of the library size distributions for the original and filtered datasets. By comparing the interquartile ranges and identifying extreme values, it highlights how removing outliers impacts the spread of the data.
-        </figcaption>
-    </figure>
-
-    <!-- Density Plot (Figure 2.2.1.4) -->
-    <figure id="figure-2-2-1-4" style="text-align: justify; margin: 10px;">
-        <a href="Pictures/RNA_Seq_Task1/Figure2.2.1.4.Density_Plot_Library_Sizes.png" target="_blank">
-            <img src="Pictures/RNA_Seq_Task1/Figure2.2.1.4.Density_Plot_Library_Sizes.png" alt="Density Plot of Library Sizes" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
-        </a>
-        <figcaption id="figure-caption-2-2-1-4">
-            <strong>Figure 2.2.1.4.</strong> Density Plot of Library Sizes Before and After Removing Outliers. The density plot shows the distribution of library sizes across all samples before and after outlier removal. The plot visualizes changes in the overall density, allowing us to observe shifts in data distribution and the effects of filtering extreme values.
-        </figcaption>
-    </figure>
-
-</div>
-
-<div style="display: flex; justify-content: space-around;">
-
-    <!-- Violin Plot (Figure 2.2.1.5) -->
-    <figure id="figure-2-2-1-5" style="text-align: justify; margin: 10px;">
-        <a href="Pictures/RNA_Seq_Task1/Figure2.2.1.5.Violin_Plot_Library_Sizes.png" target="_blank">
-            <img src="Pictures/RNA_Seq_Task1/Figure2.2.1.5.Violin_Plot_Library_Sizes.png" alt="Violin Plot of Library Sizes" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
-        </a>
-        <figcaption id="figure-caption-2-2-1-5">
-            <strong>Figure 2.2.1.5.</strong> Violin Plot of Library Sizes Before and After Removing Outliers. This violin plot combines elements of a boxplot and a density plot to illustrate both the distribution and summary statistics of the library sizes before and after removing outliers. It helps visualize the spread and density of values, showing the differences between the original and filtered groups.
-        </figcaption>
-    </figure>
-
-    <!-- Dimensions Comparison (Figure 2.2.1.6) -->
-    <figure id="figure-2-2-1-6" style="text-align: justify; margin: 10px;">
-        <a href="Pictures/RNA_Seq_Task1/Figure2.2.1.6.Dimensions_Comparison.png" target="_blank">
-            <img src="Pictures/RNA_Seq_Task1/Figure2.2.1.6.Dimensions_Comparison.png" alt="Dimensions Comparison of Count Matrix and Metadata" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
-        </a>
-        <figcaption id="figure-caption-2-2-1-6">
-            <strong>Figure 2.2.1.6.</strong> Dimensions Comparison: Four bar plots showing changes in the count matrix and metadata dimensions before and after outlier removal. Only the number of samples changed, confirming that outliers were removed, while genes and features remained unchanged.
-        </figcaption>
-    </figure>
-
-
-    <!-- Summary Information (Figure 2.2.1.7) -->
-    <figure id="figure-2-2-1-7" style="text-align: justify; margin: 10px;">
-        <a href="Pictures/RNA_Seq_Task1/Figure2.2.1.7.Summary_Information_of_the_Count_Matrix_Metadata_After_Removing_Outlier_Samples.png" target="_blank">
-            <img src="Pictures/RNA_Seq_Task1/Figure2.2.1.7.Summary_Information_of_the_Count_Matrix_Metadata_After_Removing_Outlier_Samples.png" alt="Summary Information of the Count Matrix and Metadata" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
-        </a>
-        <figcaption id="figure-caption-2-2-1-7">
-            <strong>Figure 2.2.1.7.</strong> Summary Information of the Count Matrix and Metadata (Post-Outlier Removal), showing the updated number of genes, samples, and features after removing outlier samples.
-        </figcaption>
-    </figure>
-
-</div>
-
-
-Testi 2: cover
-
- <!-- Figures Row with Click-to-Enlarge Feature -->
-<div style="display: flex; justify-content: space-around;">
-    
-    <!-- Dot Plot (Figure 2.2.1.1) -->
-    <figure id="figure-2-2-1-1" style="text-align: justify; margin: 10px;">
-        <a href="Pictures/RNA_Seq_Task1/Figure2.2.1.1.Dot_Plot_Library_Sizes.png" target="_blank">
-            <img src="Pictures/RNA_Seq_Task1/Figure2.2.1.1.Dot_Plot_Library_Sizes.png" alt="Dot Plot of Library Sizes with Outlier Annotation" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%; height: 400px; object-fit: contain;">
-
-        </a>
-        <figcaption id="figure-caption-2-2-1-1">
-            <strong>Figure 2.2.1.1.</strong> Dot Plot of Library Sizes with Outlier Annotation. This dot plot visualizes the library sizes for all samples before and after outlier removal. The outlier samples are clearly labeled to show their positions, with the filtered samples marked in red and labeled. It illustrates the rationale behind removing outliers by highlighting samples that significantly deviate from the main distribution.
-        </figcaption>
-    </figure>
-
-    <!-- Bar Plot (Figure 2.2.1.2) -->
-    <figure id="figure-2-2-1-2" style="text-align: justify; margin: 10px;">
-        <a href="Pictures/RNA_Seq_Task1/Figure2.2.1.2.Bar_Plot_Library_Sizes.png" target="_blank">
-            <img src="Pictures/RNA_Seq_Task1/Figure2.2.1.2.Bar_Plot_Library_Sizes.png" alt="Comparative Bar Plot of Library Sizes" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%; height: 400px; object-fit: contain;">
-        </a>
-        <figcaption id="figure-caption-2-2-1-2">
-            <strong>Figure 2.2.1.2.</strong> Comparative Bar Plot of Library Sizes Before and After Removing Outliers. This bar plot compares the total counts per sample before and after removing the identified outliers. It allows a direct comparison of individual library sizes, illustrating how outlier removal affects the data distribution.
-        </figcaption>
-    </figure>
-
-    <!-- Box Plot (Figure 2.2.1.3) -->
-    <figure id="figure-2-2-1-3" style="text-align: justify; margin: 10px;">
-        <a href="Pictures/RNA_Seq_Task1/Figure2.2.1.3.Box_Plot_Library_Sizes.png" target="_blank">
-            <img src="Pictures/RNA_Seq_Task1/Figure2.2.1.3.Box_Plot_Library_Sizes.png" alt="Boxplot of Library Sizes" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%; height: 400px; object-fit: contain;">
-        </a>
-        <figcaption id="figure-caption-2-2-1-3">
-            <strong>Figure 2.2.1.3.</strong> Boxplot of Library Sizes Before and After Removing Outliers. This boxplot provides a summary of the library size distributions for the original and filtered datasets. By comparing the interquartile ranges and identifying extreme values, it highlights how removing outliers impacts the spread of the data.
-        </figcaption>
-    </figure>
-
-    <!-- Density Plot (Figure 2.2.1.4) -->
-    <figure id="figure-2-2-1-4" style="text-align: justify; margin: 10px;">
-        <a href="Pictures/RNA_Seq_Task1/Figure2.2.1.4.Density_Plot_Library_Sizes.png" target="_blank">
-            <img src="Pictures/RNA_Seq_Task1/Figure2.2.1.4.Density_Plot_Library_Sizes.png" alt="Density Plot of Library Sizes" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%; height: 400px; object-fit: contain;">
-        </a>
-        <figcaption id="figure-caption-2-2-1-4">
-            <strong>Figure 2.2.1.4.</strong> Density Plot of Library Sizes Before and After Removing Outliers. The density plot shows the distribution of library sizes across all samples before and after outlier removal. The plot visualizes changes in the overall density, allowing us to observe shifts in data distribution and the effects of filtering extreme values.
-        </figcaption>
-    </figure>
-
-</div>
-
-<div style="display: flex; justify-content: space-around;">
-
-    <!-- Violin Plot (Figure 2.2.1.5) -->
-    <figure id="figure-2-2-1-5" style="text-align: justify; margin: 10px;">
-        <a href="Pictures/RNA_Seq_Task1/Figure2.2.1.5.Violin_Plot_Library_Sizes.png" target="_blank">
-            <img src="Pictures/RNA_Seq_Task1/Figure2.2.1.5.Violin_Plot_Library_Sizes.png" alt="Violin Plot of Library Sizes" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%; height: 400px; object-fit: contain;">
-        </a>
-        <figcaption id="figure-caption-2-2-1-5">
-            <strong>Figure 2.2.1.5.</strong> Violin Plot of Library Sizes Before and After Removing Outliers. This violin plot combines elements of a boxplot and a density plot to illustrate both the distribution and summary statistics of the library sizes before and after removing outliers. It helps visualize the spread and density of values, showing the differences between the original and filtered groups.
-        </figcaption>
-    </figure>
-
-    <!-- Dimensions Comparison (Figure 2.2.1.6) -->
-    <figure id="figure-2-2-1-6" style="text-align: justify; margin: 10px;">
-        <a href="Pictures/RNA_Seq_Task1/Figure2.2.1.6.Dimensions_Comparison.png" target="_blank">
-            <img src="Pictures/RNA_Seq_Task1/Figure2.2.1.6.Dimensions_Comparison.png" alt="Dimensions Comparison of Count Matrix and Metadata" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%; height: 400px; object-fit: contain;">
-        </a>
-        <figcaption id="figure-caption-2-2-1-6">
-            <strong>Figure 2.2.1.6.</strong> Dimensions Comparison: Four bar plots showing changes in the count matrix and metadata dimensions before and after outlier removal. Only the number of samples changed, confirming that outliers were removed, while genes and features remained unchanged.
-        </figcaption>
-    </figure>
-
-
-    <!-- Summary Information (Figure 2.2.1.7) -->
-    <figure id="figure-2-2-1-7" style="text-align: justify; margin: 10px;">
-        <a href="Pictures/RNA_Seq_Task1/Figure2.2.1.7.Summary_Information_of_the_Count_Matrix_Metadata_After_Removing_Outlier_Samples.png" target="_blank">
-            <img src="Pictures/RNA_Seq_Task1/Figure2.2.1.7.Summary_Information_of_the_Count_Matrix_Metadata_After_Removing_Outlier_Samples.png" alt="Summary Information of the Count Matrix and Metadata" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%; height: 400px; object-fit: contain;">
-        </a>
-        <figcaption id="figure-caption-2-2-1-7">
-            <strong>Figure 2.2.1.7.</strong> Summary Information of the Count Matrix and Metadata (Post-Outlier Removal), showing the updated number of genes, samples, and features after removing outlier samples.
-        </figcaption>
-    </figure>
-
-</div>
-
-
-
- 
-
-
 			
 <!-- ========================================= 3. ======================================== -->
 		<div class="explanation">
