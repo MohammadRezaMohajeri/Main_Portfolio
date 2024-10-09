@@ -845,7 +845,7 @@ PE html>
 		        <img src="Pictures/RNA_Seq_Task1/Selected_Metadata_GSE157194.png" alt="Cumulative Variance Plot" style="display: block; background-color: #f0f0f0; padding: 20px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 90%; height: 400px;">
 		    </a>
 		    <figcaption id="figure-caption-3-1-1">
-		        Figure 3.1.1. Metadata Exploration as Part of Exploratory Data Analysis (EDA).
+		        Figure 3.1.1. Metadata Exploration as Part of Exploratory Data Analysis (EDA) (After filtering outlier samples).
 		    </figcaption>
 		</figure>
 		 <!-- =============================================================================== --> 
@@ -900,7 +900,7 @@ kable(timepoint_table, format = "html", col.names = c("Timepoint", "Count"))
 	        <img src="Pictures/RNA_Seq_Task1/Samples_distribution_GSE157194.png" alt="Cumulative Variance Plot" style="display: block; background-color: #f0f0f0; padding: 20px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 75%; height: 300px;">
 	    	    </a>
 		    <figcaption id="figure-caption-3-1-2">
-		       Figure 3.1.2. Sample distribution by patient group and timepoint: a. Patient groups (lesional, non-lesional, post-treatment), b. Timepoint distribution (baseline and 3 months post-treatment).
+		       Figure 3.1.2. Sample distribution by patient group and timepoint (After filtering outlier samples): a. Patient groups (lesional, non-lesional, post-treatment), b. Timepoint distribution (baseline and 3 months post-treatment).
 		    </figcaption>
 		</figure>
 
@@ -1090,7 +1090,7 @@ ggplot(data.frame(Genes = 1:length(cum_variance), CumulativeVariance = cum_varia
 	        <img src="Pictures/RNA_Seq_Task1/optimal_gene_count_heatmap_cumulative_variance.png" alt="Cumulative Variance Plot" style="display: block; background-color: #f0f0f0; padding: 20px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); ; width: 65%; height: 450px;">
 	    </a>
 	    <figcaption id="figure-caption-3-2-2">
-	        Figure 3.2.2. Cumulative Variance Plot to Determine Optimal Gene Count for Exploratory Heatmaps.
+	        Figure 3.2.2. Cumulative Variance Plot to Determine Optimal Gene Count for Exploratory Heatmaps after Low-Count Gene Removal.
 	    </figcaption>
 	</figure>
 
@@ -1185,7 +1185,7 @@ pheatmap(counts_matrix_log[top_var_genes_log, ],
 	        <a href="Pictures/RNA_Seq_Task1/Unsupervised_Heatmap_166_Samples_300_Genes.png" target="_blank">
 	            <img src="Pictures/RNA_Seq_Task1/Unsupervised_Heatmap_166_Samples_300_Genes.png" alt="Heatmap 1" style="display: block; background-color: #0c4b4f; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 85%; height: 80%;">
 	        </a>
-	        <figcaption id="figure-caption-3-2-3">Figure 3.2.3. Unsupervised Gene Expression Heatmaps for All Samples (160 samples) with the top 300 most variable genes.</figcaption>
+	        <figcaption id="figure-caption-3-2-3">Figure 3.2.3. Unsupervised Gene Expression Heatmaps for All Samples (160 samples) with the top 300 most variable genes (After filtering out outlier samples & Low-Count Genes).</figcaption>
 	    </figure>
 	
 	    <!-- Heatmap 2 (111/unsupervised) -->
@@ -1193,7 +1193,7 @@ pheatmap(counts_matrix_log[top_var_genes_log, ],
 	        <a href="Pictures/RNA_Seq_Task1/Unsupervised_Heatmap_111_Samples_300_Genes.png" target="_blank">
 	            <img src="Pictures/RNA_Seq_Task1/Unsupervised_Heatmap_111_Samples_300_Genes.png" alt="Heatmap 2" style="display: block; background-color: #0c4b4f; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 85%; height: 80%;;">
 	        </a>
-	        <figcaption id="figure-caption-3-2-4">Figure 3.2.4. Unsupervised Gene Expression Heatmaps for Baseline Lesional and Non-lesional Samples (109 samples) with the top 300 most variable genes.</figcaption>
+	        <figcaption id="figure-caption-3-2-4">Figure 3.2.4. Unsupervised Gene Expression Heatmaps for Baseline Lesional and Non-lesional Samples (109 samples) with the top 300 most variable genes  (After filtering out outlier samples & Low-Count Genes).</figcaption>
 	    </figure>
 	
 	</div>
@@ -1463,7 +1463,7 @@ selected_groups <- c("dupilumab_m3_AN", "dupilumab_m3_AL")
             <img src="Pictures/RNA_Seq_Task1/1_Heatmap_for_All_Groups.png" alt="Heatmap 1" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
         </a>
         <figcaption id="figure-caption-3-2-5">
-		<strong>Figure 3.2.5.</strong> Grouped Gene Expression Heatmap across all six groups (Baseline Lesional, Baseline Non-lesional, Cyclosporine Lesional, Cyclosporine Non-lesional, Dupilumab Lesional, and Dupilumab Non-lesional).This allows for the broadest comparison of gene expression patterns across all groups.
+		<strong>Figure 3.2.5.</strong> Grouped Gene Expression Heatmap across all six groups (Baseline Lesional, Baseline Non-lesional, Cyclosporine Lesional, Cyclosporine Non-lesional, Dupilumab Lesional, and Dupilumab Non-lesional).This allows for the broadest comparison of gene expression patterns across all groups  (After filtering out outlier samples & Low-Count Genes).
 	</figcaption>
     </figure>
 
@@ -1473,7 +1473,7 @@ selected_groups <- c("dupilumab_m3_AN", "dupilumab_m3_AL")
             <img src="Pictures/RNA_Seq_Task1/2_Baseline_Lesional_VS_Baseline_Non_lesional.png" alt="Heatmap 2" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
         </a>
         <figcaption id="figure-caption-3-2-6">
-		<strong>Figure 3.2.6.</strong> Grouped Gene Expression Heatmap comparing Baseline Lesional and Baseline Non-lesional samples. This helps visualize how gene expression differs between affected and unaffected skin before any treatment is administered.
+		<strong>Figure 3.2.6.</strong> Grouped Gene Expression Heatmap comparing Baseline Lesional and Baseline Non-lesional samples. This helps visualize how gene expression differs between affected and unaffected skin before any treatment is administered (After filtering out outlier samples & Low-Count Genes).
 	</figcaption>
     </figure>
 
@@ -1483,7 +1483,7 @@ selected_groups <- c("dupilumab_m3_AN", "dupilumab_m3_AL")
             <img src="Pictures/RNA_Seq_Task1/3_Cyclosporine_Lesional_VS_Cyclosporine_Non_lesional.png" alt="Heatmap 3" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
         </a>
         <figcaption id="figure-caption-3-2-7">
-		<strong>Figure 3.2.7.</strong> Grouped Gene Expression Heatmap comparing Cyclosporine Lesional and Cyclosporine Non-lesional samples. This focuses on how cyclosporine treatment impacts gene expression in affected vs. unaffected skin.
+		<strong>Figure 3.2.7.</strong> Grouped Gene Expression Heatmap comparing Cyclosporine Lesional and Cyclosporine Non-lesional samples. This focuses on how cyclosporine treatment impacts gene expression in affected vs. unaffected skin (After filtering out outlier samples & Low-Count Genes).
 	</figcaption>
     </figure>
 
@@ -1493,7 +1493,7 @@ selected_groups <- c("dupilumab_m3_AN", "dupilumab_m3_AL")
             <img src="Pictures/RNA_Seq_Task1/4_Dupilumab_Lesional_VS_Dupilumab_Non_lesional.png" alt="Heatmap 4" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
         </a>
         <figcaption id="figure-caption-3-2-8">
-		<strong>Figure 3.2.8.</strong> Grouped Gene Expression Heatmap comparing Dupilumab Lesional and Dupilumab Non-lesional samples. This visualizes the effect of dupilumab treatment on lesional and non-lesional samples.
+		<strong>Figure 3.2.8.</strong> Grouped Gene Expression Heatmap comparing Dupilumab Lesional and Dupilumab Non-lesional samples. This visualizes the effect of dupilumab treatment on lesional and non-lesional samples (After filtering out outlier samples & Low-Count Genes).
 	</figcaption>
     </figure>
 
@@ -1610,7 +1610,7 @@ selected_groups <- c("m0_AL", "cyclosporine_m3_AL")
             <img src="Pictures/RNA_Seq_Task1/5_Baseline_Non_Lesional_AND_Baseline_Lesional_AND_Cyclosporine_Lesional_AND_Dupilumab_Lesional.png" alt="Heatmap 1" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
         </a>
         <figcaption id="figure-caption-3-2-9">
-		<strong>Figure 3.2.9.</strong> Grouped Gene Expression Heatmap comparing Baseline Non-Lesional vs. Baseline Lesional, Cyclosporine Lesional, and Dupilumab Lesional samples. This offers a direct comparison of how gene expression changes under different treatments.
+		<strong>Figure 3.2.9.</strong> Grouped Gene Expression Heatmap comparing Baseline Non-Lesional vs. Baseline Lesional, Cyclosporine Lesional, and Dupilumab Lesional samples. This offers a direct comparison of how gene expression changes under different treatments (After filtering out outlier samples & Low-Count Genes).
 	</figcaption>
     </figure>
 
@@ -1620,7 +1620,7 @@ selected_groups <- c("m0_AL", "cyclosporine_m3_AL")
             <img src="Pictures/RNA_Seq_Task1/6_Dupilumab_Lesional_VS_Cyclosporine_Lesional.png" alt="Heatmap 2" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
         </a>
         <figcaption id="figure-caption-3-2-10">
-		<strong>Figure 3.2.10.</strong> Grouped Gene Expression Heatmap comparing Dupilumab Lesional and Cyclosporine Lesional samples. This allows for the direct comparison of how these two treatments affect lesional skin.
+		<strong>Figure 3.2.10.</strong> Grouped Gene Expression Heatmap comparing Dupilumab Lesional and Cyclosporine Lesional samples. This allows for the direct comparison of how these two treatments affect lesional skin (After filtering out outlier samples & Low-Count Genes).
 	</figcaption>
     </figure>
 
@@ -1630,7 +1630,7 @@ selected_groups <- c("m0_AL", "cyclosporine_m3_AL")
             <img src="Pictures/RNA_Seq_Task1/7_Baseline_Lesional_VS_Cyclosporine_Lesional.png" alt="Heatmap 3" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
         </a>
         <figcaption id="figure-caption-3-2-11">
-		<strong>Figure 3.2.11.</strong> Grouped Gene Expression Heatmap comparing pre-treatment (Baseline Lesional) vs. post-treatment (Cyclosporine Lesional) samples. This assesses how gene expression changes following cyclosporine treatment.
+		<strong>Figure 3.2.11.</strong> Grouped Gene Expression Heatmap comparing pre-treatment (Baseline Lesional) vs. post-treatment (Cyclosporine Lesional) samples. This assesses how gene expression changes following cyclosporine treatment (After filtering out outlier samples & Low-Count Genes).
 	</figcaption>
     </figure>
 
@@ -1640,7 +1640,7 @@ selected_groups <- c("m0_AL", "cyclosporine_m3_AL")
             <img src="Pictures/RNA_Seq_Task1/8_Baseline_Lesional_VS_Dupilumab_Lesional.png" alt="Heatmap 4" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
         </a>
         <figcaption id="figure-caption-3-2-12">
-		<strong>Figure 3.2.12.</strong> Grouped Gene Expression Heatmap comparing pre-treatment (Baseline Lesional) vs. post-treatment (Dupilumab Lesional) samples. This highlights how gene expression changes following dupilumab treatment.
+		<strong>Figure 3.2.12.</strong> Grouped Gene Expression Heatmap comparing pre-treatment (Baseline Lesional) vs. post-treatment (Dupilumab Lesional) samples. This highlights how gene expression changes following dupilumab treatment (After filtering out outlier samples & Low-Count Genes).
 	</figcaption>
     </figure>
 
