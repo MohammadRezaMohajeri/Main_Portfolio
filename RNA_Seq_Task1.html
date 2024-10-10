@@ -1150,7 +1150,7 @@ ggplot(data.frame(Genes = 1:length(cum_variance), CumulativeVariance = cum_varia
 </div>
 
 <!-- Caption for the code block -->
-<p class="code-caption">Code Block 3.2.3.1. Unsupervised Heatmap for All Samples (166 samples)</p>
+<p class="code-caption">Code Block 3.2.3.1. Unsupervised Heatmap for All Samples (160 samples)</p>
 
 <div class="code-block">
     <pre><code class="language-r">
@@ -1238,7 +1238,7 @@ pheatmap(counts_matrix_log[top_var_genes_log, ],
 
 
 <!-- Caption for the code block -->
-<p class="code-caption">Code Block 3.2.4. Heatmap for Baseline Lesional and Non-lesional Samples (109 samples)</p>
+<p class="code-caption">Code Block 3.2.3.2. Unsupervised Heatmap for Baseline Lesional and Non-lesional Samples (109 samples)</p>
 
 <div class="code-block">
     <pre><code class="language-r">
@@ -1309,7 +1309,7 @@ pheatmap(counts_matrix_log[top_var_genes_log, ],
 </div>
 
 <!-- Code Block for Heatmap for All Groups -->
-<p class="code-caption">Code Block 3.2.5. Heatmap for All Groups</p>
+<p class="code-caption">Code Block 3.2.3.3. Grouped Heatmap for All Groups</p>
 <div class="code-block">
     <pre><code class="language-r">
 # =========== Load Required Libraries ===========
@@ -1403,7 +1403,7 @@ pheatmap(counts_matrix_log[top_var_genes_log, ],
 </div>
 
 <!-- Code Block for Baseline Lesional vs. Non-lesional -->
-<p class="code-caption">Code Block 3.2.6. Compare Baseline Lesional with Baseline Non-lesional</p>
+<p class="code-caption">Code Block 3.2.3.4. Compare Baseline Lesional with Baseline Non-lesional</p>
 <div class="code-block">
     <pre><code class="language-r">
 # ============================
@@ -1425,7 +1425,7 @@ selected_groups <- c("m0_AN", "m0_AL")
     </ul>
 </div>
 
-<p class="code-caption">Code Block 3.2.7. Compare Cyclosporine Lesional vs. Non-lesional</p>
+<p class="code-caption">Code Block 3.2.3.5. Grouped Heatmap: Compare Cyclosporine Lesional vs. Non-lesional</p>
 <div class="code-block">
     <pre><code class="language-r">
 # ============================
@@ -1454,7 +1454,7 @@ selected_groups <- c("cyclosporine_m3_AN", "cyclosporine_m3_AL")
 
 	
 
-<p class="code-caption">Code Block 3.2.8. Compare Dupilumab Lesional vs. Dupilumab Non-lesional</p>
+<p class="code-caption">Code Block 3.2.3.6. Grouped Heatmap: Compare Dupilumab Lesional vs. Dupilumab Non-lesional</p>
 <div class="code-block">
     <pre><code class="language-r">
 # ============================
@@ -1483,7 +1483,7 @@ selected_groups <- c("dupilumab_m3_AN", "dupilumab_m3_AL")
             <img src="Pictures/RNA_Seq_Task1/2_Figure3.2.3.4_Heatmap_Baseline_Lesional_VS_Baseline_Non_lesional.png" alt="Heatmap 2" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%; height: 300px;">
         </a>
         <figcaption id="figure-caption-3-2-3-4">
-		<strong>Figure 3.2.3.4.</strong> Grouped Gene Expression Heatmap comparing Baseline Lesional and Baseline Non-lesional samples. This helps visualize how gene expression differs between affected and unaffected skin before any treatment is administered (After filtering out outlier samples & Low-Count Genes).
+		<strong>Figure 3.2.3.4.</strong> Grouped Heatmap: comparing Baseline Lesional and Baseline Non-lesional samples. This helps visualize how gene expression differs between affected and unaffected skin before any treatment is administered (After filtering out outlier samples & Low-Count Genes).
 	</figcaption>
     </figure>
 
@@ -1528,7 +1528,7 @@ selected_groups <- c("dupilumab_m3_AN", "dupilumab_m3_AL")
     </ul>
 </div>
 
-<p class="code-caption">Code Block 3.2.9. Compare Baseline Non-Lesional vs. Baseline Lesional, Cyclosporine Lesional, and Dupilumab Lesional</p>
+<p class="code-caption">Code Block 3.2.3.7. Grouped Heatmap: Compare Baseline Non-Lesional vs. Baseline Lesional, Cyclosporine Lesional, and Dupilumab Lesional</p>
 <div class="code-block">
     <pre><code class="language-r">
 # ============================
@@ -1549,7 +1549,7 @@ selected_groups <- c("m0_AN", "m0_AL", "cyclosporine_m3_AL", "dupilumab_m3_AL")
     </ul>
 </div>
 
-<p class="code-caption">Code Block 3.2.10. Compare Dupilumab Lesional vs. Cyclosporine Lesional</p>
+<p class="code-caption">Code Block 3.2.3.8. Grouped Heatmap: Compare Dupilumab Lesional vs. Cyclosporine Lesional</p>
 <div class="code-block">
     <pre><code class="language-r">
 # ============================
@@ -1574,7 +1574,7 @@ selected_groups <- c("dupilumab_m3_AL", "cyclosporine_m3_AL")
     </ul>
 </div>
 
-<p class="code-caption">Code Block 3.2.11. Compare Pre-treatment vs. Post-treatment (Baseline Lesional & Cyclosporine Lesional)</p>
+<p class="code-caption">Code Block 3.2.3.9. Grouped Heatmap: Compare Pre-treatment vs. Post-treatment (Baseline Lesional & Cyclosporine Lesional)</p>
 <div class="code-block">
     <pre><code class="language-r">
 # ============================
@@ -1600,7 +1600,7 @@ selected_groups <- c("m0_AL", "cyclosporine_m3_AL")
     </ul>
 </div>	
 
-	<p class="code-caption">Code Block 3.2.12. Compare Pre-treatment vs. Post-treatment (Baseline Lesional & Dupilumab Lesional)</p>
+	<p class="code-caption">Code Block 3.2.3.10. Grouped Heatmap: Compare Pre-treatment vs. Post-treatment (Baseline Lesional & Dupilumab Lesional)</p>
 	<div class="code-block">
 	    <pre><code class="language-r">
 	# ============================
