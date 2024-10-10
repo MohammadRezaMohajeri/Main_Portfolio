@@ -1141,16 +1141,16 @@ ggplot(data.frame(Genes = 1:length(cum_variance), CumulativeVariance = cum_varia
 	<h4 style="margin-top: 5px;">3.2.3.1. Unsupervised Heatmap for All Samples (160 samples)</h4>
     <ul>
         <li>
-            <strong>1. Heatmap for All Samples (160 samples)</strong>: As is shown in <a href="#figure-3-2-3" onclick="highlightFigure('3-2-3')">Figure 3.2.3</a>, this heatmap clusters all 160 "samples" based on the expression of the top 300 most variable "genes". The counts matrix is "log-transformed", and both rows ("genes") and columns ("samples") are clustered.
+            <strong>1. Heatmap for All Samples (160 samples)</strong>: As is shown in <a href="#figure-3-2-3-1" onclick="highlightFigure('3-2-3-1')">Figure 3.2.3.1</a>, this heatmap clusters all 160 "samples" based on the expression of the top 300 most variable "genes". The counts matrix is "log-transformed", and both rows ("genes") and columns ("samples") are clustered.
         </li>
         <li>
-            In this code (Code Block 3.2.3), we begin by loading the "<strong>matrixStats</strong> library" to work with matrix data and the "<strong>pheatmap</strong> library" for generating heatmaps. First (Step 1), the "<strong>as.matrix()</strong> function" converts the counts_matrix into a matrix format if it was originally a data frame, ensuring compatibility with downstream operations. Then (Step 2), we apply a "<strong>log2 transformation</strong>" to the matrix to "reduce the dynamic range" and "make the data more suitable for visualization". Next (Step 3), the top 300 most variable genes are selected based on row variance calculated from the log-transformed counts. Finally (Step 4), a heatmap is generated (<a href="#figure-3-2-3" onclick="highlightFigure('3-2-3')">Figure 3.2.3</a>) using <strong>pheatmap()</strong>, with options to cluster rows and columns, adjust axis label angles, and font size, and the output is saved as an image file.
+            In this code (Code Block 3.2.3.1), we begin by loading the "<strong>matrixStats</strong> library" to work with matrix data and the "<strong>pheatmap</strong> library" for generating heatmaps. First (Step 1), the "<strong>as.matrix()</strong> function" converts the counts_matrix into a matrix format if it was originally a data frame, ensuring compatibility with downstream operations. Then (Step 2), we apply a "<strong>log2 transformation</strong>" to the matrix to "reduce the dynamic range" and "make the data more suitable for visualization". Next (Step 3), the top 300 most variable genes are selected based on row variance calculated from the log-transformed counts. Finally (Step 4), a heatmap is generated (<a href="#figure-3-2-3-1" onclick="highlightFigure('3-2-3-1')">Figure 3.2.3.1</a>) using <strong>pheatmap()</strong>, with options to cluster rows and columns, adjust axis label angles, and font size, and the output is saved as an image file.
         </li>
     </ul>
 </div>
 
 <!-- Caption for the code block -->
-<p class="code-caption">Code Block 3.2.3. Unsupervised Heatmap for All Samples (166 samples)</p>
+<p class="code-caption">Code Block 3.2.3.1. Unsupervised Heatmap for All Samples (166 samples)</p>
 
 <div class="code-block">
     <pre><code class="language-r">
@@ -1190,11 +1190,11 @@ pheatmap(counts_matrix_log[top_var_genes_log, ],
 	<div style="display: flex; justify-content: space-around;">
 	    
 	    <!-- Heatmap 1 (166/unsupervised) -->
-	    <figure id="figure-3-2-3" style="text-align: justify; margin: 10px;">
+	    <figure id="figure-3-2-3-1" style="text-align: justify; margin: 10px;">
 	        <a href="Pictures/RNA_Seq_Task1/Figure3.2.3_Unsupervised_Heatmap_160_Samples_300_Genes.png" target="_blank">
 	            <img src="Pictures/RNA_Seq_Task1/Figure3.2.3_Unsupervised_Heatmap_160_Samples_300_Genes.png" alt="Heatmap 1" style="display: block; background-color: #0c4b4f; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 85%; height: 80%;">
 	        </a>
-	        <figcaption id="figure-caption-3-2-3">Figure 3.2.3. Unsupervised Gene Expression Heatmaps for All Samples (160 samples) with the top 300 most variable genes (After filtering out outlier samples & Low-Count Genes).</figcaption>
+	        <figcaption id="figure-caption-3-2-3-1">Figure 3.2.3.1. Unsupervised Gene Expression Heatmaps for All Samples (160 samples) with the top 300 most variable genes (After filtering out outlier samples & Low-Count Genes).</figcaption>
 	    </figure>
 	
 	    <!-- Heatmap 2 (111/unsupervised) -->
