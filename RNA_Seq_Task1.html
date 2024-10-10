@@ -856,7 +856,8 @@
 		
 	<!-- ===================  Check Distribution of Samples Across Key Metadata Variables =========================== -->
 	<div class="explanation">
-	    <h4 style="margin-top: 5px;">3.1.2. Check Distribution of Samples Across Key Metadata Variables</h4>
+	    <h3>3.1.2. Check Distribution of Samples Across Key Metadata Variables (using table() and kable())</h3>
+		<h4 style="margin-top: 5px;">3.1.2.1. Summary of Sample Distribution by Patient Group and Timepoints</h4>
 	    <ul>
 	        <li>
 	            By exploring key <strong>metadata variables</strong> such as <strong>sample type</strong> (e.g., <strong>lesional</strong> vs <strong>non-lesional</strong> or <strong>treated</strong> vs <strong>untreated</strong>), <strong>timepoints</strong> (e.g., <strong>baseline</strong> vs <strong>post-treatment</strong>), and <strong>therapy groups</strong> (e.g., <strong>Cyclosporine</strong> and <strong>Dupilumab</strong>), we gain insights into <strong>the distribution of the samples</strong>  across different conditions. This exploration also helps to ensure that the dataset is well-balanced and appropriately structured for the upcoming <strong>differential expression analysis</strong>. 
@@ -922,7 +923,7 @@ kable(timepoint_table, format = "html", col.names = c("Timepoint", "Count"))
 
 
 		<div class="explanation">
-	<h4 style="margin-top: 5px;">3.1.3. Sample Characteristics</h4>
+	<h4 style="margin-top: 5px;">3.1.2.2. Summary of Sample Distribution Across Multiple Metadata Variables</h4>
 			
   <ul>
     
@@ -989,16 +990,53 @@ for (col in columns) {
   </code></pre>
 </div>
 
+
+
+
+<!-- ========================================================== -->
+	<div class="explanation">
+	    <h3>3.1.3. Check Distribution of Samples Across Key Metadata Variables (using bar charts)</h3>
+		<h4 style="margin-top: 5px;">3.1.3.1. Visualizing Sample Distribution by Experimental Condition (Source Name) Using Bar Charts
+		    
+	        <ul>
+		Paragraph	
+	        <li>
+
+
+		<li>
+		In this code, 
+	        </li>
+			
+	    </ul>
+	</div>
+
+
+
+<!-- ========================================================== -->
+	<div class="explanation">
+		<h4 style="margin-top: 5px;">3.1.3.2. Automated Bar Chart Generation for Sample Distribution Across Multiple Metadata Variables</h4>		    
+	        <ul>
+		Paragraph	
+	        <li>
+
+
+		<li>
+		In this code, 
+	        </li>
+			
+	    </ul>
+	</div>
 		
 <!-- =================== 3.2.  explanation =========================== -->
 	<div class="explanation">
 	    <h3> 3.2. Count Matrix: Exploration and Visualization </h3>
-		<h4 style="margin-top: 5px;">3.2.1. Count Matrix Overview</h4>
+		<h4 style="margin-top: 5px;">3.2.1. Count Matrix Overview (Inspecting the Count Matrix using View())</h4>
 
 	    <ul>
 	        <li>
-	            We examine the <strong>count matrix</strong>, which contains raw gene expression counts for each sample. This step helps us understand the structure of the data, including whether it is normalized or not, and allows us to check the <strong>column names</strong> (samples) and <strong>row names</strong> (<strong><a href="https://www.ebi.ac.uk/training/online/courses/ensembl-browsing-genomes/navigating-ensembl/investigating-a-gene/#:~:text=Ensembl%20gene%20IDs%20begin%20with,of%20species%20other%20than%20human." target="_blank">Ensembl Gene Identifiers</a></strong>) to ensure the data is formatted correctly for the next steps of differential expression analysis (Code Block 3.2.1; <a href="#figure-3-2-1" onclick="highlightFigure('3-2-1')">Figure 3.2.1</a>).
+	         We examine the <strong>count matrix</strong>, which contains raw gene expression counts for each sample. This step helps us understand the structure of the data, including whether it is normalized or not, and allows us to check the <strong>column names</strong> (samples) and <strong>row names</strong> (<strong><a href="https://www.ebi.ac.uk/training/online/courses/ensembl-browsing-genomes/navigating-ensembl/investigating-a-gene/#:~:text=Ensembl%20gene%20IDs%20begin%20with,of%20species%20other%20than%20human." target="_blank">Ensembl Gene Identifiers</a></strong>) to ensure the data is formatted correctly for the next steps of differential expression analysis (Code Block 3.2.1; <a href="#figure-3-2-1" onclick="highlightFigure('3-2-1')">Figure 3.2.1</a>).
 	        </li>
+		    
 	    </ul>
 	</div>
 
@@ -1026,11 +1064,17 @@ for (col in columns) {
 	        Figure 3.2.1. Preview of Raw Gene Expression Count Matrix for more Inspection (After filtering out sample outliers, & Low-Count Genes).
 	    </figcaption>
 	</figure>
+		
 <!-- ================================================================ --> 
 
 
+
+
+<!-- ================================================================ --> 
+
+		
 		<div class="explanation">
-    <h4>3.2.2. Determining the Optimal Gene Count for Heatmap (Cumulative Variance Explained Plot)</h4>
+    <h4>3.2.4. Determining the Optimal Gene Count for Heatmap (Cumulative Variance Explained Plot)</h4>
     <ul>
         <li>
             <strong>Heatmaps</strong> are primarily exploratory tools to visually assess patterns in the data. The goal is to select enough genes to reveal meaningful clusters without overcomplicating the visualization. If <u>too many genes are included</u>, the heatmap can <u>become cluttered</u> and less informative. On the other hand, if <u>too few</u> are used, <u>important patterns may be missed</u>. Typically, 100 to 500 of the most variable genes are used for exploratory heatmaps in <strong>RNA-seq studies</strong>. To ensure clarity, we often start by testing heatmaps with the top 100, 200, 300, and 500 most variable genes, assessing how well they cluster and separate groups.
