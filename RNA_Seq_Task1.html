@@ -995,37 +995,112 @@ for (col in columns) {
 
 <!-- ========================================================== -->
 	<div class="explanation">
-	    <h3>3.1.3. Check Distribution of Samples Across Key Metadata Variables (using bar charts)</h3>
-		<h4 style="margin-top: 5px;">3.1.3.1. Visualizing Sample Distribution by Experimental Condition (Source Name) Using Bar Charts
-		    
-	        <ul>
-		Paragraph	
+	    <h4>3.1.3. Check Distribution of Samples Across Key Metadata Variables (using bar charts)</h4>
+	    <ul>
 	        <li>
-
-
-		<li>
-		In this code, 
+	            Visualizing the distribution of samples with <strong>bar charts</strong> provides a more intuitive and visual approach compared to table-based summaries. It helps to quickly identify <u>patterns</u>, <u>imbalances</u>, or <u>trends</u> in the data, making it easier to understand the distribution across different experimental conditions or metadata variables.
 	        </li>
-			
+	    </ul>
+	
+	    <h4>3.1.3.1. Visualizing Sample Distribution by Experimental Condition (Source Name) Using Bar Charts</h4>
+	    <ul>
+	        <li>
+	            This code (Code Block 3.1.3.1) focuses on visualizing a single variable, <code>source_name_ch1</code>, to display the sample distribution by experimental condition. However, the variable can be easily substituted with others if needed. <strong>(Step 1)</strong>: The <code><a href="https://ggplot2.tidyverse.org/" target="_blank">ggplot2</a></code> library is loaded for creating the plot. <strong>(Step 2)</strong>: A bar plot is constructed using <code>geom_bar()</code> to create the bars and <code>geom_text()</code> to add count labels, where <code>..count..</code> refers to the computed count statistic. The plot is styled using <code>theme_minimal()</code> and color is applied with <code>scale_fill_brewer()</code>. <strong>(Step 3)</strong>: Finally, the <code>ggsave()</code> function saves the plot to a specified location.
+	        </li>
 	    </ul>
 	</div>
+	
+	<!-- Caption for the code block -->
+	<p class="code-caption">Code Block 3.1.3.1. Visualizing Sample Distribution by Experimental Condition</p>
+	
+	<div class="code-block">
+	    <pre><code class="language-r">
+# ====================================
+# Step 1: Load the necessary library
+# ====================================
+library(ggplot2)
+
+# ============================================
+# Step 2: Create a bar plot for sample counts
+# ============================================
+p <- ggplot(metadata, aes(x = `source_name_ch1`, fill = `source_name_ch1`)) +
+  geom_bar() +  # Add bars representing sample counts
+  geom_text(stat = "count", aes(label = ..count..), vjust = -0.5, size = 3) +  # Add count labels above bars
+  theme_minimal() +  # Apply a minimal theme for better readability
+  labs(title = "Sample Distribution by Experimental Condition", 
+       x = "Source Name", 
+       y = "Number of Samples") +
+  theme(axis.text.x = element_text(angle = 60, vjust = 0.5, hjust = 0.6, size = 8)) +  # Adjust axis label size and angle
+  scale_fill_brewer(palette = "Set3")  # Apply a color palette for the bars
+
+# ==================================
+# Step 3: Save the plot to a file
+# ==================================
+ggsave("C:/Users/omidm/OneDrive/Desktop/RNA_Seq_Task1/3/3_Sample_Distributions/3.1.3.1/3.1.3.1.Sample_Distribution_by_Condition.png", 
+       plot = p, width = 10, height = 6, dpi = 300, bg = "white")
+    </code></pre>
+</div>
+
+<div class="explanation">
+    <h4>3.1.3.2. Automated Bar Chart Generation for Multiple Metadata Variables</h4>
+    <ul>
+        <li>
+            This approach extends the visualization to multiple metadata variables, allowing for the exploration of different aspects of the dataset. It automates the creation of bar charts, making it easy to visualize sample distributions across various metadata fields. <strong>(Step 1)</strong>: The <code><a href="https://ggplot2.tidyverse.org/" target="_blank">ggplot2</a></code> library is loaded for plotting. <strong>(Step 2)</strong>: A list of columns to visualize is defined. <strong>(Step 3)</strong>: The code loops through each column, converting column names into symbols using <code>sym()</code> and sanitizing the names with <code>gsub()</code> for valid file naming. <strong>(Step 4)</strong>: The plots are created using <code>ggplot()</code>, styled with <code>theme_minimal()</code>, and colored using <code>scale_fill_brewer()</code>. Each plot is displayed and saved to a file using <code>ggsave()</code>.
+        </li>
+    </ul>
+</div>
+
+<!-- Caption for the code block -->
+<p class="code-caption">Code Block 3.1.3.2. Automated Bar Chart Generation for Multiple Metadata Variables</p>
+
+<div class="code-block">
+    <pre><code class="language-r">
+# ====================================
+# Step 1: Load the necessary library
+# ====================================
+library(ggplot2)
+
+# ============================================
+# Step 2: Define columns to visualize
+# ============================================
+columns_to_plot <- c("source_name_ch1", "characteristics_ch1.2", 
+                     "characteristics_ch1.3", "characteristics_ch1.4", "therapy:ch1", "timepoint:ch1")
+
+# ========================================================
+# Step 3: Loop through each column and create a bar plot
+# ========================================================
+for (col in columns_to_plot) {
+  # Convert the column name to a symbol for tidy evaluation
+  col_sym <- sym(col)
+  
+  # Create a sanitized version of the column name for the file name
+  sanitized_col <- gsub("[:]", "_", col)  # Replace ":" with "_"
+  
+  # Create the plot for each column
+  p <- ggplot(metadata, aes(x = !!col_sym, fill = !!col_sym)) +
+    geom_bar() +  # Add bars representing sample counts
+    geom_text(stat = "count", aes(label = ..count..), vjust = -0.5, size = 3) +  # Add count labels above bars
+    theme_minimal() +  # Apply a minimal theme
+    labs(title = paste("Sample Distribution by", col), x = col, y = "Number of Samples") +
+    theme(axis.text.x = element_text(angle = 60, vjust = 0.5, hjust = 0.6, size = 8)) +  # Adjust axis label size and angle
+    scale_fill_brewer(palette = "Set3")  # Apply a color palette
+  
+  # Display the plot
+  print(p)
+  
+  # ========================================
+  # Step 4: Save the plot to a file
+  # ========================================
+  ggsave(filename = paste0("C:/Users/omidm/OneDrive/Desktop/RNA_Seq_Task1/3/3_Sample_Distributions/3.1.3.2/3.1.3.2_", sanitized_col, "_Sample_Distribution.png"),
+         plot = p, width = 10, height = 6, dpi = 300, bg = "white")
+}
+    </code></pre>
+</div>
 
 
 
-<!-- ========================================================== -->
-	<div class="explanation">
-		<h4 style="margin-top: 5px;">3.1.3.2. Automated Bar Chart Generation for Sample Distribution Across Multiple Metadata Variables</h4>		    
-	        <ul>
-		Paragraph	
-	        <li>
 
 
-		<li>
-		In this code, 
-	        </li>
-			
-	    </ul>
-	</div>
 		
 <!-- =================== 3.2.  explanation =========================== -->
 	<div class="explanation">
