@@ -864,12 +864,12 @@
 	        </li>
 		    
 	        <li>
-		    For example, after filtering out sample outliers, the <strong>source_name_ch1</strong> column in metadata shows the distribution of samples across various experimental conditions (Code Block 3.1.2; <a href="#figure-3-1-2" onclick="highlightFigure('3-1-2')">Figure 3.1.2</a> a), such as <strong>baseline samples</strong> (m0) for both lesional (AL) (<strong>m0_AL</strong>: 55 samples) and non-lesional (AN) (<strong>m0_AN</strong>: 54 samples) skin, which are key to our current analysis, as well as samples taken post-treatment with <strong>Cyclosporine</strong> (8 lesional & 6 non-lesional) and <strong>Dupilumab</strong> (19 lesional & 18 non-lesional samples). This data can be useful for exploring treatment effects in future experiments.
+		    For example, after filtering out sample outliers, the <strong>source_name_ch1</strong> column in metadata shows the distribution of samples across various experimental conditions (Code Block 3.1.2; <a href="#figure-3-1-2" onclick="highlightFigure('3-1-2')">Figure 3.1.2.1</a> a), such as <strong>baseline samples</strong> (m0) for both lesional (AL) (<strong>m0_AL</strong>: 55 samples) and non-lesional (AN) (<strong>m0_AN</strong>: 54 samples) skin, which are key to our current analysis, as well as samples taken post-treatment with <strong>Cyclosporine</strong> (8 lesional & 6 non-lesional) and <strong>Dupilumab</strong> (19 lesional & 18 non-lesional samples). This data can be useful for exploring treatment effects in future experiments.
 	        </li>
 
 		    		    
 	        <li>
-		    In addition, <strong>characteristics_ch1.2</strong> (Code Block 3.1.2; <a href="#figure-3-1-2" onclick="highlightFigure('3-1-2')">Figure 3.1.2</a> b) provides information on the <strong>timepoints</strong> (e.g., <strong>baseline</strong> or <strong>post-treatment</strong>). This is crucial for analyzing how gene expression changes over time, particularly in response to therapies like <strong>Cyclosporine</strong> and <strong>Dupilumab</strong>. In this dataset, 51 samples were collected 3 months post-treatment, and 109 samples were collected at baseline.
+		    In addition, <strong>characteristics_ch1.2</strong> (Code Block 3.1.2.1; <a href="#figure-3-1-2" onclick="highlightFigure('3-1-2')">Figure 3.1.2.1</a> b) provides information on the <strong>timepoints</strong> (e.g., <strong>baseline</strong> or <strong>post-treatment</strong>). This is crucial for analyzing how gene expression changes over time, particularly in response to therapies like <strong>Cyclosporine</strong> and <strong>Dupilumab</strong>. In this dataset, 51 samples were collected 3 months post-treatment, and 109 samples were collected at baseline.
 	        </li>
 		    
 		    
@@ -879,7 +879,7 @@
 
 
 		<!-- Caption for the code block -->
-<p class="code-caption">Code Block 3.1.2: Sample Distribution Table Generation</p>
+<p class="code-caption">Code Block 3.1.2.1: Sample Distribution Table Generation</p>
 	<!-- ======= 3.3. code chunk =========== -->
 	<div class="code-block">
 	    <pre><code class="language-r">
@@ -897,22 +897,22 @@ kable(timepoint_table, format = "html", col.names = c("Timepoint", "Count"))
 			    <!-- ======= 3.3. image with caption =========== -->	
 	<!-- ================================================================================= -->
 	<div style="display: flex; justify-content: space-around; align-items: stretch;">
-	    <!-- Figure 3.1.2. -->
+	    <!-- Figure 3.1.2.1. -->
 	    <figure id="figure-3-1-2" style="text-align: justify; margin: 10px; flex: 1;">
 	        <a href="Pictures/RNA_Seq_Task1/Samples_distribution_GSE157194.png" target="_blank">
 	            <img src="Pictures/RNA_Seq_Task1/Samples_distribution_GSE157194.png" alt="Heatmap 1" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%; height: 300px;">
 	        </a>
 	        <figcaption id="figure-caption-3-1-2">
-	            <strong>Figure 3.1.2.</strong> Sample distribution by patient group and timepoint (After filtering outlier samples): a. Patient groups (lesional, non-lesional, post-treatment), b. Timepoint distribution (baseline and 3 months post-treatment).
+	            <strong>Figure 3.1.2.1.</strong> Sample distribution by patient group and timepoint (After filtering outlier samples): a. Patient groups (lesional, non-lesional, post-treatment), b. Timepoint distribution (baseline and 3 months post-treatment).
 	        </figcaption>
 	    </figure>
 	
-	    <!-- Figure 3.1.3. -->
-	    <figure id="figure-3-1-3" style="text-align: justify; margin: 10px; flex: 1;">
+	    <!-- Figure 3.1.2.2 -->
+	    <figure id="figure-3-1-2-2" style="text-align: justify; margin: 10px; flex: 1;">
 	        <a href="Pictures/RNA_Seq_Task1/Samples_Distribution2_GSE157194.png" target="_blank">
 	            <img src="Pictures/RNA_Seq_Task1/Samples_Distribution2_GSE157194.png" alt="Heatmap 2" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%; height: 300px;">
 	        </a>
-	        <figcaption id="figure-caption-3-1-3">
+	        <figcaption id="figure-caption-3-1-2-2">
 	            <strong>Figure 3.1.3.</strong> Sample Distribution by Timepoint and Patient ID (After Filtering Outlier Samples).
 	        </figcaption>
 	    </figure>
@@ -928,16 +928,16 @@ kable(timepoint_table, format = "html", col.names = c("Timepoint", "Count"))
   <ul>
     
     <li>
-    Other metadata columns can also be explored (Code Block 3.1.3):      
+    Other metadata columns can also be explored (Code Block 3.1.2.2):      
     </li>
     
     <li>
-      The <strong>characteristics_ch1.3</strong>  column (<a href="#figure-3-1-3" onclick="highlightFigure('3-1-3')">Figure 3.1.3</a> a) provides information about the treatment each patient received. It shows that 14 samples were treated with Cyclosporine and 37 samples with Dupilumab, while the remaining 109 samples represent baseline conditions (m0_AL and m0_AN combined). This is important for distinguishing between treatment groups when analyzing differential expression across conditions.
+      The <strong>characteristics_ch1.3</strong>  column (<a href="#figure-3-1-2-2" onclick="highlightFigure('3-1-2-2')">Figure 3.1.2.2</a> a) provides information about the treatment each patient received. It shows that 14 samples were treated with Cyclosporine and 37 samples with Dupilumab, while the remaining 109 samples represent baseline conditions (m0_AL and m0_AN combined). This is important for distinguishing between treatment groups when analyzing differential expression across conditions.
     </li>
 
 	  
     <li>
-      The <strong>patient id:ch1</strong> column (<a href="#figure-3-1-3" onclick="highlightFigure('3-1-3')">Figure 3.1.3</a> b) helps track individual patients across different conditions. Some patients may have samples from multiple conditions (e.g., lesional, non-lesional, and post-treatment with both Cyclosporine and Dupilumab), allowing for longitudinal analyses within the same individuals. For researchers, this provides an opportunity to focus on patients who have undergone multiple treatments, reducing variability and enhancing the accuracy of comparative analyses.
+      The <strong>patient id:ch1</strong> column (<a href="#figure-3-1-2-2" onclick="highlightFigure('3-1-2-2')">Figure 3.1.2.2</a> b) helps track individual patients across different conditions. Some patients may have samples from multiple conditions (e.g., lesional, non-lesional, and post-treatment with both Cyclosporine and Dupilumab), allowing for longitudinal analyses within the same individuals. For researchers, this provides an opportunity to focus on patients who have undergone multiple treatments, reducing variability and enhancing the accuracy of comparative analyses.
     </li>
     <li>
       In addition to these, other metadata columns can provide insights into the experimental setup and data processing. For example, <strong>platform_id</strong> shows all utilized platforms (GPL21290 in this experiment), <strong>extract_protocol_ch1</strong> and <strong>extract_protocol_ch1.1</strong> describe how the RNA was extracted and processed in the lab, and how the RNA libraries were prepared for sequencing. Furthermore, <strong>data_processing</strong> and its related fields provide detailed information on how the sequencing data was processed, from basecalling using Illumina software to trimming primers with cutadapt and mapping reads to the human reference genome with Tophat2 and Bowtie2. The use of Samtools to clean and sort the reads, and HTSeq to count reads per gene, ensures the data is accurately prepared for downstream analysis. The genome build used for mapping is GRCh38, and the raw count data is stored in a tab-delimited format.
@@ -947,10 +947,10 @@ kable(timepoint_table, format = "html", col.names = c("Timepoint", "Count"))
 
  
 
-<!-- Caption for the code block 3.1.3. -->
-<p class="code-caption">Code Block 3.1.3. Assessing Sample Characteristics for Experimental Design</p>
+<!-- Caption for the code block 3.1.2.2. -->
+<p class="code-caption">Code Block 3.1.2.2. Assessing Sample Characteristics for Experimental Design</p>
 		
-<!-- =============== 3.1.3. Code Chunk ================  -->
+<!-- =============== 3.1.2.2. Code Chunk ================  -->
 <div class="code-block">
   <pre><code class="language-r">
 
