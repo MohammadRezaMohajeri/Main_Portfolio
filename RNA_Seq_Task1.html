@@ -1002,7 +1002,7 @@ for (col in columns) {
 	        </li>
 	    </ul>
 	
-	    <h4>3.1.3.1. Visualizing Sample Distribution by Experimental Condition (Source Name) Using Bar Charts</h4>
+	    <h4>3.1.3.1. Visualizing Sample Distribution for a Single Metadata Variable Using Bar Charts</h4>
 	    <ul>
 	        <li>
 	            This code (Code Block 3.1.3.1) focuses on visualizing a single variable, <code>source_name_ch1</code>, to display the sample distribution by experimental condition. However, the variable can be easily substituted with others if needed. <strong>(Step 1)</strong>: The <code><a href="https://ggplot2.tidyverse.org/" target="_blank">ggplot2</a></code> library is loaded for creating the plot. <strong>(Step 2)</strong>: A bar plot is constructed using <code>geom_bar()</code> to create the bars and <code>geom_text()</code> to add count labels, where <code>..count..</code> refers to the computed count statistic. The plot is styled using <code>theme_minimal()</code> and color is applied with <code>scale_fill_brewer()</code>. <strong>(Step 3)</strong>: Finally, the <code>ggsave()</code> function saves the plot to a specified location.
@@ -1051,7 +1051,7 @@ ggsave("C:/Users/omidm/OneDrive/Desktop/RNA_Seq_Task1/3/3_Sample_Distributions/3
 </div>
 
 <!-- Caption for the code block -->
-<p class="code-caption">Code Block 3.1.3.2. Automated Bar Chart Generation for Multiple Metadata Variables</p>
+<p class="code-caption">Code Block 3.1.3.2. Visualizing Sample Distribution for Multiple Metadata Variables Using Automated Bar Charts</p>
 
 <div class="code-block">
     <pre><code class="language-r">
