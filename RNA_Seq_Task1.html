@@ -1155,7 +1155,7 @@ for (col in columns_to_plot) {
             <strong>Heatmaps</strong> are primarily exploratory tools to visually assess patterns in the data. The goal is to select enough genes to reveal meaningful clusters without overcomplicating the visualization. If <u>too many genes are included</u>, the heatmap can <u>become cluttered</u> and less informative. On the other hand, if <u>too few</u> are used, <u>important patterns may be missed</u>. Typically, 100 to 500 of the most variable genes are used for exploratory heatmaps in <strong>RNA-seq studies</strong>. To ensure clarity, we often start by testing heatmaps with the top 100, 200, 300, and 500 most variable genes, assessing how well they cluster and separate groups.
         </li>
         <li>
-            However, a more data-driven approach can be taken by calculating the <strong>variance</strong> for all genes and selecting the number of genes that explains a specific proportion of the total variance. This method ensures that we capture the majority of variability in our data without including too many redundant or uninformative genes. By examining the curve of <strong>cumulative variance</strong>, we can choose a number of genes that explains a high proportion of variance, focusing on the point where the curve starts to flatten ((Code Block 3.2.2; <a href="#figure-3-2-2" onclick="highlightFigure('3-2-2')">Figure 3.2.2</a>) ).
+            However, a more data-driven approach can be taken by calculating the <strong>variance</strong> for all genes and selecting the number of genes that explains a specific proportion of the total variance. This method ensures that we capture the majority of variability in our data without including too many redundant or uninformative genes. By examining the curve of <strong>cumulative variance</strong>, we can choose a number of genes that explains a high proportion of variance, focusing on the point where the curve starts to flatten ((Code Block 3.2.4; <a href="#figure-3-2-4" onclick="highlightFigure('3-2-4')">Figure 3.2.4</a>) ).
         </li>
     </ul>
 
@@ -1165,7 +1165,7 @@ for (col in columns_to_plot) {
 	<div class="explanation">
     <ul>
         <li>
-            This code (Code Block 3.2.2) focuses on analyzing gene expression variability. <strong>(Step 1)</strong>: Required libraries like <code><a href="https://cran.r-project.org/web/packages/matrixStats/index.html" target="_blank">matrixStats</a></code> and <code><a href="https://ggplot2.tidyverse.org/" target="_blank">ggplot2</a></code> are loaded for variance calculations and plotting. <strong>(Step 2)</strong>: The gene expression data in <code>counts_matrix</code> is log2-transformed to reduce its dynamic range, making it easier to interpret. <strong>(Step 3)</strong>: Using the <code><a href="https://www.rdocumentation.org/packages/matrixStats/versions/0.62.0/topics/rowVars" target="_blank">rowVars()</a></code> function, the variance of each gene across all samples is calculated, identifying highly variable genes for further analysis. <strong>(Step 4)</strong>: The cumulative variance is computed by sorting these variances and calculating their cumulative sum, which helps assess how much variability is captured by the top genes. <strong>(Step 5)</strong>: Finally, a line plot is generated (<a href="#figure-3-2-2" onclick="highlightFigure('3-2-2')">Figure 3.2.2</a>) using <code><a href="https://ggplot2.tidyverse.org/" target="_blank">ggplot2</a></code> to visualize the cumulative variance explained by an increasing number of genes, aiding in the selection of the optimal number of genes for further analysis.
+            This code (Code Block 3.2.4) focuses on analyzing gene expression variability. <strong>(Step 1)</strong>: Required libraries like <code><a href="https://cran.r-project.org/web/packages/matrixStats/index.html" target="_blank">matrixStats</a></code> and <code><a href="https://ggplot2.tidyverse.org/" target="_blank">ggplot2</a></code> are loaded for variance calculations and plotting. <strong>(Step 2)</strong>: The gene expression data in <code>counts_matrix</code> is log2-transformed to reduce its dynamic range, making it easier to interpret. <strong>(Step 3)</strong>: Using the <code><a href="https://www.rdocumentation.org/packages/matrixStats/versions/0.62.0/topics/rowVars" target="_blank">rowVars()</a></code> function, the variance of each gene across all samples is calculated, identifying highly variable genes for further analysis. <strong>(Step 4)</strong>: The cumulative variance is computed by sorting these variances and calculating their cumulative sum, which helps assess how much variability is captured by the top genes. <strong>(Step 5)</strong>: Finally, a line plot is generated (<a href="#figure-3-2-4" onclick="highlightFigure('3-2-4')">Figure 3.2.4</a>) using <code><a href="https://ggplot2.tidyverse.org/" target="_blank">ggplot2</a></code> to visualize the cumulative variance explained by an increasing number of genes, aiding in the selection of the optimal number of genes for further analysis.
         </li>
     </ul>
 	</div> 
@@ -1177,7 +1177,7 @@ for (col in columns_to_plot) {
 
 			
 	<!-- Caption for the code block -->
-	<p class="code-caption">Code Block 3.2.2. Cumulative Variance Plot to Determine Optimal Gene Count for Heatmap</p>
+	<p class="code-caption">Code Block 3.2.4. Cumulative Variance Plot to Determine Optimal Gene Count for Heatmap</p>
 			
     <div class="code-block">
         <pre><code class="language-r">
@@ -1212,21 +1212,21 @@ ggplot(data.frame(Genes = 1:length(cum_variance), CumulativeVariance = cum_varia
     </div>
 </div>
 
-	<!-- ======= 3.2.2 image with caption =========== -->
-	<figure id="figure-3-2-2" style="text-align: justify;">
+	<!-- ======= 3.2.4 image with caption =========== -->
+	<figure id="figure-3-2-4" style="text-align: justify;">
 	    <!-- Add a clickable link to enlarge the image -->
 	    <a href="Pictures/RNA_Seq_Task1/optimal_gene_count_heatmap_cumulative_variance.png" target="_blank">
 	        <img src="Pictures/RNA_Seq_Task1/optimal_gene_count_heatmap_cumulative_variance.png" alt="Cumulative Variance Plot" style="display: block; background-color: #f0f0f0; padding: 20px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); ; width: 65%; height: 450px;">
 	    </a>
-	    <figcaption id="figure-caption-3-2-2">
-	        Figure 3.2.2. Cumulative Variance Plot to Determine Optimal Gene Count for Exploratory Heatmaps after Low-Count Gene Removal.
+	    <figcaption id="figure-caption-3-2-4">
+	        Figure 3.2.4. Cumulative Variance Plot to Determine Optimal Gene Count for Exploratory Heatmaps after Low-Count Gene Removal.
 	    </figcaption>
 	</figure>
 
 <div class="explanation">
     <ul>
         <li>
-            The plot above (<a href="#figure-3-2-2" onclick="highlightFigure('3-2-2')">Figure 3.2.2</a>) shows that the curve, with a strict focus, starts to flatten around 300 genes, where additional genes contribute diminishing returns in terms of explaining the total variance. This suggests that selecting approximately 300 genes for the heatmap would balance between capturing significant variability and avoiding unnecessary noise.
+            The plot above (<a href="#figure-3-2-4" onclick="highlightFigure('3-2-4')">Figure 3.2.4</a>) shows that the curve, with a strict focus, starts to flatten around 300 genes, where additional genes contribute diminishing returns in terms of explaining the total variance. This suggests that selecting approximately 300 genes for the heatmap would balance between capturing significant variability and avoiding unnecessary noise.
         </li>
         
     </ul>
