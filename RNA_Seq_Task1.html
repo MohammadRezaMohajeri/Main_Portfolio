@@ -1220,7 +1220,142 @@ ggsave("C:/Users/omidm/OneDrive/Desktop/RNA_Seq_Task1/3/3_Count_Matrix_Explorati
         <strong>Figure 3.2.2.1</strong>. Boxplot of log2-transformed gene expression counts across all samples, after removing low-count genes and outlier samples. This uncolored boxplot provides an overview of the distribution of gene counts across samples, helping to identify potential outliers and ensuring consistency in sequencing depth.
     </figcaption>
 </figure>
-		
+
+<!-- =========================  start of 3.2.2.2 ======================================= --> 
+	<div class="explanation">
+	    <h4 style="margin-bottom: 0;">3.2.2.2. Boxplot of Raw Counts Colored by Experimental Condition</h4>
+	    <ul>
+	        <li>
+	            This enhanced version of the boxplot introduces <strong>color coding</strong> based on <strong>experimental conditions</strong>. By grouping the samples according to metadata (e.g., different treatments), we can more easily visualize how the distribution of counts changes across different conditions. This plot is particularly useful for identifying <strong>condition-specific biases</strong> or <strong>batch effects</strong> that could affect downstream analyses, such as <strong>DEA for biomarker discovery</strong>. <a href="#figure-3-2-2-2-a" onclick="highlightFigure('3-2-2-2-a')">Figure 3.2.2.2 a</a> & <a href="#figure-3-2-2-2-b" onclick="highlightFigure('3-2-2-2-b')">Figure 3.2.2.2 b</a> show the distribution of raw counts before and after removing low-count genes and outlier samples, respectively, allowing us to assess how preprocessing affects the consistency of counts across experimental conditions.
+	        </li>
+	    </ul>
+	
+	    <ul>
+	        <li>
+	            In this code (Code Block 3.2.2.2), we create a boxplot colored by <strong>experimental condition</strong>. (Step 1): The <strong>metadata</strong> and <strong>count matrix</strong> are aligned based on sample IDs. (Step 2): The <strong>log2-transformed count matrix</strong> is prepared for plotting and merged with metadata information. (Step 3): A <strong>boxplot</strong> is created with colors representing the experimental conditions using <strong>geom_boxplot()</strong> and a <strong>color palette</strong>. (Step 4): The total sample count is added to the legend, and (Step 5): The final plot is saved to the desired directory using the <strong>ggsave()</strong> function.
+	        </li>
+	    </ul>
+
+    <!-- ========== 3.2.2.2. Caption for the code block ============== -->
+    <p class="code-caption"><strong>Code Block 3.2.2.2. Boxplot of Raw Counts Colored by Experimental Condition</strong></p>
+    <pre><code>
+# ============================
+# Load necessary libraries
+# ============================
+library(ggplot2)
+library(reshape2)
+
+# ============================
+# Step 1: Align Sample IDs and Metadata
+# ============================
+
+# Set the row names of metadata to the sample names (stored in metadata$title)
+rownames(metadata) <- metadata$title
+
+# Extract the sample IDs from counts_matrix (columns represent samples)
+sample_ids <- colnames(counts_matrix)
+
+# Filter metadata to contain only rows that match the sample IDs in the count matrix
+metadata_filtered <- metadata[metadata$title %in% sample_ids, ]
+
+# Reorder metadata to match the order of sample IDs in the count matrix
+metadata_filtered <- metadata_filtered[match(sample_ids, rownames(metadata_filtered)), ]
+
+
+# ============================
+# Step 2: Prepare Data for Plotting
+# ============================
+
+# Transpose the counts matrix to make samples the rows
+counts_matrix_t <- t(counts_matrix)
+
+# Convert the transposed counts matrix to a data frame and log-transform the counts
+# Add 1 to avoid log(0), which is undefined
+df <- as.data.frame(log2(counts_matrix_t + 1))
+
+# Add a sample column (rownames will become a new column for plotting)
+df$Sample <- rownames(df)
+
+# Add the group information from metadata (e.g., source_name_ch1)
+df$group <- metadata_filtered$source_name_ch1[match(df$Sample, rownames(metadata_filtered))]
+
+# Ensure `group` is a factor for proper grouping in the plot
+df$group <- as.factor(df$group)
+
+
+# ============================
+# Step 3: Reshape the Data for ggplot2 (Long Format)
+# ============================
+
+# Melt the data frame to create a long format for ggplot2
+df_long <- melt(df, id.vars = c("Sample", "group"))
+
+
+# ============================
+# Step 4: Define Colors for Each Unique Group and Add Sample Counts to the Labels
+# ============================
+
+# Calculate the number of samples for each group
+group_counts <- table(df$group)
+
+# Calculate the total number of samples
+total_samples <- sum(group_counts)
+
+# Create the color palette for the unique groups
+unique_groups <- unique(df$group)
+color_palette <- c("#FF6347", "#4682B4", "#32CD32", "#FFD700", "#8A2BE2", "#00CED1")
+
+# Ensure the color palette has enough colors for all groups
+group_colors <- setNames(color_palette[1:length(unique_groups)], unique_groups)
+
+# ============================
+# Step 5: Create the Plot with Updated Group Labels
+# ============================
+
+p <- ggplot(df_long, aes(x = factor(Sample, levels = sample_ids), y = value, fill = group)) +
+  geom_boxplot() +
+  theme_minimal() +
+  labs(title = "Log2 Raw Counts Across Samples by Source Name", x = "Samples", y = "Log2 Counts", 
+       fill = paste0("group (Total n=", total_samples, ")")) +  # Add total number to the legend title
+  theme(axis.text.x = element_text(angle = 30, hjust = 1, size = 4), # Rotate and adjust x-axis labels
+        plot.background = element_rect(fill = "white", colour = NA),  # Set white background
+        panel.background = element_rect(fill = "white", colour = NA)) + # Set white background for the panel
+  scale_fill_manual(values = group_colors, labels = paste0(levels(df$group), " (n=", group_counts[levels(df$group)], ")"))  # Use the custom color vector and add counts in the legend
+
+# ============================
+# Step 6: Save the Plot
+# ============================
+
+ggsave("C:/Users/omidm/OneDrive/Desktop/RNA_Seq_Task1/3/3_Count_Matrix_Exploration/3.2.2.2.a_Colored_Boxplot_Raw_Counts_Before_Removing_LowCountGenes_AND_Outlier_Samples.png", 
+       plot = p, width = 20, height = 6)
+
+    </code></pre>
+
+	
+	    <!-- Boxplots Row with Click-to-Enlarge Feature -->
+	    <div style="display: flex; justify-content: space-around;">
+	    
+	        <!-- Boxplot Figure 3.2.2.2 a (Before Removing Low-Count Genes and Outlier Samples) -->
+	        <figure id="figure-3-2-2-2-a" style="text-align: justify; margin: 10px;">
+	            <a href="Pictures/3.2.2.2.a_Colored_Boxplot_Raw_Counts_Before_Removing_LowCountGenes_AND_Outlier_Samples.png" target="_blank">
+	                <img src="Pictures/3.2.2.2.a_Colored_Boxplot_Raw_Counts_Before_Removing_LowCountGenes_AND_Outlier_Samples.png" alt="Boxplot Before Removing Low-Count Genes and Outliers" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%; height: 300px;">
+	            </a>
+	            <figcaption id="figure-caption-3-2-2-2-a">
+	                <strong>Figure 3.2.2.2 a.</strong> Boxplot of Log2 Raw Counts across Samples Colored by Experimental Condition, before removing low-count genes and outlier samples. This figure displays the distribution of raw counts across all experimental conditions, highlighting potential outliers and inconsistencies.
+	            </figcaption>
+	        </figure>
+	
+	        <!-- Boxplot Figure 3.2.2.2 b (After Removing Low-Count Genes and Outlier Samples) -->
+	        <figure id="figure-3-2-2-2-b" style="text-align: justify; margin: 10px;">
+	            <a href="Pictures/3.2.2.2.b_Colored_Boxplot_Raw_Counts_After_Removing_LowCountGenes_AND_Outlier_Samples.png" target="_blank">
+	                <img src="Pictures/3.2.2.2.b_Colored_Boxplot_Raw_Counts_After_Removing_LowCountGenes_AND_Outlier_Samples.png" alt="Boxplot After Removing Low-Count Genes and Outliers" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%; height: 300px;">
+	            </a>
+	            <figcaption id="figure-caption-3-2-2-2-b">
+	                <strong>Figure 3.2.2.2 b.</strong> Boxplot of Log2 Raw Counts across Samples Colored by Experimental Condition, after removing low-count genes and outlier samples. This figure demonstrates how filtering out low
+
+<!-- =========================  End of 3.2.2.2======================================= --> 
+
+	
 
 <!-- =========================  start of 3.2.4.======================================= --> 
 
