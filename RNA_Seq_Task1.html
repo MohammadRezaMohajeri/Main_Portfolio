@@ -1283,9 +1283,9 @@ p <- ggplot(df_long, aes(x = variable, y = value)) +
         panel.background = element_rect(fill = "white", colour = NA))  # Set white background for the panel
 
 # ============================
-# Step 4: Save the Plot
+# Step 4: Save the Plot 3.2.2.1.Uncolored_Boxplot_Raw_Counts
 # ============================
-ggsave("C:/Users/omidm/OneDrive/Desktop/RNA_Seq_Task1/3/3_Count_Matrix_Exploration/3.2.2.1.Uncolored_Boxplot_Raw_Counts_After_Removing_LowCountGenes_AND_Outlier_Samples.png", 
+ggsave("Figures/3.2.2.Boxplot_Raw_Counts/3.2.2.1.Uncolored_Boxplot_Raw_Counts.png"", 
        plot = p, width = 13, height = 4)
 </code></pre>
 
@@ -1406,7 +1406,7 @@ p <- ggplot(df_long, aes(x = factor(Sample, levels = sample_ids), y = value, fil
 # Step 6: Save the Plot
 # ============================
 
-ggsave("C:/Users/omidm/OneDrive/Desktop/RNA_Seq_Task1/3/3_Count_Matrix_Exploration/3.2.2.2.a_Colored_Boxplot_Raw_Counts_Before_Removing_LowCountGenes_AND_Outlier_Samples.png", 
+ggsave("Figures/3.2.2.Boxplot_Raw_Counts/3.2.2.2.Colored_Boxplot_Raw_Counts.png", 
        plot = p, width = 20, height = 6)
 
     </code></pre>
@@ -1712,7 +1712,7 @@ pheatmap(counts_matrix_log[top_var_genes_log, ],
          show_rownames = FALSE, show_colnames = TRUE,  
          angle_col = 90,  # Rotate x-axis labels for better readability
          fontsize_col = 4,  # Reduce font size for the column labels
-         filename = "path/to/your/output/V1_300_Genes_heatmap_variable_genes.png")  # Save the heatmap as an image
+         filename = "Figures/3.2.5.Exploratory_Heatmaps/3.2.5.1.Unsupervised_Heatmap_160_Samples.png")  # Save the heatmap as an image
     </code></pre>
 </div>
 
@@ -1810,7 +1810,7 @@ pheatmap(counts_matrix_log[top_var_genes_log, ],
          show_rownames = FALSE, show_colnames = TRUE,  
          angle_col = 90,  # Rotate x-axis labels for better readability
          fontsize_col = 4,  # Reduce font size for the column labels
-         filename = "path/to/your/output/V1.1_300_Genes_Lesional_NonLesional_heatmap.png")  # Save the heatmap as an image
+         filename = "Figures/3.2.5.Exploratory_Heatmaps/3.2.5.2.Unsupervised_Heatmap_Baseline_Samples.png")  # Save the heatmap as an image
     </code></pre>
 </div>
 
@@ -1910,7 +1910,7 @@ pheatmap(counts_matrix_log[top_var_genes_log, ],
          show_rownames = FALSE, show_colnames = TRUE,
          angle = 45, vjust = 0.5, hjust = 0.6,
          fontsize_col = 8, 
-         filename = "your/path/here/1_Grouped_Heatmap_for_All_Groups.png")
+         filename = "Figures/3.2.5.Exploratory_Heatmaps/3.2.5.3.Grouped_Heatmap_All_Groups.png")
     </code></pre>
 </div>
 
