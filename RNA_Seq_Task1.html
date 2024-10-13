@@ -1399,34 +1399,48 @@ ggsave("C:/Users/omidm/OneDrive/Desktop/RNA_Seq_Task1/3/3_Count_Matrix_Explorati
 # Step 1: Define Output File Path
 # ============================
 
+# Define the file path where you want to save the image
 output_file <- "C:/Users/omidm/OneDrive/Desktop/RNA_Seq_Task1/3/3_Count_Matrix_Exploration/3.2.3.a.histogram_Of_total_GeneCounts_Per_Sample_Before_Removing_LowCountGenes_AND_Outlier_Samples.png"
 
 # ============================
 # Step 2: Open PNG Device
 # ============================
 
+# Open the PNG device to save the plot
 png(filename = output_file, width = 1200, height = 1000)
 
 # ============================
 # Step 3: Create Histogram of Log-Transformed Gene Counts
 # ============================
 
+# Calculate log10 of total counts per gene
 log_gene_counts <- log10(rowSums(counts_matrix))
-hist_data <- hist(log_gene_counts, breaks = 50, main = "Gene Count Distribution", xlab = "Log10 Counts", col = "steelblue")
+
+# Create the histogram and get the counts for each bin
+hist_data <- hist(log_gene_counts,  
+                  breaks = 50,  # Specify number of bins in the histogram
+                  main = "Gene Count Distribution",  # Title of the plot
+                  xlab = "Log10 Counts",  # Label for the x-axis
+                  col = "steelblue")  # Add color to the bars
+
+# Update the y-axis limit to make room for labels
 ylim <- c(0, max(hist_data$counts) * 1.1)
-plot(hist_data, col = "steelblue", main = "Gene Count Distribution", xlab = "Log10 Counts", ylim = ylim)
+plot(hist_data, col = "steelblue", main = "Gene Count Distribution", xlab = "Log10 Counts", ylim = ylim) # cex: to change the font size of the labels on the bars
 
 # ============================
 # Step 4: Add Numbers Above Bars
 # ============================
 
+# Add the text labels above the histogram bars
 text(hist_data$mids, hist_data$counts, labels = hist_data$counts, pos = 3, cex = 1, srt = 45)
 
 # ============================
 # Step 5: Close the PNG Device
 # ============================
 
+# Close the PNG device
 dev.off()
+	
 </code></pre>
 
 <!-- Histograms Row with Click-to-Enlarge Feature -->
