@@ -1222,23 +1222,23 @@ ggsave("C:/Users/omidm/OneDrive/Desktop/RNA_Seq_Task1/3/3_Count_Matrix_Explorati
 </figure>
 
 <!-- =========================  start of 3.2.2.2 ======================================= --> 
-	<div class="explanation">
-	    <h4 style="margin-bottom: 0;">3.2.2.2. Boxplot of Raw Counts Colored by Experimental Condition</h4>
-	    <ul>
-	        <li>
-	            This enhanced version of the boxplot introduces <strong>color coding</strong> based on <strong>experimental conditions</strong>. By grouping the samples according to metadata (e.g., different treatments), we can more easily visualize how the distribution of counts changes across different conditions. This plot is particularly useful for identifying <strong>condition-specific biases</strong> or <strong>batch effects</strong> that could affect downstream analyses, such as <strong>DEA for biomarker discovery</strong>. <a href="#figure-3-2-2-2-a" onclick="highlightFigure('3-2-2-2-a')">Figure 3.2.2.2 a</a> & <a href="#figure-3-2-2-2-b" onclick="highlightFigure('3-2-2-2-b')">Figure 3.2.2.2 b</a> show the distribution of raw counts before and after removing low-count genes and outlier samples, respectively, allowing us to assess how preprocessing affects the consistency of counts across experimental conditions.
-	        </li>
-	    </ul>
-	
-	    <ul>
-	        <li>
-	            In this code (Code Block 3.2.2.2), we create a boxplot colored by <strong>experimental condition</strong>. (Step 1): The <strong>metadata</strong> and <strong>count matrix</strong> are aligned based on sample IDs. (Step 2): The <strong>log2-transformed count matrix</strong> is prepared for plotting and merged with metadata information. (Step 3): A <strong>boxplot</strong> is created with colors representing the experimental conditions using <strong>geom_boxplot()</strong> and a <strong>color palette</strong>. (Step 4): The total sample count is added to the legend, and (Step 5): The final plot is saved to the desired directory using the <strong>ggsave()</strong> function.
-	        </li>
-	    </ul>
+<div class="explanation">
+    <h4 style="margin-bottom: 0;">3.2.2.2. Boxplot of Raw Counts Colored by Experimental Condition</h4>
+    <ul>
+        <li>
+            This enhanced version of the boxplot introduces <strong>color coding</strong> based on <strong>experimental conditions</strong>. By grouping the samples according to metadata (e.g., different treatments), we can more easily visualize how the distribution of counts changes across different conditions. This plot is particularly useful for identifying <strong>condition-specific biases</strong> or <strong>batch effects</strong> that could affect downstream analyses, such as <strong>DEA for biomarker discovery</strong>. <a href="#figure-3-2-2-2-a" onclick="highlightFigure('3-2-2-2-a')">Figure 3.2.2.2 a</a> & <a href="#figure-3-2-2-2-b" onclick="highlightFigure('3-2-2-2-b')">Figure 3.2.2.2 b</a> show the distribution of raw counts before and after removing low-count genes and outlier samples, respectively, allowing us to assess how preprocessing affects the consistency of counts across experimental conditions.
+        </li>
+    </ul>
+
+    <ul>
+        <li>
+            In this code (Code Block 3.2.2.2), we create a boxplot colored by <strong>experimental condition</strong>. (Step 1): The <strong>metadata</strong> and <strong>count matrix</strong> are aligned based on sample IDs. (Step 2): The <strong>log2-transformed count matrix</strong> is prepared for plotting and merged with metadata information. (Step 3): A <strong>boxplot</strong> is created with colors representing the experimental conditions using <strong>geom_boxplot()</strong> and a <strong>color palette</strong>. (Step 4): The total sample count is added to the legend, and (Step 5): The final plot is saved to the desired directory using the <strong>ggsave()</strong> function.
+        </li>
+    </ul>
 
     <!-- ========== 3.2.2.2. Caption for the code block ============== -->
     <p class="code-caption"><strong>Code Block 3.2.2.2. Boxplot of Raw Counts Colored by Experimental Condition</strong></p>
-    <pre><code>
+    <pre><code class="language-r">
 # ============================
 # Load necessary libraries
 # ============================
@@ -1331,31 +1331,68 @@ ggsave("C:/Users/omidm/OneDrive/Desktop/RNA_Seq_Task1/3/3_Count_Matrix_Explorati
 
     </code></pre>
 
-	
-	    <!-- Boxplots Row with Click-to-Enlarge Feature -->
-	    <div style="display: flex; justify-content: space-around;">
-	    
-	        <!-- Boxplot Figure 3.2.2.2 a (Before Removing Low-Count Genes and Outlier Samples) -->
-	        <figure id="figure-3-2-2-2-a" style="text-align: justify; margin: 10px;">
-	            <a href="Pictures/3.2.2.2.a_Colored_Boxplot_Raw_Counts_Before_Removing_LowCountGenes_AND_Outlier_Samples.png" target="_blank">
-	                <img src="Pictures/3.2.2.2.a_Colored_Boxplot_Raw_Counts_Before_Removing_LowCountGenes_AND_Outlier_Samples.png" alt="Boxplot Before Removing Low-Count Genes and Outliers" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%; height: 300px;">
-	            </a>
-	            <figcaption id="figure-caption-3-2-2-2-a">
-	                <strong>Figure 3.2.2.2 a.</strong> Boxplot of Log2 Raw Counts across Samples Colored by Experimental Condition, before removing low-count genes and outlier samples. This figure displays the distribution of raw counts across all experimental conditions, highlighting potential outliers and inconsistencies.
-	            </figcaption>
-	        </figure>
-	
-	        <!-- Boxplot Figure 3.2.2.2 b (After Removing Low-Count Genes and Outlier Samples) -->
-	        <figure id="figure-3-2-2-2-b" style="text-align: justify; margin: 10px;">
-	            <a href="Pictures/3.2.2.2.b_Colored_Boxplot_Raw_Counts_After_Removing_LowCountGenes_AND_Outlier_Samples.png" target="_blank">
-	                <img src="Pictures/3.2.2.2.b_Colored_Boxplot_Raw_Counts_After_Removing_LowCountGenes_AND_Outlier_Samples.png" alt="Boxplot After Removing Low-Count Genes and Outliers" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%; height: 300px;">
-	            </a>
-	            <figcaption id="figure-caption-3-2-2-2-b">
-	                <strong>Figure 3.2.2.2 b.</strong> Boxplot of Log2 Raw Counts across Samples Colored by Experimental Condition, after removing low-count genes and outlier samples. This figure demonstrates how filtering out low
+
+	<!-- Boxplots Row with Click-to-Enlarge Feature -->
+<ul>
+    <li>
+        <div style="display: flex; justify-content: space-around;">
+            <!-- Boxplot Figure 3.2.2.2 a (Before Removing Low-Count Genes and Outlier Samples) -->
+            <figure id="figure-3-2-2-2-a" style="text-align: justify; margin: 10px;">
+                <a href="Pictures/3.2.2.2.a_Colored_Boxplot_Raw_Counts_Before_Removing_LowCountGenes_AND_Outlier_Samples.png" target="_blank">
+                    <img src="Pictures/3.2.2.2.a_Colored_Boxplot_Raw_Counts_Before_Removing_LowCountGenes_AND_Outlier_Samples.png" 
+                         alt="Boxplot Before Removing Low-Count Genes and Outliers" 
+                         style="display: block; background-color: #f0f0f0; padding: 10px; 
+                                border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%; height: 300px;">
+                </a>
+                <figcaption id="figure-caption-3-2-2-2-a">
+                    <strong>Figure 3.2.2.2 a.</strong> Boxplot of Log2 Raw Counts across Samples Colored by Experimental Condition, 
+                    before removing low-count genes and outlier samples. This figure displays the distribution of raw counts 
+                    across all experimental conditions, highlighting potential outliers and inconsistencies.
+                </figcaption>
+            </figure>
+
+            <!-- Boxplot Figure 3.2.2.2 b (After Removing Low-Count Genes and Outlier Samples) -->
+            <figure id="figure-3-2-2-2-b" style="text-align: justify; margin: 10px;">
+                <a href="Pictures/3.2.2.2.b_Colored_Boxplot_Raw_Counts_After_Removing_LowCountGenes_AND_Outlier_Samples.png" target="_blank">
+                    <img src="Pictures/3.2.2.2.b_Colored_Boxplot_Raw_Counts_After_Removing_LowCountGenes_AND_Outlier_Samples.png" 
+                         alt="Boxplot After Removing Low-Count Genes and Outliers" 
+                         style="display: block; background-color: #f0f0f0; padding: 10px; 
+                                border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%; height: 300px;">
+                </a>
+                <figcaption id="figure-caption-3-2-2-2-b">
+                    <strong>Figure 3.2.2.2 b.</strong> Boxplot of Log2 Raw Counts across Samples Colored by Experimental Condition, 
+                    after removing low-count genes and outlier samples. This figure demonstrates how filtering out 
+                    low-count genes and outliers improves the consistency of count distributions across conditions.
+                </figcaption>
+            </figure>
+        </div>
+    </li>
+
+    <li>
+        <strong>Interpretation:</strong> In 
+        <a href="#figure-3-2-2-2-a" onclick="highlightFigure('3-2-2-2-a')">Figure 3.2.2.2 a</a>, before removing low-count genes 
+        and outlier samples, the log2-transformed raw counts display a broad range of variability. There are several extreme 
+        outliers (black dots) far above the whiskers of the boxplots, indicating that some samples have unusually high counts. 
+        This suggests the presence of technical or biological variability that could skew downstream analysis. The boxplots 
+        themselves are wider and less consistent across different groups, reflecting the noise introduced by these low-count 
+        genes and outliers.
+
+        After filtering, in <a href="#figure-3-2-2-2-b" onclick="highlightFigure('3-2-2-2-b')">Figure 3.2.2.2 b</a>, 
+        the data shows a much tighter distribution. While there are still outliers (black dots), these are less extreme, 
+        and they appear closer to the whiskers, representing smaller deviations from the group median. The overall range of 
+        counts has become more consistent across groups, with fewer extreme variations, allowing for a clearer comparison 
+        between the experimental conditions. This filtering process has effectively removed noise from the data, enhancing its 
+        quality and reliability for subsequent analysis by reducing the impact of low-count genes and extreme outliers.
+    </li>
+</ul>
 
 <!-- =========================  End of 3.2.2.2======================================= --> 
 
-	
+
+
+
+
+		    
 
 <!-- =========================  start of 3.2.4.======================================= --> 
 
