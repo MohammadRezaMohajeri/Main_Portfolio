@@ -473,7 +473,7 @@
 	       x = "Group", y = "Total Counts per Sample") +
 	  theme(legend.position = "none")
 	
-	ggsave("Figures/Figure2.2.1.3.Box_Plot_Library_Sizes.png", plot = box_plot, width = 8, height = 5, bg = "white")
+	ggsave("Figures/2.2.1.Outlier_Samples/Figure2.2.1.3.Box_Plot_Library_Sizes.png", plot = box_plot, width = 8, height = 5, bg = "white")
 	
 	
 	# Step 4.3: Violin Plot of Library Sizes Before and After Filtering
@@ -484,7 +484,7 @@
 	       x = "Group", y = "Total Counts per Sample") +
 	  theme(legend.position = "none")
 	
-	ggsave("Figures/Figure2.2.1.5.Violin_Plot_Library_Sizes.png", plot = violin_plot, width = 8, height = 5, bg = "white")
+	ggsave("Figures/2.2.1.Outlier_Samples/Figure2.2.1.5.Violin_Plot_Library_Sizes.png", plot = violin_plot, width = 8, height = 5, bg = "white")
 	
 	
 	
@@ -498,7 +498,7 @@
 	  geom_text(data = subset(comparison_df, Group == "Original" & Sample %in% outlier_samples), 
 		    aes(label = Sample), vjust = -1, size = 3, color = "red", angle = 5)
 	
-	ggsave("Figures/Figure2.2.1.1.Dot_Plot_Library_Sizes.png", plot = dot_plot, width = 10, height = 5, bg = "white")
+	ggsave("Figures/2.2.1.Outlier_Samples/Figure2.2.1.1.Dot_Plot_Library_Sizes.png", plot = dot_plot, width = 10, height = 5, bg = "white")
 	
 	
 	
@@ -510,7 +510,7 @@
 	       x = "Sample", y = "Total Counts per Sample") +
 	  theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
 	
-	ggsave("Figures/Figure2.2.1.2.Bar_Plot_Library_Sizes.png", plot = bar_plot, width = 10, height = 5, bg = "white")
+	ggsave("Figures/2.2.1.Outlier_Samples/Figure2.2.1.2.Bar_Plot_Library_Sizes.png", plot = bar_plot, width = 10, height = 5, bg = "white")
 	
 	
 	
@@ -523,7 +523,7 @@
 	  scale_x_log10() +
 	  theme(legend.position = "top")
 	
-	ggsave("Figures/Figure2.2.1.4.Density_Plot_Library_Sizes.png", plot = density_plot, width = 8, height = 5, bg = "white")
+	ggsave("Figures/2.2.1.Outlier_Samples/Figure2.2.1.4.Density_Plot_Library_Sizes.png", plot = density_plot, width = 8, height = 5, bg = "white")
 	
 	
 	# ========================================================
@@ -591,7 +591,7 @@
 				      ncol = 2)
 	
 	# Save the combined plot
-	ggsave("Figures/Figure2.2.1.6.Dimensions_Comparison.png", plot = combined_plot, width = 12, height = 10, bg = "white")
+	ggsave("Figures/2.2.1.Outlier_Samples/Figure2.2.1.6.Dimensions_Comparison.png", plot = combined_plot, width = 12, height = 10, bg = "white")
 	
 	
 	
@@ -843,7 +843,7 @@
 		<figure id="figure-3-1-1" style="text-align: justify;">
 		    <!-- Add a clickable link to enlarge the image -->
 		    <a href="Pictures/RNA_Seq_Task1/Selected_Metadata_GSE157194.png" target="_blank">
-		        <img src="Pictures/RNA_Seq_Task1/Selected_Metadata_GSE157194.png" alt="Cumulative Variance Plot" style="display: block; background-color: #f0f0f0; padding: 20px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 90%; height: 400px;">
+		        <img src="Pictures/RNA_Seq_Task1/Selected_Metadata_GSE157194.png" alt="Cumulative Variance Plot" style="display: block; background-color: #f0f0f0; padding: 20px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%; height: 400px;">
 		    </a>
 		    <figcaption id="figure-caption-3-1-1">
 		        Figure 3.1.1. Metadata Exploration as Part of Exploratory Data Analysis (EDA) (After filtering outlier samples).
@@ -856,7 +856,7 @@
 		
 	<!-- ===================  Check Distribution of Samples Across Key Metadata Variables =========================== -->
 	<div class="explanation">
-	    <h3>3.1.2. Check Distribution of Samples Across Key Metadata Variables (using table() and kable())</h3>
+	    <h4 style="margin-top: 5px;">3.1.2. Check Distribution of Samples Across Key Metadata Variables (using table() and kable())</h4>
 		<h4 style="margin-top: 5px;">3.1.2.1. Summary of Sample Distribution by Patient Group and Timepoints</h4>
 	    <ul>
 	        <li>
