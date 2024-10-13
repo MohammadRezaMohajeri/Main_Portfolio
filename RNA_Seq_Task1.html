@@ -1140,10 +1140,6 @@ for (col in columns_to_plot) {
 	    </figcaption>
 	</figure>
 		
-<!-- ================================================================ --> 
-
-
-
 
 <!-- ================================================================ --> 
 
@@ -1170,12 +1166,85 @@ for (col in columns_to_plot) {
     </ul>
 	</div> 
 
+			
+<!-- ================================3.2.2.================================ --> 
+<div class="explanation">
+    <h4>3.2.2. Boxplot of Raw Counts</h4>
+    <p>
+        In <strong>RNA-seq analysis</strong>, <strong>boxplots of raw counts</strong> provide a crucial view of the 
+        <strong>distribution of gene expression across samples</strong>. By <strong>plotting the log-transformed counts</strong>, 
+        we can <strong>detect outliers</strong>, assess <strong>sequencing depth variations</strong>, and verify whether the data 
+        is ready for <strong>downstream analysis</strong>. <strong>Boxplots</strong> help identify potential issues, such as 
+        <strong>batch effects</strong> or <strong>technical biases</strong>, that may affect the accuracy of 
+        <strong>differential expression analysis (DEA)</strong> and the identification of <strong>biomarkers</strong>.
+    </p>
+
+    <h4>3.2.2.1. Boxplot of Raw Counts (Uncolored)</h4>
+    <p>
+        This simple boxplot (Figure 3.2.2.1) (after the removal of <strong>low-count genes</strong> and <strong>outlier samples</strong>) provides an overview of the <strong>log2-transformed gene expression counts</strong> across all samples without any group-based color distinction. It allows us to quickly assess the range of counts for each sample and identify potential <strong>outliers</strong>. This uncolored version gives a broad view of <strong>data distribution</strong> and helps to highlight <strong>sample-level variations</strong> after the removal of <strong>low-count genes</strong> and <strong>outlier samples</strong>, ensuring the data is cleaned and ready for downstream analyses.
+    </p>
+
+    <p>
+        In this code (Code Block 3.2.2.1), we create a boxplot for the <strong>log2-transformed counts</strong> of the count matrix. (Step 1): We load the <strong>ggplot2</strong> library to generate the plot. (Step 2): The count matrix is <strong>log2-transformed</strong> and converted into a long format for visualization. (Step 3): A basic boxplot is created with minimal styling using <strong>geom_boxplot()</strong> to show the count distribution across samples. (Step 4): The plot is saved to a specific location using the <strong>ggsave()</strong> function.
+    </p>
+</div>
+
+<!-- Code Block 3.2.2.1. Boxplot of Raw Counts (Uncolored) -->
+<pre><code class="language-r">
+# ============================
+# Step 1: Load necessary library
+# ============================
+library(ggplot2)
+
+# ============================
+# Step 2: Prepare Data for Plotting
+# ============================
+# Convert counts_matrix to a data frame and log-transform it
+df <- as.data.frame(log2(counts_matrix + 1))  # Log2 transform the counts matrix
+
+# Add a sample column (rownames will become a new column for plotting)
+df$Sample <- rownames(df)
+
+# Reshape the data for ggplot2 (long format)
+df_long <- reshape2::melt(df, id.vars = "Sample")
+
+# ============================
+# Step 3: Create Boxplot
+# ============================
+p <- ggplot(df_long, aes(x = variable, y = value)) +
+  geom_boxplot() +  # Create boxplot
+  theme_minimal() +  # Apply a minimal theme for better readability
+  labs(title = "Log2 Raw Counts Across Samples", x = "Samples", y = "Log2 Counts") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 4),
+        plot.background = element_rect(fill = "white", colour = NA),  # Set white background
+        panel.background = element_rect(fill = "white", colour = NA))  # Set white background for the panel
+
+# ============================
+# Step 4: Save the Plot
+# ============================
+ggsave("C:/Users/omidm/OneDrive/Desktop/RNA_Seq_Task1/3/3_Count_Matrix_Exploration/3.2.2.1.Uncolored_Boxplot_Raw_Counts_After_Removing_LowCountGenes_AND_Outlier_Samples.png", 
+       plot = p, width = 13, height = 4)
+</code></pre>
+
+<!-- ==============================(Figure 3.2.2.1)================================== --> 
+
+<figure id="figure-3-2-2-1" style="text-align: justify;">
+    <!-- Add a clickable link to enlarge the image -->
+    <a href="Pictures/RNA_Seq_Task1/3.2.2.1.Uncolored_Boxplot_Raw_Counts_After_Removing_LowCountGenes_AND_Outlier_Samples.png" target="_blank">
+        <img src="Pictures/RNA_Seq_Task1/3.2.2.1.Uncolored_Boxplot_Raw_Counts_After_Removing_LowCountGenes_AND_Outlier_Samples.png" alt="Boxplot of Raw Counts (Uncolored)" style="display: block; background-color: #f0f0f0; padding: 20px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 90%; height: 400px;">
+    </a>
+    <figcaption id="figure-caption-3-2-2-1">
+        <strong>Figure 3.2.2.1</strong>. Boxplot of log2-transformed gene expression counts across all samples, after removing low-count genes and outlier samples. This uncolored boxplot provides an overview of the distribution of gene counts across samples, helping to identify potential outliers and ensuring consistency in sequencing depth.
+    </figcaption>
+</figure>
+
 
 			
 
 
 
-			
+<!-- ================================ 3.2.4.================================ --> 
+		
 	<!-- Caption for the code block -->
 	<p class="code-caption">Code Block 3.2.4. Cumulative Variance Plot to Determine Optimal Gene Count for Heatmap</p>
 			
