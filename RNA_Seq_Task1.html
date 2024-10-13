@@ -1376,6 +1376,95 @@ ggsave("C:/Users/omidm/OneDrive/Desktop/RNA_Seq_Task1/3/3_Count_Matrix_Explorati
 
 
 
+	
+	
+<!-- =========================  start of  of 3.2.3======================================= --> 
+<h4 style="margin-bottom: 0;">3.2.3. Histogram of Total Gene Counts Per Sample</h4>
+<ul>
+    <li>
+        The histogram of total gene counts per sample is essential for assessing the overall sequencing depth and library size across samples in RNA-seq data. By visualizing the distribution of total gene counts (log-transformed), we can identify under-sequenced or over-sequenced samples that may need further normalization or removal during preprocessing. This visualization helps to ensure that sequencing depth is consistent across samples before differential expression analysis (DEA) and biomarker discovery. <a href="#figure-3-2-3-a" onclick="highlightFigure('3-2-3-a')">Figure 3.2.3 a</a> & <a href="#figure-3-2-3-b" onclick="highlightFigure('3-2-3-b')">Figure 3.2.3 b</a> display the distribution of gene counts before and after removing low-count genes and outlier samples, respectively, which helps to assess the impact of filtering on sequencing depth.
+    </li>
+</ul>
+
+<ul>
+    <li>
+        In this code (Code Block 3.2.3), we create a histogram that visualizes the distribution of log10-transformed gene counts per sample. (Step 1): We define the output file path and specify where to save the generated plot. (Step 2): The PNG device is opened to capture the plot. (Step 3): We calculate the log10-transformed gene counts and create a histogram using the <code>hist()</code> function. (Step 4): To enhance the visualization, the gene count values are added as labels above each bar. Finally, (Step 5): The PNG device is closed, and the plot is saved.
+    </li>
+</ul>
+
+<p class="code-caption">Code Block 3.2.3. Histogram of Total Gene Counts Per Sample</p>
+
+<pre><code class="language-r">
+# ============================
+# Step 1: Define Output File Path
+# ============================
+
+output_file <- "C:/Users/omidm/OneDrive/Desktop/RNA_Seq_Task1/3/3_Count_Matrix_Exploration/3.2.3.a.histogram_Of_total_GeneCounts_Per_Sample_Before_Removing_LowCountGenes_AND_Outlier_Samples.png"
+
+# ============================
+# Step 2: Open PNG Device
+# ============================
+
+png(filename = output_file, width = 1200, height = 1000)
+
+# ============================
+# Step 3: Create Histogram of Log-Transformed Gene Counts
+# ============================
+
+log_gene_counts <- log10(rowSums(counts_matrix))
+hist_data <- hist(log_gene_counts, breaks = 50, main = "Gene Count Distribution", xlab = "Log10 Counts", col = "steelblue")
+ylim <- c(0, max(hist_data$counts) * 1.1)
+plot(hist_data, col = "steelblue", main = "Gene Count Distribution", xlab = "Log10 Counts", ylim = ylim)
+
+# ============================
+# Step 4: Add Numbers Above Bars
+# ============================
+
+text(hist_data$mids, hist_data$counts, labels = hist_data$counts, pos = 3, cex = 1, srt = 45)
+
+# ============================
+# Step 5: Close the PNG Device
+# ============================
+
+dev.off()
+</code></pre>
+
+<!-- Histograms Row with Click-to-Enlarge Feature -->
+<div style="display: flex; justify-content: space-around;">
+    
+    <!-- Histogram Figure 3.2.3 a (Before Removing Low-Count Genes and Outlier Samples) -->
+    <figure id="figure-3-2-3-a" style="text-align: justify; margin: 10px;">
+        <a href="Pictures/RNA_Seq_Task1/3.2.3.a.histogram_Of_total_GeneCounts_Per_Sample_Before_Removing_LowCountGenes_AND_Outlier_Samples.png" target="_blank">
+            <img src="Pictures/RNA_Seq_Task1/3.2.3.a.histogram_Of_total_GeneCounts_Per_Sample_Before_Removing_LowCountGenes_AND_Outlier_Samples.png" alt="Histogram Before Removing Low-Count Genes and Outliers" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%; height: 300px;">
+        </a>
+        <figcaption id="figure-caption-3-2-3-a">
+            <strong>Figure 3.2.3 a.</strong> Histogram of Total Gene Counts Per Sample before removing low-count genes and outlier samples. This figure highlights the initial distribution of total gene counts per sample, which can help identify under-sequenced samples or sequencing depth variability.
+        </figcaption>
+    </figure>
+
+    <!-- Histogram Figure 3.2.3 b (After Removing Low-Count Genes and Outlier Samples) -->
+    <figure id="figure-3-2-3-b" style="text-align: justify; margin: 10px;">
+        <a href="Pictures/RNA_Seq_Task1/3.2.3.b.histogram_Of_total_GeneCounts_Per_Sample_After_Removing_LowCountGenes_AND_Outlier_Samples.png" target="_blank">
+            <img src="Pictures/RNA_Seq_Task1/3.2.3.b.histogram_Of_total_GeneCounts_Per_Sample_After_Removing_LowCountGenes_AND_Outlier_Samples.png" alt="Histogram After Removing Low-Count Genes and Outliers" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%; height: 300px;">
+        </a>
+        <figcaption id="figure-caption-3-2-3-b">
+            <strong>Figure 3.2.3 b.</strong> Histogram of Total Gene Counts Per Sample after removing low-count genes and outlier samples. This figure shows the distribution after filtering, providing a cleaner dataset with more consistent sequencing depth across samples.
+        </figcaption>
+    </figure>
+
+</div>
+
+<ul>
+    <li><strong>Interpretation:</strong> The histograms visualize the distribution of gene counts before and after filtering low-count genes and outlier samples. Before filtering (<a href="#figure-3-2-3-a" onclick="highlightFigure('3-2-3-a')">Figure 3.2.3 a</a>), the data exhibits a large proportion of genes with low expression levels, as shown by the sharp peak near the lower end of the Log10 scale. This suggests a significant amount of noise in the dataset, which can obscure meaningful biological signals. After filtering (<a href="#figure-3-2-3-b" onclick="highlightFigure('3-2-3-b')">Figure 3.2.3 b</a>), the distribution shifts, with the removal of low-count genes leading to a more balanced representation of moderately to highly expressed genes. The refined dataset, with fewer extreme values and noise, is now more suitable for downstream analyses, offering a clearer and more reliable view of gene expression patterns. This cleaning process enhances data quality, improving the robustness and accuracy of subsequent biological interpretations.
+    </li>
+</ul>
+
+<!-- =========================  End of 3.2.3      ======================================= --> 
+	
+
+
+
+
 		    
 
 <!-- =========================  start of 3.2.4.======================================= --> 
