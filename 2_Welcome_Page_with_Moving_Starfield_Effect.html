@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -12,33 +12,32 @@
             box-sizing: border-box;
         }
 
-        /* Background styling */
-        body {
-            overflow: hidden;
-            font-family: Arial, sans-serif;
-            background-color: #0b0f19;
-            color: #ffffff;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-
-        /* Starfield canvas */
+        /* Full-page canvas */
         canvas {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 0; /* Stars stay in the background */
+            z-index: 0; /* Keep stars in the background */
         }
 
-        /* Content container */
+        /* Main Content Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #0b0f19;
+            color: #ffffff;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative;
+        }
+
         .content {
             position: relative;
-            z-index: 1; /* Content stays on top of stars */
+            z-index: 1;
             background-color: #1e293b;
             border: 2px solid #334155;
             border-radius: 10px;
@@ -73,7 +72,7 @@
             color: #ffffff;
             background-color: #38bdf8;
             border-radius: 5px;
-            transition: transform 0.2s ease, background-color 0.3s;
+            transition: background-color 0.3s, transform 0.2s;
         }
 
         .btn:hover {
@@ -83,7 +82,7 @@
     </style>
 </head>
 <body>
-    <!-- Starfield Background -->
+    <!-- Background Starfield -->
     <canvas id="starfield"></canvas>
 
     <!-- Main Content -->
@@ -109,68 +108,57 @@
         </a>
     </div>
 
-    <!-- Starfield JavaScript -->
+    <!-- Starfield Animation Script -->
     <script>
         const canvas = document.getElementById("starfield");
         const ctx = canvas.getContext("2d");
 
-        // Function to set canvas size dynamically
+        // Resize canvas to full screen
         function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            initializeStars(); // Reinitialize stars after resizing
         }
 
         window.addEventListener("resize", resizeCanvas);
         resizeCanvas();
 
-        let stars = [];
-        const starCount = 200;
-
         // Initialize stars
-        function initializeStars() {
-            stars = [];
-            for (let i = 0; i < starCount; i++) {
-                stars.push({
-                    x: Math.random() * canvas.width - canvas.width / 2,
-                    y: Math.random() * canvas.height - canvas.height / 2,
-                    z: Math.random() * canvas.width
-                });
-            }
+        const stars = [];
+        const starCount = 150;
+
+        for (let i = 0; i < starCount; i++) {
+            stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                size: Math.random() * 2,
+                speed: Math.random() * 2 + 1,
+            });
         }
 
-        // Move stars to simulate animation
-        function moveStars() {
+        // Draw stars and animate
+        function drawStars() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = "white";
 
-            for (let i = 0; i < starCount; i++) {
-                const star = stars[i];
-                star.z -= 1;
+            stars.forEach(star => {
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+                ctx.fill();
 
-                if (star.z <= 0) {
-                    star.x = Math.random() * canvas.width - canvas.width / 2;
-                    star.y = Math.random() * canvas.height - canvas.height / 2;
-                    star.z = canvas.width;
+                // Update star position
+                star.y += star.speed;
+
+                // Reset star position if it moves off-screen
+                if (star.y > canvas.height) {
+                    star.y = 0;
+                    star.x = Math.random() * canvas.width;
                 }
+            });
 
-                const k = 128.0 / star.z;
-                const px = star.x * k + canvas.width / 2;
-                const py = star.y * k + canvas.height / 2;
-
-                if (px >= 0 && px < canvas.width && py >= 0 && py < canvas.height) {
-                    const size = (1 - star.z / canvas.width) * 2;
-                    ctx.beginPath();
-                    ctx.arc(px, py, size, 0, Math.PI * 2);
-                    ctx.fill();
-                }
-            }
-
-            requestAnimationFrame(moveStars);
+            requestAnimationFrame(drawStars);
         }
 
-        initializeStars();
-        moveStars();
+        drawStars();
     </script>
 </body>
 </html>
