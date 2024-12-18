@@ -123,14 +123,14 @@
 
         // Initialize stars
         const stars = [];
-        const starCount = 300; // Increase the number of stars for more density
+        const starCount = 400; // Increase the number of stars for more density
 
         for (let i = 0; i < starCount; i++) {
             stars.push({
                 x: Math.random() * canvas.width - canvas.width / 2,
                 y: Math.random() * canvas.height - canvas.height / 2,
                 z: Math.random() * canvas.width,
-                speed: Math.random() * 3 + 2 // Increase speed range for faster movement
+                speed: Math.random() * 1.5 + 0.5 // Increase speed range for faster movement / a little faster: * 2 + 1/ faster: 3 + 2
             });
         }
 
