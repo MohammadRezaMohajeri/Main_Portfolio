@@ -1,17 +1,87 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shiny App for scRNA-seq Analysis</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>
+        Shiny Application for scRNA-seq Analysis
+    </title>
+
+    <!-- ===================================  favicon icon ===================================== -->
+    <link rel="icon" type="image/x-icon" href="https://mohammadrezamohajeri.github.io/Breast-Cancer-Gene-Expression-Biomarker-Analysis/Images/1.ico">
+    <!-- ===================================================================================== -->
+
+    <!-- =================================== Code Block Styling with Prism.js ===================================== -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.5.0/prism-dracula.min.css" rel="stylesheet">
+    <!-- =================================== Code Block Styling with Prism.js ===================================== -->
+
+    <style>
+        /* Reuse the styles from the previous page */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f9f9f9;
+            text-align: justify;
+        }
+
+        .header {
+            font-size: 25px;
+            background-color: #01031f;
+            color: white;
+            height: 350px;
+            padding: 10px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .home-link {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            text-decoration: none;
+            z-index: 1;
+        }
+
+        .explanation {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        h3, h4, h5 {
+            margin-top: 60px;
+            margin-bottom: 5px;
+        }
+
+        ul {
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+            padding-left: 20px !important;
+        }
+
+        li {
+            margin-bottom: 5px !important;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid black;
+            margin: 20px 0;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>Shiny App for scRNA-seq Analysis</h1>
-    </header>
-    <main>
-        <section class="info-box">
+    <div class="header">
+        <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/index.html" class="home-link">
+            <img src="Pictures/Home_Link_JPG/1.jpg" alt="Home" style="width:50px; height:auto;">
+        </a>
+        <h1>Shiny Application for scRNA-seq Analysis</h1>
+    </div>
+
+    <div class="body">
+        <hr>
+        <div class="explanation">
+            <h3>About the Shiny Application</h3>
             <ul>
                 <li>
                     This page is dedicated to a Shiny application for analyzing single-cell RNA sequencing (scRNA-seq) datasets.
@@ -20,16 +90,24 @@
                     The application is currently under development and will be available here soon. It is expected to be completed within 1-2 weeks.
                 </li>
                 <li>
-                    The app will allow users to upload scRNA-seq files, perform exploratory data analysis, carry out preprocessing (QC filtering and normalization), select cell types of interest, identify highly variable genes (HVGs) based on cell types, and conduct functional analyses on the top HVGs.
+                    Key features of the app include:
+                    <ul>
+                        <li>Uploading scRNA-seq files for exploratory data analysis (EDA).</li>
+                        <li>Preprocessing steps like quality control (QC) filtering and normalization.</li>
+                        <li>Cell-type selection, such as partially responsive, progressive disease, malignant, or non-malignant cells.</li>
+                        <li>Identification of cell-type-specific highly variable genes (HVGs).</li>
+                        <li>Functional analyses and visualizations based on top HVGs.</li>
+                    </ul>
                 </li>
                 <li>
-                    Once completed, the Shiny app and all related information will be accessible on this page. Please check back soon!
+                    Designed to optimize biomarker discovery, the application is accessible to researchers without programming expertise.
+                </li>
+                <li>
+                    Please check back soon for updates!
                 </li>
             </ul>
-        </section>
-    </main>
-    <footer>
-        <p>© 2025 Foxen | Personal Website</p>
-    </footer>
+        </div>
+        <hr>
+    </div>
 </body>
 </html>
