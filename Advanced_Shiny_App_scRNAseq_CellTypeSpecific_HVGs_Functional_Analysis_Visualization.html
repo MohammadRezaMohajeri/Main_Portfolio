@@ -16,6 +16,38 @@
     <!-- =================================== Code Block Styling with Prism.js ===================================== -->
 
     <style>
+
+     /*  =============================================================================================================   */ 
+/*  ====================== To highlight the figure or caption when a user clicks on the link:  ================   */ 
+	    /*  ====================== Step 1: Add a CSS class for highlighting  ================   */ 
+       
+        .highlight {
+	    animation: highlightAnimation 5s ease-out;
+	  }
+	
+	  @keyframes highlightAnimation {
+	    from {
+	      background-color: yellow;
+	    }
+	    to {
+	      background-color: transparent;
+	    }
+	  }
+       
+/*  =============================================================================================================   */ 
+
+
+
+     /*  =================== the text color when is selected  ==============   */ 
+	    /* To change the color of text selection on a webpage (like the blue or yellow highlight  ), 
+		we can use the ::selection CSS pseudo-element. */ 
+		::selection {
+			background-color: yellow; /* Change this to any color you prefer */
+			color: black; /* Change the text color if needed */
+		}
+	/*  ===================================================================   */ 
+
+     
         /* Reuse the styles from the previous page */
         body {
             font-family: Arial, sans-serif;
@@ -43,16 +75,59 @@
             z-index: 1;
         }
 
+     
+        /* Title Style */
+        .title {
+            font-size: 26px;
+            font-weight: bold;
+            margin: 20px 0;
+            text-align: center;
+        }
+     
         .explanation {
             font-size: 24px;
             margin-bottom: 20px;
         }
 
+
+
+
+
+
+     /*  ============ To increase the space above the headings ========== */
+        /* Heading Margin Adjustments to Reduce Space */
         h3, h4, h5 {
             margin-top: 60px;
             margin-bottom: 5px;
         }
 
+        .code-caption {
+	    font-size: 16px; /* Slightly smaller than body text, but still readable */
+	    font-style: italic;
+	    margin-bottom: 1px; /* Reduce the bottom margin */
+	    color: #555;
+	    text-align: justify;
+	}
+
+	 	    
+
+        /* Code Block Style */
+        .code-block {
+            margin-bottom: 20px;
+            font-size: 16px; /* Increased code block font size */
+        }
+
+        /* Prism.js Code Block Font Size */
+        pre[class*="language-"] {
+            font-size: 16px; /* Increase font size for Prism.js code blocks */
+        }
+
+      	/* Figure Style */
+      	figure {
+      	    margin-bottom: 30px; /* Adds margin below the figure to create space */
+      	}
+
+     	  /* Adjust ul and li styles */
         ul {
             margin-top: 0 !important;
             margin-bottom: 0 !important;
