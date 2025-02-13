@@ -17,6 +17,11 @@
 
     <style>
 
+
+
+
+	    
+
      /*  =============================================================================================================   */ 
 /*  ====================== To highlight the figure or caption when a user clicks on the link:  ================   */ 
 	    /*  ====================== Step 1: Add a CSS class for highlighting  ================   */ 
@@ -47,6 +52,28 @@
 		}
 	/*  ===================================================================   */ 
 
+
+
+	    
+/*  ================ Embeded Video css code ============================   */ 
+
+	    /* Responsive YouTube Video */
+.video-container {
+    position: relative;
+    width: 90%; /* Adjust width */
+    max-width: 900px; /* Maximum width */
+    margin: 20px auto; /* Centering */
+}
+
+.video-container iframe {
+    width: 100%;
+    height: 500px; /* Default height */
+    aspect-ratio: 16 / 9; /* Ensures responsiveness */
+}
+
+/*  ================ Embeded Video css code ============================   */ 
+
+	    
      
         /* Reuse the styles from the previous page */
         body {
@@ -169,17 +196,37 @@
         </h1>
     </div>
 
+     	 
+
+
+	
     <div class="body">
         <hr>
+
+
+
+
+
+
+ 
+	      
+	/* ==================== Embeded Video ====================== */
+	<!-- YouTube Video Embed -->
+        <div class="video-container" style="text-align: center; margin-bottom: 20px;">
+            <iframe width="900" height="500"  /* == width="560" height="315" ==== */
+                    src="https://www.youtube.com/embed/Rlkej_DH2F0?si=Hc1MUAv9_IIbT6CC" 
+                    title="A Shiny App for Biomarker Identification"
+                    frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+            </iframe>
+        </div>
+     	  /* ==================== Embeded Video ====================== */
+
+	    
         <div class="explanation">
             <h3>About the Shiny Application</h3>
             <ul>
-                <li>
-                    This page is dedicated to a Shiny application for analyzing single-cell RNA sequencing (scRNA-seq) datasets.
-                </li>
-                <li>
-                    The application is currently under development and will be available here soon. It is expected to be completed within 1-2 weeks.
-                </li>
+                
                 <li>
                     Key features of the app include:
                     <ul>
