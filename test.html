@@ -4,131 +4,174 @@
 <head>
 
 <!-- =================================== START OF  Google tag  ===================================== -->
+
 	<!-- Google tag (gtag.js) -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=G-7997H1319B"></script>
 	<script>
 	  window.dataLayer = window.dataLayer || [];
 	  function gtag(){dataLayer.push(arguments);}
 	  gtag('js', new Date());
+	
 	  gtag('config', 'G-7997H1319B');
 	</script>
 <!-- =================================== END OF  Google tag  ===================================== -->
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>
-	Differential Gene Expression Analysis  
-	in Atopic Dermatitis 
-	Using DESeq2
-</title>
+	
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        Differential Gene Expression Analysis  
+        in Atopic Dermatitis 
+        Using DESeq2
+    </title>
 
-<!-- ===================================  favicon icon ===================================== -->
-<link rel="icon" type="image/x-icon" href="https://mohammadrezamohajeri.github.io/Breast-Cancer-Gene-Expression-Biomarker-Analysis/Images/1.ico"> 
+	<!-- ===================================  favicon icon ===================================== -->
+ <!--   favicon icon: This line below adds a favicon to the tab of the web browser. 
+    The favicon is the small icon displayed next to the page title in the browser tab.
+    The 'href' attribute specifies the path to the icon file hosted on GitHub. -->
 
-<!-- =================================== Code Block Styling with Prism.js ===================================== -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.5.0/prism-dracula.min.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="https://mohammadrezamohajeri.github.io/Breast-Cancer-Gene-Expression-Biomarker-Analysis/Images/1.ico"> 
+    	<!-- ===================================================================================== -->
 
-<style>
-/* ============== Highlight figure/caption when link clicked ============== */
-.highlight {
-	animation: highlightAnimation 5s ease-out;
-}
-@keyframes highlightAnimation {
-	from {
-		background-color: yellow;
+	
+	<!-- =================================== Code Block Styling with Prism.js ===================================== -->
+    <!--  Prism.js CSS for syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.5.0/prism-dracula.min.css" rel="stylesheet">
+	<!-- =================================== Code Block Styling with Prism.js ===================================== -->
+
+	
+    <style>
+
+
+/*  =============================================================================================================   */ 
+/*  ====================== To highlight the figure or caption when a user clicks on the link:  ================   */ 
+	    /*  ====================== Step 1: Add a CSS class for highlighting  ================   */ 
+       
+        .highlight {
+	    animation: highlightAnimation 5s ease-out;
+	  }
+	
+	  @keyframes highlightAnimation {
+	    from {
+	      background-color: yellow;
+	    }
+	    to {
+	      background-color: transparent;
+	    }
+	  }
+       
+/*  =============================================================================================================   */ 
+
+
+
+	    
+	/*  =================== the text color when is selected  ==============   */ 
+	    /* To change the color of text selection on a webpage (like the blue or yellow highlight  ), 
+		we can use the ::selection CSS pseudo-element. */ 
+		::selection {
+			background-color: yellow; /* Change this to any color you prefer */
+			color: black; /* Change the text color if needed */
+		}
+	/*  ===================================================================   */ 
+
+	    
+        /* Basic Styles */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f9f9f9;
+	    text-align: justify; /* Justify text globally */
+        }
+
+        /* Header Style */
+        .header {
+            font-size: 25px;
+            background-color: #01031f;
+            color: white;
+            height: 350px; /* Set an explicit height */
+            padding: 10px 0;
+            text-align: center;
+            position: relative; /* Add relative positioning here */
+        }
+
+        /* Home Link Style */
+        .home-link {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            text-decoration: none; /* Remove underline */
+            z-index: 1; /* Ensures it appears above other content */
+        }
+
+        /* Title Style */
+        .title {
+            font-size: 26px;
+            font-weight: bold;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        /* Explanation Text Style */
+        .explanation {
+            font-size: 24px; /* Increased explanation font size */
+            margin-bottom: 20px;
+
+        }
+
+
+
+	    
+/*  ============ To increase the space above the headings ========== */
+        /* Heading Margin Adjustments to Reduce Space */
+	h3, h4, h5 {
+	    margin-top: 60px; /* Reduced space above */
+	    margin-bottom: 5px; /* Reduced space below */
+        }
+
+
+        .code-caption {
+	    font-size: 16px; /* Slightly smaller than body text, but still readable */
+	    font-style: italic;
+	    margin-bottom: 1px; /* Reduce the bottom margin */
+	    color: #555;
+	    text-align: justify;
 	}
-	to {
-		background-color: transparent;
+
+	 	    
+
+        /* Code Block Style */
+        .code-block {
+            margin-bottom: 20px;
+            font-size: 16px; /* Increased code block font size */
+        }
+
+        /* Prism.js Code Block Font Size */
+        pre[class*="language-"] {
+            font-size: 16px; /* Increase font size for Prism.js code blocks */
+        }
+
+	/* Figure Style */
+	figure {
+	    margin-bottom: 30px; /* Adds margin below the figure to create space */
 	}
-}
 
-/* ============== Selection color ============== */
-::selection {
-	background-color: yellow;
-	color: black;
-}
+	/* Adjust ul and li styles */
+	ul {
+	    margin-top: 0 !important;
+	    margin-bottom: 0 !important;
+	    padding-left: 20px !important; /* Adjust padding */
+	}
+	
+	li {
+	    margin-bottom: 5px !important; /* Adjust space between list items */
+	}
 
-/* ============== Basic Styles ============== */
-body {
-	font-family: Arial, sans-serif;
-	line-height: 1.6;
-	margin: 20px;
-	background-color: #f9f9f9;
-	text-align: justify;
-}
 
-/* ============== Header Style ============== */
-.header {
-	font-size: 25px;
-	background-color: #01031f;
-	color: white;
-	height: 350px;
-	padding: 10px 0;
-	text-align: center;
-	position: relative;
-}
 
-/* ============== Home Link Style ============== */
-.home-link {
-	position: absolute;
-	bottom: 10px;
-	left: 10px;
-	text-decoration: none;
-	z-index: 1;
-}
 
-/* ============== Title Style ============== */
-.title {
-	font-size: 26px;
-	font-weight: bold;
-	margin: 20px 0;
-	text-align: center;
-}
 
-/* ============== Explanation Style ============== */
-.explanation {
-	font-size: 24px;
-	margin-bottom: 20px;
-}
-
-/* ============== Headings Spacing ============== */
-h3, h4, h5 {
-	margin-top: 60px;
-	margin-bottom: 5px;
-}
-
-/* ============== Code Caption ============== */
-.code-caption {
-	font-size: 16px;
-	font-style: italic;
-	margin-bottom: 1px;
-	color: #555;
-	text-align: justify;
-}
-
-/* ============== Code Block ============== */
-.code-block {
-	margin-bottom: 20px;
-	font-size: 16px;
-}
-pre[class*="language-"] {
-	font-size: 16px;
-}
-
-/* ============== Figure spacing ============== */
-figure {
-	margin-bottom: 30px;
-}
-
-/* ============== List styling ============== */
-ul {
-	margin-top: 0 !important;
-	margin-bottom: 0 !important;
-	padding-left: 20px !important;
-}
-li {
-	margin-bottom: 5px !important;
-}
+ <!-- -------------	--> 
 
 /* ============== MOBILE RESPONSIVE FIX ============== */
 @media only screen and (max-width: 768px) {
@@ -157,9 +200,12 @@ li {
 		margin: 10px;
 	}
 }
-</style>
-</head>
+ <!-- -------------	-->    
 
+
+	    
+    </style>
+</head>
 <body>
 
     <div class="header">
