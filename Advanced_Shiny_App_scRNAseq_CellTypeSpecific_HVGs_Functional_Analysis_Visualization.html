@@ -1,300 +1,214 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-             Advanced Shiny Application for scRNA-seq Analysis: Cell-Type-Specific HVG Identification & Comprehensive Functional Analysis with High-Quality Visualizations
-    </title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+    Advanced Shiny Application for scRNA-seq Analysis: Cell-Type-Specific HVG Identification & Comprehensive Functional Analysis with High-Quality Visualizations
+  </title>
 
-    <!-- ===================================  favicon icon ===================================== -->
-    <link rel="icon" type="image/x-icon" href="https://mohammadrezamohajeri.github.io/Breast-Cancer-Gene-Expression-Biomarker-Analysis/Images/1.ico">
-    <!-- ===================================================================================== -->
+  <!-- ============ favicon icon ============ -->
+  <link rel="icon" type="image/x-icon" href="https://mohammadrezamohajeri.github.io/Breast-Cancer-Gene-Expression-Biomarker-Analysis/Images/1.ico">
 
-    <!-- =================================== Code Block Styling with Prism.js ===================================== -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.5.0/prism-dracula.min.css" rel="stylesheet">
-    <!-- =================================== Code Block Styling with Prism.js ===================================== -->
+  <!-- ============ Prism.js code styling ============ -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.5.0/prism-dracula.min.css" rel="stylesheet">
 
-    <style>
+  <style>
+    /* ======== Highlight animation ======== */
+    .highlight {
+      animation: highlightAnimation 5s ease-out;
+    }
 
+    @keyframes highlightAnimation {
+      from {
+        background-color: yellow;
+      }
+      to {
+        background-color: transparent;
+      }
+    }
 
+    /* ======== Selection color ======== */
+    ::selection {
+      background-color: yellow;
+      color: black;
+    }
 
+    /* ======== Responsive YouTube Video ======== */
+    .video-container {
+      position: relative;
+      width: 90%;
+      max-width: 900px;
+      margin: 20px auto;
+    }
 
-	    
+    .video-container iframe {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 9;
+    }
 
-     /*  =============================================================================================================   */ 
-/*  ====================== To highlight the figure or caption when a user clicks on the link:  ================   */ 
-	    /*  ====================== Step 1: Add a CSS class for highlighting  ================   */ 
-       
-        .highlight {
-	    animation: highlightAnimation 5s ease-out;
-	  }
-	
-	  @keyframes highlightAnimation {
-	    from {
-	      background-color: yellow;
-	    }
-	    to {
-	      background-color: transparent;
-	    }
-	  }
-       
-/*  =============================================================================================================   */ 
+    /* ======== General Styles ======== */
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 20px;
+      background-color: #f9f9f9;
+      text-align: justify;
+    }
 
+    .header {
+      background-color: #344a5e;
+      color: white;
+      padding: 10px 0;
+      text-align: center;
+      position: relative;
+    }
 
-
-     /*  =================== the text color when is selected  ==============   */ 
-	    /* To change the color of text selection on a webpage (like the blue or yellow highlight  ), 
-		we can use the ::selection CSS pseudo-element. */ 
-		::selection {
-			background-color: yellow; /* Change this to any color you prefer */
-			color: black; /* Change the text color if needed */
-		}
-	/*  ===================================================================   */ 
-
-
-
-	    
-/*  ================ Embeded Video css code ============================   */ 
-
-	    /* Responsive YouTube Video */
-.video-container {
-    position: relative;
-    width: 90%; /* Adjust width */
-    max-width: 900px; /* Maximum width */
-    margin: 20px auto; /* Centering */
-}
-
-.video-container iframe {
-    width: 100%;
-    height: auto; /* Default height: 500px; */
-    aspect-ratio: 16 / 9; /* Ensures responsiveness */
-}
-
-/*  ================ Embeded Video css code ============================   */ 
-
-	    
-     
-        /*   old
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            margin: 20px;
-            background-color: #f9f9f9;
-            text-align: justify;
-        }
-*/
-	@media only screen and (max-width: 768px) {
-	    body {
-	        margin: 10px;
-	    }
-	}
-
-
-	    
-	    
-/* 
-Old
-        .header {
-            font-size: 25px;
-            background-color: #344a5e;
-            color: white;
-            height: 350px;
-            padding: 10px 0;
-            text-align: center;
-            position: relative;
-        }
-*/
-	    
-	.header {
-	    background-color: #344a5e;
-	    color: white;
-	    padding: 10px 0;
-	    text-align: center;
-	    position: relative;
-	}
-
-
-	    
- /*
-OLD
-.header h1 {
-    font-size: 42px; / * Font size for the title * /
-    line-height: 1.5; / * Adjusted for more space between lines * /
-    margin: 20px auto; / * Adds margin at the top and centers alignment * /
-    padding: 20px; / * Padding inside the header * /
-    max-width: 90%; / * Ensures the text doesn't stretch too wide * /
-    word-wrap: break-word; / * Breaks long words to prevent overflow * /
-}
-*/
-
-@media only screen and (max-width: 768px) {
     .header h1 {
+      font-size: 42px;
+      line-height: 1.5;
+      margin: 20px auto;
+      padding: 20px;
+      max-width: 90%;
+      word-wrap: break-word;
+    }
+
+    .home-link {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      text-decoration: none;
+      z-index: 1;
+    }
+
+    .title {
+      font-size: 26px;
+      font-weight: bold;
+      margin: 20px 0;
+      text-align: center;
+    }
+
+    .explanation {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    h3, h4, h5 {
+      margin-top: 60px;
+      margin-bottom: 5px;
+    }
+
+    .code-caption {
+      font-size: 16px;
+      font-style: italic;
+      margin-bottom: 1px;
+      color: #555;
+      text-align: justify;
+    }
+
+    .code-block {
+      margin-bottom: 20px;
+      font-size: 16px;
+    }
+
+    pre[class*="language-"] {
+      font-size: 16px;
+    }
+
+    figure {
+      margin-bottom: 30px;
+    }
+
+    ul {
+      margin-top: 0 !important;
+      margin-bottom: 0 !important;
+      padding-left: 20px !important;
+    }
+
+    li {
+      margin-bottom: 5px !important;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid black;
+      margin: 20px 0;
+    }
+
+    /* ============ Responsive Adjustments ============ */
+    @media only screen and (max-width: 768px) {
+      .header h1 {
         font-size: 22px;
         line-height: 1.4;
         padding: 10px;
-    }
-}
+      }
 
-
-	    
-        .home-link {
-            position: absolute;
-            bottom: 10px;
-            left: 10px;
-            text-decoration: none;
-            z-index: 1;
-        }
-
-     
-        /* Title Style */
-        .title {
-            font-size: 26px;
-            font-weight: bold;
-            margin: 20px 0;
-            text-align: center;
-        }
-	    
-/* OLD
-        .explanation {
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-*/
-
-@media only screen and (max-width: 768px) {
-    .explanation {
+      .explanation {
         font-size: 18px;
         padding: 0 10px;
+      }
+
+      body {
+        margin: 10px;
+      }
+
+      .home-link img {
+        width: 40px;
+      }
     }
-}
-
-
-
-
-     /*  ============ To increase the space above the headings ========== */
-        /* Heading Margin Adjustments to Reduce Space */
-        h3, h4, h5 {
-            margin-top: 60px;
-            margin-bottom: 5px;
-        }
-
-        .code-caption {
-	    font-size: 16px; /* Slightly smaller than body text, but still readable */
-	    font-style: italic;
-	    margin-bottom: 1px; /* Reduce the bottom margin */
-	    color: #555;
-	    text-align: justify;
-	}
-
-	 	    
-
-        /* Code Block Style */
-        .code-block {
-            margin-bottom: 20px;
-            font-size: 16px; /* Increased code block font size */
-        }
-
-        /* Prism.js Code Block Font Size */
-        pre[class*="language-"] {
-            font-size: 16px; /* Increase font size for Prism.js code blocks */
-        }
-
-      	/* Figure Style */
-      	figure {
-      	    margin-bottom: 30px; /* Adds margin below the figure to create space */
-      	}
-
-     	  /* Adjust ul and li styles */
-        ul {
-            margin-top: 0 !important;
-            margin-bottom: 0 !important;
-            padding-left: 20px !important;
-        }
-
-        li {
-            margin-bottom: 5px !important;
-        }
-
-        hr {
-            border: none;
-            border-top: 1px solid black;
-            margin: 20px 0;
-        }
-    </style>
+  </style>
 </head>
 <body>
-    <div class="header">
-        <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/index.html" class="home-link">
-		
+  <div class="header">
+    <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/index.html" class="home-link">
+      <img src="Pictures/Home_Link_JPG/1.jpg" alt="Home" style="width:50px; height:auto;">
+    </a>
+    <h1>
+      Advanced Shiny Application for scRNA-seq Analysis: <br> 
+      Cell-Type-Specific HVG Identification & <br>
+      Comprehensive Functional Analysis <br>
+      (with High-Quality Visualizations)
+    </h1>
+  </div>
 
-		@media only screen and (max-width: 768px) {
-    .home-link img {
-        width: 40px;
-    }
-}
+  <div class="body">
+    <hr>
 
-	
-	</a>
-        <h1>
-             Advanced Shiny Application for scRNA-seq Analysis: <br> 
-                   Cell-Type-Specific HVG Identification & <br>
-                      Comprehensive Functional Analysis  <br>
-		       (with High-Quality Visualizations)
-
-        </h1>
+    <!-- ======== Embedded Video ======== -->
+    <div class="video-container" style="text-align: center; margin-bottom: 20px;">
+      <iframe
+        src="https://www.youtube.com/embed/Rlkej_DH2F0?si=Hc1MUAv9_IIbT6CC"
+        title="A Shiny App for Biomarker Identification"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen>
+      </iframe>
     </div>
 
-     	 
-
-
-	
-    <div class="body">
-        <hr>
-
-	    
-	    
-	    
-<!--  ==================== Embeded Video ====================== -->
-
-	<!-- YouTube Video Embed -->
-        <div class="video-container" style="text-align: center; margin-bottom: 20px;">
-            <iframe width="900" height="500"  /* == width="560" height="315" ==== */
-                    src="https://www.youtube.com/embed/Rlkej_DH2F0?si=Hc1MUAv9_IIbT6CC" 
-                    title="A Shiny App for Biomarker Identification"
-                    frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
-            </iframe>
-        </div>
-     	 
-<!--  ==================== Embeded Video ====================== -->
-
-
-
-	    
-        <div class="explanation">
-            <h3>About the Shiny Application</h3>
-            <ul>
-                
-                <li>
-                    Key features of the app include:
-                    <ul>
-                        <li>Uploading scRNA-seq files for exploratory data analysis (EDA).</li>
-                        <li>Preprocessing steps like quality control (QC) filtering and normalization.</li>
-                        <li>Cell-type selection, such as partially responsive, progressive disease, malignant, or non-malignant cells.</li>
-                        <li>Identification of cell-type-specific highly variable genes (HVGs).</li>
-                        <li>Functional analyses and visualizations based on top HVGs.</li>
-                    </ul>
-                </li>
-                <li>
-                    Designed to optimize biomarker discovery, the application is accessible to researchers without programming expertise.
-                </li>
-                <li>
-                    Please check back soon for updates!
-                </li>
-            </ul>
-        </div>
-        <hr>
+    <div class="explanation">
+      <h3>About the Shiny Application</h3>
+      <ul>
+        <li>
+          Key features of the app include:
+          <ul>
+            <li>Uploading scRNA-seq files for exploratory data analysis (EDA).</li>
+            <li>Preprocessing steps like quality control (QC) filtering and normalization.</li>
+            <li>Cell-type selection, such as partially responsive, progressive disease, malignant, or non-malignant cells.</li>
+            <li>Identification of cell-type-specific highly variable genes (HVGs).</li>
+            <li>Functional analyses and visualizations based on top HVGs.</li>
+          </ul>
+        </li>
+        <li>
+          Designed to optimize biomarker discovery, the application is accessible to researchers without programming expertise.
+        </li>
+        <li>
+          Please check back soon for updates!
+        </li>
+      </ul>
     </div>
+    <hr>
+  </div>
 </body>
 </html>
