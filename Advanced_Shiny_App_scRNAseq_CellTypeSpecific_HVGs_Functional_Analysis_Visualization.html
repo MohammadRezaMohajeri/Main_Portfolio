@@ -67,7 +67,7 @@
 
 .video-container iframe {
     width: 100%;
-    height: 500px; /* Default height */
+    height: auto; /* Default height: 500px; */
     aspect-ratio: 16 / 9; /* Ensures responsiveness */
 }
 
@@ -75,7 +75,7 @@
 
 	    
      
-        /* Reuse the styles from the previous page */
+        /*   old
         body {
             font-family: Arial, sans-serif;
             line-height: 1.6;
@@ -83,7 +83,18 @@
             background-color: #f9f9f9;
             text-align: justify;
         }
+*/
+	@media only screen and (max-width: 768px) {
+	    body {
+	        margin: 10px;
+	    }
+	}
 
+
+	    
+	    
+/* 
+Old
         .header {
             font-size: 25px;
             background-color: #344a5e;
@@ -93,15 +104,38 @@
             text-align: center;
             position: relative;
         }
+*/
+	    
+	.header {
+	    background-color: #344a5e;
+	    color: white;
+	    padding: 10px 0;
+	    text-align: center;
+	    position: relative;
+	}
 
+
+	    
+ /*
+OLD
 .header h1 {
-    font-size: 42px; /* Font size for the title */
-    line-height: 1.5; /* Adjusted for more space between lines */
-    margin: 20px auto; /* Adds margin at the top and centers alignment */
-    padding: 20px; /* Padding inside the header */
-    max-width: 90%; /* Ensures the text doesn't stretch too wide */
-    word-wrap: break-word; /* Breaks long words to prevent overflow */
+    font-size: 42px; / * Font size for the title * /
+    line-height: 1.5; / * Adjusted for more space between lines * /
+    margin: 20px auto; / * Adds margin at the top and centers alignment * /
+    padding: 20px; / * Padding inside the header * /
+    max-width: 90%; / * Ensures the text doesn't stretch too wide * /
+    word-wrap: break-word; / * Breaks long words to prevent overflow * /
 }
+*/
+
+@media only screen and (max-width: 768px) {
+    .header h1 {
+        font-size: 22px;
+        line-height: 1.4;
+        padding: 10px;
+    }
+}
+
 
 	    
         .home-link {
@@ -120,13 +154,20 @@
             margin: 20px 0;
             text-align: center;
         }
-     
+	    
+/* OLD
         .explanation {
             font-size: 24px;
             margin-bottom: 20px;
         }
+*/
 
-
+@media only screen and (max-width: 768px) {
+    .explanation {
+        font-size: 18px;
+        padding: 0 10px;
+    }
+}
 
 
 
@@ -185,8 +226,16 @@
 <body>
     <div class="header">
         <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/index.html" class="home-link">
-            <img src="Pictures/Home_Link_JPG/1.jpg" alt="Home" style="width:50px; height:auto;">
-        </a>
+		
+
+		@media only screen and (max-width: 768px) {
+    .home-link img {
+        width: 40px;
+    }
+}
+
+	
+	</a>
         <h1>
              Advanced Shiny Application for scRNA-seq Analysis: <br> 
                    Cell-Type-Specific HVG Identification & <br>
