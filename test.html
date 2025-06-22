@@ -1,1527 +1,214 @@
-<!DOCTY
-PE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        Differential Gene Expression Analysis  
-        in Atopic Dermatitis 
-        Using DESeq2
-    </title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+    Advanced Shiny Application for scRNA-seq Analysis: Cell-Type-Specific HVG Identification & Comprehensive Functional Analysis with High-Quality Visualizations
+  </title>
 
-	<!-- =================================== favicon icon ===================================== -->
- <!--   favicon icon: This line below adds a favicon to the tab of the web browser. 
-    The favicon is the small icon displayed next to the page title in the browser tab.
-    The 'href' attribute specifies the path to the icon file hosted on GitHub. -->
+  <!-- ============ favicon icon ============ -->
+  <link rel="icon" type="image/x-icon" href="https://mohammadrezamohajeri.github.io/Breast-Cancer-Gene-Expression-Biomarker-Analysis/Images/1.ico">
 
-    <link rel="icon" type="image/x-icon" href="https://mohammadrezamohajeri.github.io/Breast-Cancer-Gene-Expression-Biomarker-Analysis/Images/1.ico"> 
-    	<!-- ===================================================================================== -->
+  <!-- ============ Prism.js code styling ============ -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.5.0/prism-dracula.min.css" rel="stylesheet">
 
-	
-	<!-- =================================== Code Block Styling with Prism.js ===================================== -->
-    <!--  Prism.js CSS for syntax highlighting -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.5.0/prism-dracula.min.css" rel="stylesheet">
-	<!-- =================================== Code Block Styling with Prism.js ===================================== -->
+  <style>
+    /* ======== Highlight animation ======== */
+    .highlight {
+      animation: highlightAnimation 5s ease-out;
+    }
 
-	
-    <style>
+    @keyframes highlightAnimation {
+      from {
+        background-color: yellow;
+      }
+      to {
+        background-color: transparent;
+      }
+    }
 
-      .highlight {
-    animation: highlightAnimation 2s ease-out;
-  }
-
-  @keyframes highlightAnimation {
-    from {
+    /* ======== Selection color ======== */
+    ::selection {
       background-color: yellow;
+      color: black;
     }
-    to {
-      background-color: transparent;
+
+    /* ======== Responsive YouTube Video ======== */
+    .video-container {
+      position: relative;
+      width: 90%;
+      max-width: 900px;
+      margin: 20px auto;
     }
-  }
-   
-	    
-	/*  =================== the text color when is selected  ==============   */ 
-	    /* To change the color of text selection on a webpage (like the blue or yellow highlight  ), 
-		we can use the ::selection CSS pseudo-element. */ 
-		::selection {
-			background-color: yellow; /* Change this to any color you prefer */
-			color: black; /* Change the text color if needed */
-		}
-	/*  ===================================================================   */ 
 
-	    
-        /* Basic Styles */
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            margin: 20px;
-            background-color: #f9f9f9;
-	    text-align: justify; /* Justify text globally */
-        }
+    .video-container iframe {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 9;
+    }
 
-        /* Header Style */
-        .header {
-            font-size: 25px;
-            background-color: #01031f;
-            color: white;
-            height: 350px; /* Set an explicit height */
-            padding: 10px 0;
-            text-align: center;
-            position: relative; /* Add relative positioning here */
-        }
+    /* ======== General Styles ======== */
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 20px;
+      background-color: #f9f9f9;
+      text-align: justify;
+    }
 
-        /* Home Link Style */
-        .home-link {
-            position: absolute;
-            bottom: 10px;
-            left: 10px;
-            text-decoration: none; /* Remove underline */
-            z-index: 1; /* Ensures it appears above other content */
-        }
+    .header {
+      background-color: #344a5e;
+      color: white;
+      padding: 10px 0;
+      text-align: center;
+      position: relative;
+    }
 
-        /* Title Style */
-        .title {
-            font-size: 26px;
-            font-weight: bold;
-            margin: 20px 0;
-            text-align: center;
-        }
+    .header h1 {
+      font-size: 42px;
+      line-height: 1.5;
+      margin: 20px auto;
+      padding: 20px;
+      max-width: 90%;
+      word-wrap: break-word;
+    }
 
-        /* Explanation Text Style */
-        .explanation {
-            font-size: 24px; /* Increased explanation font size */
-            margin-bottom: 20px;
+    .home-link {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      text-decoration: none;
+      z-index: 1;
+    }
 
-        }
+    .title {
+      font-size: 26px;
+      font-weight: bold;
+      margin: 20px 0;
+      text-align: center;
+    }
 
+    .explanation {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
 
+    h3, h4, h5 {
+      margin-top: 60px;
+      margin-bottom: 5px;
+    }
 
-	    
-/*  ============ To increase the space above the headings ========== */
-        /* Heading Margin Adjustments to Reduce Space */
-	h3, h4, h5 {
-	    margin-top: 60px; /* Reduced space above */
-	    margin-bottom: 5px; /* Reduced space below */
-        }
+    .code-caption {
+      font-size: 16px;
+      font-style: italic;
+      margin-bottom: 1px;
+      color: #555;
+      text-align: justify;
+    }
 
+    .code-block {
+      margin-bottom: 20px;
+      font-size: 16px;
+    }
 
-        .code-caption {
-	    font-size: 16px; /* Slightly smaller than body text, but still readable */
-	    font-style: italic;
-	    margin-bottom: 1px; /* Reduce the bottom margin */
-	    color: #555;
-	    text-align: justify;
-	}
+    pre[class*="language-"] {
+      font-size: 16px;
+    }
 
-	 	    
+    figure {
+      margin-bottom: 30px;
+    }
 
-        /* Code Block Style */
-        .code-block {
-            margin-bottom: 20px;
-            font-size: 16px; /* Increased code block font size */
-        }
+    ul {
+      margin-top: 0 !important;
+      margin-bottom: 0 !important;
+      padding-left: 20px !important;
+    }
 
-        /* Prism.js Code Block Font Size */
-        pre[class*="language-"] {
-            font-size: 16px; /* Increase font size for Prism.js code blocks */
-        }
+    li {
+      margin-bottom: 5px !important;
+    }
 
-	/* Adjust ul and li styles */
-	ul {
-	    margin-top: 0 !important;
-	    margin-bottom: 0 !important;
-	    padding-left: 20px !important; /* Adjust padding */
-	}
-	
-	li {
-	    margin-bottom: 5px !important; /* Adjust space between list items */
-	}
+    hr {
+      border: none;
+      border-top: 1px solid black;
+      margin: 20px 0;
+    }
 
-		    
-    </style>
+    /* ============ Responsive Adjustments ============ */
+    @media only screen and (max-width: 768px) {
+      .header h1 {
+        font-size: 22px;
+        line-height: 1.4;
+        padding: 10px;
+      }
+
+      .explanation {
+        font-size: 18px;
+        padding: 0 10px;
+      }
+
+      body {
+        margin: 10px;
+      }
+
+      .home-link img {
+        width: 40px;
+      }
+    }
+  </style>
 </head>
 <body>
-
-    <div class="header">
-
-        <!-- the positioning of the "Home" icon -->
-        <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/index.html" class="home-link">
-            <img src="Pictures/Home_Link_JPG/1.jpg" alt="Home" style="width:50px; height:auto;">
-        </a>
-        
-        <h1>Differential Gene Expression Analysis <br>
-            in Atopic Dermatitis  <br>
-            Using DESeq2</h1>
-    </div>
-    
-
-    
-    
-    <div class="body">
-
-       		 <!-- ============== A horizontal line ================== -->
-		<!-- Add a horizontal line above the introduction -->
-		<hr style="border: none; border-top: 1px solid black; margin: 20px 0;">
-		 <!-- =================================================== -->
-
-        
-        <!-- ================================================================== -->
-        <div class="explanation">
-          <h3>Introduction to Differential Gene Expression in Atopic Dermatitis (AD) Patients</h3>
-          <ul>
-	    <li>  
-               In this analysis, we perform <strong>Differential Gene Expression (DEG) analysis</strong> using the <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4878611/" target="_blank"><strong>DESeq2</strong></a> package on the <strong><a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE157194" target="_blank">GSE157194</a></strong> dataset, which consists of RNA-seq data from patients with <strong>Atopic Dermatitis (AD)</strong>. This dataset includes a total of <strong>166 samples</strong> obtained from <strong>57 patients</strong> with moderate to severe AD, prior to and after systemic treatment.
-            </li>
-	  </ul>
-
-		
-       
-	       
-	   
-		
-          <h4>Dataset Overview:</h4>
-          <ul>
-            <li><strong><a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE157194" target="_blank">GSE157194</a></strong>: RNA-seq data from AD patients.</li>
-            <li><strong>111 samples before treatment</strong>: Includes <strong>lesional (AL)</strong> and <strong>non-lesional (AN)</strong> skin biopsies. Non-lesional samples were taken at least 5 cm from the active lesion, ensuring that the comparison between these conditions captures the underlying gene expression differences in the disease state before any intervention.</li>
-            <li><strong>40 samples post-treatment with Dupilumab</strong> (3 months).</li>
-            <li><strong>15 samples post-treatment with Cyclosporine</strong> (3 months).</li>
-          </ul>
-        
-          <h4>Objective of This Analysis:</h4>
-          <ul>
-	    <li>
-              Our primary focus is to conduct a differential expression analysis between the <strong>lesional (AL)</strong> and <strong>non-lesional (AN)</strong> skin samples <strong>before treatment</strong>. This helps in identifying key <strong>differentially expressed genes (DEGs)</strong> and associated <strong>pathways</strong> that distinguish diseased skin from non-diseased skin. Insights gained from this comparison can:
-            </li>
-           
-            <li>Reveal potential <strong>biomarkers</strong> for AD diagnosis and monitoring.</li>
-            <li>Highlight novel <strong>therapeutic targets</strong> or <strong>pathways</strong> relevant to AD pathogenesis.</li>
-            <li>Provide groundwork for <strong>drug discovery</strong> and personalized medicine by identifying pathways that could respond to specific therapeutic interventions.</li>
-          </ul>
-        
-          <h4>Comprehensive Analysis Approach:</h4>
-          <ul>
-		  
-	  <li>    
-            This analysis incorporates various bioinformatics techniques and <strong>visualization tools</strong> (e.g., <strong>PCA</strong>, <strong>volcano plots</strong>, etc.) to ensure a holistic understanding of the gene expression profiles. While some aspects of the analysis may provide standalone insights, the goal is to create a <strong>comprehensive reference</strong> for <strong>DEG analysis using DESeq2</strong>. This can serve as a <strong>functional analysis resource</strong> for future studies.
-          </li>
-
-	  </ul>  
-
-		
-          <h4>
-            In addition to the DEG analysis, we also perform pathway and gene enrichment analysis, including:
-          </h4>
-		
-          <ul>
-            <li><strong>KEGG</strong> and <strong>GO term</strong> analyses.</li>
-            <li><strong>Gene Set Enrichment Analysis (GSEA)</strong> and <strong>Overrepresentation Analysis (ORA)</strong> to explore the biological processes, molecular functions, and cellular components involved in AD.</li>
-          </ul>
-		
-        </div>
-
-
-       		 <!-- ============== A horizontal line ================== -->
-		<!-- Add a horizontal line above the introduction -->
-		<hr style="border: none; border-top: 1px solid black; margin: 20px 0;">
-		 <!-- =================================================== -->
-	  <!-- ================================================================== -->
-	<div class="explanation">
-	    <h3>1. Load Necessary Libraries</h3>
-	    <p>Before starting the analysis, we need to load the essential R libraries required for <strong>data manipulation</strong>, <strong>visualization</strong>, and performing <strong>differential gene expression (DEG) analysis</strong>.</p>
-	</div>
-	
-	<div class="code-block">
-	    <pre><code class="language-r">
-	# Load necessary libraries for RNA-seq analysis and visualization
-	library(GEOquery)        # Load the GEOquery package to access GEO datasets
-	library(DESeq2)          # For differential expression analysis
-	library(data.table)      # Efficient data manipulation
-	library(umap)            # Dimensionality reduction for visualization
-	library(ggplot2)         # General-purpose plotting
-	library(clusterProfiler) # For functional enrichment analysis
-	library(org.Hs.eg.db)    # Human genome annotations
-	library(VennDiagram)     # Venn diagram visualization
-	library(knitr)           # Report generation and table formatting (for kable)
-	library(tinytex)         # LaTeX support for report generation
-	    </code></pre>
-	</div>
-
-
-		 <!-- ============== A horizontal line ================== -->
-				<!-- Add a horizontal line above the introduction -->
-				<hr style="border: none; border-top: 1px solid black; margin: 20px 0;">
-		 <!-- =================================================== -->
-	    
-	<!-- ================================ 2. ================================== -->
-	<div class="explanation">
-	    <h3>2. Load and Prepare Data</h3>
-	    <p>In this step, we download the <strong>raw gene expression data</strong> (count matrix) and  <strong>the sample information</strong> (referred to as <strong>metadata</strong> or <strong>phenotype data</strong>) from the <strong>Gene Expression Omnibus (GEO)</strong> using GEO's accession ID <strong>GSE157194</strong>. The count matrix contains raw gene expression counts, while the phenotype data contains metadata for each sample (such as treatment groups and sample type).</p>
-	    <p>We use the following functions:</p>
-	    <ul>
-	        <li><strong>getGEOSuppFiles()</strong>: Retrieves supplementary files like the raw count matrix.</li>
-	        <li><strong>getGEO()</strong>: Downloads the GEO series matrix, which contains phenotype and metadata.</li>
-	    </ul>
-	</div>
-	
-	<div class="code-block">
-	    <pre><code class="language-r">
-	# 2.1: Download Supplementary Files for the Count Matrix
-	# ======================================
-	# Define the GEO accession ID
-	gse_id <- "GSE157194"
-	
-	# Download the supplementary files for this GEO dataset
-	getGEOSuppFiles(gse_id)
-	
-	# Check the list of files downloaded
-	list.files(gse_id)
-	
-	# ================================
-	
-	# Path to the downloaded file
-	supp_file_path <- paste0(gse_id, "/", "GSE157194_Raw_gene_counts_matrix.txt.gz")
-	
-	# Unzip and load the file into R as a data frame (counts matrix)
-	counts_matrix <- read.table(gzfile(supp_file_path), header = TRUE, row.names = 1)
-	
-	# ======================================
-	
-	# 2.2: Download Phenotype Data
-	# ====================================
-	# Specify the GEO accession number
-	gse_id <- "GSE157194"
-	
-	# Download the phenotype data (GEO series matrix)
-	gse_data <- getGEO(gse_id, GSEMatrix = TRUE, AnnotGPL = TRUE)
-	
-	# If multiple series are available, choose the first one
-	gse_data <- gse_data[[1]]
-	    </code></pre>
-	</div>
-
-
-		 <!-- ============== A horizontal line ================== -->
-				<!-- Add a horizontal line above the introduction -->
-				<hr style="border: none; border-top: 1px solid black; margin: 20px 0;">
-		 <!-- =================================================== -->
-		
-<!-- ========================================= 3. ======================================== -->
-		<div class="explanation">
-		    <h3>3. Exploratory Data Analysis (EDA)- Before the "<a href="https://www.bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#the-deseqdataset" target="_blank"><strong>DESeqDataSet</strong></a>" object (dds) Creation</h3>
-		    <ul>
-	   	      <li>
-			<strong>EDA</strong> is essential before performing <strong>DEA</strong> (Differential Expression Analysis) to explore the relationship between samples and to gain insights into the <strong>structure</strong> and <strong>distribution</strong> of the data. This step involves exploring both the <strong>metadata</strong> and the <strong>count matrix</strong> to ensure that the dataset is well-prepared for downstream analysis.		     
-		      </li>
-		    </ul> 
-		</div>
-<!-- =================== 3.1. explanation =========================== -->
-		<div class="explanation">
-		    <h3>3.1. Metadata Exploration</h3>
-		    <ul>
-	   	      <li>
-		       We can extract and explore the <strong>metadata</strong> (<strong>phenotype</strong> data) associated with the dataset to understand the key characteristics of the samples (Code Block 3.1.1.; <a href="#figure-3-1-1">Figure 3.1.1</a>).
-		      </li>
-		     </ul> 
-		</div>
-
-		
-		<!-- Caption for the code block -->
-		<p class="code-caption">Code Block 3.1.1.  Metadata Exploration</p>
-		
-		<!-- ======= 3.1. code chunk =========== -->
-
-		<div class="code-block">
-		    <pre><code class="language-r">
-
-		# Extract metadata from the GEO dataset
-		# We access the metadata (also known as phenotype data) stored in the 'phenoData' slot of the GEO object.
-		metadata <- gse_data@phenoData@data
-			
-		# View all column names in the metadata to select relevant columns for analysis
-		# This step helps us to explore the structure of the metadata and understand which columns are available.		
-		colnames(metadata)
-		
-		# Select relevant columns for analysis based on the experiment
-		selected_metadata <- metadata[, c("geo_accession", "title", "source_name_ch1", "characteristics_ch1.2", "timepoint:ch1", "therapy:ch1")]
-		
-		# Open the selected metadata in a viewer for further exploration
-		View(selected_metadata)
-		    </code></pre>
-		</div>
-
-		
-                 <!-- ======== 3.1. image ========================================================== -->
-		<figure id="figure-3-1-1" style="text-align: justify;">
-		    <!-- Add a clickable link to enlarge the image -->
-		    <a href="Pictures/RNA_Seq_Task1/Selected_metadata_GSE157194.png" target="_blank">
-		        <img src="Pictures/RNA_Seq_Task1/Selected_metadata_GSE157194.png" alt="Cumulative Variance Plot" style="display: block; background-color: #f0f0f0; padding: 20px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); max-width: 90%;">
-		    </a>
-		    <figcaption>
-		        Figure 3.1.1. Metadata Exploration as Part of Exploratory Data Analysis (EDA).
-		    </figcaption>
-		</figure>
-		 <!-- =============================================================================== --> 
-
-
-
-		
-	<!-- ===================  Check Distribution of Samples Across Key Metadata Variables =========================== -->
-	<div class="explanation">
-	    <h4>Check Distribution of Samples Across Key Metadata Variables</h4>
-	    <ul>
-	        <li>
-	            By exploring key <strong>metadata variables</strong> such as <strong>sample type</strong> (e.g., <strong>lesional</strong> vs <strong>non-lesional</strong> or <strong>treated</strong> vs <strong>untreated</strong>), <strong>timepoints</strong> (e.g., <strong>baseline</strong> vs <strong>post-treatment</strong>), and <strong>therapy groups</strong> (e.g., <strong>Cyclosporine</strong> and <strong>Dupilumab</strong>), we gain insights into <strong>the distribution of the samples</strong>  across different conditions. This exploration also helps to ensure that the dataset is well-balanced and appropriately structured for the upcoming <strong>differential expression analysis</strong>. 
-	        </li>
-		    
-	        <li>
-		    For example, the <strong>source_name_ch1</strong> column in metadata shows the distribution of samples across various experimental conditions (Code Block 3.1.2; <a href="#figure-3-1-2">Figure 3.1.2</a> a), such as <strong>baseline samples</strong> (m0) for both lesional (AL) (<strong>m0_AL</strong>: 57 samples) and non-lesional (AN) (<strong>m0_AN</strong>: 54 samples) skin, which are key to our current analysis, as well as samples taken post-treatment with <strong>Cyclosporine</strong> (8 lesional & 7 non-lesional) and <strong>Dupilumab</strong> (21 lesional & 19 non-lesional samples). This data can be useful for exploring treatment effects in future experiments.
-	        </li>
-
-		    		    
-	        <li>
-		    In addition, <strong>characteristics_ch1.2</strong> (Code Block 3.1.2; <a href="#figure-3-1-2">Figure 3.1.2</a> b) provides information on the <strong>timepoints</strong> (e.g., <strong>baseline</strong> or <strong>post-treatment</strong>). This is crucial for analyzing how gene expression changes over time, particularly in response to therapies like <strong>Cyclosporine</strong> and <strong>Dupilumab</strong>. In this dataset, 55 samples were collected 3 months post-treatment, and 111 samples were collected at baseline.
-	        </li>
-		    
-		    
-
-	    </ul>
-	</div>
-
-
-		<!-- Caption for the code block -->
-<p class="code-caption">Code Block 3.1.2: Sample Distribution Table Generation</p>
-	<!-- ======= 3.3. code chunk =========== -->
-	<div class="code-block">
-	    <pre><code class="language-r">
-# Table of samples by patient group (e.g., lesional vs non-lesional)
-group_table <- table(metadata$source_name_ch1)
-kable(group_table, format = "html", col.names = c("Patient Group", "Count"))
-
-# Table of samples by timepoints (e.g., baseline vs post-treatment)
-timepoint_table <- table(metadata$characteristics_ch1.2)
-kable(timepoint_table, format = "html", col.names = c("Timepoint", "Count"))
-	    </code></pre>
-	</div>
-
-
-	<!-- ======= 3.3. image with caption =========== -->
-	
-		<figure id="figure-3-1-2" style="text-align: justify;">
-		    <!-- Add a clickable link to enlarge the image -->
-		    <a href="Pictures/RNA_Seq_Task1/Samples_Distribution_GSE157194.png" target="_blank">
-	        <img src="Pictures/RNA_Seq_Task1/Samples_Distribution_GSE157194.png" alt="Cumulative Variance Plot" style="display: block; background-color: #f0f0f0; padding: 20px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); max-width: 90%;">
-	    	    </a>
-		    <figcaption>
-		       Figure 3.1.2. Sample distribution by patient group and timepoint: a. Patient groups (lesional, non-lesional, post-treatment), b. Timepoint distribution (baseline and 3 months post-treatment).
-		    </figcaption>
-		</figure>
-
-
-		
-	<!-- ================================================================================= -->
-
-
-
-
-
-		<div class="explanation">
-  
-  <ul>
-    
-    <li>
-    Other metadata columns can also be explored (Code Block 3.1.3):      
-    </li>
-    
-    <li>
-      The <strong>characteristics_ch1.3</strong> column provides information about the treatment each patient received. It shows that 15 samples were treated with Cyclosporine and 40 samples with Dupilumab, while the remaining 111 samples represent baseline conditions (m0_AL and m0_AN combined). This is important for distinguishing between treatment groups when analyzing differential expression across conditions.
-    </li>
-
-	  
-    <li>
-      The <strong>patient id:ch1</strong> column helps track individual patients across different conditions. Some patients may have samples from multiple conditions (e.g., lesional, non-lesional, and post-treatment with both Cyclosporine and Dupilumab), allowing for longitudinal analyses within the same individuals. For researchers, this provides an opportunity to focus on patients who have undergone multiple treatments, reducing variability and enhancing the accuracy of comparative analyses.
-    </li>
-    <li>
-      In addition to these, other metadata columns can provide insights into the experimental setup and data processing. For example, <strong>platform_id</strong> shows all utilized platforms (GPL21290 in this experiment), <strong>extract_protocol_ch1</strong> and <strong>extract_protocol_ch1.1</strong> describe how the RNA was extracted and processed in the lab, and how the RNA libraries were prepared for sequencing. Furthermore, <strong>data_processing</strong> and its related fields provide detailed information on how the sequencing data was processed, from basecalling using Illumina software to trimming primers with cutadapt and mapping reads to the human reference genome with Tophat2 and Bowtie2. The use of Samtools to clean and sort the reads, and HTSeq to count reads per gene, ensures the data is accurately prepared for downstream analysis. The genome build used for mapping is GRCh38, and the raw count data is stored in a tab-delimited format.
-    </li>
-  </ul>
-</div>
-
- 
-
-<!-- Caption for the code block 3.1.3. -->
-<p class="code-caption">Code Block 3.1.3. Assessing Sample Characteristics for Experimental Design</p>
-		
-<!-- =============== 3.1.3. Code Chunk ================  -->
-<div class="code-block">
-  <pre><code class="language-r">
-
-# ======================
-# List of all relevant columns
-# These columns are selected based on the characteristics of the experiment, 
-# including metadata features like source names, patient IDs, and data processing details.
-columns <- c("source_name_ch1",              # Source of the sample
-             "characteristics_ch1.2",        # Experimental characteristic 1
-             "characteristics_ch1.3",        # Experimental characteristic 2
-             "therapy:ch1",                  # Therapy information
-             "patient id:ch1",               # Patient ID
-             "platform_id",                  # Platform used for data generation
-             "extract_protocol_ch1",         # Sample extraction protocol 1
-             "extract_protocol_ch1.1",       # Sample extraction protocol 2
-             "data_processing",              # Data processing detail 1
-             "data_processing.1",            # Data processing detail 2
-             "data_processing.2",            # Data processing detail 3
-             "data_processing.3",            # Data processing detail 4
-             "data_processing.4",            # Data processing detail 5
-             "data_processing.5",            # Data processing detail 6
-             "data_processing.6"             # Data processing detail 7
-)
-
-# ==========
-# Loop through each column and generate a summary table for each
-# The loop checks if each column exists in the 'metadata' dataframe and prints a table of its unique values and frequencies.
-for (col in columns) {
-  if (col %in% colnames(metadata)) {  # Ensure the column exists in the metadata dataframe
-    group_table <- table(metadata[[col]])  # Access and count the occurrences of each unique value in the column
-    print(kable(group_table))              # Display the table using kable for a nicely formatted output
-  } else {
-    print(paste("Column", col, "does not exist in the metadata"))  # Handle cases where the column doesn't exist
-  }
-}
-
-  </code></pre>
-</div>
-
-		
-<!-- =================== 3.2.  explanation =========================== -->
-	<div class="explanation">
-	    <h3> 3.2. Count Matrix: Exploration and Visualization </h3>
-		<h4 style="margin-top: 5px;">3.2.1. Inspecting the Count Matrix for Gene Expression Analysis</h4>
-
-	    <ul>
-	        <li>
-	            We examine the <strong>count matrix</strong>, which contains raw gene expression counts for each sample. This step helps us understand the structure of the data, including whether it is normalized or not, and allows us to check the <strong>column names</strong> (samples) and <strong>row names</strong> (<strong><a href="https://www.ebi.ac.uk/training/online/courses/ensembl-browsing-genomes/navigating-ensembl/investigating-a-gene/#:~:text=Ensembl%20gene%20IDs%20begin%20with,of%20species%20other%20than%20human." target="_blank">Ensembl Gene Identifiers</a></strong>) to ensure the data is formatted correctly for the next steps of differential expression analysis (Code Block 3.2.1; <a href="#figure-3-2-1">Figure 3.2.1</a>).
-	        </li>
-	    </ul>
-	</div>
-
-
-
-<!-- ========== 3.2.1. Caption for the code block ============== -->
-<p class="code-caption">Code Block 3.2.1. Viewing the count matrix to inspect the gene expression data for each sample.</p>
-		
-<!-- ======= 3.2.1. code chunk =========== -->
-        <div class="code-block">
-	    <pre><code class="language-r">
-	# View the first few rows of the count matrix
-	# This allows us to inspect the raw gene expression data for each sample.
-	View(counts_matrix)
-	    </code></pre>
-	</div>
-
-<!-- ============================== 3.2. Image ====================== -->
-	 <figure id="figure-3-2-1" style="text-align: justify;">
-	    <!-- Add a clickable link to enlarge the image -->
-	    <a href="Pictures/RNA_Seq_Task1/counts_matrix_GSE157194.png" target="_blank">
-	        <img src="Pictures/RNA_Seq_Task1/counts_matrix_GSE157194.png" alt="Cumulative Variance Plot" style="display: block; background-color: #f0f0f0; padding: 20px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); max-width: 90%;">
-	    </a>
-	    <figcaption>
-	        Figure 3.2.1. Preview of Raw Gene Expression Count Matrix for more Inspection.
-	    </figcaption>
-	</figure>
-<!-- ================================================================ --> 
-
-
-		<div class="explanation">
-    <h4>3.2.2. Determining the Optimal Gene Count for Heatmap Clustering Using Cumulative Variance Explained</h4>
-    <ul>
-        <li>
-            <strong>Heatmaps</strong> are primarily exploratory tools to visually assess patterns in the data. The goal is to select enough genes to reveal meaningful clusters without overcomplicating the visualization. If too many genes are included, the heatmap can become cluttered and less informative. On the other hand, if too few are used, important patterns may be missed. Typically, 100 to 500 of the most variable genes are used for exploratory heatmaps in <strong>RNA-seq studies</strong>. To ensure clarity, we often start by testing heatmaps with the top 100, 200, 300, and 500 most variable genes, assessing how well they cluster and separate groups.
-        </li>
-        <li>
-            However, a more data-driven approach can be taken by calculating the <strong>variance</strong> for all genes and selecting the number of genes that explains a specific proportion of the total variance. This method ensures that we capture the majority of variability in our data without including too many redundant or uninformative genes. By examining the curve of <strong>cumulative variance</strong>, we can choose a number of genes that explains a high proportion of variance, focusing on the point where the curve starts to flatten.
-        </li>
-    </ul>
-
-
-
-
-	<div class="explanation">
-    <ul>
-        <li>
-            This code (Code Block 3.2.2) focuses on analyzing gene expression variability. <strong>(Step 1)</strong>: Required libraries like <code><a href="https://cran.r-project.org/web/packages/matrixStats/index.html" target="_blank">matrixStats</a></code> and <code><a href="https://ggplot2.tidyverse.org/" target="_blank">ggplot2</a></code> are loaded for variance calculations and plotting. <strong>(Step 2)</strong>: The gene expression data in <code>counts_matrix</code> is log2-transformed to reduce its dynamic range, making it easier to interpret. <strong>(Step 3)</strong>: Using the <code><a href="https://www.rdocumentation.org/packages/matrixStats/versions/0.62.0/topics/rowVars" target="_blank">rowVars()</a></code> function, the variance of each gene across all samples is calculated, identifying highly variable genes for further analysis. <strong>(Step 4)</strong>: The cumulative variance is computed by sorting these variances and calculating their cumulative sum, which helps assess how much variability is captured by the top genes. <strong>(Step 5)</strong>: Finally, a line plot is generated (<a href="#figure-3-2-2">Figure 3.2.2</a>) using <code><a href="https://ggplot2.tidyverse.org/" target="_blank">ggplot2</a></code> to visualize the cumulative variance explained by an increasing number of genes, aiding in the selection of the optimal number of genes for further analysis.
-        </li>
-    </ul>
-	</div> 
-
-
-			
-
-
-
-			
-	<!-- Caption for the code block -->
-	<p class="code-caption">Code Block 3.2.2. Cumulative Variance Plot to Determine Optimal Gene Count for Heatmap</p>
-			
-    <div class="code-block">
-        <pre><code class="language-r">
-# =========== Step 1: Load Required Libraries =============
-library(matrixStats)  # Or DelayedMatrixStats for variance calculations
-library(ggplot2)      # For enhanced plotting capabilities
-
-# =========== Step 2: Log2 Transformation =============
-# Convert counts_matrix to a matrix and apply log2 transformation
-# Log transformation reduces the dynamic range of the data, making it easier to interpret
-counts_matrix_log <- log2(as.matrix(counts_matrix) + 1) 
-
-# =========== Step 3: Calculate Gene Variances =============
-# Use the rowVars() function to calculate the variance for each gene across samples
-# Gene variance is used to identify the most variable genes for further analysis
-gene_variances <- rowVars(counts_matrix_log)
-
-# =========== Step 4: Calculate Cumulative Variance =============
-# Sort the variances in descending order and calculate the cumulative sum
-cum_variance <- cumsum(sort(gene_variances, decreasing = TRUE)) / sum(gene_variances)
-
-# =========== Step 5: Plot Cumulative Variance using ggplot2 for enhanced plotting =============
-# Plot the cumulative proportion of variance explained as the number of genes increases
-# This plot will help visualize how many top genes are needed to explain a high proportion of variance
-ggplot(data.frame(Genes = 1:length(cum_variance), CumulativeVariance = cum_variance), aes(x = Genes, y = CumulativeVariance)) +
-  geom_line() +
-  labs(title = "Cumulative Variance Explained by Top Genes", 
-       x = "Number of Genes", 
-       y = "Cumulative Proportion of Variance Explained") +
-  theme_minimal()
-        </code></pre>
-    </div>
-</div>
-
-	<!-- ======= 3.2.2 image with caption =========== -->
-	<figure id="figure-3-2-2" style="text-align: justify;">
-	    <!-- Add a clickable link to enlarge the image -->
-	    <a href="Pictures/RNA_Seq_Task1/optimal_gene_count_heatmap_cumulative_variance.png" target="_blank">
-	        <img src="Pictures/RNA_Seq_Task1/optimal_gene_count_heatmap_cumulative_variance.png" alt="Cumulative Variance Plot" style="display: block; background-color: #f0f0f0; padding: 20px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); max-width: 90%;">
-	    </a>
-	    <figcaption>
-	        Figure 3.2.2. Cumulative Variance Plot to Determine Optimal Gene Count for Exploratory Heatmaps.
-	    </figcaption>
-	</figure>
-
-<div class="explanation">
-    <ul>
-        <li>
-            The plot above shows that the curve, with a strict focus, starts to flatten around 500 genes, where additional genes contribute diminishing returns in terms of explaining the total variance. This suggests that selecting approximately 500 genes for the heatmap would balance between capturing significant variability and avoiding unnecessary noise.
-        </li>
-        <li>
-            After testing different numbers of genes, we found that using <strong>300 genes</strong> provides good clarity in our heatmap while still ensuring that we capture meaningful patterns in the data.
-        </li>
-    </ul>
-</div>
-
-
-		<div class="explanation">
-    <h4>3.2.3. Exploratory Heatmaps for Gene Expression Data</h4>
-    <ul>
-        <li> 
-            In this section, we present a series of <strong>heatmaps</strong> to explore and visualize the <strong>count data</strong> before proceeding with differential expression analysis (DEA) using <strong>DESeq2</strong>. These heatmaps allow us to understand "the structure and relationships within the data", helping identify patterns such as "clustering of samples", "variations across experimental conditions", or potential "batch effects".
-        </li>
-        <li>
-            We employ two types of heatmaps for this exploratory phase: 
-            <strong>"Unsupervised</strong> Gene Expression Heatmaps" and <strong>"Grouped</strong> Gene Expression Heatmaps".
-        </li>
-        <li> 
-            <strong>1. Unsupervised Gene Expression Heatmaps</strong>: The data is clustered purely based on "gene expression patterns", without taking the predefined  "experimental conditions" into account. This provides an  unbiased "view of the data", revealing "natural groupings" and potential  "outliers".
-        </li>
-        <li>
-            <strong>2. Grouped Gene Expression Heatmaps</strong>: These heatmaps focus on "specific groups" of interest, allowing for a "more targeted comparison between predefined conditions" (e.g., lesional vs. non-lesional samples, or treatment vs. baseline). This can provide insight into how specific groups of samples behave in relation to one another.
-        </li>
-        <li>
-            For all heatmaps, we focus on the "top 300 most variable genes", as this strikes a balance between capturing "sufficient variation" and maintaining "clarity in the visualizations".
-        </li>
-    </ul>
-</div>
-
-<div class="explanation">
-    <h4>3.2.3.1. Unsupervised Gene Expression Heatmaps</h4>
-    <ul>
-        <li>
-            <strong>1. Heatmap for All Samples (166 samples)</strong>: As is shown in <a href="#figure-3-2-3">Figure 3.2.3</a>, this heatmap clusters all 166 "samples" based on the expression of the top 300 most variable "genes". The counts matrix is "log-transformed", and both rows ("genes") and columns ("samples") are clustered.
-        </li>
-        <li>
-            In this code (Code Block 3.2.3), we begin by loading the "<strong>matrixStats</strong> library" to work with matrix data and the "<strong>pheatmap</strong> library" for generating heatmaps. First (Step 1), the "<strong>as.matrix()</strong> function" converts the counts_matrix into a matrix format if it was originally a data frame, ensuring compatibility with downstream operations. Then (Step 2), we apply a "<strong>log2 transformation</strong>" to the matrix to "reduce the dynamic range" and "make the data more suitable for visualization". Next (Step 3), the top 300 most variable genes are selected based on row variance calculated from the log-transformed counts. Finally (Step 4), a heatmap is generated (<a href="#figure-3-2-3">Figure 3.2.3</a>) using <strong>pheatmap()</strong>, with options to cluster rows and columns, adjust axis label angles, and font size, and the output is saved as an image file.
-        </li>
-    </ul>
-</div>
-
-<!-- Caption for the code block -->
-<p class="code-caption">Code Block 3.2.3. Unsupervised Heatmap for All Samples (166 samples)</p>
-
-<div class="code-block">
-    <pre><code class="language-r">
-# ============ Load Required Libraries ============
-# Load the required libraries for matrix operations and heatmap generation
-library(matrixStats)  # Ensure matrixStats is loaded for row variance calculation
-library(pheatmap)     # For generating heatmaps
-
-# ============ Step 1: Convert counts_matrix to Matrix ============
-# Convert counts_matrix to a matrix if it is currently a data frame
-counts_matrix <- as.matrix(counts_matrix)  # Ensures compatibility with downstream functions
-
-# ============ Step 2: Log2 Transformation of Counts ============
-# Apply a log2 transformation to reduce the dynamic range of the count data
-counts_matrix_log <- log2(counts_matrix + 1)  # Adding 1 to avoid log(0) issues
-
-# ============ Step 3: Identify Top Variable Genes ============
-# Recalculate the most variable genes based on the log-transformed counts
-# We select the top 300 most variable genes using row variance
-top_var_genes_log <- head(order(rowVars(counts_matrix_log), decreasing = TRUE), 300)  
-
-# ============ Step 4: Generate Heatmap and Save ============
-# Create the heatmap for all 166 samples based on the top 300 most variable genes
-# Adjust clustering and visual parameters such as label angles and font sizes
-pheatmap(counts_matrix_log[top_var_genes_log, ], 
-         cluster_rows = TRUE, cluster_cols = TRUE, 
-         show_rownames = FALSE, show_colnames = TRUE,  
-         angle_col = 90,  # Rotate x-axis labels for better readability
-         fontsize_col = 4,  # Reduce font size for the column labels
-         filename = "path/to/your/output/V1_300_Genes_heatmap_variable_genes.png")  # Save the heatmap as an image
-    </code></pre>
-</div>
-
-
-		
- 	<!-- Heatmaps Row with Click-to-Enlarge Feature -->
-	<div style="display: flex; justify-content: space-around;">
-	    
-	    <!-- Heatmap 1 (166/unsupervised) -->
-	    <figure style="text-align: justify; margin: 10px;">
-	        <a href="Pictures/RNA_Seq_Task1/Unsupervised_Heatmap_166_Samples_300_Genes.png" target="_blank">
-	            <img src="Pictures/RNA_Seq_Task1/Unsupervised_Heatmap_166_Samples_300_Genes.png" alt="Heatmap 1" style="display: block; background-color: #0c4b4f; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 85%; height: 80%;">
-	        </a>
-	        <figcaption>Figure 3.2.3. Unsupervised Gene Expression Heatmaps for All Samples (166 samples) with the top 300 most variable genes.</figcaption>
-	    </figure>
-	
-	    <!-- Heatmap 2 (111/unsupervised) -->
-	    <figure style="text-align: justify; margin: 10px;">
-	        <a href="Pictures/RNA_Seq_Task1/Unsupervised_Heatmap_111_Samples_300_Genes.png" target="_blank">
-	            <img src="Pictures/RNA_Seq_Task1/Unsupervised_Heatmap_111_Samples_300_Genes.png" alt="Heatmap 2" style="display: block; background-color: #0c4b4f; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 85%; height: 80%;;">
-	        </a>
-	        <figcaption>Figure 3.2.4. Unsupervised Gene Expression Heatmaps for Baseline Lesional and Non-lesional Samples (111 samples) with the top 300 most variable genes.</figcaption>
-	    </figure>
-	
-	</div>
-
-<br>
-<br>
-		
-<div class="explanation">
-    <ul>
-        <li>
-            <strong>Interpretation:</strong> This heatmap (<a href="#figure-3-2-3">Figure 3.2.3</a>) provides an overview of how the "gene expression patterns" vary across all "samples." It shows "distinct clusters of samples" (at the top of the heatmap) based solely on their expression data (genes on the left of the heatmap), without considering any experimental conditions. This type of unsupervised clustering can reveal "natural groupings" within the data or highlight potential "outliers."
-        </li>
-    </ul>
-</div>
-
-		 
-
-
-
-		<div class="explanation">
-			<h4>2.  Heatmap for Baseline Lesional and Non-lesional Samples (111 samples)</h4>
-		  <ul>
-
-	            <li>
-		     <strong>Code Overview:</strong> This heatmap (<a href="#figure-3-2-4">Figure 3.2.4</a>) focuses on a subset of 111 samples (lesional and non-lesional) to compare expression patterns between baseline lesional and non-lesional samples.
-		    </li>
-			  
-		    <li>
-		      In this code (Code Block 3.2.4), we focus on comparing baseline lesional and non-lesional samples. <strong>Load Required Libraries:</strong> First, the <code><a href="https://cran.r-project.org/web/packages/matrixStats/index.html" target="_blank">matrixStats</a></code> and <code><a href="https://cran.r-project.org/web/packages/pheatmap/index.html" target="_blank">pheatmap</a></code> libraries are loaded for matrix operations and heatmap generation. <strong>(Step 1)</strong>: The metadata is subset to include only the baseline lesional (AL_m0) and non-lesional (AN_m0) samples by filtering based on <code>metadata$title</code>. These subsets are combined into one dataset for comparison. <strong>(Step 2)</strong>: The <code>counts_matrix</code> is filtered to include only the lesional and non-lesional samples based on the sample names in <code>metadata$title</code>. <strong>(Step 3)</strong>: A log2 transformation is applied to the filtered count matrix using <code>log2()</code> to reduce the dynamic range. <strong>(Step 4)</strong>: The top 300 most variable genes are identified based on variance using <code><a href="https://www.rdocumentation.org/packages/matrixStats/versions/0.62.0/topics/rowVars" target="_blank">rowVars()</a></code>. <strong>(Step 5)</strong>: A heatmap is generated (<a href="#figure-3-2-4">Figure 3.2.4</a>) using <code><a href="https://cran.r-project.org/web/packages/pheatmap/index.html" target="_blank">pheatmap</a></code>, with rows and columns clustered to visualize the relationship between samples and gene expression. Adjustments are made for label angles and font size, and the heatmap is saved as an image file.
-		    </li>
-		  </ul>
-		</div>
-
-
-<!-- Caption for the code block -->
-<p class="code-caption">Code Block 3.2.4. Heatmap for Baseline Lesional and Non-lesional Samples (111 samples)</p>
-
-<div class="code-block">
-    <pre><code class="language-r">
-# ============ Load Required Libraries ============
-# Load the required libraries for matrix operations and heatmap generation
-library(matrixStats)  # Ensure matrixStats is loaded for row variance calculation
-library(pheatmap)     # For generating heatmaps
-
-# ============ Step 1: Subset Metadata for Lesional and Non-lesional Samples ============
-# Subset the metadata to include only the baseline lesional (AL_m0) and non-lesional (AN_m0) samples
-lesional_samples <- metadata[grepl("AL_m0", metadata$title), ]  # Filter metadata for lesional samples
-non_lesional_samples <- metadata[grepl("AN_m0", metadata$title), ]  # Filter metadata for non-lesional samples
-
-# Combine lesional and non-lesional samples into one dataset for comparison
-selected_samples <- rbind(lesional_samples, non_lesional_samples)
-
-# ============ Step 2: Subset the Count Matrix ============
-# Subset the count matrix to include only the lesional and non-lesional samples
-# Assuming the sample names (columns) in counts_matrix match those in metadata$title
-selected_sample_names <- selected_samples$title
-counts_matrix_filtered <- counts_matrix[, selected_sample_names]  # Filter the count matrix for the selected samples
-
-# ============ Step 3: Log2 Transformation of Filtered Counts ============
-# Apply a log2 transformation to the filtered count matrix to reduce the dynamic range
-counts_matrix_log <- log2(as.matrix(counts_matrix_filtered) + 1)  # Adding 1 to avoid log(0) issues
-
-# ============ Step 4: Identify Top Variable Genes ============
-# Recalculate the most variable genes based on the log-transformed counts
-# Select the top 300 most variable genes
-top_var_genes_log <- head(order(rowVars(counts_matrix_log), decreasing = TRUE), 300)  
-
-# ============ Step 5: Generate Heatmap and Save ============
-# Create a heatmap for the lesional and non-lesional samples based on the top 300 most variable genes
-# Adjust clustering and visual parameters such as label angles and font sizes
-pheatmap(counts_matrix_log[top_var_genes_log, ], 
-         cluster_rows = TRUE, cluster_cols = TRUE, 
-         show_rownames = FALSE, show_colnames = TRUE,  
-         angle_col = 90,  # Rotate x-axis labels for better readability
-         fontsize_col = 4,  # Reduce font size for the column labels
-         filename = "path/to/your/output/V1.1_300_Genes_Lesional_NonLesional_heatmap.png")  # Save the heatmap as an image
-    </code></pre>
-</div>
-
-
-<div class="explanation">
-    <ul>
-        <li>
-            <strong>Interpretation:</strong> This unsupervised heatmap (see <a href="#figure-3-2-4">Figure 3.2.4</a> above) specifically examines how gene expression varies between baseline lesional and non-lesional samples. The clustering shows whether the lesional and non-lesional samples form distinct groups based on their gene expression, helping to assess the strength of separation between these two conditions.
-        </li>
-    </ul>
-</div>
-
-
-
-	<!-- Grouped Gene Expression Heatmaps -->
-<div class="explanation">
-    <h3>3.2.3.2. Grouped Gene Expression Heatmaps</h3>
-	<h4 style="margin-top: 5px;">1. Heatmap for All Groups</h4>
-    <ul>
-        <li><strong>Code Overview:</strong> This heatmap (<a href="#figure-3-2-5">Figure 3.2.5</a>) compares six different groups (<strong>baseline lesional</strong>, <strong>baseline non-lesional</strong>, <strong>cyclosporine lesional</strong>, <strong>cyclosporine non-lesional</strong>, <strong>dupilumab lesional</strong>, and <strong>dupilumab non-lesional</strong>).</li>
-        
-        <li>In this code, we begin by loading the <strong>matrixStats</strong> and <strong>pheatmap</strong> libraries to handle matrix operations and generate heatmaps. First (Step 1), we apply a <strong>log2 transformation</strong> to the <strong>counts_matrix</strong> to reduce the dynamic range of the data. Next (Step 2), the <strong>sample_groups</strong> are extracted from <strong>metadata$source_name_ch1</strong>, representing the original group labels. We then (Step 3) define a <strong>new_labels</strong> vector, which maps the original group names (e.g., 'm0_AL') to more descriptive labels (e.g., 'Baseline Lesional').</li>
-        
-        <li>In Step 3.1, the <strong>selected_groups</strong> vector allows for different comparisons that provide insights into the data. For example, <strong>Lesional vs. Non-lesional</strong> comparisons (e.g., baseline (<a href="#figure-3-2-6" onclick="highlightFigure('figure-3-2-6')">Figure 3.2.6</a>), cyclosporine (<a href="#figure-3-2-7">Figure 3.2.7</a>), dupilumab (<a href="#figure-3-2-8">Figure 3.2.8</a>) explore how gene expression differs between affected and unaffected skin; <strong>Therapy Comparisons</strong> (e.g., "Baseline Lesional", "Cyclosporine Lesional", and "Dupilumab Lesional") investigate how lesional samples respond to different treatments (<a href="#figure-3-2-5">Figure 3.2.5</a>); and <strong>Pre-treatment vs. Post-treatment comparisons</strong> assess cyclosporine or dupilumab effectiveness by examining gene expression changes before and after treatment (<a href="#figure-3-2-7">Figure 3.2.7</a> & <a href="#figure-3-2-8">Figure 3.2.8</a>) . These comparisons are crucial for understanding both disease pathology and treatment effects.</li>
-        
-        <li>Afterward (Step 4), the columns of <strong>counts_matrix_log</strong> are reordered based on the selected groups, and the column names are updated using the new descriptive labels. In (Step 5), then the <strong>top 300 most variable genes</strong> are selected based on the variance of the log-transformed counts. Finally (Step 6), a heatmap is generated with the updated column labels, and the output is saved as an image file.</li>
-    </ul>
-</div>
-
-<!-- Code Block for Heatmap for All Groups -->
-<p class="code-caption">Code Block 3.2.5. Heatmap for All Groups</p>
-<div class="code-block">
-    <pre><code class="language-r">
-# =========== Load Required Libraries ===========
-library(matrixStats)
-library(pheatmap)
-
-# =========== Step 1: Apply Log2 Transformation ===========
-counts_matrix_log <- log2(as.matrix(counts_matrix) + 1)
-
-# =========== Step 2: Extract Sample Grouping Information ===========
-sample_groups <- metadata$source_name_ch1
-
-# =========== Step 3: Define Descriptive Labels ===========
-new_labels <- c(
-  "m0_AN" = "Baseline Non-lesional",
-  "cyclosporine_m3_AN" = "Cyclosporine Non-lesional",
-  "dupilumab_m3_AN" = "Dupilumab Non-lesional",
-  "m0_AL" = "Baseline Lesional",
-  "cyclosporine_m3_AL" = "Cyclosporine Lesional",
-  "dupilumab_m3_AL" = "Dupilumab Lesional"
-)
-	
-# =================================================================================
-# =========== Step 3.1: Select Groups for Analysis ===========
-selected_groups <- c("m0_AN", "cyclosporine_m3_AN", "dupilumab_m3_AN", "m0_AL", "cyclosporine_m3_AL", "dupilumab_m3_AL")
-
-# ===== we can replace the above selected_groups with one of the bellow  ===== 
-# 1. Heatmap for all groups:
-# c("m0_AN", "cyclosporine_m3_AN", "dupilumab_m3_AN", "m0_AL", "cyclosporine_m3_AL", "dupilumab_m3_AL")
-
-# 2. (Lesional vs. Non-lesiona) Compare "Baseline Lesional" with "Baseline Non-lesional": 
-# c("m0_AN", "m0_AL")
-
-# 3. (Lesional vs. Non-lesiona) Compare Cyclosporine Lesional with Cyclosporine Non-lesional:
-# c("cyclosporine_m3_AN", "cyclosporine_m3_AL") 
-
-# 4. (Lesional vs. Non-lesiona) Compare Dupilumab Lesional with Dupilumab Non-lesional:
-# c("dupilumab_m3_AN", "dupilumab_m3_AL") 
-
-# 5. (Therapy Comparisons) Compare Baseline Lesional, Cyclosporine Lesional, and Dupilumab Lesional.
-# c("m0_AL", "cyclosporine_m3_AL", "dupilumab_m3_AL") 
-
-# 6. (Therapy Comparisons) Compare Dupilumab Lesional and Cyclosporine Lesional.
-# c("dupilumab_m3_AL", "cyclosporine_m3_AL")
-
-# 7. (Pre-treatment vs. Post-treatment) Compare Baseline Lesional & Cyclosporine Lesional.
-# c("m0_AL", "cyclosporine_m3_AL")
-
-# 8. (Pre-treatment vs. Post-treatment) Compare Baseline Lesional & Dupilumab Lesional.
-# c("m0_AL", "dupilumab_m3_AL")
-# =================================================================================
-
-	
-# =========== Step 4: Reorder Columns Based on Group Selection ===========
-desired_order <- selected_groups
-reordered_columns <- match(desired_order, sample_groups)
-counts_matrix_log <- counts_matrix_log[, reordered_columns]
-colnames(counts_matrix_log) <- new_labels[sample_groups[reordered_columns]]
-
-# =========== Step 5: Calculate Top Variable Genes ===========
-top_var_genes_log <- head(order(rowVars(counts_matrix_log), decreasing = TRUE), 300)
-
-# =========== Step 6: Generate the Heatmap ===========
-pheatmap(counts_matrix_log[top_var_genes_log, ], 
-         cluster_rows = TRUE, cluster_cols = TRUE,
-         show_rownames = FALSE, show_colnames = TRUE,
-         angle = 45, vjust = 0.5, hjust = 0.6,
-         fontsize_col = 8, 
-         filename = "your/path/here/1_Grouped_Heatmap_for_All_Groups.png")
-    </code></pre>
-</div>
-
-<!-- Interpretation for Heatmap for All Groups -->
-<div class="explanation">
-    <ul>
-        <li><strong>Interpretation:</strong> As is shown in <a href="#figure-3-2-5">Figure 3.2.5</a>, this heatmap allows a broad comparison between all six groups. It helps assess how different treatments (cyclosporine and dupilumab) affect lesional and non-lesional samples, as well as providing insights into baseline differences between lesional and non-lesional samples.</li>
-    </ul>
-</div>
-
-<!-- Further Comparisons -->
-<div class="explanation">
-    <h4>2. (Lesional vs. Non-lesiona) Compare "Baseline Lesional" with "Baseline Non-lesional"</h4>
-    <ul>
-        <li><strong>Code Overview:</strong> This heatmap (<a href="#figure-3-2-6">Figure 3.2.6</a>) focuses on comparing baseline lesional and baseline non-lesional samples.</li>
-        <li>This comparison helps visualize how gene expression differs in the absence of treatment. This is crucial for understanding the inherent differences between these two conditions.</li>
-    </ul>
-</div>
-
-<!-- Code Block for Baseline Lesional vs. Non-lesional -->
-<p class="code-caption">Code Block 3.2.6. Compare Baseline Lesional with Baseline Non-lesional</p>
-<div class="code-block">
-    <pre><code class="language-r">
-# ============================
-selected_groups <- c("m0_AN", "m0_AL")
-# ============================
-    </code></pre>
-</div>
-
-<!-- Further Comparisons for Cyclosporine, Dupilumab -->
-<div class="explanation">
-    <h4>3.(Lesional vs. Non-lesional) Compare Cyclosporine Lesional vs. Cyclosporine Non-lesional</h4>
-    <ul>
-        <li><strong>Code Overview:</strong> This heatmap (<a href="#figure-3-2-7">Figure 3.2.7</a>) compares lesional and non-lesional samples treated with cyclosporine.</li>
-        <li>By examining gene expression between these two conditions, we can assess how cyclosporine affects both lesional and non-lesional skin.</li>
-    </ul>
-</div>
-
-<p class="code-caption">Code Block 3.2.7. Compare Cyclosporine Lesional vs. Non-lesional</p>
-<div class="code-block">
-    <pre><code class="language-r">
-# ============================
-selected_groups <- c("cyclosporine_m3_AN", "cyclosporine_m3_AL")
-# ============================
-    </code></pre>
-</div>
-
-<!-- Continue with Dupilumab, Therapy Comparisons -->
-<div class="explanation">
-    <h4>4. (Lesional vs. Non-lesiona) Compare Dupilumab Lesional vs. Dupilumab Non-lesional</h4>
-    <ul>
-        <li><strong>Code Overview:</strong> This heatmap (<a href="#figure-3-2-8">Figure 3.2.8</a>) reveals how <strong>dupilumab treatment</strong> impacts gene expression across lesional and non-lesional samples.</li>
-        <li>This is useful to understand whether dupilumab affects these two conditions differently.</li>
-    </ul>
-</div>
-
-
-	
-
-<p class="code-caption">Code Block 3.2.8. Compare Dupilumab Lesional vs. Dupilumab Non-lesional</p>
-<div class="code-block">
-    <pre><code class="language-r">
-# ============================
-selected_groups <- c("dupilumab_m3_AN", "dupilumab_m3_AL")
-# ============================
-    </code></pre>
-</div>
-
-
-<!-- Heatmaps Row with Click-to-Enlarge Feature -->
-<div style="display: flex; justify-content: space-around;">
-    
-    <!-- Heatmap 1 (1_Heatmap_for_All_Groups) -->
-    <figure id="figure-3-2-5" style="text-align: justify; margin: 10px;">
-        <a href="Pictures/RNA_Seq_Task1/1_Heatmap_for_All_Groups.png" target="_blank">
-            <img src="Pictures/RNA_Seq_Task1/1_Heatmap_for_All_Groups.png" alt="Heatmap 1" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
-        </a>
-        <figcaption><strong>Figure 3.2.5.</strong>Grouped Gene Expression Heatmap across all six groups (Baseline Lesional, Baseline Non-lesional, Cyclosporine Lesional, Cyclosporine Non-lesional, Dupilumab Lesional, and Dupilumab Non-lesional).This allows for the broadest comparison of gene expression patterns across all groups.</figcaption>
-    </figure>
-
-    <!-- Heatmap 2 (2_Baseline_Lesional_VS_Baseline_Non_lesional) -->
-    <figure id="figure-3-2-6" style="text-align: justify; margin: 10px;">
-        <a href="Pictures/RNA_Seq_Task1/2_Baseline_Lesional_VS_Baseline_Non_lesional.png" target="_blank">
-            <img src="Pictures/RNA_Seq_Task1/2_Baseline_Lesional_VS_Baseline_Non_lesional.png" alt="Heatmap 2" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
-        </a>
-        <figcaption><strong>Figure 3.2.6.</strong>Grouped Gene Expression Heatmap comparing Baseline Lesional and Baseline Non-lesional samples. This helps visualize how gene expression differs between affected and unaffected skin before any treatment is administered.</figcaption>
-    </figure>
-
-    <!-- Heatmap 3 (3_Cyclosporine_Lesional_VS_Cyclosporine_Non_lesional)-->
-    <figure id="figure-3-2-7" style="text-align: justify; margin: 10px;">
-        <a href="Pictures/RNA_Seq_Task1/3_Cyclosporine_Lesional_VS_Cyclosporine_Non_lesional.png" target="_blank">
-            <img src="Pictures/RNA_Seq_Task1/3_Cyclosporine_Lesional_VS_Cyclosporine_Non_lesional.png" alt="Heatmap 3" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
-        </a>
-        <figcaption><strong>Figure 3.2.7.</strong>Grouped Gene Expression Heatmap comparing Cyclosporine Lesional and Cyclosporine Non-lesional samples. This focuses on how cyclosporine treatment impacts gene expression in affected vs. unaffected skin.</figcaption>
-    </figure>
-
-    <!-- Heatmap 4 (4_Dupilumab_Lesional_VS_Dupilumab_Non_lesional)-->
-    <figure id="figure-3-2-8" style="text-align: justify; margin: 10px;">
-        <a href="Pictures/RNA_Seq_Task1/4_Dupilumab_Lesional_VS_Dupilumab_Non_lesional.png" target="_blank">
-            <img src="Pictures/RNA_Seq_Task1/4_Dupilumab_Lesional_VS_Dupilumab_Non_lesional.png" alt="Heatmap 4" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
-        </a>
-        <figcaption><strong>Figure 3.2.8.</strong>Grouped Gene Expression Heatmap comparing Dupilumab Lesional and Dupilumab Non-lesional samples. This visualizes the effect of dupilumab treatment on lesional and non-lesional samples.</figcaption>
-    </figure>
-
-</div>
-
-
-	
-
-<!-- 5. Therapy Comparisons -->
-<div class="explanation">
-    <h4>5. (Therapy Comparisons) Compare Baseline Lesional, Cyclosporine Lesional, and Dupilumab Lesional:</h4>
-    <ul>
-        <li><strong>Code Overview:</strong> This heatmap (<a href="#figure-3-2-9">Figure 3.2.9</a>) compares <strong>lesional samples</strong> across three conditions: baseline, cyclosporine, and dupilumab treatment. This comparison helps us to understand how <strong>lesional samples</strong> respond to different therapies.</li>
-    </ul>
-</div>
-
-<p class="code-caption">Code Block 3.2.9. Compare Baseline Lesional, Cyclosporine Lesional, and Dupilumab Lesional</p>
-<div class="code-block">
-    <pre><code class="language-r">
-# ============================
-selected_groups <- c("m0_AL", "cyclosporine_m3_AL", "dupilumab_m3_AL")
-# ============================
-    </code></pre>
-</div>
-
-<!-- Dupilumab vs Cyclosporine -->
-<div class="explanation">
-    <h4>6. (Therapy Comparisons) Compare Dupilumab Lesional vs. Cyclosporine Lesional</h4>
-    <ul>
-        <li><strong>Code Overview:</strong> This heatmap (<a href="#figure-3-3-0">Figure 3.3.0</a>) compares <strong>lesional samples</strong> treated with <strong>dupilumab</strong> versus <strong>cyclosporine</strong>. This comparison allows you to directly assess how gene expression varies between <strong>dupilumab</strong> and <strong>cyclosporine treatments</strong> in lesional samples.</li>
-        <li>This direct comparison provides insight into how the two treatments differ in their impact on gene expression.</li>
-    </ul>
-</div>
-
-<p class="code-caption">Code Block 3.2.10. Compare Dupilumab Lesional vs. Cyclosporine Lesional</p>
-<div class="code-block">
-    <pre><code class="language-r">
-# ============================
-selected_groups <- c("dupilumab_m3_AL", "cyclosporine_m3_AL")
-# ============================
-    </code></pre>
-</div>
-
-<!-- Pre-treatment vs. Post-treatment -->
-<div class="explanation">
-    <h4>7. (Pre-treatment vs. Post-treatment) Compare Baseline Lesional vs. Cyclosporine Lesional</h4>
-    <ul>
-        <li><strong>Code Overview:</strong> This heatmap (<a href="#figure-3-3-1">Figure 3.3.1</a>) compares <strong>pre-treatment</strong> (baseline lesional) to <strong>post-treatment</strong> (cyclosporine lesional) samples.</li>
-        <li>This comparison helps assess the impact of <strong>cyclosporine treatment</strong> by comparing gene expression before and after treatment in lesional samples.</li>
-    </ul>
-</div>
-
-<p class="code-caption">Code Block 3.2.11. Compare Pre-treatment vs. Post-treatment</p>
-<div class="code-block">
-    <pre><code class="language-r">
-# ============================
-selected_groups <- c("m0_AL", "cyclosporine_m3_AL")
-# ============================
-    </code></pre>
-</div>
-
-
-<!-- Pre-treatment vs. Post-treatment -->
-<div class="explanation">
-    <h4>8. (Pre-treatment vs. Post-treatment) Compare Baseline Lesional vs. dupilumab Lesional</h4>
-    <ul>
-         <li><strong>Code Overview:</strong> This heatmap (<a href="#figure-3-3-2">Figure 3.3.2</a>) compares <strong>pre-treatment</strong> (baseline lesional) to <strong>post-treatment</strong> (dupilumab lesional) samples.</li>
-        <li>This comparison helps assess the impact of <strong>dupilumab treatment</strong> by comparing gene expression before and after treatment in lesional samples.</li>
-    </ul>
-</div>	
-
-
-
-
-	<!-- Heatmaps Row with Click-to-Enlarge Feature -->
-<div style="display: flex; justify-content: space-around;">
-    
-    <!-- Heatmap 5 (5_Baseline_Lesional_AND_Cyclosporine_Lesional_AND_Dupilumab_Lesional) -->
-    <figure id="figure-3-2-9" style="text-align: justify; margin: 10px;">
-        <a href="Pictures/RNA_Seq_Task1/5_Baseline_Lesional_AND_Cyclosporine_Lesional_AND_Dupilumab_Lesional.png" target="_blank">
-            <img src="Pictures/RNA_Seq_Task1/5_Baseline_Lesional_AND_Cyclosporine_Lesional_AND_Dupilumab_Lesional.png" alt="Heatmap 1" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
-        </a>
-        <figcaption><strong>Figure 3.2.9.</strong>Grouped Gene Expression Heatmap comparing Baseline Lesional, Cyclosporine Lesional, and Dupilumab Lesional samples. This offers a direct comparison of how gene expression changes under different treatments.</figcaption>
-    </figure>
-
-    <!-- Heatmap 6 (6_Dupilumab_Lesional_VS_Cyclosporine_Lesional) -->
-    <figure id="figure-3-3-0" style="text-align: justify; margin: 10px;">
-        <a href="Pictures/RNA_Seq_Task1/6_Dupilumab_Lesional_VS_Cyclosporine_Lesional.png" target="_blank">
-            <img src="Pictures/RNA_Seq_Task1/6_Dupilumab_Lesional_VS_Cyclosporine_Lesional.png" alt="Heatmap 2" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
-        </a>
-        <figcaption><strong>Figure 3.3.0.</strong>Grouped Gene Expression Heatmap comparing Dupilumab Lesional and Cyclosporine Lesional samples. This allows for the direct comparison of how these two treatments affect lesional skin.</figcaption>
-    </figure>
-
-    <!-- Heatmap 7 (7_Baseline_Lesional_VS_Cyclosporine_Lesional) -->
-    <figure id="figure-3-3-1" style="text-align: justify; margin: 10px;">
-        <a href="Pictures/RNA_Seq_Task1/7_Baseline_Lesional_VS_Cyclosporine_Lesional.png" target="_blank">
-            <img src="Pictures/RNA_Seq_Task1/7_Baseline_Lesional_VS_Cyclosporine_Lesional.png" alt="Heatmap 3" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
-        </a>
-        <figcaption><strong>Figure 3.3.1.</strong>Grouped Gene Expression Heatmap comparing pre-treatment (Baseline Lesional) vs. post-treatment (Cyclosporine Lesional) samples. This assesses how gene expression changes following cyclosporine treatment.</figcaption>
-    </figure>
-
-    <!-- Heatmap 8 (8_Baseline_Lesional_VS_Dupilumab_Lesional) -->
-    <figure id="figure-3-3-2" style="text-align: justify; margin: 10px;">
-        <a href="Pictures/RNA_Seq_Task1/8_Baseline_Lesional_VS_Dupilumab_Lesional.png" target="_blank">
-            <img src="Pictures/RNA_Seq_Task1/8_Baseline_Lesional_VS_Dupilumab_Lesional.png" alt="Heatmap 4" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
-        </a>
-        <figcaption><strong>Figure 3.3.2.</strong>Grouped Gene Expression Heatmap comparing pre-treatment (Baseline Lesional) vs. post-treatment (Dupilumab Lesional) samples. This highlights how gene expression changes following dupilumab treatment.</figcaption>
-    </figure>
-
-</div>
-
-
-	
-		
-
- <!-- ====================== the bellow should be changed============================== -->
- <!-- ================================================================ -->
- <!-- ================================================================ -->
-		
-		 <!-- ============== A horizontal line ================== -->
-				<!-- Add a horizontal line above the introduction -->
-				<hr style="border: none; border-top: 1px solid black; margin: 20px 0;">
-		 <!-- =================================================== -->
-        
-
-        <!-- ================================================================== -->
-
-        <div class="explanation">
-            <h3>)from here onward, everything will be replaced) <br> 1. Load Necessary Libraries</h3>
-            <p>We begin by loading the essential R libraries needed for data manipulation, DEG analysis, and visualization.</p>
-        </div>
-
-        <div class="code-block">
-            <pre><code class="language-r">
-# Load Required Libraries
-library(DESeq2)
-library(data.table)
-library(umap)
-library(ggplot2)
-library(clusterProfiler)
-library(org.Hs.eg.db)
-library(VennDiagram)
-library(knitr)
-library(tinytex)
-            </code></pre>
-        </div>
-
-
-<!-- Heatmaps Row with Click-to-Enlarge Feature -->
-<div style="display: flex; justify-content: space-around;">
-    
-    <!-- Heatmap 1 (166/unsupervised) -->
-    <figure id="figure-3-2-3" style="text-align: justify; margin: 10px;">
-        <a href="Pictures/RNA_Seq_Task1/Unsupervised_Heatmap_166_Samples_300_Genes.png" target="_blank">
-            <img src="Pictures/RNA_Seq_Task1/Unsupervised_Heatmap_166_Samples_300_Genes.png" alt="Heatmap 1" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
-        </a>
-        <figcaption>Figure 3.2.3. Unsupervised Gene Expression Heatmaps for All Samples (166 samples) with the top 300 most variable genes.</figcaption>
-    </figure>
-
-    <!-- Heatmap 2 (111/unsupervised) -->
-    <figure id="figure-3-2-4" style="text-align: justify; margin: 10px;">
-        <a href="Pictures/RNA_Seq_Task1/Unsupervised_Heatmap_111_Samples_300_Genes.png" target="_blank">
-            <img src="Pictures/RNA_Seq_Task1/Unsupervised_Heatmap_111_Samples_300_Genes.png" alt="Heatmap 2" style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 100%;">
-        </a>
-        <figcaption>3.2.4. Unsupervised Gene Expression Heatmaps for Baseline Lesional and Non-lesional Samples (111 samples) with the top 300 most variable genes.</figcaption>
-    </figure>
-
-   
-
-</div>
-
-
-
-	
-	
-		
-        <div class="explanation">
-            <h3>2. Load and Prepare Data</h3>
-            <p>This step involves downloading the count data and gene annotations from GEO. We convert these into suitable formats for further analysis.</p>
-        </div>
-
-        <div class="code-block">
-            <pre><code class="language-r">
-# Load counts table from GEO
-urld <- "https://www.ncbi.nlm.nih.gov/geo/download/?format=file&type=rnaseq_counts"
-path <- paste(urld, "acc=GSE157194", "file=GSE157194_raw_counts_GRCh38.p13_NCBI.tsv.gz", sep="&")
-tbl <- as.matrix(data.table::fread(path, header=T, colClasses="integer"), rownames="GeneID")
-
-# Load gene annotations 
-apath <- paste(urld, "type=rnaseq_counts", "file=Human.GRCh38.p13.annot.tsv.gz", sep="&")
-annot <- data.table::fread(apath, header=T, quote="", stringsAsFactors=F, data.table=F)
-rownames(annot) <- annot$GeneID
-            </code></pre>
-        </div>
-
-        <div class="explanation">
-            <h3>3. Sample Selection and Group Assignment</h3>
-            <p>This step filters the samples and assigns them to the Lesional or Non-Lesional groups based on predefined group labels.</p>
-        </div>
-
-        <div class="code-block">
-            <pre><code class="language-r">
-# Sample selection
-gsms <- paste0("01101001010101011010011001011001011001101001011010",
-               "01100101011010101001011001010101010010101010101001",
-               "01100100110XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-               "XXXXXXXXXXXXXXXX")
-sml <- strsplit(gsms, split="")[[1]]
-
-# Filter out excluded samples (marked as "X")
-sel <- which(sml != "X")
-sml <- sml[sel]
-tbl <- tbl[ ,sel]
-
-# Group membership for samples
-gs <- factor(sml)
-groups <- make.names(c("Lesional","Non-Lesional"))
-levels(gs) <- groups
-sample_info <- data.frame(Group = gs, row.names = colnames(tbl))
-            </code></pre>
-        </div>
-
-        <div class="explanation">
-            <h3>4. Data Pre-Filtering</h3>
-            <p>To improve analysis accuracy, we filter out genes with low counts across samples.</p>
-        </div>
-
-        <div class="code-block">
-            <pre><code class="language-r">
-# Pre-filter low count genes
-keep <- rowSums(tbl >= 10) >= min(table(gs))
-tbl <- tbl[keep, ]
-            </code></pre>
-        </div>
-
-        <div class="explanation">
-            <h3>5. Exploratory Data Analysis</h3>
-            <p>Before proceeding with differential expression analysis, we perform a PCA to explore the variance in the dataset and ensure that the samples group as expected.</p>
-        </div>
-
-        <div class="code-block">
-            <pre><code class="language-r">
-# PCA Plot
-vsd <- vst(ds, blind=FALSE)
-pcaData <- plotPCA(vsd, intgroup="Group", returnData=TRUE)
-percentVar <- round(100 * attr(pcaData, "percentVar"))
-
-ggplot(pcaData, aes(PC1, PC2, color=Group)) +
-  geom_point(size=3) +
-  xlab(paste0("PC1: ", percentVar[1], "% variance")) +
-  ylab(paste0("PC2: ", percentVar[2], "% variance")) +
-  coord_fixed() +
-  theme_minimal()
-            </code></pre>
-        </div>
-
-        <div class="explanation">
-            <h3>6. Create DESeqDataSet and Run Differential Expression Analysis</h3>
-            <p>We create a <code>DESeqDataSet</code> object, normalize the data, and run the differential expression analysis using DESeq2. This model tests for differences in gene expression between the Lesional and Non-Lesional groups.</p>
-        </div>
-
-        <div class="code-block">
-            <pre><code class="language-r">
-# Create DESeqDataSet and run DESeq2
-ds <- DESeqDataSetFromMatrix(countData=tbl, colData=sample_info, design= ~Group)
-ds <- DESeq(ds, test="Wald", sfType="poscount")
-            </code></pre>
-        </div>
-
-        <div class="explanation">
-            <h3>7. Extract and Process Results</h3>
-            <p>We extract the results from DESeq2, separating the differentially expressed genes (DEGs) into upregulated and downregulated categories, and prepare the top genes for further analysis.</p>
-        </div>
-
-        <div class="code-block">
-            <pre><code class="language-r">
-# Extract results for top genes
-r <- results(ds, contrast = c("Group", groups[1], groups[2]), alpha = 0.01, pAdjustMethod = "fdr")
-
-# Separate downregulated and upregulated DEGs
-downregulated <- r[r$log2FoldChange < 0 & r$padj < 0.01, ]
-upregulated <- r[r$log2FoldChange > 0 & r$padj < 0.01, ]
-
-# Take the top 10 genes for downregulated and upregulated
-top_downregulated <- downregulated[order(downregulated$log2FoldChange)[1:10], ]
-top_upregulated <- upregulated[order(upregulated$log2FoldChange, decreasing = TRUE)[1:10], ]
-
-# Merge with gene annotations
-top_downregulated <- merge(as.data.frame(top_downregulated), annot, by = 0, sort = FALSE)
-top_upregulated <- merge(as.data.frame(top_upregulated), annot, by = 0, sort = FALSE)
-
-# Round "padj" and "log2FoldChange" columns for readability
-top_downregulated <- within(top_downregulated, {
-  padj <- sprintf("%.4f", round(padj, 2))
-  log2FoldChange <- sprintf("%.4f", round(log2FoldChange, 2))
-})
-
-top_upregulated <- within(top_upregulated, {
-  padj <- sprintf("%.4f", round(padj, 2))
-  log2FoldChange <- sprintf("%.4f", round(log2FoldChange, 2))
-})
-
-# Print the top_downregulated table using kable
-kable(top_downregulated, format = "markdown")
-kable(top_upregulated, format = "markdown")
-            </code></pre>
-        </div>
-
-        <div class="explanation">
-            <h3>8. General Data Visualization</h3>
-            <p>We generate various plots to visualize the data and the results of the differential expression analysis.</p>
-
-            <h4>8.1 Box Plot</h4>
-        </div>
-
-        <div class="code-block">
-            <pre><code class="language-r">
-# Box-and-whisker plot
-dat <- log10(counts(ds, normalized = T) + 1)
-ord <- order(gs)
-palette(c("#1B9E77", "#7570B3"))
-par(mar=c(7,4,2,1))
-boxplot(dat[,ord], boxwex=0.6, notch=T, main="GSE157194", ylab="lg(norm.counts)", outline=F, las=2, col=gs[ord])
-legend("topleft", groups, fill=palette(), bty="n")
-            </code></pre>
-        </div>
-
-        <div class="explanation">
-            <h4>8.2 Dispersion Estimates</h4>
-        </div>
-
-        <div class="code-block">
-            <pre><code class="language-r">
-# Dispersion estimates plot
-plotDispEsts(ds, main="GSE157194 Dispersion Estimates")
-            </code></pre>
-        </div>
-
-        <div class="explanation">
-            <h4>8.3 UMAP Plot</h4>
-        </div>
-
-        <div class="code-block">
-            <pre><code class="language-r">
-# UMAP plot
-dat <- dat[!duplicated(dat), ]
-par(mar=c(3,3,2,6), xpd=TRUE, cex.main=1.5)
-ump <- umap(t(dat), n_neighbors = 15, random_state = 123)
-plot(ump$layout, main="UMAP plot, nbrs=15", xlab="", ylab="", col=gs, pch=20, cex=1.5)
-legend("topright", inset=c(-0.15,0), legend=groups, pch=20, col=1:length(groups), title="Group", pt.cex=1.5)
-            </code></pre>
-        </div>
-
-        <div class="explanation">
-            <h4>8.4 Histogram of P-values</h4>
-        </div>
-
-        <div class="code-block">
-            <pre><code class="language-r">
-# Histogram of adjusted p-values
-hist(r$padj, breaks=seq(0, 1, length = 21), col = "grey", border = "white", 
-     xlab = "", ylab = "", main = "GSE157194 Frequencies of padj-values")
-            </code></pre>
-        </div>
-
-        <div class="explanation">
-            <h4>8.5 Volcano Plot</h4>
-        </div>
-
-        <div class="code-block">
-            <pre><code class="language-r">
-# Volcano plot
-old.pal <- palette(c("#00BFFF", "#FF3030"))
-par(mar=c(4,4,2,1), cex.main=1.5)
-plot(r$log2FoldChange, -log10(r$padj), main=paste(groups[1], "vs", groups[2]),
-     xlab="log2FC", ylab="-log10(Padj)", pch=20, cex=0.5)
-with(subset(r, padj<0.01 & abs(log2FoldChange) >= 1.5),
-     points(log2FoldChange, -log10(padj), pch=20, col=(sign(log2FoldChange) + 3)/2, cex=1))
-legend("bottomleft", title=paste("Padj<", 0.01, sep=""), legend=c("down", "up"), pch=20,col=1:2)
-            </code></pre>
-        </div>
-
-        <div class="explanation">
-            <h4>8.6 MA Plot</h4>
-        </div>
-
-        <div class="code-block">
-            <pre><code class="language-r">
-# MA plot
-par(mar=c(4,4,2,1), cex.main=1.5)
-plot(log10(r$baseMean), r$log2FoldChange, main=paste(groups[1], "vs", groups[2]),
-     xlab="log10(mean of normalized counts)", ylab="log2FoldChange", pch=20, cex=0.5)
-with(subset(r, padj<0.01 & abs(log2FoldChange) >= 1.5),
-     points(log10(baseMean), log2FoldChange, pch=20, col=(sign(log2FoldChange) + 3)/2, cex=1))
-legend("bottomleft", title=paste("Padj<", 0.01, sep=""), legend=c("down", "up"), pch=20,col=1:2)
-abline(h=0)
-palette(old.pal)
-            </code></pre>
-        </div>
-
-        <div class="explanation">
-            <h3>9. Functional Annotation and Pathway Analysis</h3>
-            <p>After identifying DEGs, we perform GO and KEGG pathway enrichment analyses to understand the biological significance of the results.</p>
-
-            <h4>9.1 Gene Ontology (GO) Enrichment Analysis</h4>
-        </div>
-
-        <div class="code-block">
-            <pre><code class="language-r">
-# GO enrichment analysis for upregulated and downregulated genes
-up_genes <- top_upregulated$GeneID
-down_genes <- top_downregulated$GeneID
-
-# GO enrichment for upregulated genes
-ego_up <- enrichGO(gene = up_genes, OrgDb = org.Hs.eg.db, keyType = "ENSEMBL",
-                   ont = "BP", pAdjustMethod = "fdr", qvalueCutoff = 0.05)
-
-# GO enrichment for downregulated genes
-ego_down <- enrichGO(gene = down_genes, OrgDb = org.Hs.eg.db, keyType = "ENSEMBL",
-                     ont = "BP", pAdjustMethod = "fdr", qvalueCutoff = 0.05)
-
-# Plotting the top GO terms
-barplot(ego_up, showCategory=10, title="Top GO terms for Upregulated Genes", drop=TRUE)
-barplot(ego_down, showCategory=10, title="Top GO terms for Downregulated Genes", drop=TRUE)
-            </code></pre>
-        </div>
-
-        <div class="explanation">
-            <h4>9.2 KEGG Pathway Enrichment Analysis</h4>
-        </div>
-
-        <div class="code-block">
-            <pre><code class="language-r">
-# KEGG pathway enrichment analysis for upregulated and downregulated genes
-kegg_up <- enrichKEGG(gene = up_genes, organism = "hsa", pAdjustMethod = "fdr", qvalueCutoff = 0.05)
-kegg_down <- enrichKEGG(gene = down_genes, organism = "hsa", pAdjustMethod = "fdr", qvalueCutoff = 0.05)
-
-# Plotting the top KEGG pathways
-barplot(kegg_up, showCategory=10, title="Top KEGG Pathways for Upregulated Genes")
-barplot(kegg_down, showCategory=10, title="Top KEGG Pathways for Downregulated Genes")
-            </code></pre>
-        </div>
-
-        <div class="explanation">
-            <h3>10. Venn Diagram for Gene Sets</h3>
-            <p>We visualize the overlap between different gene sets (total, upregulated, downregulated) using a Venn diagram.</p>
-        </div>
-
-        <div class="code-block">
-            <pre><code class="language-r">
-# Venn diagram for gene sets
-total_genes <- rownames(tbl)
-upregulated_genes <- rownames(top_upregulated)
-downregulated_genes <- rownames(top_downregulated)
-
-venn_data <- list(
-  Total = total_genes,
-  Upregulated = upregulated_genes,
-  Downregulated = downregulated_genes
-)
-
-venn_plot <- venn.diagram(
-  x = venn_data,
-  category.names = c("Total", "Upregulated", "Downregulated"),
-  filename = NULL,
-  margin = 0,
-  cex.prop = 0.8,
-  offset.prop = 0.2
-)
-
-grid.draw(venn_plot)
-            </code></pre>
-        </div>
-
-        <div class="explanation">
-            <h3>11. Extract Top 20 Genes and Print Results</h3>
-            <p>Finally, we extract the top 20 differentially expressed genes from both categories and print the results.</p>
-        </div>
-
-        <div class="code-block">
-            <pre><code class="language-r">
-# Extract results for top genes table (rounded)
-r <- results(ds, contrast = c("Group", groups[1], groups[2]), alpha = 0.01, pAdjustMethod = "fdr")
-
-# Separate downregulated and upregulated DEGs
-downregulated <- r[r$log2FoldChange < 0 & r$padj < 0.01, ]
-upregulated <- r[r$log2FoldChange > 0 & r$padj < 0.01, ]
-
-# Take the top 20 genes for downregulated and upregulated
-top_downregulated <- downregulated[order(downregulated$log2FoldChange)[1:20], ]
-top_upregulated <- upregulated[order(upregulated$log2FoldChange, decreasing = TRUE)[1:20], ]
-
-# Merge with gene annotations
-top_downregulated <- merge(as.data.frame(top_downregulated), annot, by = 0, sort = FALSE)
-top_upregulated <- merge(as.data.frame(top_upregulated), annot, by = 0, sort = FALSE)
-
-# Round "padj" and "log2FoldChange" columns
-top_downregulated <- within(top_downregulated, {
-  padj <- sprintf("%.4f", round(padj, 4))
-  log2FoldChange <- sprintf("%.4f", round(log2FoldChange, 4))
- })
-
-top_upregulated <- within(top_upregulated, {
-  padj <- sprintf("%.4f", round(padj, 4))
-  log2FoldChange <- sprintf("%.4f", round(log2FoldChange, 4))
-})
-
-# Print the top_downregulated table using kable
-kable(top_downregulated, format = "markdown") 
-kable(top_upregulated, format = "markdown")
-            </code></pre>
-        </div>
-
-        <div class="explanation">
-            <h3>Conclusion</h3>
-            <p>This complete pipeline guides you through performing differential gene expression analysis on the GSE157194 dataset using DESeq2. The analysis identifies significant gene expression changes between lesional and non-lesional skin samples from Atopic Dermatitis patients, and includes essential data visualizations and enrichment analyses to interpret the results biologically.</p>
-        </div>
+  <div class="header">
+    <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/index.html" class="home-link">
+      <img src="Pictures/Home_Link_JPG/1.jpg" alt="Home" style="width:50px; height:auto;">
+    </a>
+    <h1>
+      Advanced Shiny Application for scRNA-seq Analysis: <br> 
+      Cell-Type-Specific HVG Identification & <br>
+      Comprehensive Functional Analysis <br>
+      (with High-Quality Visualizations)
+    </h1>
+  </div>
+
+  <div class="body">
+    <hr>
+
+    <!-- ======== Embedded Video ======== -->
+    <div class="video-container" style="text-align: center; margin-bottom: 20px;">
+      <iframe
+        src="https://www.youtube.com/embed/Rlkej_DH2F0?si=Hc1MUAv9_IIbT6CC"
+        title="A Shiny App for Biomarker Identification"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen>
+      </iframe>
     </div>
 
-    <!-- Prism.js library for syntax highlighting -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/prism.min.js"></script>
-	  
-    <!-- Load R language support for Prism -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-r.min.js"></script>
-
-   
-
-<script>
-  function highlightFigure(figureId) {
-    var figure = document.getElementById(figureId);
-    figure.classList.add('highlight');
-    setTimeout(function() {
-      figure.classList.remove('highlight');
-    }, 2000);  // Adjust the duration if necessary
-  }
-</script>
-
- 
-	  
+    <div class="explanation">
+      <h3>About the Shiny Application</h3>
+      <ul>
+        <li>
+          Key features of the app include:
+          <ul>
+            <li>Uploading scRNA-seq files for exploratory data analysis (EDA).</li>
+            <li>Preprocessing steps like quality control (QC) filtering and normalization.</li>
+            <li>Cell-type selection, such as partially responsive, progressive disease, malignant, or non-malignant cells.</li>
+            <li>Identification of cell-type-specific highly variable genes (HVGs).</li>
+            <li>Functional analyses and visualizations based on top HVGs.</li>
+          </ul>
+        </li>
+        <li>
+          Designed to optimize biomarker discovery, the application is accessible to researchers without programming expertise.
+        </li>
+        <li>
+          Please check back soon for updates!
+        </li>
+      </ul>
+    </div>
+    <hr>
+  </div>
 </body>
-</html> 
+</html>
