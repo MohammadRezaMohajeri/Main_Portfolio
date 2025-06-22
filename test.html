@@ -1,149 +1,165 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>
-    Differential Gene Expression Analysis  
-    in Atopic Dermatitis 
-    Using DESeq2
-  </title>
 
-  <!-- Google Analytics Tag -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7997H1319B"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-7997H1319B');
-  </script>
+<!-- =================================== START OF  Google tag  ===================================== -->
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-7997H1319B"></script>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+	  gtag('config', 'G-7997H1319B');
+	</script>
+<!-- =================================== END OF  Google tag  ===================================== -->
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/x-icon" href="https://mohammadrezamohajeri.github.io/Breast-Cancer-Gene-Expression-Biomarker-Analysis/Images/1.ico"> 
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+	Differential Gene Expression Analysis  
+	in Atopic Dermatitis 
+	Using DESeq2
+</title>
 
-  <!-- Prism.js for code highlighting -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.5.0/prism-dracula.min.css" rel="stylesheet">
+<!-- ===================================  favicon icon ===================================== -->
+<link rel="icon" type="image/x-icon" href="https://mohammadrezamohajeri.github.io/Breast-Cancer-Gene-Expression-Biomarker-Analysis/Images/1.ico"> 
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      line-height: 1.6;
-      margin: 20px;
-      background-color: #f9f9f9;
-      text-align: justify;
-    }
+<!-- =================================== Code Block Styling with Prism.js ===================================== -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.5.0/prism-dracula.min.css" rel="stylesheet">
 
-    .header {
-      font-size: 25px;
-      background-color: #01031f;
-      color: white;
-      height: 350px;
-      padding: 10px 0;
-      text-align: center;
-      position: relative;
-    }
+<style>
+/* ============== Highlight figure/caption when link clicked ============== */
+.highlight {
+	animation: highlightAnimation 5s ease-out;
+}
+@keyframes highlightAnimation {
+	from {
+		background-color: yellow;
+	}
+	to {
+		background-color: transparent;
+	}
+}
 
-    .home-link {
-      position: absolute;
-      bottom: 10px;
-      left: 10px;
-      text-decoration: none;
-      z-index: 1;
-    }
+/* ============== Selection color ============== */
+::selection {
+	background-color: yellow;
+	color: black;
+}
 
-    .title {
-      font-size: 26px;
-      font-weight: bold;
-      margin: 20px 0;
-      text-align: center;
-    }
+/* ============== Basic Styles ============== */
+body {
+	font-family: Arial, sans-serif;
+	line-height: 1.6;
+	margin: 20px;
+	background-color: #f9f9f9;
+	text-align: justify;
+}
 
-    .explanation {
-      font-size: 24px;
-      margin-bottom: 20px;
-    }
+/* ============== Header Style ============== */
+.header {
+	font-size: 25px;
+	background-color: #01031f;
+	color: white;
+	height: 350px;
+	padding: 10px 0;
+	text-align: center;
+	position: relative;
+}
 
-    h3, h4, h5 {
-      margin-top: 60px;
-      margin-bottom: 5px;
-    }
+/* ============== Home Link Style ============== */
+.home-link {
+	position: absolute;
+	bottom: 10px;
+	left: 10px;
+	text-decoration: none;
+	z-index: 1;
+}
 
-    .code-caption {
-      font-size: 16px;
-      font-style: italic;
-      margin-bottom: 1px;
-      color: #555;
-      text-align: justify;
-    }
+/* ============== Title Style ============== */
+.title {
+	font-size: 26px;
+	font-weight: bold;
+	margin: 20px 0;
+	text-align: center;
+}
 
-    .code-block {
-      margin-bottom: 20px;
-      font-size: 16px;
-    }
+/* ============== Explanation Style ============== */
+.explanation {
+	font-size: 24px;
+	margin-bottom: 20px;
+}
 
-    pre[class*="language-"] {
-      font-size: 16px;
-    }
+/* ============== Headings Spacing ============== */
+h3, h4, h5 {
+	margin-top: 60px;
+	margin-bottom: 5px;
+}
 
-    figure {
-      margin-bottom: 30px;
-    }
+/* ============== Code Caption ============== */
+.code-caption {
+	font-size: 16px;
+	font-style: italic;
+	margin-bottom: 1px;
+	color: #555;
+	text-align: justify;
+}
 
-    ul {
-      margin-top: 0 !important;
-      margin-bottom: 0 !important;
-      padding-left: 20px !important;
-    }
+/* ============== Code Block ============== */
+.code-block {
+	margin-bottom: 20px;
+	font-size: 16px;
+}
+pre[class*="language-"] {
+	font-size: 16px;
+}
 
-    li {
-      margin-bottom: 5px !important;
-    }
+/* ============== Figure spacing ============== */
+figure {
+	margin-bottom: 30px;
+}
 
-    ::selection {
-      background-color: yellow;
-      color: black;
-    }
+/* ============== List styling ============== */
+ul {
+	margin-top: 0 !important;
+	margin-bottom: 0 !important;
+	padding-left: 20px !important;
+}
+li {
+	margin-bottom: 5px !important;
+}
 
-    .highlight {
-      animation: highlightAnimation 5s ease-out;
-    }
+/* ============== MOBILE RESPONSIVE FIX ============== */
+@media only screen and (max-width: 768px) {
+	.header {
+		height: auto;
+		padding: 20px 10px;
+	}
 
-    @keyframes highlightAnimation {
-      from { background-color: yellow; }
-      to { background-color: transparent; }
-    }
+	.header h1 {
+		font-size: 22px;
+		line-height: 1.4;
+		padding: 10px;
+	}
 
-    @media only screen and (max-width: 768px) {
-      .header {
-        height: auto;
-        padding: 20px 10px;
-      }
+	.title {
+		font-size: 20px;
+		margin: 20px 10px;
+	}
 
-      .header h1 {
-        font-size: 22px;
-        line-height: 1.4;
-        padding: 10px;
-      }
+	.explanation {
+		font-size: 18px;
+		padding: 0 10px;
+	}
 
-      .title {
-        font-size: 20px;
-      }
-
-      .explanation {
-        font-size: 18px;
-        padding: 0 10px;
-      }
-
-      .home-link img {
-        width: 40px;
-      }
-
-      body {
-        margin: 10px;
-      }
-    }
-  </style>
+	body {
+		margin: 10px;
+	}
+}
+</style>
 </head>
+
 <body>
 
     <div class="header">
