@@ -1,214 +1,242 @@
+ <!--
+    Navigator Sample Page Template
+    Purpose:
+    This HTML template serves as a sample structure for creating navigational pages that list and link to 
+    various content types, such as contents for RNA-SEQ page, scRNA-Seq page, DL page, ML page, Relevant Coding Projects page, 
+    and General Coding page, Video Presentations page, and so on.
+
+    The template is designed to be flexible and easy to modify for different use cases. 
+    Each content item is presented in a list format with links to detailed pages, and 
+    the layout is optimized for clarity and usability.
+
+    This template can be used as a starting point for creating organized directories or index pages for my website, 
+    where the most recent content is prominently displayed at the top.
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>
-    Advanced Shiny Application for scRNA-seq Analysis: Cell-Type-Specific HVG Identification & Comprehensive Functional Analysis with High-Quality Visualizations
-  </title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>(4-min demo video of my Shiny app) Advanced Shiny Application for scRNA-seq Analysis: Cell-Type-Specific HVG Identification & Comprehensive Functional Analysis (Content Navigator)</title>
 
-  <!-- ============ favicon icon ============ -->
-  <link rel="icon" type="image/x-icon" href="https://mohammadrezamohajeri.github.io/Breast-Cancer-Gene-Expression-Biomarker-Analysis/Images/1.ico">
+    <!-- 
+    This line below adds a favicon to the tab of the web browser. 
+    The favicon is the small icon displayed next to the page title in the browser tab.
+    The 'href' attribute specifies the path to the icon file hosted on GitHub. 
+    -->
+    <link rel="icon" type="image/x-icon" href="https://mohammadrezamohajeri.github.io/Breast-Cancer-Gene-Expression-Biomarker-Analysis/Images/1.ico">
 
-  <!-- ============ Prism.js code styling ============ -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.5.0/prism-dracula.min.css" rel="stylesheet">
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  <style>
-    /* ======== Highlight animation ======== */
-    .highlight {
-      animation: highlightAnimation 5s ease-out;
-    }
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
 
-    @keyframes highlightAnimation {
-      from {
-        background-color: yellow;
-      }
-      to {
-        background-color: transparent;
-      }
-    }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+     
+        /* Header Style */
+        .header {
+            font-size: 25px;
+            background-color: #01031f;
+            color: white;
+            height: 350px;                 /* Adjusted height */
+            padding: 10px 0;
+            text-align: center;
+            position: relative;           /* Add relative positioning here */
+        }
 
-    /* ======== Selection color ======== */
-    ::selection {
-      background-color: yellow;
-      color: black;
-    }
+        .header h1 {
+            font-size: 1.8em; /* Adjusted font size */
+            margin: 0.5em 0; /* Adjust margin for spacing */
+          
+        }
 
-    /* ======== Responsive YouTube Video ======== */
-    .video-container {
-      position: relative;
-      width: 90%;
-      max-width: 900px;
-      margin: 20px auto;
-    }
+     
 
-    .video-container iframe {
-      width: 100%;
-      height: auto;
-      aspect-ratio: 16 / 9;
-    }
 
-    /* ======== General Styles ======== */
-    body {
-      font-family: Arial, sans-serif;
-      line-height: 1.6;
-      margin: 20px;
-      background-color: #f9f9f9;
-      text-align: justify;
-    }
+        .header p {
+            font-size: 1.2em;
+            color: #ededf5;
+        }
 
-    .header {
-      background-color: #344a5e;
-      color: white;
-      padding: 10px 0;
-      text-align: center;
-      position: relative;
-    }
+     
 
+        /* Home Link Style */
+        .home-link {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            text-decoration: none; /* Remove underline */
+            z-index: 1; /* Ensures it appears above other content */
+        }
+        
+        .content-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .content-item {
+            background: #fafafa;
+            padding: 20px;
+            border-left: 5px solid #3498db;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+
+        .content-item:hover {
+            background: #e0f7fa;
+        }
+
+        .content-item h2 {
+            font-size: 1.0em;
+            margin-bottom: 10px;
+        }
+
+        .content-item a {
+            text-decoration: none;
+            color: #3498db;
+        }
+
+        .content-item a:hover {
+            text-decoration: underline;
+        }
+
+        .date {
+            font-size: 0.9em;
+            color: #777;
+        }
+
+       @media only screen and (max-width: 768px) {
     .header h1 {
-      font-size: 42px;
-      line-height: 1.5;
-      margin: 20px auto;
-      padding: 20px;
-      max-width: 90%;
-      word-wrap: break-word;
+        font-size: 1.2em;
     }
-
-    .home-link {
-      position: absolute;
-      bottom: 10px;
-      left: 10px;
-      text-decoration: none;
-      z-index: 1;
-    }
-
-    .title {
-      font-size: 26px;
-      font-weight: bold;
-      margin: 20px 0;
-      text-align: center;
-    }
-
-    .explanation {
-      font-size: 24px;
-      margin-bottom: 20px;
-    }
-
-    h3, h4, h5 {
-      margin-top: 60px;
-      margin-bottom: 5px;
-    }
-
-    .code-caption {
-      font-size: 16px;
-      font-style: italic;
-      margin-bottom: 1px;
-      color: #555;
-      text-align: justify;
-    }
-
-    .code-block {
-      margin-bottom: 20px;
-      font-size: 16px;
-    }
-
-    pre[class*="language-"] {
-      font-size: 16px;
-    }
-
-    figure {
-      margin-bottom: 30px;
-    }
-
-    ul {
-      margin-top: 0 !important;
-      margin-bottom: 0 !important;
-      padding-left: 20px !important;
-    }
-
-    li {
-      margin-bottom: 5px !important;
-    }
-
-    hr {
-      border: none;
-      border-top: 1px solid black;
-      margin: 20px 0;
-    }
-
-    /* ============ Responsive Adjustments ============ */
-    @media only screen and (max-width: 768px) {
-      .header h1 {
-        font-size: 22px;
-        line-height: 1.4;
-        padding: 10px;
-      }
-
-      .explanation {
-        font-size: 18px;
-        padding: 0 10px;
-      }
-
-      body {
-        margin: 10px;
-      }
-
-      .home-link img {
-        width: 40px;
-      }
-    }
-  </style>
+}
+    </style>
 </head>
 <body>
-  <div class="header">
-    <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/index.html" class="home-link">
-      <img src="Pictures/Home_Link_JPG/1.jpg" alt="Home" style="width:50px; height:auto;">
-    </a>
-    <h1>
-      Advanced Shiny Application for scRNA-seq Analysis: <br> 
-      Cell-Type-Specific HVG Identification & <br>
-      Comprehensive Functional Analysis <br>
-      (with High-Quality Visualizations)
-    </h1>
-  </div>
 
-  <div class="body">
-    <hr>
+    <div class="container">
+        <div class="header">
+            <!-- Home icon positioned correctly within the header -->
+            <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/index.html" class="home-link">
+                <img src="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/Home_Link_JPG/1.jpg" alt="Home" style="width:50px; height:auto;">
+            </a>
 
-    <!-- ======== Embedded Video ======== -->
-    <div class="video-container" style="text-align: center; margin-bottom: 20px;">
-      <iframe
-        src="https://www.youtube.com/embed/Rlkej_DH2F0?si=Hc1MUAv9_IIbT6CC"
-        title="A Shiny App for Biomarker Identification"
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        referrerpolicy="strict-origin-when-cross-origin"
-        allowfullscreen>
-      </iframe>
+         
+              
+            <h1>
+             Shiny Application
+            </h1> 
+               
+
+            <p>Advanced Shiny Application for scRNA-seq Analysis</p> 
+         
+            <p>(Content Navigator)</p>
+        </div> 
+
+     
+        <section class="content-list">
+
+<!-- ====================================== 10 (Uncomment when you want to activate this link) ================================ -->
+         <!--
+            <article class="content-item">
+                <h2><a href="content-10.html">Option 10</a></h2>
+                <p class="date">Published on: January 31, 2025</p>
+            </article>
+         -->
+
+         
+<!-- ======================================9 (Uncomment when you want to activate this link) ================================ -->
+         <!--
+            <article class="content-item">
+                <h2><a href="content-9.html">Option 9</a></h2>
+                <p class="date">Published on: July 19, 2024</p>
+            </article>
+         -->
+
+<!-- ===================================== 8 (Uncomment when you want to activate this link) ================================= -->
+         <!--
+            <article class="content-item">
+                <h2><a href="content-8.html">Option 8</a></h2>
+                <p class="date">Published on: June 10, 2024</p>
+            </article>
+         -->
+
+<!-- ==================================== 7 (Uncomment when you want to activate this link) ================================== -->
+         <!--
+            <article class="content-item">
+                <h2><a href="content-7.html">Option 7</a></h2>
+                <p class="date">Published on: Aug 01, 2023</p>
+            </article>
+         -->
+<!-- =================================== 6 (Uncomment when you want to activate this link) =================================== -->
+         <!--
+            <article class="content-item">
+                <h2><a href="content-6.html">Option 6</a></h2>
+                <p class="date">Published on: April 20, 2024</p>
+            </article>
+         -->
+
+<!-- ================================== 5 (Uncomment when you want to activate this link) ==================================== -->
+         <!--
+            <article class="content-item">
+                <h2><a href="content-5.html">Option 5</a></h2>
+                <p class="date">Published on: March 12, 2024</p>
+            </article>
+         -->
+
+<!-- ================================== 4 (Uncomment when you want to activate this link) ==================================== -->
+         <!--
+            <article class="content-item">
+                <h2><a href="content-4.html">Option 4</a></h2>
+                <p class="date">Published on: February 25, 2024</p>
+            </article>
+         -->
+
+<!-- =================================== 3 (Uncomment when you want to activate this link) =================================== -->
+         
+            <article class="content-item">
+                <h2><a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/Poster_Norwich_Symposium_2025_ShinyApp_HVG_Analysis.pdf">Poster PDF – Advanced Shiny App for scRNA-seq: Cell-Type-Specific HVGs & Functional Analysis (Norwich Symposium 2025)</a></h2>
+                <p class="date">Presented at: Norwich Single-Cell & Spatial Symposium, June 18–19, 2025</p>
+            </article>
+          
+ <!-- ================================== 2 ==================================== -->
+          
+            <article class="content-item">
+                <h2><a href="https://www.earlham.ac.uk/sites/default/files/2025-06/Norwich%20Single-Cell%20%26%20Spatial%20Symposium%20Abstracts%202025%20%281%29.pdf">Poster Abstract on my Shiny App (Norwich Single-Cell & Spatial Symposium 2025)</a></h2>
+                <p class="date">Published on: June 18, 2025</p>
+            </article>
+          
+
+<!-- ================================= 1 ===================================== -->
+            <article class="content-item">
+                <h2><a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/Advanced_Shiny_App_scRNAseq_CellTypeSpecific_HVGs_Functional_Analysis_Visualization.html">(4-min demo video of my Shiny app) Advanced Shiny Application for scRNA-seq Analysis: Cell-Type-Specific HVG Identification & Comprehensive Functional Analysis
+</a></h2>
+                <p class="date">Published on: January 31, 2025</p>
+            </article>
+
+
+         
+        </section>
     </div>
 
-    <div class="explanation">
-      <h3>About the Shiny Application</h3>
-      <ul>
-        <li>
-          Key features of the app include:
-          <ul>
-            <li>Uploading scRNA-seq files for exploratory data analysis (EDA).</li>
-            <li>Preprocessing steps like quality control (QC) filtering and normalization.</li>
-            <li>Cell-type selection, such as partially responsive, progressive disease, malignant, or non-malignant cells.</li>
-            <li>Identification of cell-type-specific highly variable genes (HVGs).</li>
-            <li>Functional analyses and visualizations based on top HVGs.</li>
-          </ul>
-        </li>
-        <li>
-          Designed to optimize biomarker discovery, the application is accessible to researchers without programming expertise.
-        </li>
-        <li>
-          Please check back soon for updates!
-        </li>
-      </ul>
-    </div>
-    <hr>
-  </div>
 </body>
 </html>
