@@ -187,27 +187,87 @@
       </iframe>
     </div>
 
-    <div class="explanation">
-      <h3>About the Shiny Application</h3>
+
+    
+<div class="explanation">
+  <h3>An Interactive Shiny App for Biomarker Identification: Cell-Type-Specific HVGs & Functional Analysis in Single-cell RNA-Sequencing</h3>
+  <ul>
+    <li><strong>Introduction:</strong>
       <ul>
-        <li>
-          Key features of the app include:
-          <ul>
-            <li>Uploading scRNA-seq files for exploratory data analysis (EDA).</li>
-            <li>Preprocessing steps like quality control (QC) filtering and normalization.</li>
-            <li>Cell-type selection, such as partially responsive, progressive disease, malignant, or non-malignant cells.</li>
-            <li>Identification of cell-type-specific highly variable genes (HVGs).</li>
-            <li>Functional analyses and visualizations based on top HVGs.</li>
-          </ul>
-        </li>
-        <li>
-          Designed to optimize biomarker discovery, the application is accessible to researchers without programming expertise.
-        </li>
-        <li>
-          Please check back soon for updates!
-        </li>
+        <li>Single-cell RNA-seq (scRNA-seq) reveals cell-level transcriptomic variation critical for understanding disease microenvironments.</li>
+        <li>This application is developed and tested using kidney cancer scRNA-seq data (10x Genomics, ICB-treated), and is adaptable to other diseases with similar input structure (matrix, genes, barcodes, metadata).</li>
+        <li>Identifying HVGs within subpopulations (e.g., non-responder, responder, tumor or immune cells) highlights genes involved in resistance mechanisms, immune activity, or treatment efficacy.</li>
+        <li>Combined with other gene lists (e.g., from DEA), HVGs help isolate informative genes for building predictive ML/DL models.</li>
+        <li>The tool simplifies metadata-driven analysis, enabling rapid insights into cell-type-specific biology relevant to drug discovery.</li>
       </ul>
-    </div>
+    </li>
+
+    <li><strong>Objective:</strong>
+      <ul>
+        <li>To develop an interactive platform for dynamic identification of highly variable genes (HVGs) within selected cell types, enabling functional enrichment analysis (GSEA and ORA for GO terms and KEGG pathways) and biomarker discovery.</li>
+        <li>To provide an accessible, real-time tool that supports both experimental and computational researchers through flexible input, intuitive design, export-ready outputs, and dynamic metadata integration.</li>
+        <li>The app extracts metadata columns and their unique values (e.g., ICB_Response: ICB_PR, ICB_SD, ICB_PD), allowing users to subset cells of interest, identify HVGs, perform functional analyses (GO and KEGG), and iteratively compare gene sets and enriched pathways.</li>
+      </ul>
+    </li>
+
+    <li><strong>Methods:</strong>
+      <ul>
+        <li>This Shiny app, built in R (2,000+ code lines, runs via RStudio), was developed and tested on 10x Genomics kidney cancer data (ICB therapy).</li>
+        <li>It covers six steps: from data upload to HVG identification and functional enrichment (GO/KEGG via GSEA & ORA).</li>
+        <li>While tested on kidney cancer, it’s adaptable to other datasets and diseases. Enables cell-type-specific HVG detection and pathway analysis.</li>
+      </ul>
+    </li>
+
+    <li><strong>Results:</strong>
+      <ul>
+        <li><strong>1- Data Import to HVG Identification (Step 1–5):</strong> After uploading and integrating the scRNA-seq data and metadata, quality control filtering and normalization reduced noise and improved data consistency. Interactive cell selection based on metadata allowed focused analysis on specific biological groups. From the filtered subset, highly variable genes were identified, representing key drivers of transcriptional variability across the selected cells and forming the basis for downstream functional analysis.</li>
+        <li><strong>2- Functional Enrichment Analysis (Step 6):</strong> Functional analysis of HVGs in progressive disease (PD) cells revealed enriched GO terms and KEGG pathways linked to extracellular matrix structure and immune processes. GO terms included collagen-containing extracellular matrix, structural molecule activity, complement activation, and humoral immune response. KEGG pathways such as ECM-receptor interaction, focal adhesion, and cytokine–cytokine receptor interaction were also enriched. Notable HVGs associated with these pathways included COL1A1, FN1, MMP2, C3, IGHM, and IL1B.</li>
+      </ul>
+    </li>
+
+    <li><strong>Discussion:</strong>
+      <ul>
+        <li>High-variance genes (HVGs) enriched in PD cells suggest an immune-evasive and fibrotic tumor environment.</li>
+        <li>GO and KEGG analyses consistently revealed extracellular matrix remodeling (e.g., COL1A1, FN1, SPARC) via terms like ECM-receptor interaction and focal adhesion, pointing to enhanced structural barriers against immune infiltration.</li>
+        <li>Complement-related and humoral immune genes (C3, C1QA, IGHA1) imply chronic inflammation and immune dysfunction, while chemokine and cytokine signaling terms suggest altered immune cell trafficking.</li>
+        <li>Leukocyte migration and antigen presentation pathways (CXCL10, HLADRB1) indicate ongoing immune activity, yet potentially ineffective, consistent with ICB resistance.</li>
+        <li>These insights align with mechanisms of immune exclusion and resistance in progressive kidney cancer.</li>
+      </ul>
+    </li>
+
+    <li><strong>Conclusions:</strong>
+      <ul>
+        <li>This app streamlines scRNA-seq preprocessing, QC, normalization, and HVG identification via an interactive interface.</li>
+        <li>By integrating metadata with the count matrix, it enables dynamic cell-type subsetting, functional enrichment (GO/KEGG via GSEA and ORA), and biomarker discovery—supporting experimental and computational researchers with real-time, flexible analysis.</li>
+      </ul>
+    </li>
+
+    <li><strong>Future Work:</strong>
+      <ul>
+        <li>Adapting and evaluating the app across additional disease contexts beyond ICB-treated kidney cancer.</li>
+        <li>Adding capabilities for differential expression analysis, HVG–DEG comparison, and functional analysis of shared genes.</li>
+      </ul>
+    </li>
+
+    <li><strong>References:</strong>
+      <ul>
+        <li>1. Bi et al. (2021). Tumor and immune reprogramming during immunotherapy in advanced renal cell carcinoma. <i>Cancer Cell</i>, 39(5):649–661.e5.</li>
+        <li>2. Chen & Mellman (2017);</li>
+        <li>3. Mariathasan et al. (2018);</li>
+        <li>4. Roumenina et al. (2019);</li>
+        <li>5. Kuen et al. (2017)</li>
+      </ul>
+    </li>
+
+    <li><strong>Acknowledgements:</strong>
+      <ul>
+        <li>I sincerely thank Professor Claudio Angione (Professor of AI and Co-Lead of the Centre for Digital Innovation, and recipient of a Turing Network Development Award funded by The Alan Turing Institute in 2022 and 2023) and Dr. Annalisa Occhipinti (Associate Professor), Teesside University, for their guidance and inspiration during our collaborative project on scRNA-seq analysis in kidney cancer, which laid the foundation for this work.</li>
+      </ul>
+    </li>
+  </ul>
+</div>
+
+    
     <hr>
   </div>
 </body>
