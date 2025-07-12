@@ -1,271 +1,35 @@
- <!--
-    Navigator Sample Page Template
-    Purpose:
-    This HTML template serves as a sample structure for creating navigational pages that list and link to 
-    various content types, such as contents for RNA-SEQ page, scRNA-Seq page, DL page, ML page, Relevant Coding Projects page, 
-    and General Coding page, Video Presentations page, and so on.
+✅ RECOMMENDED WEBSITE LAYOUT
+Title: A Bioinformatics Pipeline for Biologically Relevant HVG Selection
 
-    The template is designed to be flexible and easy to modify for different use cases. 
-    Each content item is presented in a list format with links to detailed pages, and 
-    the layout is optimized for clarity and usability.
+🔹 <span id="section-1">1. Introduction</span>
+<ul> <li>This pipeline selects genes that are both <strong>highly variable</strong> and <strong>biologically meaningful</strong> using scRNA-seq data.</li> <li>It supports <strong>machine learning model development</strong> for predicting patient response to therapy.</li> <li>The goal is to offer a <strong>streamlined, customizable, and user-friendly workflow</strong>.</li> <li>Applicable to any disease with single-cell data in <code>10X</code> format (matrix, barcodes, genes).</li> </ul>
+📊 <span id="section-2">2. Pipeline Overview</span>
+<ul> <li>Below is a schematic of the pipeline’s three main stages.</li> <li><strong><a href="#figure-2-1" onclick="highlightFigure('2-1')">Figure 2.1</a>:</strong> Overview of the full workflow.</li> <li>This schematic can include: <ul> <li>Input data preparation</li> <li>HVG generation</li> <li>Overlap calculation with immune-related genes</li> <li>Final HVG refinement</li> </ul> </li> </ul>
+🧪 <span id="section-3">3. Step 1: Generate HVG Sets</span>
+<ul> <li><strong>Goal:</strong> Filter cells of interest (e.g., responders) and generate HVGs incrementally (100–9000 genes).</li> <li><strong>Input:</strong> 10X format: <code>matrix.mtx</code>, <code>barcodes.tsv</code>, <code>genes.tsv</code>.</li> <li><strong>User-defined:</strong> Specify cell types (e.g., responders vs non-responders).</li> <li><strong>Output:</strong> Folders with HVG sets: <code>HVG_100.csv</code>, <code>HVG_200.csv</code>, …</li> <li><strong>Code snippet:</strong> HVG generation script based on selected cells.</li> <li><strong>Plot:</strong> Cell-type filtering and initial variability plots. <ul> <li><a href="#figure-3-1-a" onclick="highlightFigure('3-1-a')">Figure 3.1 a</a>: Cell selection schematic</li> <li><a href="#figure-3-1-b" onclick="highlightFigure('3-1-b')">Figure 3.1 b</a>: Variance plot of HVGs</li> </ul> </li> </ul>
+🧠 <span id="section-4">4. Step 2: Determine Optimal HVG Threshold</span>
+<ul> <li><strong>Goal:</strong> Find the smallest HVG set that captures immune-relevant biology.</li> <li><strong>Packages:</strong> <code>biomaRt</code> and <code>msigdbr</code> to build a reference list of immune-related genes.</li> <li><strong>Approach:</strong> <ul> <li>Iterate through each HVG set and count overlaps with immune-related genes.</li> <li>Plot the number of overlapping genes across HVG set sizes.</li> <li>Detect the <strong>inflection point</strong> (e.g., around 5000 HVGs) where additional gain slows.</li> </ul> </li> <li><strong>Plots:</strong> <ul> <li><a href="#figure-4-1-a" onclick="highlightFigure('4-1-a')">Figure 4.1 a</a>: Overlap count vs HVG size</li> <li><a href="#figure-4-1-b" onclick="highlightFigure('4-1-b')">Figure 4.1 b</a>: Rate of biological gain (slope plot)</li> </ul> </li> <li><strong>Code snippet:</strong> Overlap calculation + slope detection + plot generation.</li> </ul>
+🧬 <span id="section-5">5. Step 3: Extract Final Biologically Relevant HVGs</span>
+<ul> <li><strong>Goal:</strong> Select final HVG set (e.g., 5000 genes) and extract genes overlapping with immune-relevant list.</li> <li><strong>Output:</strong> Final gene list ready for ML training.</li> <li><strong>Packages:</strong> Same <code>biomaRt</code> and <code>msigdbr</code> strategy.</li> <li><strong>Plot:</strong> Venn diagram or UpSet plot for intersection. <ul> <li><a href="#figure-5-1" onclick="highlightFigure('5-1')">Figure 5.1</a>: Final overlap visualization</li> </ul> </li> <li><strong>Code snippet:</strong> Final intersection and file export.</li> </ul>
+📂 <span id="section-6">6. Output Summary</span>
+<ul> <li>Downloadable: Final gene list CSV</li> <li>Preview: Data table showing top 10 final genes</li> <li>Optional: Add DT::datatable to make it searchable/sortable</li> </ul>
+⚙️ <span id="section-7">7. Customization and Notes</span>
+<ul> <li>Change GO terms/pathways based on disease or tissue of interest.</li> <li>Memory-efficient: suitable for mid-range laptops.</li> <li>Optional: Add additional filters like mitochondrial/ribosomal genes.</li> </ul>
+🔗 <span id="section-8">8. Related Works</span>
+<ul> <li><a href="YOUR_LINK">Kidney Cancer Project</a></li> <li><a href="YOUR_LINK">Shiny App: Cell-Type Specific HVGs</a></li> <li><a href="YOUR_LINK">GitHub: Full Pipeline</a></li> </ul>
+✏️ Next Steps for You
+Let me know when your:
 
-    This template can be used as a starting point for creating organized directories or index pages for my website, 
-    where the most recent content is prominently displayed at the top.
--->
+Code snippets are finalized
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RNA-SEQ (Differential Gene Expression Analysis in R) (Content Navigator)</title>
+Plots and schematics are ready
 
-    <!-- 
-    This line below adds a favicon to the tab of the web browser. 
-    The favicon is the small icon displayed next to the page title in the browser tab.
-    The 'href' attribute specifies the path to the icon file hosted on GitHub. 
-    -->
-    <link rel="icon" type="image/x-icon" href="https://mohammadrezamohajeri.github.io/Breast-Cancer-Gene-Expression-Biomarker-Analysis/Images/1.ico">
+I can help:
 
-<style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+Refine this into HTML
 
-    body {
-        font-family: Arial, sans-serif;
-        line-height: 1.6;
-        background-color: #f4f4f4;
-        padding: 20px;
-    }
+Generate <a href> figure links
 
-    .container {
-        max-width: 800px;
-        margin: 0 auto;
-        background: #fff;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
+Add explanations with <ul><li> formatting
 
-    .header {
-        font-size: 25px;
-        background-color: #01031f;
-        color: white;
-        height: 350px;
-        padding: 10px 0;
-        text-align: center;
-        position: relative;
-    }
-
-    .header h1 {
-        font-size: 1.8em;
-        margin: 0.5em 0;
-    }
-
-    .subtitle-block p {
-        font-size: 1.0em;
-        color: #ededf5;
-        margin: 4px 0;
-    }
-
-    .home-link {
-        position: absolute;
-        bottom: 10px;
-        left: 10px;
-        text-decoration: none;
-        z-index: 1;
-    }
-
-    .home-icon {
-        width: 50px;
-        height: auto;
-    }
-    @media only screen and (max-width: 768px) {
-        .home-icon {
-            width: 30px;
-        }
-    }
-
-
- 
-    .content-list {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-    }
-
-    .content-item {
-        background: #fafafa;
-        padding: 20px;
-        border-left: 5px solid #3498db;
-        border-radius: 5px;
-        transition: background 0.3s ease;
-    }
-
-    .content-item:hover {
-        background: #e0f7fa;
-    }
-
-    .content-item h2 {
-        font-size: 1.0em;
-        margin-bottom: 10px;
-    }
-
-    .content-item a {
-        text-decoration: none;
-        color: #3498db;
-    }
-
-    .content-item a:hover {
-        text-decoration: underline;
-    }
-
-    .date {
-        font-size: 0.9em;
-        color: #777;
-    }
-
-    @media only screen and (max-width: 768px) {
-        .header {
-            height: auto;
-            padding: 20px 10px;
-        }
-
-        .header h1 {
-            font-size: 22px;
-            line-height: 1.4;
-            padding: 10px;
-        }
-
-        .subtitle-block p {
-            font-size: 13px;
-            line-height: 1.3;
-            padding: 0 10px;
-        }
-
-        .home-icon {
-            width: 30px; /* Shrinks the icon for mobile screens */
-        }
-
-        body {
-            margin: 10px;
-        }
-    }
-</style>
-
-
-</head>
-<body>
-
-    <div class="container">
-        <div class="header">
-            <!-- Home icon positioned correctly within the header -->
-            <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/index.html" class="home-link">
-                 <img class="home-icon" src="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/Home_Link_JPG/1.jpg" alt="Home">
-
-
-            </a>
-            
-             
-            <h1>
-             RNA-SEQ 
-            </h1>
-
-            <div class="subtitle-block">
-                <p>(Differential Gene Expression Analysis in R)</p> 
-                <p>Content Navigator</p>
-            </div>
-
-        </div> 
-
-     
-        <section class="content-list">
-
-<!-- ====================================== 10 (Uncomment when you want to activate this link) ================================ -->
-         <!--
-            <article class="content-item">
-                <h2><a href="content-10.html">Option 10</a></h2>
-                <p class="date">Published on: August 27, 2024</p>
-            </article>
-         -->
-
-         
-<!-- ======================================9 (Uncomment when you want to activate this link) ================================ -->
-         <!--
-            <article class="content-item">
-                <h2><a href="content-9.html">Option 9</a></h2>
-                <p class="date">Published on: July 19, 2024</p>
-            </article>
-         -->
-
-<!-- ===================================== 8 (Uncomment when you want to activate this link) ================================= -->
-         <!--
-            <article class="content-item">
-                <h2><a href="content-8.html">Option 8</a></h2>
-                <p class="date">Published on: June 10, 2024</p>
-            </article>
-         -->
-
-<!-- ==================================== 7 (Uncomment when you want to activate this link) ================================== -->
-         <!--
-            <article class="content-item">
-                <h2><a href="content-7.html">Option 7</a></h2>
-                <p class="date">Published on: Aug 01, 2023</p>
-            </article>
-         -->
-<!-- =================================== 6 (Uncomment when you want to activate this link) =================================== -->
-         <!--
-            <article class="content-item">
-                <h2><a href="content-6.html">Option 6</a></h2>
-                <p class="date">Published on: April 20, 2024</p>
-            </article>
-         -->
-
-<!-- ================================== 5 (Uncomment when you want to activate this link) ==================================== -->
-         <!--
-            <article class="content-item">
-                <h2><a href="content-5.html">Option 5</a></h2>
-                <p class="date">Published on: March 12, 2024</p>
-            </article>
-         -->
-
-<!-- ================================== 4 (Uncomment when you want to activate this link) ==================================== -->
-         <!--
-            <article class="content-item">
-                <h2><a href="content-4.html">Option 4</a></h2>
-                <p class="date">Published on: February 25, 2024</p>
-            </article>
-         -->
-
-<!-- =================================== 3 (Uncomment when you want to activate this link) =================================== -->
-         <!--
-            <article class="content-item">
-                <h2><a href="content-3.html">Option 3</a></h2>
-                <p class="date">Published on: February 10, 2024</p>
-            </article>
-         -->
-
-<!-- ================================== 2 ==================================== -->
-          <!--
-            <article class="content-item">
-                <h2><a href="content-2.html">Differential Gene Expression (DGE) Analysis in treated "Thymic Carcinoma" patients Using "DESeq2"</a></h2>
-                <p class="date">Published on: Sep 01, 2023</p>
-            </article>
-          -->
-
-<!-- ================================= 1 ===================================== -->
-            <article class="content-item">
-                <h2><a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1.html">Differential Gene Expression (DGE) Analysis in "Atopic Dermatitis" Using "DESeq2"</a></h2>
-                <p class="date">Published on: Aug 01, 2023</p>
-            </article>
-
-
-         
-        </section>
-    </div>
-
-</body>
-</html>
+Would you like me to now generate an HTML scaffold for this layout, or help convert the current text into sectioned content ready to paste into your site?
