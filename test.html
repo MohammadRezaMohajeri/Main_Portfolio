@@ -65,7 +65,135 @@
     .highlight {
       background-color: yellow;
     }
+
+
+	  
+	<!-- =================================== Code Block Styling with Prism.js ===================================== -->
+    <!--  Prism.js CSS for syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.5.0/prism-dracula.min.css" rel="stylesheet">
+	<!-- =================================== Code Block Styling with Prism.js ===================================== -->
+
+
+
+
+
+	  
+/*  =============================================================================================================   */ 
+/*  ====================== To highlight the figure or caption when a user clicks on the link:  ================   */ 
+	    /*  ====================== Step 1: Add a CSS class for highlighting  ================   */ 
+       
+        .highlight {
+	    animation: highlightAnimation 5s ease-out;
+	  }
+	
+	  @keyframes highlightAnimation {
+	    from {
+	      background-color: yellow;
+	    }
+	    to {
+	      background-color: transparent;
+	    }
+	  }
+       
+/*  =============================================================================================================   */ 
+
+
+   
+	/*  =================== the text color when is selected  ==============   */ 
+	    /* To change the color of text selection on a webpage (like the blue or yellow highlight  ), 
+		we can use the ::selection CSS pseudo-element. */ 
+		::selection {
+			background-color: yellow; /* Change this to any color you prefer */
+			color: black; /* Change the text color if needed */
+		}
+	/*  ===================================================================   */ 
+
+
+
+
+	  
+        .code-caption {
+	    font-size: 16px; /* Slightly smaller than body text, but still readable */
+	    font-style: italic;
+	    margin-bottom: 1px; /* Reduce the bottom margin */
+	    color: #555;
+	    text-align: justify;
+	}
+
+	 	    
+
+        /* Code Block Style */
+        .code-block {
+            margin-bottom: 20px;
+            font-size: 16px; /* Increased code block font size */
+        }
+
+        /* Prism.js Code Block Font Size */
+        pre[class*="language-"] {
+            font-size: 16px; /* Increase font size for Prism.js code blocks */
+        }
+
+	/* Figure Style */
+	figure {
+	    margin-bottom: 30px; /* Adds margin below the figure to create space */
+	}
+
+	/* Adjust ul and li styles */
+	ul {
+	    margin-top: 0 !important;
+	    margin-bottom: 0 !important;
+	    padding-left: 20px !important; /* Adjust padding */
+	}
+	
+	li {
+	    margin-bottom: 5px !important; /* Adjust space between list items */
+	}
+
+
+	  
+	  
+/* ============== MOBILE RESPONSIVE FIX (start) ============== */
+@media only screen and (max-width: 768px) {
+	.header {
+		height: auto;
+		padding: 20px 10px;
+	}
+
+	.header h1 {
+		font-size: 22px;
+		line-height: 1.4;
+		padding: 10px;
+	}
+
+	.title {
+		font-size: 20px;
+		margin: 20px 10px;
+	}
+
+	.explanation {
+		font-size: 18px;
+		padding: 0 10px;
+	}
+
+	body {
+		margin: 10px;
+	}
+}
+/* ============== MOBILE RESPONSIVE FIX (end) ============== */	    
+
+
+
+/* = Start ============= Add a hover effect for better UX-   the image to slightly "lift" on hover (like a card effect) ============== */	
+#figure-2-1:hover {
+    transform: scale(1.01);
+    transition: transform 0.2s ease-in-out;
+}
+/* = End  ============== Add a hover effect for better UX-   the image to slightly "lift" on hover (like a card effect) ============== */	
+
+	  
   </style>
+
+	
   <script>
     function highlightFigure(id) {
       const el = document.getElementById(id);
@@ -146,8 +274,13 @@
 
 
 
+	<!-- -------- START ------------------- Code Block ----------------------------- -->
+<div class="code-block">
+	    <pre><code class="language-r">
 	
-
+	    </code></pre>
+	</div>
+	<!-- --------- END ------------------ Code Block ----------------------------- -->
 
       
    
@@ -173,6 +306,16 @@
 		    </figure>
      <!-- -------------------------------------------------------- -->
 
+
+
+	  <!-- -------- START ------------------- Code Block ----------------------------- -->
+<div class="code-block">
+	    <pre><code class="language-r">
+	
+	    </code></pre>
+	</div>
+	<!-- --------- END ------------------ Code Block ----------------------------- -->
+
 	  
     <h3>3.3 Step Three: Extract Biologically Relevant HVGs for Model Training</h3>
     <ul>
@@ -192,7 +335,17 @@
 		        </figcaption>
 		    </figure>
      <!-- -------------------------------------------------------- -->
- 
+
+
+	  <!-- -------- START ------------------- Code Block ----------------------------- -->
+<div class="code-block">
+	    <pre><code class="language-r">
+	
+	    </code></pre>
+	</div>
+	<!-- --------- END ------------------ Code Block ----------------------------- -->
+
+	  
     <h2><strong>4. Output and Results</strong></h2>
     <ul>
       <li>The final output consists of a biologically curated list of highly variable genes in .csv format. These genes can be directly used as input for training DL models that aim to predict treatment response or classify cell states.</li>
