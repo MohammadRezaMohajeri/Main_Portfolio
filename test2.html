@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>A Bioinformatics Pipeline for Biologically Relevant HVG Selection</title>
+
+<!--  =================================== 1 =================================  -->
+	<!-- Link to Prism.js Theme (Change this line to test different themes) -->
+   
+   
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.5.0/prism-ghcolors.min.css" rel="stylesheet">
+
+<!--  ====================================================================  -->
+
+	
   <style>
     body {
       background-color: #f9f9f9;
@@ -66,93 +76,129 @@
       background-color: yellow;
     }
 
-    /*  Prism.js CSS for syntax highlighting */
+
+	   
+
+
+
+
+	  
+/*  =============================================================================================================   */ 
+/*  ====================== To highlight the figure or caption when a user clicks on the link:  ================   */ 
+	    /*  ====================== Step 1: Add a CSS class for highlighting  ================   */ 
+       
+        .highlight {
+	    animation: highlightAnimation 5s ease-out;
+	  }
+	
+	  @keyframes highlightAnimation {
+	    from {
+	      background-color: yellow;
+	    }
+	    to {
+	      background-color: transparent;
+	    }
+	  }
+       
+/*  =============================================================================================================   */ 
+
+
+   
+	/*  =================== the text color when is selected  ==============   */ 
+	    /* To change the color of text selection on a webpage (like the blue or yellow highlight  ), 
+		we can use the ::selection CSS pseudo-element. */ 
+		::selection {
+			background-color: yellow; /* Change this to any color you prefer */
+			color: black; /* Change the text color if needed */
+		}
+	/*  ===================================================================   */ 
+
+
+
+
+	  
+        .code-caption {
+	    font-size: 16px; /* Slightly smaller than body text, but still readable */
+	    font-style: italic;
+	    margin-bottom: 1px; /* Reduce the bottom margin */
+	    color: #555;
+	    text-align: justify;
+	}
+
+	 	    
+
+        /* Code Block Style */
+        .code-block {
+            margin-bottom: 20px;
+            font-size: 16px; /* Increased code block font size */
+        }
+
+        /* Prism.js Code Block Font Size */
+        pre[class*="language-"] {
+            font-size: 16px; /* Increase font size for Prism.js code blocks */
+        }
+
+	/* Figure Style */
+	figure {
+	    margin-bottom: 30px; /* Adds margin below the figure to create space */
+	}
+
+	/* Adjust ul and li styles */
+	ul {
+	    margin-top: 0 !important;
+	    margin-bottom: 0 !important;
+	    padding-left: 20px !important; /* Adjust padding */
+	}
+	
+	li {
+	    margin-bottom: 5px !important; /* Adjust space between list items */
+	}
+
+
+	  
+	  
+/* ============== MOBILE RESPONSIVE FIX (start) ============== */
+@media only screen and (max-width: 768px) {
+	.header {
+		height: auto;
+		padding: 20px 10px;
+	}
+
+	.header h1 {
+		font-size: 22px;
+		line-height: 1.4;
+		padding: 10px;
+	}
+
+	.title {
+		font-size: 20px;
+		margin: 20px 10px;
+	}
+
+	.explanation {
+		font-size: 18px;
+		padding: 0 10px;
+	}
+
+	body {
+		margin: 10px;
+	}
+}
+/* ============== MOBILE RESPONSIVE FIX (end) ============== */	    
+
+
+
+/* = Start ============= Add a hover effect for better UX-   the image to slightly "lift" on hover (like a card effect) ============== */	
+#figure-2-1:hover {
+    transform: scale(1.01);
+    transition: transform 0.2s ease-in-out;
+}
+/* = End  ============== Add a hover effect for better UX-   the image to slightly "lift" on hover (like a card effect) ============== */	
+
+	  
   </style>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.5.0/prism-dracula.min.css" rel="stylesheet">
 
-  <style>
-    /* Highlight animation for figure or caption */
-    .highlight {
-      animation: highlightAnimation 5s ease-out;
-    }
-
-    @keyframes highlightAnimation {
-      from {
-        background-color: yellow;
-      }
-      to {
-        background-color: transparent;
-      }
-    }
-
-    /* Selection highlight styling */
-    ::selection {
-      background-color: yellow;
-      color: black;
-    }
-
-    .code-caption {
-      font-size: 16px;
-      font-style: italic;
-      margin-bottom: 1px;
-      color: #555;
-      text-align: justify;
-    }
-
-    .code-block {
-      margin-bottom: 20px;
-      font-size: 16px;
-    }
-
-    pre[class*="language-"] {
-      font-size: 16px;
-    }
-
-    figure {
-      margin-bottom: 30px;
-    }
-
-    ul {
-      margin-top: 0 !important;
-      margin-bottom: 0 !important;
-      padding-left: 20px !important;
-    }
-
-    li {
-      margin-bottom: 5px !important;
-    }
-
-    /* Mobile responsive */
-    @media only screen and (max-width: 768px) {
-      .header {
-        height: auto;
-        padding: 20px 10px;
-      }
-      .header h1 {
-        font-size: 22px;
-        line-height: 1.4;
-        padding: 10px;
-      }
-      .title {
-        font-size: 20px;
-        margin: 20px 10px;
-      }
-      .explanation {
-        font-size: 18px;
-        padding: 0 10px;
-      }
-      body {
-        margin: 10px;
-      }
-    }
-
-    /* Image hover effect */
-    #figure-2-1:hover {
-      transform: scale(1.01);
-      transition: transform 0.2s ease-in-out;
-    }
-  </style>
-
+	
   <script>
     function highlightFigure(id) {
       const el = document.getElementById(id);
@@ -164,12 +210,200 @@
   </script>
 </head>
 <body>
+  <div class="header">
+    <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/index.html">🏠 Home</a>
+    <span>A Bioinformatics Pipeline for Biologically Relevant HVG Selection in scRNA-seq Data</span>
+  </div>
+  <main>
+    <h1><strong> A Bioinformatics Pipeline for Biologically Relevant HVG Selection in scRNA-seq Data for Training Predictive DL Models</strong></h1>
+    <div class="summary">
+      A flexible and biologically informed pipeline that refines highly variable genes from single-cell RNA-seq data to optimize deep learning model training.
+    </div>
 
-  <!-- Your body content goes here -->
+    <h2><strong>1. Introduction</strong> </h2>
+    <ul>
+      <li>In high-dimensional single-cell transcriptomic datasets, selecting meaningful input features for machine learning or deep learning (DL) models poses a significant challenge. Standard approaches typically rely on selecting the top 2,000 to 5,000 highly variable genes (HVGs) using purely statistical criteria. However, many of these genes may be noisy or unrelated to the specific biological context, such as the disease type or therapy being studied.</li>
+      <li>To address this limitation, we developed a bioinformatics pipeline tailored for single-cell RNA-seq (scRNA-seq) data in 10X format (i.e., genes, barcodes, and matrix files). This pipeline integrates statistical variability with biological relevance by benchmarking HVG sets against a curated list of genes known to be involved in context-specific pathways. In doing so, it helps researchers derive more robust and interpretable gene sets for model training.</li>
+      <li>The motivation behind this pipeline stems from the need to better align computational feature selection with biological insight. Instead of relying solely on enrichment analyses post hoc, we proactively incorporate pathway- and GO-term-based biological knowledge derived from literature. This biologically anchored approach increases the interpretability and accuracy of predictive models.</li>
+      <li>While the initial use case involved kidney cancer patients treated with immune checkpoint blockade (ICB) therapy, the pipeline is designed to be generalizable. Users can adjust pathway and GO term selections to suit other diseases and treatment modalities.</li>
+    </ul>
+
+    <h2><strong>2. Pipeline Overview</strong> </h2>
+    <ul>
+      <li><strong>Step 1:</strong> Extract HVGs from selected cells</li>
+      <li><strong>Step 2:</strong> Determine the optimal HVG set by evaluating biological relevance</li>
+      <li><strong>Step 3:</strong> Generate a refined gene list by intersecting the HVG set with biologically relevant genes</li>
+    </ul>
+
+    <!-- --------------------------------------------------------- -->
+    <!-- First Figure: 2.1 -->
+		    <figure id="figure-2-1" style="text-align: justify; margin: 10px;">
+		        <a href="Pictures/HVG_Refiner_Bioinformatics_Pipeline/All_Steps1.png" target="_blank">
+		            <img src="Pictures/HVG_Refiner_Bioinformatics_Pipeline/All_Steps1.png" 
+		                 alt="Sample Distribution by source_name_ch1" 
+		                 style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; 
+		                        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); max-width: 100%; height: auto;">
+		        </a>
+		        <figcaption id="figure-caption-2-1">
+		            <strong>Figure 2.1.</strong> Schematic diagram of the biologically guided HVG selection pipeline. (To be added later.)
+		        </figcaption>
+		    </figure>
+     <!-- -------------------------------------------------------- -->
+    
+   
+
+    
+    <h2><strong>3. Step-by-Step Breakdown</strong> </h2>
+
+    <h3> <strong>3.1 Step One: Generate HVG Sets</strong> </h3>
+    <ul>
+      <li>The pipeline starts with scRNA-seq input files in 10X format. Users can specify which cell populations to include—for instance, based on therapy response categories such as partial response (PR), stable disease (SD), or progressive disease (PD). The selected cells are saved into a new directory.</li>
+      <li>Using Seurat, the pipeline calculates HVGs and saves them incrementally in sets of 100, from 100 up to 9,000. These sets represent candidate feature spaces for downstream evaluation.</li>
+     
+    </ul>
+	  
+ <!-- --------------------------------------------------------- -->
+    <!-- First Figure: 3.1 -->
+		    <figure id="figure-3-1" style="text-align: justify; margin: 10px;">
+		        <a href="Pictures/HVG_Refiner_Bioinformatics_Pipeline/Step1.png" target="_blank">
+		            <img src="Pictures/HVG_Refiner_Bioinformatics_Pipeline/Step1.png" 
+		                 alt="Sample Distribution by source_name_ch1" 
+		                 style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; 
+		                        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); max-width: 100%; height: auto;">
+		        </a>
+		        <figcaption id="figure-caption-3-1">
+		            <strong>Figure 3.1.</strong>  Distribution of HVGs in each incremental set. (To be added later.)
+		        </figcaption>
+		    </figure>
+     <!-- -------------------------------------------------------- -->
+
+ 
+
+	<!-- -------- START ------------------- Code Block ----------------------------- -->
+<div class="code-block">
+	    <pre><code class="language-r">
+# Code will be added here soon
+# Code will be added here soon
+# Code will be added here soon
+# Code will be added here soon
+# Code will be added here soon
+# Code will be added here soon
+# Code will be added here soon
+# Code will be added here soon
+	    </code></pre>
+	</div>
+	<!-- --------- END ------------------ Code Block ----------------------------- -->
+
+      
+   
+ 
+    <h3><strong>3.2 Step Two: Assess Biological Relevance of HVG Sets</strong></h3>
+    <ul>
+      <li>In this step, each HVG set is benchmarked against a reference list of biologically meaningful genes. These genes are extracted using the biomaRt and msigdbr R packages, based on a curated set of GO terms and immunotherapy-relevant pathways identified through literature review.</li>
+      <li>The pipeline calculates how many genes in each HVG set overlap with this reference list. This allows us to measure not only variability but also biological interpretability. The goal is to find the "elbow point" or inflection threshold where adding more HVGs no longer substantially increases the number of biologically relevant genes captured.</li>
+    </ul>
+	  
+<!-- --------------------------------------------------------- -->
+    <!-- First Figure: 3.2 -->
+		    <figure id="figure-3-2" style="text-align: justify; margin: 10px;">
+		        <a href="Pictures/HVG_Refiner_Bioinformatics_Pipeline/Step2.png" target="_blank">
+		            <img src="Pictures/HVG_Refiner_Bioinformatics_Pipeline/Step2.png" 
+		                 alt="Sample Distribution by source_name_ch1" 
+		                 style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; 
+		                        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); max-width: 100%; height: auto;">
+		        </a>
+		        <figcaption id="figure-caption-3-2">
+		            <strong>Figure 3.2.</strong>    Curve showing overlap between HVG sets and immune-related genes. (To be added later.)
+		        </figcaption>
+		    </figure>
+     <!-- -------------------------------------------------------- -->
 
 
-  <!-- Prism.js scripts for syntax highlighting -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-r.min.js"></script>
+
+	  <!-- -------- START ------------------- Code Block ----------------------------- -->
+<div class="code-block">
+	    <pre><code class="language-r">
+	# Code will be added here soon
+# Code will be added here soon
+# Code will be added here soon
+# Code will be added here soon
+# Code will be added here soon
+# Code will be added here soon
+# Code will be added here soon
+# Code will be added here soon
+	    </code></pre>
+	</div>
+	<!-- --------- END ------------------ Code Block ----------------------------- -->
+
+	  
+    <h3>3.3 Step Three: Extract Biologically Relevant HVGs for Model Training</h3>
+    <ul>
+      <li>After identifying the optimal HVG set (e.g., 5,000 genes), the pipeline intersects it once more with the reference gene list. The result is a refined gene set that is both statistically variable and biologically informed, and is now ready to be used as input for deep learning or machine learning models.</li>
+    </ul>
+	  <!-- --------------------------------------------------------- -->
+    <!-- First Figure: 3.3 -->
+		    <figure id="figure-3-3" style="text-align: justify; margin: 10px;">
+		        <a href="Pictures/HVG_Refiner_Bioinformatics_Pipeline/Step3.png" target="_blank">
+		            <img src="Pictures/HVG_Refiner_Bioinformatics_Pipeline/Step3.png" 
+		                 alt="Sample Distribution by source_name_ch1" 
+		                 style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; 
+		                        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); max-width: 100%; height: auto;">
+		        </a>
+		        <figcaption id="figure-caption-3-3">
+		            <strong>Figure 3.3.</strong>  Final refined gene list visualization. (To be added later.)
+		        </figcaption>
+		    </figure>
+     <!-- -------------------------------------------------------- -->
+
+
+	  <!-- -------- START ------------------- Code Block ----------------------------- -->
+<div class="code-block">
+	    <pre><code class="language-r">
+	# Code will be added here soon
+# Code will be added here soon
+# Code will be added here soon
+# Code will be added here soon
+# Code will be added here soon
+# Code will be added here soon
+# Code will be added here soon
+# Code will be added here soon
+	    </code></pre>
+	</div>
+	<!-- --------- END ------------------ Code Block ----------------------------- -->
+
+	  
+    <h2><strong>4. Output and Results</strong></h2>
+    <ul>
+      <li>The final output consists of a biologically curated list of highly variable genes in .csv format. These genes can be directly used as input for training DL models that aim to predict treatment response or classify cell states.</li>
+      <li>Additionally, the pipeline outputs figures showing HVG distributions, overlap with reference genes, and threshold determination. These help users assess the performance and adaptability of the pipeline in their own datasets.</li>	  
+      <li>The pipeline was initially tested on scRNA-seq data from kidney cancer patients undergoing ICB therapy. However, its modular design supports broader use across other diseases and treatment types. Users can swap in GO terms and pathways that are specific to cardiovascular diseases, infectious diseases, other cancers, or therapies like chemotherapy.</li>
+      <li>This adaptability ensures that while the pipeline maintains a biologically grounded methodology, it can flexibly support diverse biological questions and experimental designs.</li>
+        
+    </ul>
+  </main>
+
+	<!-- Prism.js library for syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/prism.min.js"></script>
+	  
+    <!-- Load R language support for Prism -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-r.min.js"></script>
+
+
+	  
+/*  =============================================================================================================   */ 
+/*  ====================== To highlight the figure or caption when a user clicks on the link:  ================   */ 
+	    /*  ====================== Step 2: Add JavaScript to apply the class  ================   */ 
+	<script>
+	  function highlightFigure(figureId) {
+	    var figureCaption = document.getElementById("figure-caption-" + figureId);
+	    figureCaption.classList.add('highlight');
+	    setTimeout(function() {
+	      figureCaption.classList.remove('highlight');
+	    }, 2000);  // Highlight lasts for 5 seconds
+	  }
+	</script>  
+/*  =============================================================================================================   */ 
+
+	
 </body>
 </html>
