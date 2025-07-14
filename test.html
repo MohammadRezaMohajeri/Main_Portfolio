@@ -78,16 +78,16 @@
 </head>
 <body>
   <div class="header">
-    <a href="../index.html">🏠 Home</a>
+    <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/index.html">🏠 Home</a>
     <span>A Bioinformatics Pipeline for Biologically Relevant HVG Selection in scRNA-seq Data</span>
   </div>
   <main>
-    <h1>A Bioinformatics Pipeline for Biologically Relevant HVG Selection in scRNA-seq Data for Training Predictive DL Models</h1>
+    <h1><strong> A Bioinformatics Pipeline for Biologically Relevant HVG Selection in scRNA-seq Data for Training Predictive DL Models</strong></h1>
     <div class="summary">
       A flexible and biologically informed pipeline that refines highly variable genes from single-cell RNA-seq data to optimize deep learning model training.
     </div>
 
-    <h2>1. Introduction</h2>
+    <h2><strong>1. Introduction</strong> </h2>
     <ul>
       <li>In high-dimensional single-cell transcriptomic datasets, selecting meaningful input features for machine learning or deep learning (DL) models poses a significant challenge. Standard approaches typically rely on selecting the top 2,000 to 5,000 highly variable genes (HVGs) using purely statistical criteria. However, many of these genes may be noisy or unrelated to the specific biological context, such as the disease type or therapy being studied.</li>
       <li>To address this limitation, we developed a bioinformatics pipeline tailored for single-cell RNA-seq (scRNA-seq) data in 10X format (i.e., genes, barcodes, and matrix files). This pipeline integrates statistical variability with biological relevance by benchmarking HVG sets against a curated list of genes known to be involved in context-specific pathways. In doing so, it helps researchers derive more robust and interpretable gene sets for model training.</li>
@@ -95,7 +95,7 @@
       <li>While the initial use case involved kidney cancer patients treated with immune checkpoint blockade (ICB) therapy, the pipeline is designed to be generalizable. Users can adjust pathway and GO term selections to suit other diseases and treatment modalities.</li>
     </ul>
 
-    <h2>2. Pipeline Overview</h2>
+    <h2><strong>2. Pipeline Overview</strong> </h2>
     <ul>
       <li><strong>Step 1:</strong> Extract HVGs from selected cells</li>
       <li><strong>Step 2:</strong> Determine the optimal HVG set by evaluating biological relevance</li>
@@ -120,46 +120,42 @@
    
 
     
-    <h2>3. Step-by-Step Breakdown</h2>
+    <h2><strong>3. Step-by-Step Breakdown</strong> </h2>
 
-    <h3>3.1 Step One: Generate HVG Sets</h3>
+    <h3> <strong>3.1 Step One: Generate HVG Sets</strong> </h3>
     <ul>
       <li>The pipeline starts with scRNA-seq input files in 10X format. Users can specify which cell populations to include—for instance, based on therapy response categories such as partial response (PR), stable disease (SD), or progressive disease (PD). The selected cells are saved into a new directory.</li>
       <li>Using Seurat, the pipeline calculates HVGs and saves them incrementally in sets of 100, from 100 up to 9,000. These sets represent candidate feature spaces for downstream evaluation.</li>
      
-
-<!-- --------------------------------------------------------- -->
-		    <!-- First Figure: 2.1 -->
-		<figure id="figure-2-1" style="text-align: justify; margin: 10px;">
-		    <a href="Pictures/RNA_Seq_Task1/1_Figure2.1_source_name_ch1_Sample_Distribution.png" target="_blank">
-		        <img src="Pictures/RNA_Seq_Task1/1_Figure2.1_source_name_ch1_Sample_Distribution.png" 
-		             alt="Sample Distribution by source_name_ch1" 
-		             style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; 
-		                    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); max-width: 100%; height: auto;">
-		    </a>
-		    <figcaption id="figure-caption-2-1">
-		        <strong>Figure 2.1.</strong> Schematic diagram of the biologically guided HVG selection pipeline.
-		    </figcaption>
-		</figure>
+    </ul>
+	  
+ <!-- --------------------------------------------------------- -->
+    <!-- First Figure: 3.1 -->
+		    <figure id="figure-3-1" style="text-align: justify; margin: 10px;">
+		        <a href="Pictures/HVG_Refiner_Bioinformatics_Pipeline/Steps1.png" target="_blank">
+		            <img src="Pictures/HVG_Refiner_Bioinformatics_Pipeline/Steps1.png" 
+		                 alt="Sample Distribution by source_name_ch1" 
+		                 style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; 
+		                        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); max-width: 100%; height: auto;">
+		        </a>
+		        <figcaption id="figure-caption-3-1">
+		            <strong>Figure 3.1.</strong>  Distribution of HVGs in each incremental set. (To be added later.)
+		        </figcaption>
+		    </figure>
      <!-- -------------------------------------------------------- -->
 
 
 
-	    <!-- --------------------------------------------------------- -->
-
-<!-- -------------------------------------------------------- -->
+	
 
 
       
-    </ul>
-    <div id="figure-3-1">Figure 3.1. <i>Distribution of HVGs in each incremental set. (To be added later.)</i></div>
-
-    <h3>3.2 Step Two: Assess Biological Relevance of HVG Sets</h3>
+   
+ 
+    <h3><strong>3.2 Step Two: Assess Biological Relevance of HVG Sets</strong></h3>
     <ul>
-      <li>Each HVG set is benchmarked against a reference list of biologically meaningful genes.</li>
-      <li>These genes are extracted using <code>biomaRt</code> and <code>msigdbr</code> based on curated GO terms and pathways from literature.</li>
-      <li>The overlap is quantified to measure the interpretability of each HVG set.</li>
-      <li>The goal is to find the inflection threshold where adding more HVGs no longer increases biological relevance.</li>
+      <li></li>
+      <li></li>
     </ul>
     <div id="figure-3-2">Figure 3.2. <i>Curve showing overlap between HVG sets and immune-related genes. (To be added later.)</i></div>
 
