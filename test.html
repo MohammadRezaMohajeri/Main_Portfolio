@@ -154,24 +154,52 @@
  
     <h3><strong>3.2 Step Two: Assess Biological Relevance of HVG Sets</strong></h3>
     <ul>
-      <li></li>
-      <li></li>
+      <li>In this step, each HVG set is benchmarked against a reference list of biologically meaningful genes. These genes are extracted using the biomaRt and msigdbr R packages, based on a curated set of GO terms and immunotherapy-relevant pathways identified through literature review.</li>
+      <li>The pipeline calculates how many genes in each HVG set overlap with this reference list. This allows us to measure not only variability but also biological interpretability. The goal is to find the "elbow point" or inflection threshold where adding more HVGs no longer substantially increases the number of biologically relevant genes captured.</li>
     </ul>
-    <div id="figure-3-2">Figure 3.2. <i>Curve showing overlap between HVG sets and immune-related genes. (To be added later.)</i></div>
+	  
+<!-- --------------------------------------------------------- -->
+    <!-- First Figure: 3.2 -->
+		    <figure id="figure-3-2" style="text-align: justify; margin: 10px;">
+		        <a href="Pictures/HVG_Refiner_Bioinformatics_Pipeline/Steps2.png" target="_blank">
+		            <img src="Pictures/HVG_Refiner_Bioinformatics_Pipeline/Steps2.png" 
+		                 alt="Sample Distribution by source_name_ch1" 
+		                 style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; 
+		                        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); max-width: 100%; height: auto;">
+		        </a>
+		        <figcaption id="figure-caption-3-2">
+		            <strong>Figure 3.2.</strong>    Curve showing overlap between HVG sets and immune-related genes. (To be added later.)
+		        </figcaption>
+		    </figure>
+     <!-- -------------------------------------------------------- -->
 
+	  
     <h3>3.3 Step Three: Extract Biologically Relevant HVGs for Model Training</h3>
     <ul>
-      <li>Intersect the optimal HVG set with the reference gene list to extract the final list of biologically informed HVGs.</li>
-      <li>This refined gene list can then be used as input for deep learning or machine learning models.</li>
+      <li>After identifying the optimal HVG set (e.g., 5,000 genes), the pipeline intersects it once more with the reference gene list. The result is a refined gene set that is both statistically variable and biologically informed, and is now ready to be used as input for deep learning or machine learning models.</li>
     </ul>
-    <div id="figure-3-3">Figure 3.3. <i>Final refined gene list visualization. (To be added later.)</i></div>
-
-    <h2>4. Output and Results</h2>
+	  <!-- --------------------------------------------------------- -->
+    <!-- First Figure: 3.3 -->
+		    <figure id="figure-3-3" style="text-align: justify; margin: 10px;">
+		        <a href="Pictures/HVG_Refiner_Bioinformatics_Pipeline/Steps3.png" target="_blank">
+		            <img src="Pictures/HVG_Refiner_Bioinformatics_Pipeline/Steps3.png" 
+		                 alt="Sample Distribution by source_name_ch1" 
+		                 style="display: block; background-color: #f0f0f0; padding: 10px; border-radius: 15px; 
+		                        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); max-width: 100%; height: auto;">
+		        </a>
+		        <figcaption id="figure-caption-3-3">
+		            <strong>Figure 3.3.</strong>  Final refined gene list visualization. (To be added later.)
+		        </figcaption>
+		    </figure>
+     <!-- -------------------------------------------------------- -->
+ 
+    <h2><strong>4. Output and Results</strong></h2>
     <ul>
-      <li>The output is a refined CSV file of HVGs optimized for biological relevance.</li>
-      <li>Figures include HVG distributions, overlap curves, and inflection point visuals.</li>
-      <li>The modular pipeline supports disease-specific customization through interchangeable GO terms and pathways.</li>
-      <li>Initially tested on scRNA-seq data from kidney cancer patients undergoing ICB therapy, but applicable to other disease areas.</li>
+      <li>The final output consists of a biologically curated list of highly variable genes in .csv format. These genes can be directly used as input for training DL models that aim to predict treatment response or classify cell states.</li>
+      <li>Additionally, the pipeline outputs figures showing HVG distributions, overlap with reference genes, and threshold determination. These help users assess the performance and adaptability of the pipeline in their own datasets.</li>	  
+      <li>The pipeline was initially tested on scRNA-seq data from kidney cancer patients undergoing ICB therapy. However, its modular design supports broader use across other diseases and treatment types. Users can swap in GO terms and pathways that are specific to cardiovascular diseases, infectious diseases, other cancers, or therapies like chemotherapy.</li>
+      <li>This adaptability ensures that while the pipeline maintains a biologically grounded methodology, it can flexibly support diverse biological questions and experimental designs.</li>
+        
     </ul>
   </main>
 </body>
