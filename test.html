@@ -387,5 +387,29 @@
         
     </ul>
   </main>
+
+	<!-- Prism.js library for syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/prism.min.js"></script>
+	  
+    <!-- Load R language support for Prism -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-r.min.js"></script>
+
+
+	  
+/*  =============================================================================================================   */ 
+/*  ====================== To highlight the figure or caption when a user clicks on the link:  ================   */ 
+	    /*  ====================== Step 2: Add JavaScript to apply the class  ================   */ 
+	<script>
+	  function highlightFigure(figureId) {
+	    var figureCaption = document.getElementById("figure-caption-" + figureId);
+	    figureCaption.classList.add('highlight');
+	    setTimeout(function() {
+	      figureCaption.classList.remove('highlight');
+	    }, 2000);  // Highlight lasts for 5 seconds
+	  }
+	</script>  
+/*  =============================================================================================================   */ 
+
+	
 </body>
 </html>
