@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A Bioinformatics Pipeline for Biologically Relevant HVG Selection</title>
+  <style>
+    body {
+      background-color: #f9f9f9;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .header {
+      background-color: #004080;
+      color: #fff;
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+    }
+    .header a {
+      color: #fff;
+      margin-right: 15px;
+      text-decoration: none;
+      font-size: 18px;
+    }
+    .header a:hover {
+      text-decoration: underline;
+    }
+    main {
+      max-width: 900px;
+      margin: 40px auto;
+      background-color: #fff;
+      padding: 40px 40px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    }
+    h1, h2, h3 {
+      color: #004080;
+    }
+    h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+    h2 {
+      font-size: 22px;
+      margin-top: 40px;
+      margin-bottom: 10px;
+    }
+    h3 {
+      font-size: 18px;
+      margin-top: 30px;
+    }
+    ul {
+      list-style-type: disc;
+      margin-left: 20px;
+    }
+    .summary {
+      font-style: italic;
+      margin: 20px 0 30px;
+    }
+    hr {
+      margin: 40px 0;
+    }
+    .highlight {
+      background-color: yellow;
+    }
+
+    /*  Prism.js CSS for syntax highlighting */
+  </style>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.5.0/prism-dracula.min.css" rel="stylesheet">
+
+  <style>
+    /* Highlight animation for figure or caption */
+    .highlight {
+      animation: highlightAnimation 5s ease-out;
+    }
+
+    @keyframes highlightAnimation {
+      from {
+        background-color: yellow;
+      }
+      to {
+        background-color: transparent;
+      }
+    }
+
+    /* Selection highlight styling */
+    ::selection {
+      background-color: yellow;
+      color: black;
+    }
+
+    .code-caption {
+      font-size: 16px;
+      font-style: italic;
+      margin-bottom: 1px;
+      color: #555;
+      text-align: justify;
+    }
+
+    .code-block {
+      margin-bottom: 20px;
+      font-size: 16px;
+    }
+
+    pre[class*="language-"] {
+      font-size: 16px;
+    }
+
+    figure {
+      margin-bottom: 30px;
+    }
+
+    ul {
+      margin-top: 0 !important;
+      margin-bottom: 0 !important;
+      padding-left: 20px !important;
+    }
+
+    li {
+      margin-bottom: 5px !important;
+    }
+
+    /* Mobile responsive */
+    @media only screen and (max-width: 768px) {
+      .header {
+        height: auto;
+        padding: 20px 10px;
+      }
+      .header h1 {
+        font-size: 22px;
+        line-height: 1.4;
+        padding: 10px;
+      }
+      .title {
+        font-size: 20px;
+        margin: 20px 10px;
+      }
+      .explanation {
+        font-size: 18px;
+        padding: 0 10px;
+      }
+      body {
+        margin: 10px;
+      }
+    }
+
+    /* Image hover effect */
+    #figure-2-1:hover {
+      transform: scale(1.01);
+      transition: transform 0.2s ease-in-out;
+    }
+  </style>
+
+  <script>
+    function highlightFigure(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.classList.add("highlight");
+        setTimeout(() => el.classList.remove("highlight"), 2000);
+      }
+    }
+  </script>
+</head>
+<body>
+
+  <!-- Your body content goes here -->
+
+
+  <!-- Prism.js scripts for syntax highlighting -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-r.min.js"></script>
+</body>
+</html>
