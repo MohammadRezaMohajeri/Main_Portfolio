@@ -294,7 +294,13 @@
 		                        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); max-width: 100%; height: auto;">
 		        </a>
 		        <figcaption id="figure-caption-2-1">
-		            <strong>Figure 2.1.</strong> Schematic diagram of the biologically guided HVG selection pipeline. (To be added later.)
+		            <strong>Figure 2.1. Schematic diagram of the biologically guided HVG selection pipeline.</strong> 
+				This flowchart illustrates a streamlined and intuitive pipeline developed for selecting highly variable and biologically relevant genes from single-cell RNA-seq data to train machine learning (ML) and deep learning (DL) models. The approach enables biologically informed feature selection while remaining accessible to researchers without coding or biology expertise.
+
+<ul> <li><b>Step 1: Extract HVGs</b> Users upload standard 10X Genomics-format scRNA-seq files and select cell populations of interest (e.g., responders vs. non-responders). The pipeline generates multiple HVG sets (e.g., from 100 to 9,000 genes) for downstream biological evaluation.</li> <li><b>Step 2: Evaluate Biological Relevance of HVG Lists</b> A reference list of biologically meaningful genes is created using custom Gene Ontology (GO) terms and immune-related pathways via tools like <code>biomaRt</code> and <code>msigdbr</code>. Each HVG set is compared against this reference to evaluate overlap. Visualizations help identify the optimal HVG cutoff that balances variability and biological significance.</li> <li><b>Step 3: Final Gene List Extraction</b> The optimal HVG set (e.g., 5,000 genes) is intersected with the reference list to produce a final gene list. The output contains genes that are both highly variable and biologically meaningful, making them ideal candidates for predictive model training.</li> <li><b>Key Innovations</b> ✔ Integrates biological meaning with gene variability ✔ Filters based on metadata (e.g., ICB exposure or response) ✔ Supports custom GO terms and immune pathways ✔ Defines optimal HVG size visually and quantitatively ✔ Outputs gene list tailored for ML/DL training ✔ Usable by non-coders and those without biology expertise</li> </ul>
+
+
+				
 		        </figcaption>
 		    </figure>
      <!-- -------------------------------------------------------- -->
