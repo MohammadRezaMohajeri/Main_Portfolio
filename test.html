@@ -386,7 +386,12 @@
 		                        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); max-width: 100%; height: auto;">
 		        </a>
 		        <figcaption id="figure-caption-3-2">
-		            <strong>Figure 3.2.</strong>    Curve showing overlap between HVG sets and immune-related genes. (To be added later.)
+
+				<ul>
+				  	<li><strong>Figure 3.2.</strong> This diagram outlines the process of assessing the biological relevance of each HVG set by benchmarking against curated gene lists. The workflow starts with compiling reference gene sets using the <code>biomaRt</code> and <code>msigdbr</code> packages, based on Gene Ontology terms and immunotherapy-related pathways derived from literature. Each HVG set is then evaluated for overlap with this reference list, and the number of overlapping genes is quantified and plotted. This visualization helps identify an optimal threshold—typically an inflection point—where increasing the number of HVGs no longer yields substantial gains in biological interpretability.</li>
+				</ul>
+
+				
 		        </figcaption>
 		    </figure>
      <!-- -------------------------------------------------------- -->
