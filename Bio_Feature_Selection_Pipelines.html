@@ -454,13 +454,12 @@
 	<!-- --------- END ------------------ Code Block ----------------------------- -->
 
 	  
-    <h2><strong>4. Output and Results</strong></h2>
+    <h2><strong>4. Final Output and Applicability</strong></h2>
     <ul>
-      <li>The final output consists of a biologically curated list of highly variable genes in .csv format. These genes can be directly used as input for training DL models that aim to predict treatment response or classify cell states.</li>
-      <li>Additionally, the pipeline outputs figures showing HVG distributions, overlap with reference genes, and threshold determination. These help users assess the performance and adaptability of the pipeline in their own datasets.</li>	  
-      <li>The pipeline was initially tested on scRNA-seq data from kidney cancer patients undergoing ICB therapy. However, its modular design supports broader use across other diseases and treatment types. Users can swap in GO terms and pathways that are specific to cardiovascular diseases, infectious diseases, other cancers, or therapies like chemotherapy.</li>
-      <li>This adaptability ensures that while the pipeline maintains a biologically grounded methodology, it can flexibly support diverse biological questions and experimental designs.</li>
-        
+      <li>The final output of the pipeline is a biologically refined list of highly variable genes (HVGs), saved as a .csv file. This gene set serves as a high-quality input for downstream deep learning models aimed at predicting treatment response or other clinically or biologically relevant outcomes — depending on the specific context of the dataset.</li>
+      <li>One of the core strengths of the pipeline is its ability to determine an optimal HVG threshold. This threshold reflects the point at which adding more genes no longer significantly increases the number of biologically meaningful genes captured. Selecting fewer HVGs than this optimal point may risk excluding informative genes with lower variability that nonetheless play crucial roles in disease mechanisms or treatment responses. Conversely, selecting too many HVGs may introduce noise by including irrelevant genes, which can negatively impact model training and performance.</li>
+      <li>To address this, the pipeline doesn't rely solely on variance rankings. Instead, it incorporates biological filtering using pathway- and GO-term-based reference gene sets relevant to the disease or treatment under investigation. This ensures that even HVGs with lower variability — but biological significance — are retained, while biologically irrelevant genes are excluded. This dual approach improves the interpretability and reliability of feature selection for downstream modeling.
+</li>
     </ul>
   </main>
 
