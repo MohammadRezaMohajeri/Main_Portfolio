@@ -1,6 +1,3 @@
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -68,13 +65,8 @@
     .content-item {
       background: #fafafa;
       padding: 20px;
-      border-left: 5px solid #3498db;
       border-radius: 5px;
-      transition: background 0.3s ease;
-    }
-
-    .content-item:hover {
-      background: #e0f7fa;
+      transition: background 0.3s ease, border-left 0.3s ease;
     }
 
     .content-item h2 {
@@ -94,6 +86,31 @@
     .date {
       font-size: 0.9em;
       color: #777;
+    }
+
+    /* Custom colors per tab */
+    .content-item.blue {
+      border-left: 5px solid #3498db;
+    }
+    .content-item.blue:hover {
+      background: #d6eaf8;
+      border-left: 5px solid #2e86c1;
+    }
+
+    .content-item.green {
+      border-left: 5px solid #2ecc71;
+    }
+    .content-item.green:hover {
+      background: #d4efdf;
+      border-left: 5px solid #27ae60;
+    }
+
+    .content-item.purple {
+      border-left: 5px solid #9b59b6;
+    }
+    .content-item.purple:hover {
+      background: #ebdef0;
+      border-left: 5px solid #8e44ad;
     }
 
     @media only screen and (max-width: 768px) {
@@ -141,26 +158,20 @@
     <section class="content-list">
 
 
-      
-<!-- commented out other tabbs that will be added for each project or pipeline I will have in scRNA-Seq pipelines
-      <article class="content-item">
-        <h2><a href="https:#####">Tileeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee</a></h2>
-        <p class="date">Presented at: Norwich Single-Cell & Spatial Symposium, June 18–19, 2025</p>
-      </article>
-
-      <article class="content-item">
-        <h2><a href="https:#####">TitleeeeeeeeeeeeeeeeeeeeeeeeeeHEREEEEEEEE</a></h2>
-        <p class="date">Published on: June 18, 2025</p>
-      </article>
-       
--->
-
-      
-
-      <article class="content-item">
+      <article class="content-item blue">
         <h2><a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/Bio_Feature_Selection_Pipelines.html">A Bioinformatics Pipeline for Biologically Relevant HVG Selection in scRNA-seq Data for Training Predictive DL Models</a></h2>
         <p class="date">Published on: December 31, 2024</p>
       </article>
+
+      <article class="content-item green">
+        <h2><a href="#">[scRNA-seq Project – Coming Soon]</a></h2>
+        <p class="date">To be added: An upcoming single-cell RNA-seq pipeline</p>
+      </article>
+
+     <article class="content-item purple">
+        <h2><a href="#">[scRNA-seq Project – Coming Soon]</a></h2>
+        <p class="date">Another project will be listed here shortly</p>
+     </article>
 
     </section>
   </div>
