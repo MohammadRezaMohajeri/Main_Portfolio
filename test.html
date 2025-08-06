@@ -1,370 +1,164 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Main Portfolio Website</title>
-    <link rel="icon" type="image/x-icon" href="Pictures/Favicon_Icons/3.ico">
-    <style>
-        
-        /* To change the color of text selection on a webpage (like the blue or yellow highlight  ), 
-		we can use the ::selection CSS pseudo-element. */ 
-		::selection {
-			background-color: yellow; /* Change this to any color you prefer */
-			color: black; /* Change the text color if needed */
-		}
-        
-    
-        /* Header  Styles  */
-        .header {
-            display: grid;
-            grid-template-columns: 65% 35%; /* Two equal sections */
-            background-color: #112733; /* Background color #01031f (dark navy) */
-            padding: 20px; /* Padding */
-            height: auto; /* Height adjusts based on content */
-        } 
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Single-Cell RNA Seq Pipeline Navigator Page</title>
+  <link rel="icon" type="image/x-icon" href="https://mohammadrezamohajeri.github.io/Breast-Cancer-Gene-Expression-Biomarker-Analysis/Images/1.ico" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
- 
-        
-        .left-section {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            color: white;
-            padding-right: 20px;
-        }
-           
-        .welcome {
-            font-size: 1.5vw;
-            font-weight: bold; /* Make it bold */
-            margin-top: -20px; /* Move it slightly upward */
-            margin-bottom: 50px; /* Increase space below */
-        }
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background-color: #f4f4f4;
+      padding: 20px;
+    }
 
-        .intro1 {
-            font-size: 3vw;
-            font-weight: bold; /* Make it bold */
-            margin-top: 0; /* Remove space above */
-            margin-bottom: 5px; /* Reduce space below */
-        }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
 
-        .intro2 {
-            font-size: 2.5vw;
-            font-weight: bold; /* Make it bold */
-            margin-top: 0; /* Remove space above */
-            margin-bottom: 15px; /* Add more space below */
-        }
+    .header {
+      font-size: 25px;
+      background-color: #01031f;
+      color: white;
+      height: 350px;
+      padding: 10px 0;
+      text-align: center;
+      position: relative;
+    }
 
-        .description1 {
-            font-size: 1.5vw;
-            line-height: 1.4;
-            margin-top: 15px; /* Space before the description */
-            text-align: justify; /* This will justify the text */
-            margin-bottom: 3px; /* Space between paragraphs */
-        }
-        
-        .description2 {
-            font-size: 1.0vw;
-            line-height: 1.4;
-            margin-top: 15px; /* Space before the description */
-            text-align: justify; /* This will justify the text */
-        }
+    .header h1 {
+      font-size: 1.8em;
+      margin: 0.5em 0;
+    }
 
-        .button-container {
-            display: flex;
-            gap: 10px; /* Space between buttons */
-            margin-top: 20px; /* Space above buttons */
-        }
+    .header p {
+      font-size: 1.2em;
+      color: #ededf5;
+    }
 
-        .button {
-            padding: 10px 15px;
-            background-color: #DAF7A6;
-            color: darkblue;
-            border: none;
-            cursor: pointer;
-            text-decoration: none;
-            text-align: center;
-            font-size: 16px;
-            border-radius: 5px; /* Rounded corners */
-        }
+    .home-link {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      text-decoration: none;
+      z-index: 1;
+    }
 
-        .right-section {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end; /*  was justify-content: center; */
-        }
+    .content-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
 
-        .right-section img {
-            width: 250px; /* Adjust the width as desired (first was 400 */
-            height: auto; /* Maintain aspect ratio */
-            object-fit: cover; /* Ensures the image covers the space */
-        } 
-   
+    .content-item {
+      background: #fafafa;
+      padding: 20px;
+      border-radius: 5px;
+      transition: background 0.3s ease;
+    }
 
-        /* Navbar Styles */
-        .navbar {
-            background-color: #57bbbd;
-            padding: 10px;
-        }
+    .content-item:hover {
+      background: #e0f7fa;
+    }
 
-        .menu {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            margin-right: 20px; /* Add a margin to the right side of the menu */
-        }
+    .content-item h2 {
+      font-size: 1em;
+      margin-bottom: 10px;
+    }
 
-        .menu li {
-            display: inline-block;
-            margin-right: 100px; /* I changed this from 10 to 100; therefore, the spacing between tabs on navbar will be increased */
-            width: 100px; /* Adjust the width as desired */
-        }
+    .content-item a {
+      text-decoration: none;
+      color: #3498db;
+    }
 
-        .menu li a {
-            display: block;
-            padding: 10px;
-            background-color: #DAF7A6; /* green */
-            color: darkblue; /* Change the color to dark blue */
-            text-decoration: none;
-        }
+    .content-item a:hover {
+      text-decoration: underline;
+    }
 
-        .menu li a:hover {
-            background-color: #787ec4;
-            color: #fff;
-            text-decoration: none;
-        }
+    .date {
+      font-size: 0.9em;
+      color: #777;
+    }
 
-        /* Main Content Styles */
-        .main-content {
-            display: flex;
-            flex-direction: column;
-            align-items: stretch;
-            width: 100%;
-            padding: 10px;
-            padding-bottom: 5cm; /* Add 5 cm of padding at the bottom */
-        }
+    /* Custom border colors for different tabs */
+    .blue {
+      border-left: 5px solid #3498db;
+    }
 
-        /* Tab and Dropdown Menu Styles */
-        .tab {
-            padding: 20px;
-            background-color: #EEE;
-            transition: background-color 0.3s;
-            cursor: pointer;
-            margin-bottom: 10px;
-            width: 100%; /* Full width */
-            font-size: 20px; /* Adjust the font size as desired */
-            text-align: center;
-            color: #14140b; /* Color of text of tabs on sidebar and content tabs */
-            text-decoration: none; /* Remove underline */
-            box-sizing: border-box;
-            position: relative;
-        }
+    @media only screen and (max-width: 768px) {
+      body {
+        margin: 10px;
+      }
 
-        .tab:hover {
-            background-color: #8cafba;
-        }
+      .header {
+        height: auto;
+        padding: 20px 10px;
+      }
 
-        /* Dropdown container - hidden by default */
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            left: 0;
-            top: 100%;
-            width: 100%; 
-            background-color: #9b59b6;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
-            flex-direction: column;
-            margin: 0 25mm; /* Adding margin to reduce width by 25mm on left and right */
-        }
+      .header h1 {
+        font-size: 22px;
+        line-height: 1.4;
+        padding: 10px;
+        word-wrap: break-word;
+      }
 
-        /* Show the dropdown menu on hover */
-        .tab:hover .dropdown-content {
-            display: flex;
-        }
+      .header p {
+        font-size: 1em;
+        padding: 0 10px;
+      }
 
-        /* Dropdown menu items */
-        .dropdown-content a {
-            color: #14140b;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            background-color: #dee851; /* #d0d0d0; */
-            text-align: center;
-        }
+      .home-link img {
+        width: 40px;
+      }
 
-        .dropdown-content a:hover {
-            background-color: #b0b0b0;
-        }
-
-        /* Footer Styles */
-        .footer {
-            background-color: #333;
-            color: #fff;
-            padding: 10px;
-            text-align: center;
-            position: fixed;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-        }
-
-        /* To highlight different parts of the text in red, green, and blue, you can use the <span> element and apply CSS styles to it */
-
-        .orange-text {
-            color: orange;
-            font-weight: bold;
-        }
-        .dark-yellow-text {
-            color: hsl(50, 100%, 30%); /* Adjust the hue and saturation values as needed */
-            font-weight: bold;
-        }
-        .brown-text {
-            color: hsl(30, 100%, 30%); /* Adjust the hue and saturation values as needed */
-            font-weight: bold;
-        }
-        .green-text {
-            color: green;
-            font-weight: bold;
-        }
-        .purple-text {
-            color: purple;
-            font-weight: bold;
-        }
-        .blue-text {
-            color: blue;
-            font-weight: bold;
-        }
-        
-    </style>
+      .container {
+        padding: 10px;
+      }
+    }
+  </style>
 </head>
- <body>
+<body>
+  <div class="container">
     <div class="header">
-        <div class="left-section">
-            <p class="welcome">WELCOME TO MY WORLD</p>
-            <p class="intro1">
-                Hi, I'm <span style="color: #9ce036;">Omid Mohajeri</span>,
-            </p>
-            <p class="intro2">
-                a <span style="color: #3fc4d9;">Bioinformatician</span> & <span style="color: #fcfc0f;">AI</span> expert.
-            </p>
-            <p class="description1">
-                Holding two MSc degrees, including one in bioinformatics, both with distinction, 
-                I use bioinformatics and computational biology to analyze and interpret complex biological data, 
-                turning data into actionable insights. I specialize in developing innovative computational and
-                bioinformatics tools, pipelines, and web applications, with a focus on integrating AI and 
-                machine learning to drive innovation and deliver personalized solutions, enhancing data analysis, 
-                and improving prediction accuracy. <br>
-            </p>
-
-            
-            <p class="description1">
-                I have extensive experience in R and Python, specializing in transcriptomics, including microarray, 
-                RNA-seq, and single-cell RNA-seq. However, I am eager to apply my skills in transcriptomics to other domains, 
-                such as genomics, epigenomics, and proteomics. <br>
-            </p>
-
-            
-            <p class="description1">
-                My research primarily focuses on various human diseases, especially cancers like breast and kidney cancer, 
-                but also extends to other health conditions. <br> 
-            </p>
-
-            <p class="description1">
-                With a strong foundation in AI, deep learning, and machine learning models, I am passionate about
-                expanding my expertise in these areas and applying them to new challenges. My current focus is on 
-                leveraging these models to develop innovative solutions that advance healthcare outcomes through 
-                cutting-edge technology and comprehensive data analysis.
-            </p>
-                
-            </p>
-
-            <p class="description2">
-               I designed and developed this website using HTML and CSS to showcase my innovative code, scripts, and computational tools, 
-               demonstrating my ability to solve complex problems from scratch.
-            </p>
-        
-<!-- ============================= CV Button in main page ================================== -->
-<div class="button-container"> 
-    <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/CV/CVOmidMohajeri_16062025.pdf" target="_blank" class="button">CV</a>
-    <a href="https://www.linkedin.com/in/mohammad-reza-mohajeri-24240a12b" target="_blank" class="button">LinkedIn</a>
-    <a href="https://github.com/MohammadRezaMohajeri" target="_blank" class="button">GitHub</a>
-</div>
-<!-- ============================= CV Button in main page ================================== -->
-
-		
-        </div>
-        <div class="right-section">
-            <img src="Pictures/My_Pics/1.JPG" alt="Mohammad Reza Mohajeri">
-        </div>
+      <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/index.html" class="home-link">
+        <img src="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/Home_Link_JPG/1.jpg" alt="Home" style="width:50px; height:auto;" />
+      </a>
+      <h1>Single-Cell RNA-seq Pipelines</h1>
+      <p>(Content Navigator)</p>
     </div>
 
-    <!-- ------------------  -->
-    <div class="main-content">
+    <section class="content-list">
 
-	 <!-- 1- "Transcriptomics" Tab  -->  
-        <div class="tab">Transcriptomics
-            <div class="dropdown-content">
-                <a href="https://mohammadrezamohajeri.github.io/Breast-Cancer-Gene-Expression-Biomarker-Analysis/index.html">Breast Cancer Gene Expression Profiling: Pathways & Biomarkers (R)</a>
-                <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_SEQ_Navigator_Page.html">RNA-Seq with DESeq2 for Differential Expression Analysis (R)</a>
-                <a href="#">scRNA-seq analysis (R)</a>
-            </div>
-        </div>
+<!-- commented out other tabbs that will be added for each project or pipeline I will have in scRNA-Seq pipelines
+      <article class="content-item">
+        <h2><a href="https:#####">Tileeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee</a></h2>
+        <p class="date">Presented at: Norwich Single-Cell & Spatial Symposium, June 18–19, 2025</p>
+      </article>
 
-
-	   
-
-        
-        <!-- 2- "AI/DL/ML Models" Tab --> 
-        <div class="tab">AI/DL/ML Models
-            <div class="dropdown-content">
-                <a href="#">DL (Python)</a>
-                <a href="#">ML(Python)</a>
-              <!--  <a href="#">Option 3</a> -->
-            </div>
-        </div>
-
-        <!-- 3- "Web Applications" Tab --> 
-        <div class="tab">Web Applications
-            <div class="dropdown-content">
-                <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/Advanced_Shiny_App_Navigator_Page.html">Shiny Applications (R)</a>
-         <!--   <a href="#">Option 2</a>                -->
-         <!--   <a href="#">Option 3</a>                -->
-            </div>
-        </div>
-
-
- 
-
-	<!-- 4- "Bioinformatics Pipelines" Tab -->
-	<div class="tab">
-	        <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/Bio_Feature_Selection_Pipelines.html">Bioinformatics Pipelines</a>
- 		</div>
-	 
-
-
-
-
-
-	    
-	    <!--
-        <! -- 5- "Other Works & Innovations" Tab -- > 
-        <div class="tab">Other Works & Innovations
-            <div class="dropdown-content">
-                <a href="#">Relevant Coding Projects (R/Python)</a>
-                <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/General_Coding_R_Python_Navigator_Page.html">General Coding (R/Python)</a>
-          <! --  <a href="#">Option 3</a>     -- >
-            </div>
-        </div>
+      <article class="content-item">
+        <h2><a href="https:#####">TitleeeeeeeeeeeeeeeeeeeeeeeeeeHEREEEEEEEE</a></h2>
+        <p class="date">Published on: June 18, 2025</p>
+      </article>
 -->
-        
-       <!-- 6- "Video Presentations" Tab --> 
-	<div class="tab">
-	        <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/Video_Presentations_Navigator_Page.html">Video Presentations</a>
-	    </div>
 
-     
-    <footer class="footer">
-        <p>&copy; 2023 Mohammad Reza Mohajeri. All rights reserved.</p>
-    </footer>
+      <article class="content-item blue">
+        <h2><a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/Bio_Feature_Selection_Pipelines.html">A Bioinformatics Pipeline for Biologically Relevant HVG Selection in scRNA-seq Data for Training Predictive DL Models</a></h2>
+        <p class="date">Published on: December 31, 2024</p>
+      </article>
+
+    </section>
+  </div>
 </body>
 </html>
