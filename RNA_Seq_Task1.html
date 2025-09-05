@@ -2684,8 +2684,943 @@ selected_groups <- c("m0_AL", "cyclosporine_m3_AL")
 
 
 
+
+			
+ <!-- ======================= ======= ============================ -->
+ <!-- =================  ====== 10.1.1. ============================ -->
+					    <h4>10.1.1. Common setup and configuration </h4>
+
+			<ul>
+				<li>
+					This block prepares the PPI workflow’s shared environment so everything downstream uses the same thresholds, folders, and dependencies. It loads packages for STRING queries (STRINGdb), GO enrichment (clusterProfiler, org.Hs.eg.db), graph construction and layouts (igraph, tidygraph, ggraph), and plotting utilities (ggplot2, ggrepel, grid, scales). It then defines the analysis “knobs” such as the STRING confidence cutoff, DEG filters, and how many genes to carry forward, creates a single output directory, registers filenames for tables generated later, and sets GO enrichment options. Finally, it checks that the DESeq2 objects exist. This section doesn’t write results; it standardizes configuration so all later sections read and write consistently under fig_dir.
+				</li>
+			</ul>
+
+ <!-- ======================== CODE START ============================ -->
+		<!-- ======= 10.1.1. code chunk =========== -->
+		<!-- Caption for the code block -->
+		<p class="code-caption">Code Block 10.1.1.  CODDDDDE BLLLOOOOOK TITLEEEEE </p>
+
+		<div class="code-block">
+		    <pre><code class="language-r">
+			
+############################################################
+## STRING PPI + Modules (Louvain) + Enrichment-driven figures
+##
+## Context:
+## Differential expression between lesional (AL) vs non-lesional (AN) skin,
+## followed here by PPI construction (STRING), module detection (Louvain),
+## GO-based functional panels, and centrality exports.
+##
+## Requirements in your R session:
+## - 'res'        : DESeq2 results (rownames = ENSEMBL IDs, possibly with version)
+## - 'res_shrunk' : shrinked results with 'log2FoldChange' aligned to 'res'
+############################################################
+
+
+# ==========================================================
+# [Section 1/9] Common setup & configuration
+#    Thresholds, output folder, filenames, enrichment options, input checks
+# ==========================================================
+
+
+# 1.1 Load packages
+suppressPackageStartupMessages({          # keep console clean when loading libraries
+  library(STRINGdb)                       # STRING API for mapping + interaction retrieval
+  library(clusterProfiler)                # functional enrichment (e.g., GO)
+  library(org.Hs.eg.db)                   # gene ID mapping for Homo sapiens
+  library(igraph)                         # network construction + centralities
+  library(ggraph)                         # grammar-of-graphics plotting for graphs
+  library(tidygraph)                      # tidy interface around igraph
+  library(ggplot2)                        # general plotting
+  library(scales)                         # palettes, transformations
+  library(ggrepel)                        # non-overlapping labels
+  library(grid)                           # units for padding/spacing (unit())
+})
+
+
+# 1.2 User knobs (analysis thresholds and plotting controls)
+min_score <- 700        # STRING combined_score threshold
+top_k     <- 400        # top N DEGs to start with (after sorting by |LFC|)
+padj_thr  <- 0.05       # adjusted p-value threshold
+lfc_thr   <- 0.5        # absolute log2 fold-change threshold
+
+
+# 1.3 Output location
+fig_dir <- "C:/Users/omidm/OneDrive/Desktop/RNA_Seq_Task1/PPI"
+dir.create(fig_dir, showWarnings = FALSE, recursive = TRUE)
+
+
+# 1.4 Output filenames (node table, module lists, and module summaries)
+out_nodes_csv  <- file.path(fig_dir, "ppi_modules_louvain_nodes.csv")
+out_lists_csv  <- file.path(fig_dir, "ppi_modules_louvain_gene_lists.csv")
+out_summary_csv <- file.path(fig_dir, "ppi_module_summary_full.csv")
+out_summary_preview_csv <- file.path(fig_dir, "ppi_module_summary_preview.csv")
+
+
+# 1.5 Enrichment figure settings
+ontol             <- "BP"  # BP, MF, CC
+top_terms_show    <- 10
+min_genes_module  <- 5
+top_n_enriched    <- 3
+n_labels_per_net  <- 20
+
+
+# 1.6 Input checks
+# Ensure DESeq2 result objects exist in the environment
+if (!exists("res") || !exists("res_shrunk")) {
+  stop("Objects 'res' and 'res_shrunk' must exist in the environment.")
+}
+
+		    </code></pre>
+		</div>
+<!-- ======================== CODE END ============================ -->
+<!-- ======================= ======= ======================  ====== -->
+
+
+
+
+	
+
+
+
 						
-		    <h3>o	10.2. GSEA for Gene Ontology (GO) Enrichment (BP, MF, CC)</h3>
+ <!-- ======================= ======= ============================ -->
+ <!-- ======================= 10.1.2. ============================ -->
+					    <h4>10.1.2. Select DEGs and map ENSEMBL to gene symbols    </h4>
+
+			<ul>
+				<li>
+					This section selects the gene set that seeds the PPI network (STRING). Using base R operations, it removes ENSEMBL version suffixes, collects the adjusted P values and shrunken log2 fold changes, filters by significance and effect size, ranks by absolute fold change, and trims to the top k. It then converts ENSEMBL IDs to HGNC symbols with clusterProfiler::bitr and org.Hs.eg.db, enforcing a one-to-one mapping to avoid ambiguous identifiers. The output is a clean symbol-level table (df2) that preserves the DE statistics. This table is the hand-off to STRING in the next section and defines the biological scope of the network.
+				</li>
+			</ul>
+
+ <!-- ======================== CODE START ============================ -->
+		<!-- ======= 10.1.2. code chunk =========== -->
+		<!-- Caption for the code block -->
+		<p class="code-caption">Code Block 10.1.2.  CODDDDDE BLLLOOOOOK TITLEEEEE </p>
+
+		<div class="code-block">
+		    <pre><code class="language-r">
+			
+		# ==========================================================
+# [Section 2/9] DEG selection & ENSEMBL → SYMBOL mapping
+#    Filter DEGs, rank by |LFC|, keep top_k; 1:1 map to HGNC symbols
+# ==========================================================
+ 
+
+# 2.1 Pick DEGs and prepare IDs
+# -  - - - - - - - - 
+#    Pipeline:
+#      a) strip ENSEMBL version
+#      b) collect padj and LFC from DESeq2 results
+#      c) filter by padj and |LFC|
+#      d) sort by |LFC| desc and keep top_k
+# -  - - - - - - - - 
+
+# Collect all gene rownames (ENSEMBL IDs, possibly with version suffix).
+ens_all  <- rownames(res)
+# Remove version suffix (e.g., ENSG000001234.12 → ENSG000001234) to match mapping keys.
+ens_base <- sub("\\..*$", "", ens_all)   # strip version from ENSEMBL
+
+# Build a compact table of IDs and DE statistics that will feed the PPI steps.
+stats_df <- data.frame(
+  ENSEMBL = ens_base,
+  padj    = res[ens_all, "padj"],
+  LFC     = res_shrunk[ens_all, "log2FoldChange"],
+  stringsAsFactors = FALSE
+)
+
+# Filter DEGs by combining significance (padj) and effect size (|LFC|)
+stats_df <- subset(stats_df, !is.na(padj) & !is.na(LFC) & padj <= padj_thr & abs(LFC) >= lfc_thr)
+if (nrow(stats_df) < 10) stop("Too few DEGs after filtering; adjust thresholds.")
+
+# Rank by absolute effect size (|LFC|) and keep top_k to control network size/complexity.
+stats_df <- stats_df[order(-abs(stats_df$LFC)), ]
+stats_df <- head(stats_df, top_k)
+
+
+# 2.2 Map ENSEMBL → SYMBOL using org.Hs.eg.db (via clusterProfiler::bitr).
+# Expect occasional one-to-many mappings; we collapse to a simple 1:1 in the next line.
+map <- suppressWarnings(
+  bitr(stats_df$ENSEMBL, fromType = "ENSEMBL", toType = "SYMBOL", OrgDb = org.Hs.eg.db)
+)
+# Enforce one SYMBOL per ENSEMBL to keep node identifiers clean and unique.
+map <- map[!duplicated(map$ENSEMBL), c("ENSEMBL","SYMBOL")]
+
+# Merge DE stats with symbols; this table (df2) is the input to STRING mapping.
+df2 <- merge(stats_df, map, by = "ENSEMBL")
+if (nrow(df2) < 10) stop("Too few SYMBOLs after mapping; increase top_k or check IDs.")
+
+
+		    </code></pre>
+		</div>
+<!-- ======================== CODE END ============================ -->
+<!-- ======================= ======= ======================  ====== -->
+
+
+
+
+
+
+
+						
+ <!-- ======================= ======= ============================ -->
+ <!-- ======================= 10.1.3. ============================ -->
+					    <h4>10.1.3. Section 3: Map to STRING and fetch interactions </h4>
+
+			<ul>
+				<li>
+					This step moves from genes to proteins IDs for human (version 12) and gathers the interaction edges. Using STRINGdb$new, map, and get_interactions, symbols are mapped to STRING protein IDs and high-confidence interactions among the mapped set are retrieved at the chosen score threshold. Edges are pruned to undirected unique pairs by building a pairwise key, ensuring each protein pair appears once. The result is an edge list with combined_score weights plus a vetted node table of mapped proteins. These two objects are the inputs for graph construction in the next section and encode both network membership and interaction strength.
+				</li>
+			</ul>
+
+ <!-- ======================== CODE START ============================ -->
+		<!-- ======= 10.1.3. code chunk =========== -->
+		<!-- Caption for the code block -->
+		<p class="code-caption">Code Block 10.1.3.  CODDDDDE BLLLOOOOOK TITLEEEEE </p>
+
+		<div class="code-block">
+		    <pre><code class="language-r">
+			
+		  
+
+# ==========================================================
+# [Section 3/9] STRING mapping & interaction retrieval
+#    Map symbols to STRING IDs; fetch high-confidence edges; deduplicate pairs
+# ==========================================================
+
+
+# 3.1 Map to STRING identifiers
+# -  - - - - - - - - 
+# SYMBOL -> STRING IDs and INTERACTIONS
+# -  - - - - - - - - 
+# Initialize STRING for human (9606), requesting only edges at or above min_score.
+# This setting pre-filters returned interactions by confidence.
+string_db <- STRINGdb$new(
+  version = "12", species = 9606,
+  score_threshold = min_score, input_directory = ""
+)
+
+# map symbols to STRING IDs; remove proteins with no mapping
+mapped <- string_db$map(df2, "SYMBOL", removeUnmappedRows = TRUE)
+# Ordering by padj ensures stable, reproducible downstream ordering when ties exist.
+mapped <- mapped[order(mapped$padj), ]
+# Keep a single STRING_id per protein to avoid duplicated nodes in the graph.
+mapped <- mapped[!duplicated(mapped$STRING_id), ]
+if (nrow(mapped) < 10) stop("Too few mapped STRING IDs; adjust thresholds.")
+
+
+# 3.2 Fetch high-confidence interactions among mapped proteins and deduplicate
+edges <- string_db$get_interactions(mapped$STRING_id)
+# Retain only the minimal columns needed downstream.
+edges <- subset(
+  edges,
+  combined_score >= min_score &
+    from %in% mapped$STRING_id &
+    to   %in% mapped$STRING_id &
+    from != to,
+  select = c("from","to","combined_score")
+)
+
+# Build an undirected key and drop duplicates (keep one edge per pair)
+key <- ifelse(edges$from < edges$to,
+              paste(edges$from, edges$to),
+              paste(edges$to, edges$from))
+
+edges <- edges[!duplicated(key), ]
+
+
+
+		    </code></pre>
+		</div>
+<!-- ======================== CODE END ============================ -->
+<!-- ======================= ======= ======================  ====== -->
+
+
+
+
+
+						
+ <!-- ======================= ======= ============================ -->
+ <!-- ======================= 10.1.4. ============================ -->
+					    <h4>10.1.4. Build the PPI graph and keep meaningful components  </h4>
+
+			<ul>
+				<li>
+					The code now assembles a weighted protein network. With igraph::graph_from_data_frame, it builds an undirected igraph whose nodes carry gene labels, log2FC, and padj, and whose edges carry STRING combined_score. igraph::simplify removes loops and multiple edges while averaging scores if needed, producing a canonical representation. Using components and induced_subgraph, it keeps only connected components with at least three nodes so small fragments do not dominate the figures or summaries. The output is a tidy igraph object (g) that captures the substantive structure used by all downstream computations and plots.
+				</li>
+			</ul>
+
+ <!-- ======================== CODE START ============================ -->
+		<!-- ======= 10.1.4. code chunk =========== -->
+		<!-- Caption for the code block -->
+		<p class="code-caption">Code Block 10.1.4.  CODDDDDE BLLLOOOOOK TITLEEEEE </p>
+
+		<div class="code-block">
+		    <pre><code class="language-r">
+			
+		  
+
+# ==========================================================
+# [Section 4/9] Graph build & component filtering
+#    Build igraph with attributes; simplify; keep components ≥ 3 nodes
+# ==========================================================
+ 
+
+# ==========================================================
+# 4.1 BUILD IGRAPH OBJECT with attributes (nodes: proteins; edges: STRING interactions)
+
+# Assemble a vertex table with the attributes we’ll carry through (labels and DE stats).
+verts <- unique(mapped[, c("STRING_id","SYMBOL","LFC","padj")])
+# Rename STRING_id → name to meet igraph expectations.
+colnames(verts)[1] <- "name"
+
+# Build an undirected igraph from edges and vertices; 
+# Attach gene label, LFC, and padj as node attributes
+g <- graph_from_data_frame(
+  d = edges, directed = FALSE,
+  vertices = data.frame(
+    name  = verts$name,
+    label = verts$SYMBOL,
+    lfc   = verts$LFC,
+    padj  = verts$padj
+  )
+)
+
+
+# 4.2  Simplify graph to remove multiedges and loops (average score if needed)
+g <- simplify(
+  g,
+  remove.multiple = TRUE,
+  remove.loops = TRUE,
+  edge.attr.comb = list(combined_score = "mean", "ignore")
+)
+
+
+# 4.3  Identify connected components and keep meaningful components (≥ 3 nodes)
+comp <- components(g)
+keep <- which(comp$csize[comp$membership] >= 3)
+g <- induced_subgraph(g, vids = keep)
+if (vcount(g) == 0) stop("No components >= 3 nodes; lower score or increase top_k.")
+
+
+
+
+
+		    </code></pre>
+		</div>
+<!-- ======================== CODE END ============================ -->
+<!-- ======================= ======= ======================  ====== -->
+
+
+
+
+
+						
+ <!-- ======================= ======= ============================ -->
+ <!-- ======================= 10.1.5. ============================ -->
+					    <h4>10.1.5. Section 5: Detect basic node metrics and Louvain modules and assemble tidy tables (CSV exports)  </h4>
+
+			<ul>
+				<li>
+					With the graph in place, this section computes simple per-node metrics (degree and up/down sign from LFC) and assigns community labels. It calculates degree and encodes regulation direction (up/down) from log2FC, then runs Louvain community detection (cluster_louvain) using the STRING scores as weights to define data-driven “modules.” From these assignments it creates two exportable tables: a per-node table (out_nodes_csv) that includes STRING ID, gene symbol, module, degree, log2FC, and padj; and a long table of “module → gene” map (out_lists_csv). and two flavors of module summaries (full and preview). It also draws a compact bar plot of module sizes so readers get a quick sense of network structure at a glance.
+				</li>
+			</ul>
+
+ <!-- ======================== CODE START ============================ -->
+		<!-- ======= 10.1.5. code chunk =========== -->
+		<!-- Caption for the code block -->
+		<p class="code-caption">Code Block 10.1.5.  CODDDDDE BLLLOOOOOK TITLEEEEE </p>
+
+		<div class="code-block">
+		    <pre><code class="language-r">
+			
+		
+# ==========================================================
+# [Section 5/9] Node metrics & Louvain modules (CSV exports)
+#    Degree/sign; Louvain modules; node table and module list
+# ==========================================================
+
+
+# ==========================================================
+# 5.1 NODE METRICS (degree, sign) + network stats for figure subtitle
+# ==========================================================
+# Compute unweighted degree per node; store as attribute for plotting and tables.
+deg <- degree(g)
+V(g)$deg  <- deg
+V(g)$sign <- ifelse(V(g)$lfc >= 0, "Upregulated", "Downregulated")
+
+# Summary counts for subtitle/context: size of largest component, total nodes, total edges.
+comp2   <- components(g)
+LCC     <- max(comp2$csize)
+nodes   <- vcount(g)
+edges_n <- ecount(g)
+
+
+
+# 5.2 COMMUNITY DETECTION (modules via Louvain)
+# - - - - - -  - - -
+#    - Assign module labels per node
+#    - Build a "module -> genes" list and keep modules with >= 3 genes
+#    - Prepare tidy per-node table (vdf) and save CSVs
+# - - - - - -  - - -
+comm <- cluster_louvain(g, weights = E(g)$combined_score)
+V(g)$module <- factor(membership(comm))
+sizes_comm  <- sizes(comm)
+
+
+# 5.3 Exports: node table and module→gene mapping
+# Modules as list of gene symbols, keep modules with >= 3 genes
+modules_list <- split(V(g)$label, V(g)$module)
+modules_list <- modules_list[sapply(modules_list, length) >= 3]
+modules_list <- modules_list[order(sapply(modules_list, length), decreasing = TRUE)]
+keep_mods <- names(modules_list)
+
+# Build a tidy node table (one row per gene) for export/inspection and downstream linking.
+vdf <- data.frame(
+  STRING_id = V(g)$name,
+  gene      = V(g)$label,
+  module    = V(g)$module,
+  deg       = V(g)$deg,
+  lfc       = V(g)$lfc,
+  padj      = V(g)$padj,
+  stringsAsFactors = FALSE
+)
+# Keep only nodes in retained modules; 
+vdf <- subset(vdf, module %in% keep_mods)
+
+# sort by module then by degree to surface hubs first. 
+## Save node table and module gene lists
+write.csv(vdf[order(as.numeric(vdf$module), -vdf$deg), ], out_nodes_csv, row.names = FALSE)
+
+# Long-format module→gene map (useful for enrichment, reporting, and reproducibility).
+# Save module -> gene mapping (long format)
+mod_map <- do.call(rbind, lapply(names(modules_list), function(m) {
+  data.frame(module = m, gene = modules_list[[m]], stringsAsFactors = FALSE)
+}))
+write.csv(mod_map, out_lists_csv, row.names = FALSE)
+
+
+
+
+
+
+		    </code></pre>
+		</div>
+<!-- ======================== CODE END ============================ -->
+<!-- ======================= ======= ======================  ====== -->
+
+
+
+
+
+						
+ <!-- ======================= ======= ============================ -->
+ <!-- ======================= 10.1.6. ============================ -->
+					    <h4>10.1.6. Section 6: Module summaries and size overview </h4>
+
+			<ul>
+				<li>
+					This block rolls the module membership into concise, publication-friendly summaries. Using base R aggregation, it creates a “full” CSV where each module lists all genes in a single cell and a “preview” CSV with the first few example genes, alongside module sizes. It then draws a compact bar chart of module sizes with ggplot2 and saves it as a PNG. These outputs give a quick sense of how the network partitions into communities, which modules are largest, and where attention might be focused next. They also serve as convenient tables to link into narratives or supplementary materials.
+				</li>
+			</ul>
+
+ <!-- ======================== CODE START ============================ -->
+		<!-- ======= 10.1.6. code chunk =========== -->
+		<!-- Caption for the code block -->
+		<p class="code-caption">Code Block 10.1.6.  CODDDDDE BLLLOOOOOK TITLEEEEE </p>
+
+		<div class="code-block">
+		    <pre><code class="language-r">
+			
+		
+
+# ==========================================================
+# [Section 6/9] Module summaries & overview figure
+#    - Full/preview CSVs; module size barplot (PNG)
+# ==========================================================
+  
+
+ 
+
+# 6.1 MODULE SUMMARIES
+# - - - -  - - -
+#     - Full list (all genes in a single cell)
+#     - Preview (first 8 genes) + size bar plot
+# - - - -  - - -
+# Make sure types are plain character before tabulating to avoid factor pitfalls.
+mod_map$module <- as.character(mod_map$module) 
+mod_map$gene   <- as.character(mod_map$gene)
+
+# Count genes per module and order modules by size (largest first).
+mod_counts <- sort(table(mod_map$module), decreasing = TRUE)
+
+# Build a “full” summary: one row per module with all its genes collapsed to a single string.
+examples_full <- lapply(split(mod_map$gene, mod_map$module), function(x) {
+  ux <- unique(x); paste(ux, collapse = ", ")
+})
+examples_full <- examples_full[names(mod_counts)]
+
+
+module_summary_full <- data.frame(
+  module        = names(mod_counts),
+  n_genes       = as.integer(mod_counts),
+  genes_all     = unname(unlist(examples_full)),
+  stringsAsFactors = FALSE
+)
+
+write.csv(module_summary_full, out_summary_csv, row.names = FALSE)
+
+# Build a short “preview” summary: first 8 genes per module for quick scanning.
+examples_preview <- lapply(split(mod_map$gene, mod_map$module), function(x) {
+  ux <- unique(x); paste(ux[seq_len(min(8, length(ux)))], collapse = ", ")
+})
+examples_preview <- examples_preview[names(mod_counts)]
+module_summary_preview <- data.frame(
+  module        = names(mod_counts),
+  n_genes       = as.integer(mod_counts),
+  example_genes = unname(unlist(examples_preview)),
+  stringsAsFactors = FALSE
+)
+
+write.csv(module_summary_preview, out_summary_preview_csv, row.names = FALSE)
+
+
+
+# 6.2 Quick bar plot of module sizes (for overview)
+p_sizes <- ggplot(module_summary_preview, aes(x = reorder(module, -n_genes), y = n_genes)) +
+  geom_col() +
+  labs(x = "Module ID", y = "Number of genes", title = "PPI module sizes") +
+  theme_minimal()
+# saved as PNG for documentation.
+ggsave(file.path(fig_dir, "ppi_module_sizes_barplot.png"), p_sizes, width = 7, height = 4, dpi = 300, bg = "white")
+
+
+
+
+
+		    </code></pre>
+		</div>
+<!-- ======================== CODE END ============================ -->
+<!-- ======================= ======= ======================  ====== -->
+
+
+
+
+
+						
+ <!-- ======================= ======= ============================ -->
+ <!-- ======================= 10.1.7. ============================ -->
+					    <h4>10.1.7. Section 7: Full-network visualizations  </h4>
+
+			<ul>
+				<li>
+					To contextualize the network at a glance, this section renders two complementary overviews using tidygraph::as_tbl_graph and ggraph with a Fruchterman–Reingold layout. One plot colors nodes by regulation direction to highlight expression patterns across the network; the other colors by module to display community structure. In both, node size reflects degree, a fixed number of high-degree hubs are labeled with ggraph::geom_node_text, and output images are saved as high-resolution PNGs. These figures help readers see overall architecture—dense regions, cross-module links, and prominent hubs—before drilling into functional details.
+				</li>
+			</ul>
+
+ <!-- ======================== CODE START ============================ -->
+		<!-- ======= 10.1.7. code chunk =========== -->
+		<!-- Caption for the code block -->
+		<p class="code-caption">Code Block 10.1.7.  CODDDDDE BLLLOOOOOK TITLEEEEE </p>
+
+		<div class="code-block">
+		    <pre><code class="language-r">
+			
+		 
+
+# ==========================================================
+# [Section 7/9] Full-network visualizations (PNGs)
+#    - FR layout, (a) colored by LFC sign, (b) colored by module
+# ==========================================================
+ 
+# 7.1 Plot: full network colored by LFC sign
+# Convert to a tidygraph object for ggraph plotting.
+tg <- as_tbl_graph(g) 
+n_labels_target <- 25
+# Choose which nodes to label in the plot: top-degree hubs to reduce text clutter.
+label_nodes <- names(sort(deg, decreasing = TRUE))[seq_len(min(n_labels_target, length(deg)))]
+
+ 
+edge_col <- "black"
+# Main title and subtitle showing key network stats for context.
+title_main <- sprintf("PPI subnetwork of top DEGs (STRING score >= %d)", min_score)
+subtitle_main <- sprintf(
+  "Full network (components >= 3). LCC = %d | nodes = %d | edges = %d. labels = top %d hubs.",
+  LCC, nodes, edges_n, n_labels_target
+)
+
+# Fix the force-directed layout seed for reproducible node placement across runs.
+set.seed(42)
+p_lfc <- ggraph(tg, layout = "fr") +
+  geom_edge_link0(edge_width = 0.10, edge_alpha = 0.18, lineend = "round", colour = edge_col) +
+  geom_node_point(aes(size = deg, color = sign)) +
+  ggraph::geom_node_text(
+    aes(label = ifelse(name %in% label_nodes, label, "")),
+    repel = TRUE, max.overlaps = Inf, force = 2,
+    box.padding = unit(0.35, "lines"), point.padding = unit(0.30, "lines"),
+    segment.size = 0.12, size = 3.0
+  ) +
+  coord_cartesian(clip = "off") +
+  scale_size(range = c(2.2, 6.0), name = "Degree") +
+  scale_color_manual(values = c("Upregulated" = "firebrick", "Downregulated" = "steelblue"), name = "LFC sign") +
+  ggtitle(title_main, subtitle = subtitle_main) +
+  theme_void() +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold", size = 16),
+        plot.subtitle = element_text(hjust = 0.5, size = 10),
+        legend.position = "right",
+        plot.margin = margin(20, 60, 20, 20))
+
+ggsave(file.path(fig_dir, "ppi_full_network_lfc.png"), p_lfc, width = 8, height = 6, dpi = 300, bg = "white")
+
+
+# 7.2 Plot: full network colored by module (categorical palette per Louvain community)
+module_levels <- levels(V(g)$module)
+# Distinct categorical palette for modules; one color per Louvain community.
+pal_mod <- scales::hue_pal()(length(module_levels))
+names(pal_mod) <- module_levels
+
+set.seed(42)
+p_mod <- ggraph(tg, layout = "fr") +
+  geom_edge_link0(edge_width = 0.10, edge_alpha = 0.18, lineend = "round", colour = "black") +
+  geom_node_point(aes(size = deg, color = module)) +
+  ggraph::geom_node_text(
+    aes(label = ifelse(name %in% label_nodes, label, "")),
+    repel = TRUE, max.overlaps = Inf, force = 2,
+    box.padding = unit(0.35, "lines"), point.padding = unit(0.30, "lines"),
+    segment.size = 0.12, size = 3.0
+  ) +
+  scale_size(range = c(2.2, 6.0), name = "Degree") +
+  scale_color_manual(values = pal_mod, name = "Module") +
+  ggtitle(sprintf("PPI modules (Louvain). %d modules (>= 3 genes)", length(keep_mods))) +
+  theme_void() +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold", size = 16),
+        legend.position = "right",
+        plot.margin = margin(20, 60, 20, 20))
+
+
+ggsave(file.path(fig_dir, "ppi_full_network_modules.png"), p_mod, width = 8, height = 6, dpi = 300, bg = "white")
+
+
+
+
+
+		    </code></pre>
+		</div>
+<!-- ======================== CODE END ============================ -->
+<!-- ======================= ======= ======================  ====== -->
+
+
+
+
+						
+ <!-- ======================= ======= ============================ -->
+ <!-- ======================= 10.1.8. ============================ -->
+					    <h4>10.1.8. Section 8: GO enrichment panels per module </h4>
+
+			<ul>
+				<li>
+					This part examines biological coherence within modules with GO over-representation analysis via clusterProfiler::enrichGO for the chosen ontology. It ranks modules by their best adjusted P value, writes a CSV overview of enrichment scores, and, for the top modules, saves two visuals per module: a focused network subgraph colored by log2FC and a dotplot summarizing the most significant GO terms. Where available, patchwork composes the two into a single side-by-side panel, and full enrichment tables per module are exported to CSV. These outputs connect structure to function by showing what processes dominate each module and which genes drive those terms—useful for interpreting pathways relevant to atopic dermatitis.
+				</li>
+			</ul>
+
+ <!-- ======================== CODE START ============================ -->
+		<!-- ======= 10.1.8.  code chunk =========== -->
+		<!-- Caption for the code block -->
+		<p class="code-caption">Code Block 10.1.8.  CODDDDDE BLLLOOOOOK TITLEEEEE </p>
+
+		<div class="code-block">
+		    <pre><code class="language-r">
+			
+		
+
+# ==========================================================
+# [Section 8/9] Enrichment-driven module panels (PNGs + CSVs)
+#    - Rank modules by best adj.P (GO); per-module network + GO dotplot
+# ==========================================================
+ 
+ 
+# 8.1 Rank modules by enrichment and write overview CSV
+
+# - - - - - - - - - 
+# 12) ENRICHMENT-DRIVEN MODULE PANELS
+#     - Rank modules by best adjusted P-value (GO)
+# - - - - - - - - -
+# Helper to create GO dotplot for a module
+# turn a clusterProfiler enrichGO result into a compact dotplot-ready data frame. 
+# Ranks terms by adjusted p-value (then by gene ratio) and keeps the top N.
+make_enrich_plot <- function(eg, mod_id, top_n = 10) {
+  df <- tryCatch(as.data.frame(eg), error = function(e) NULL)
+  if (is.null(df) || nrow(df) == 0) {
+    return(ggplot() + theme_void() + ggtitle(paste("No significant GO terms for module", mod_id)))
+  }
+  df$neglog10padj <- -log10(df$p.adjust)
+  df$GeneRatioNum <- vapply(strsplit(df$GeneRatio, "/"),
+                            function(x) as.numeric(x[1]) / as.numeric(x[2]), numeric(1))
+  df <- df[order(df$p.adjust, -df$GeneRatioNum), ]
+  df <- head(df, top_n)
+
+  ggplot(df, aes(x = neglog10padj, y = reorder(Description, neglog10padj), size = Count)) +
+    geom_point() +
+    labs(x = "-log10(adj P)", y = NULL,
+         title = paste0("GO ", ontol, " enrichment • module ", mod_id)) +
+    theme_minimal(base_size = 11)
+}
+
+# Enrichment per module to rank modules by best adjusted P
+# Only test modules with sufficient size to be meaningful in ORA (e.g., ≥5 genes).
+modules_list_f <- modules_list[sapply(modules_list, length) >= min_genes_module]
+
+# For each module, run enrichGO and extract a one-line summary (best term and its adjusted p-value). 
+# tryCatch ensures a single module failure doesn't stop the whole panel generation.
+enrich_per_module <- lapply(names(modules_list_f), function(m) {
+  gsym <- unique(modules_list_f[[m]])
+  eg <- tryCatch(
+    enrichGO(gene = gsym, OrgDb = org.Hs.eg.db, keyType = "SYMBOL",
+             ont = ontol, pAdjustMethod = "BH", pvalueCutoff = 0.05, readable = TRUE),
+    error = function(e) NULL
+  )
+  df <- tryCatch(as.data.frame(eg), error = function(e) NULL)
+  if (!is.null(df) && nrow(df) > 0) {
+    best <- df[order(df$p.adjust, df$pvalue), ][1, ]
+    data.frame(module = m, n_genes = length(gsym),
+               best_term = best$Description, best_padj = best$p.adjust,
+               n_sig_terms = sum(df$p.adjust <= 0.05),
+               score = -log10(best$p.adjust), stringsAsFactors = FALSE)
+  } else {
+    data.frame(module = m, n_genes = length(gsym),
+               best_term = NA_character_, best_padj = NA_real_,
+               n_sig_terms = 0, score = 0, stringsAsFactors = FALSE)
+  }
+})
+
+# Overview of enrichment across modules (sortable CSV used to pick top modules for plotting).
+enrich_summary <- do.call(rbind, enrich_per_module)
+enrich_summary <- enrich_summary[order(-enrich_summary$score, -enrich_summary$n_genes), ]
+write.csv(enrich_summary, file.path(fig_dir, "module_enrichment_overview.csv"), row.names = FALSE)
+
+# Pick the top N modules by -log10(best adjusted p-value) for focused panels.
+mods_to_plot <- head(enrich_summary$module, top_n_enriched)
+
+
+
+# 8.2 Per-module network + GO dotplot (+ optional combined)
+# Loop over selected modules: save network + GO dotplot (+ combined)
+for (m in mods_to_plot) {
+  # Enrichment table (full) for this module
+  gsym <- unique(modules_list_f[[m]])
+  eg <- tryCatch(
+    enrichGO(gene = gsym, OrgDb = org.Hs.eg.db, keyType = "SYMBOL",
+             ont = ontol, pAdjustMethod = "BH", pvalueCutoff = 0.05, readable = TRUE),
+    error = function(e) NULL
+  )
+  
+  # Inside the loop: write full enrichment table for transparency and later interpretation.
+  df_full <- tryCatch(as.data.frame(eg), error = function(e) NULL)
+  if (!is.null(df_full) && nrow(df_full) > 0) {
+    write.csv(df_full, file.path(fig_dir, paste0("module_", m, "_GO_", ontol, ".csv")), row.names = FALSE)
+  }
+
+  # Build a subgraph of the current module to plot local structure sized by within-module degree.
+  g_sub <- induced_subgraph(g, vids = V(g)[module == m])
+  deg_sub <- degree(g_sub)
+  V(g_sub)$deg_sub <- deg_sub
+
+  # Label only the highest-degree nodes within this module to keep the network legible.
+  label_ids <- names(sort(deg_sub, decreasing = TRUE))[seq_len(min(n_labels_per_net, length(deg_sub)))]
+  label_flag <- ifelse(V(g_sub)$name %in% label_ids, V(g_sub)$label, "")
+
+  # Network plot for this module (FR layout, sized by degree, colored by LFC)
+  tg_sub <- as_tbl_graph(g_sub)
+  set.seed(42)
+  p_net <- ggraph(tg_sub, layout = "fr") +
+    geom_edge_link0(edge_width = 0.25, edge_alpha = 0.25, colour = "gray40") +
+    geom_node_point(aes(size = deg_sub, color = lfc)) +
+    ggraph::geom_node_text(aes(label = label_flag), repel = TRUE, size = 3) +
+    scale_size(range = c(2.5, 7), name = "Degree") +
+    scale_color_gradient2(low = "steelblue", mid = "grey85", high = "firebrick",
+                          midpoint = 0, name = "log2FC") +
+    ggtitle(paste0("Module ", m, " network (n=", vcount(g_sub), ")")) +
+    theme_void() +
+  theme(
+    plot.title       = element_text(hjust = 0.5, face = "bold", size = 14),
+    plot.background  = element_rect(fill = "white", colour = NA),
+    panel.background = element_rect(fill = "white", colour = NA)
+  )
+  
+  
+  # GO dotplot for this module (top terms)
+  p_enr <- make_enrich_plot(eg, m, top_n = top_terms_show) +
+    theme(
+    plot.background  = element_rect(fill = "white", colour = NA),
+    panel.background = element_rect(fill = "white", colour = NA)
+  )
+
+  # Save per-module network and GO dotplot figures.
+  ggsave(file.path(fig_dir, paste0("module_", m, "_network.png")), p_net, width = 7, height = 5, dpi = 300, bg = "white")
+  ggsave(file.path(fig_dir, paste0("module_", m, "_GO_", ontol, "_dotplot.png")), p_enr, width = 6, height = 5, dpi = 300, bg = "white")
+
+  # If patchwork is available, also save a side-by-side composite (network + enrichment) for quick review.
+  if (requireNamespace("patchwork", quietly = TRUE)) {
+    combined <- p_net + p_enr + patchwork::plot_layout(widths = c(1.6, 1))
+    ggsave(file.path(fig_dir, paste0("module_", m, "_combo.png")), combined, width = 12, height = 5, dpi = 300, bg = "white")
+  }
+}
+
+
+		    </code></pre>
+		</div>
+<!-- ======================== CODE END ============================ -->
+<!-- ======================= ======= ======================  ====== -->
+
+
+
+
+
+						
+ <!-- ======================= ======= ============================ -->
+ <!-- ======================= 10.1.9. ============================ -->
+					    <h4>10.1.9. Section 9: Centrality metrics and module-level summaries  </h4>
+
+			<ul>
+				<li>
+					Finally, the workflow quantifies node importance using standard centralities from igraph. It defines a shortest-path distance as the inverse of STRING score so stronger interactions are “closer,” then computes degree (and normalized degree), weighted strength, betweenness and closeness on the distance metric, and eigenvector centrality on the raw scores. A node-level CSV records all metrics per gene, sorted for easy browsing, and a module-level summary aggregates means and medians and identifies the top-degree hub in each module. These tables support ranking candidate biomarkers or targets, comparing modules by their internal connectivity, and cross-referencing highly central genes with enriched processes discovered earlier.
+				</li>
+			</ul>
+
+ <!-- ======================== CODE START ============================ -->
+		<!-- ======= 10.1.9. code chunk =========== -->
+		<!-- Caption for the code block -->
+		<p class="code-caption">Code Block 10.1.9. CODDDDDE BLLLOOOOOK TITLEEEEE </p>
+
+		<div class="code-block">
+		    <pre><code class="language-r">
+			
+		 
+
+# ==========================================================
+# [Section 9/9] Centrality metrics & module-level summaries (CSVs)
+#    - Degree/strength; betweenness/closeness on 1/score; eigenvector
+# ==========================================================
+# 
+ 
+# 9.1 Define edge distance for shortest paths
+# Higher STRING score = stronger/closer connection, so use 1/score as distance.
+E(g)$dist <- 1 / pmax(E(g)$combined_score, .Machine$double.eps)
+
+# 9.2 Compute a small panel of standard centralities:
+# - Degree (unweighted) and normalized degree
+# - degree (local connectivity)
+deg_unw   <- degree(g)                       # already in V(g)$deg, recompute for clarity
+# degree_norm (scaled 0–1)
+deg_norm  <- if (vcount(g) > 1) deg_unw / (vcount(g) - 1) else deg_unw
+
+# - Strength (weighted degree by STRING score)
+strength_w <- strength(g, weights = E(g)$combined_score)
+
+# - Betweenness (weighted by distance)
+btw_w <- betweenness(g, weights = E(g)$dist, directed = FALSE, normalized = TRUE)
+
+# - Closeness (weighted by distance)
+clo_w <- closeness(g, weights = E(g)$dist, normalized = TRUE)
+clo_w[!is.finite(clo_w)] <- NA  # guard against Inf/NaN in disconnected cases
+
+# - Eigenvector centrality (use score as weight, not distance/ influence via well-connected neighbors)
+eig_w <- eigen_centrality(g, weights = E(g)$combined_score,
+                          directed = FALSE, scale = TRUE)$vector
+
+
+# 9.3 Export node-level centrality table
+# Assemble a tidy per-node centrality table for export and ranking/plotting in downstream tools.
+cent_df <- data.frame(
+  STRING_id     = V(g)$name,
+  gene          = V(g)$label,
+  module        = as.character(V(g)$module),
+  degree        = deg_unw,
+  degree_norm   = deg_norm,
+  strength_w    = strength_w,
+  betweenness_w = btw_w,
+  closeness_w   = clo_w,
+  eigenvector   = eig_w,
+  lfc           = V(g)$lfc,
+  padj          = V(g)$padj,
+  stringsAsFactors = FALSE
+)
+
+# Sort within each module by degree so the top hubs float to the top of each group in the CSV.
+cent_df <- cent_df[order(as.numeric(cent_df$module), -cent_df$degree), ]
+
+# Save node-level centralities
+write.csv(cent_df, file.path(fig_dir, "ppi_node_centrality.csv"), row.names = FALSE)
+
+
+# 9.4 Export module-level summary (size, means, medians, top hub (by degree)
+# Module size
+mod_sizes <- as.data.frame(table(cent_df$module), stringsAsFactors = FALSE)
+names(mod_sizes) <- c("module", "n_genes")
+
+
+# Means across nodes in each module
+mod_means <- aggregate(
+  cent_df[, c("degree","degree_norm","strength_w","betweenness_w","closeness_w","eigenvector")],
+  by = list(module = cent_df$module),
+  FUN = function(x) mean(x, na.rm = TRUE)
+)
+names(mod_means)[-1] <- paste0(names(mod_means)[-1], "_mean")
+
+# Medians across nodes in each module
+mod_meds <- aggregate(
+  cent_df[, c("degree","degree_norm","strength_w","betweenness_w","closeness_w","eigenvector")],
+  by = list(module = cent_df$module),
+  FUN = function(x) median(x, na.rm = TRUE)
+)
+names(mod_meds)[-1] <- paste0(names(mod_meds)[-1], "_median")
+
+# Identify a simple top hub per module (by highest degree). Other choices (e.g., strength) are possible.
+top_hub <- tapply(seq_len(nrow(cent_df)), cent_df$module, function(idx) {
+  i <- idx[which.max(cent_df$degree[idx])]
+  cent_df$gene[i]
+})
+top_hub_df <- data.frame(module = names(top_hub), top_hub_gene = unname(unlist(top_hub)),
+                         stringsAsFactors = FALSE)
+
+# Merge all summaries
+module_centrality_summary <- Reduce(function(x, y) merge(x, y, by = "module", all = TRUE),
+                                    list(mod_sizes, mod_means, mod_meds, top_hub_df))
+
+# Order modules by descending size (then numeric id) in the final summary for quick, consistent browsing.
+module_centrality_summary$module_num <- as.numeric(module_centrality_summary$module)
+module_centrality_summary <- module_centrality_summary[order(-module_centrality_summary$n_genes,
+                                                             module_centrality_summary$module_num), ]
+module_centrality_summary$module_num <- NULL
+
+# Save per-module summaryLondon Luton Airport
+write.csv(module_centrality_summary,
+          file.path(fig_dir, "ppi_module_centrality_summary.csv"), row.names = FALSE)
+
+
+		    </code></pre>
+		</div>
+<!-- ======================== CODE END ============================ -->
+<!-- ======================= ======= ======================  ====== -->
+
+
+
+
+
+						
+
+
+ 
+
+ 
+
+			
+
+<!-- ======================================================================================== -->
+		
+		    <h3>10.2. GSEA for Gene Ontology (GO) Enrichment (BP, MF, CC)</h3>
  		    <ul>
 	   	      <li>
 			TEXTTTTTTTTTTT FOR 10.2.		     
