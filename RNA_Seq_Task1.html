@@ -2877,9 +2877,7 @@ if (nrow(df2) < 10) stop("Too few SYMBOLs after mapping; increase top_k or check
 					    <h4>10.1.3. Section 3: Map to STRING and fetch interactions </h4>
 
 			<ul>
-				<li>
-					This step moves from genes to proteins IDs for human (version 12) and gathers the interaction edges. Using STRINGdb$new, map, and get_interactions, symbols are mapped to STRING protein IDs and high-confidence interactions among the mapped set are retrieved at the chosen score threshold. Edges are pruned to undirected unique pairs by building a pairwise key, ensuring each protein pair appears once. The result is an edge list with combined_score weights plus a vetted node table of mapped proteins. These two objects are the inputs for graph construction in the next section and encode both network membership and interaction strength.
-				</li>
+
 
 				<li>
                     This step moves from genes to <strong>protein IDs</strong> for <strong>human (version 12)</strong> and gathers the <strong>interaction edges</strong>. Using <strong>STRINGdb$new</strong>, <strong>map</strong>, and <strong>get_interactions</strong>, symbols are mapped to <strong>STRING protein IDs</strong> and <strong>high-confidence interactions</strong> among the mapped set are retrieved at the chosen <strong>score threshold</strong>. Edges are pruned to <strong>undirected unique pairs</strong> by building a <strong>pairwise key</strong>, ensuring each protein pair appears once. The result is an <strong>edge list</strong> with <strong>combined_score weights</strong> plus a vetted <strong>node table</strong> of <strong>mapped proteins</strong>. These two objects are the inputs for <strong>graph construction</strong> in the next section and encode both <strong>network membership</strong> and <strong>interaction strength</strong>.
