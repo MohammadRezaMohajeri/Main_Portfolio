@@ -2693,11 +2693,7 @@ selected_groups <- c("m0_AL", "cyclosporine_m3_AL")
 					    <h4>10.1.1. Common setup and configuration </h4>
 
 			<ul>
-				<li>
-					This block prepares the PPI workflow’s shared environment so everything downstream uses the same thresholds, folders, and dependencies. It loads packages for STRING queries (STRINGdb), GO enrichment (clusterProfiler, org.Hs.eg.db), graph construction and layouts (igraph, tidygraph, ggraph), and plotting utilities (ggplot2, ggrepel, grid, scales). It then defines the analysis “knobs” such as the STRING confidence cutoff, DEG filters, and how many genes to carry forward, creates a single output directory, registers filenames for tables generated later, and sets GO enrichment options. Finally, it checks that the DESeq2 objects exist. This section doesn’t write results; it standardizes configuration so all later sections read and write consistently under fig_dir.
-				</li>
-
-
+				
 				<li>
 					This block prepares the <strong>PPI workflow’s shared environment</strong> so everything downstream uses the same <strong>thresholds</strong>, <strong>folders</strong>, and <strong>dependencies</strong>. It loads packages for <strong>STRING queries (STRINGdb)</strong>, <strong>GO enrichment (clusterProfiler, org.Hs.eg.db)</strong>, <strong>graph construction and layouts (igraph, tidygraph, ggraph)</strong>, and <strong>plotting utilities (ggplot2, ggrepel, grid, scales)</strong>. It then defines the <strong>analysis “knobs”</strong> such as the <strong>STRING confidence cutoff</strong>, <strong>DEG filters</strong>, and <strong>how many genes to carry forward</strong>, creates a single <strong>output directory</strong>, registers filenames for tables generated later, and sets <strong>GO enrichment options</strong>. Finally, it checks that the <strong>DESeq2 objects</strong> exist. This section doesn’t write results; it standardizes <strong>configuration</strong> so all later sections read and write consistently under <strong>fig_dir</strong>.
 				</li>	
