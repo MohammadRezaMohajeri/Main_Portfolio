@@ -2669,21 +2669,6 @@ selected_groups <- c("m0_AL", "cyclosporine_m3_AL")
 			
 		    <h3>10.1. Protein-Protein Interaction (PPI) subnetwork of top DEGs (STRING)</h3>
 
-			<ul>
-				
-	   	      <li>  
-	 	   <strong> Differential Expression Analysis</strong>  (<strong> DEA</strong>) identifies genes (<strong> DEGs</strong>) that show significant changes in expression between different conditions. However, <strong> genes rarely act in isolation</strong>. Their functions are often executed through complex interactions with other proteins within a cell. To gain a deeper understanding of these <strong> functional relationships</strong>  and how differentially expressed genes (DEGs) collectively impact cellular processes, we perform <strong> Protein-Protein Interaction (PPI) subnetwork</strong>  analysis using <strong> STRING</strong>  (<strong> STRINGdb</strong>  package in R) to identify <strong> hub genes</strong>, which are nodes with high degree (many connections) or other high <strong> centrality measures</strong>  (e.g., <strong> betweenness</strong>, <strong> closeness</strong>, <strong> eigenvector</strong>). In <strong> biomarker discovery</strong>, hub proteins [just hub genes, are those from other centralities also called hub, or we need to use other terms? Like Bottleneck Genes/ and genes with high closeness centrality" or "genes with high eigenvector centrality?] may serve as robust indicators of disease states due to their central role in the underlying molecular network. In <strong> drug discovery</strong>, they can be prioritised as <strong> potential therapeutic targets</strong>, since modulating a hub can influence multiple pathways simultaneously. [In the following, say about what modules, centrality metrices and how they can be interpreted and used in our analysis ]
-		      </li>
-				   
-
-				<li>
-				PPI analysis of AD DEGs, explained in modules: This PPI analysis takes the DEGs from lesional (AL) vs non-lesional (AN) skin, <strong> maps them to STRING, builds a high-confidence interaction subnetwork</strong>, detects <strong> Louvain communities</strong>  (often called “<strong> modules</strong>” in network science), <strong> summarizes and visualizes the graph, performs GO enrichment per community</strong>, and to <strong> computes centrality metrics</strong>  highlight potential hubs. The code is organized, so each <strong> section</strong>  can be run and interpreted independently, and all outputs are written to the configured fig_dir.
-		       </li>
-				
-		     </ul> 
-
- <!-- ======================= =======  ============================ -->
- <!-- ======================= ======= ============================ -->
 <ul>
   <li><strong>Differential Expression Analysi</strong>s (<strong>DEA</strong>) identifies genes (<strong>DEGs</strong>) that show significant changes in expression between different conditions, but disease biology emerges from how these gene products work together as <strong> genes rarely act in isolation</strong>. A <strong>PPI subnetwork</strong> contextualises the DEGs within a <strong>curated map of protein interactions</strong>, so we can see which parts of the <strong>cellular machinery</strong> are co-affected, which groups of proteins move together, and which specific proteins sit at <strong>influential positions</strong> in the network. This makes PPI analysis a natural <strong>bridge from statistical signal to biological mechanism</strong>.</li>
 
