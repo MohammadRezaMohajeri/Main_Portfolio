@@ -2959,6 +2959,10 @@ edges <- edges[!duplicated(key), ]
 				<li>
 					The code now assembles a weighted protein network. With igraph::graph_from_data_frame, it builds an undirected igraph whose nodes carry gene labels, log2FC, and padj, and whose edges carry STRING combined_score. igraph::simplify removes loops and multiple edges while averaging scores if needed, producing a canonical representation. Using components and induced_subgraph, it keeps only connected components with at least three nodes so small fragments do not dominate the figures or summaries. The output is a tidy igraph object (g) that captures the substantive structure used by all downstream computations and plots.
 				</li>
+
+				<li>
+				This code assembles a <strong>weighted protein network</strong>. With <strong>igraph::graph_from_data_frame</strong>, it builds an <strong>undirected igraph</strong> whose nodes carry <strong>gene labels</strong>, <strong>log2FC</strong>, and <strong>padj</strong>, and whose edges carry <strong>STRING combined_score</strong>. <strong>igraph::simplify</strong> removes <strong>loops</strong> and <strong>multiple edges</strong> while averaging scores if needed, producing a <strong>canonical representation</strong>. Using <strong>components</strong> and <strong>induced_subgraph</strong>, it keeps only <strong>connected components</strong> with <strong>at least three nodes</strong> so small fragments do not dominate the <strong>figures</strong> or <strong>summaries</strong>. The output is a <strong>tidy igraph object (g)</strong> that captures the <strong>substantive structure</strong> used by all <strong>downstream computations</strong> and <strong>plots</strong>.	
+				</li>
 			</ul>
 
  <!-- ======================== CODE START ============================ -->
@@ -3034,6 +3038,11 @@ if (vcount(g) == 0) stop("No components >= 3 nodes; lower score or increase top_
 			<ul>
 				<li>
 					With the graph in place, this section computes simple per-node metrics (degree and up/down sign from LFC) and assigns community labels. It calculates degree and encodes regulation direction (up/down) from log2FC, then runs Louvain community detection (cluster_louvain) using the STRING scores as weights to define data-driven “modules.” From these assignments it creates two exportable tables: a per-node table (out_nodes_csv) that includes STRING ID, gene symbol, module, degree, log2FC, and padj; and a long table of “module → gene” map (out_lists_csv). and two flavors of module summaries (full and preview). It also draws a compact bar plot of module sizes so readers get a quick sense of network structure at a glance.
+				</li>
+
+
+				<li>
+					With the graph in place, this section computes simple <strong>per-node metrics</strong> (<strong>degree</strong> and <strong>up/down sign</strong> from <strong>LFC</strong>) and assigns <strong>community labels</strong>. It calculates <strong>degree</strong> and encodes regulation direction (up/down) from <strong>log2FC</strong>, then runs <strong>Louvain community detection (cluster_louvain)</strong> using the <strong>STRING scores</strong> as weights to define data-driven <strong>modules</strong>. From these assignments it creates two <strong>exportable tables</strong>: a <strong>per-node table (out_nodes_csv)</strong> that includes <strong>STRING ID</strong>, <strong>gene symbol</strong>, <strong>module</strong>, <strong>degree</strong>, <strong>log2FC</strong>, and <strong>padj</strong>; and a long table of <strong>module → gene map (out_lists_csv)</strong>. and two flavors of <strong>module summaries (full and preview)</strong>. It also draws a compact <strong>bar plot of module sizes</strong> so readers get a quick sense of <strong>network structure</strong> at a glance.
 				</li>
 			</ul>
 
@@ -3133,6 +3142,11 @@ write.csv(mod_map, out_lists_csv, row.names = FALSE)
 				<li>
 					This block rolls the module membership into concise, publication-friendly summaries. Using base R aggregation, it creates a “full” CSV where each module lists all genes in a single cell and a “preview” CSV with the first few example genes, alongside module sizes. It then draws a compact bar chart of module sizes with ggplot2 and saves it as a PNG. These outputs give a quick sense of how the network partitions into communities, which modules are largest, and where attention might be focused next. They also serve as convenient tables to link into narratives or supplementary materials.
 				</li>
+
+				<li>
+					This block rolls the <strong>module membership</strong> into concise, <strong>publication-friendly summaries</strong>. Using <strong>base R aggregation</strong>, it creates a <strong>“full” CSV</strong> where each <strong>module</strong> lists <strong>all genes</strong> in a <strong>single cell</strong> and a <strong>“preview” CSV</strong> with the <strong>first few example genes</strong>, alongside <strong>module sizes</strong>. It then draws a compact <strong>bar chart of module sizes</strong> with <strong>ggplot2</strong> and saves it as a <strong>PNG</strong>. These <strong>outputs</strong> give a quick sense of how the <strong>network</strong> partitions into <strong>communities</strong>, which <strong>modules</strong> are largest, and where <strong>attention</strong> might be focused next. They also serve as convenient <strong>tables</strong> to link into <strong>narratives</strong> or <strong>supplementary materials</strong>.
+				</li>
+				
 			</ul>
 
  <!-- ======================== CODE START ============================ -->
@@ -3230,6 +3244,11 @@ ggsave(file.path(fig_dir, "ppi_module_sizes_barplot.png"), p_sizes, width = 7, h
 				<li>
 					To contextualize the network at a glance, this section renders two complementary overviews using tidygraph::as_tbl_graph and ggraph with a Fruchterman–Reingold layout. One plot colors nodes by regulation direction to highlight expression patterns across the network; the other colors by module to display community structure. In both, node size reflects degree, a fixed number of high-degree hubs are labeled with ggraph::geom_node_text, and output images are saved as high-resolution PNGs. These figures help readers see overall architecture—dense regions, cross-module links, and prominent hubs—before drilling into functional details.
 				</li>
+
+			    <li>
+					To contextualize the network at a glance, this section renders <strong>two complementary overviews</strong> using <strong>tidygraph::as_tbl_graph</strong> and <strong>ggraph</strong> with a <strong>Fruchterman–Reingold layout</strong>. One plot colors nodes by <strong>regulation direction</strong> to highlight <strong>expression patterns</strong> across the network; the other colors by <strong>module</strong> to display <strong>community structure</strong>. In both, <strong>node size</strong> reflects <strong>degree</strong>, a fixed number of <strong>high-degree hubs</strong> are labeled with <strong>ggraph::geom_node_text</strong>, and output images are saved as <strong>high-resolution PNGs</strong>. These figures help readers see <strong>overall architecture</strong>—<strong>dense regions</strong>, <strong>cross-module links</strong>, and <strong>prominent hubs</strong>—before drilling into <strong>functional details</strong>.
+				</li>
+				
 			</ul>
 
  <!-- ======================== CODE START ============================ -->
@@ -3336,6 +3355,10 @@ ggsave(file.path(fig_dir, "ppi_full_network_modules.png"), p_mod, width = 8, hei
 			<ul>
 				<li>
 					This part examines biological coherence within modules with GO over-representation analysis via clusterProfiler::enrichGO for the chosen ontology. It ranks modules by their best adjusted P value, writes a CSV overview of enrichment scores, and, for the top modules, saves two visuals per module: a focused network subgraph colored by log2FC and a dotplot summarizing the most significant GO terms. Where available, patchwork composes the two into a single side-by-side panel, and full enrichment tables per module are exported to CSV. These outputs connect structure to function by showing what processes dominate each module and which genes drive those terms—useful for interpreting pathways relevant to atopic dermatitis.
+				</li>
+
+				<li>
+					This part examines <strong>biological coherence</strong> within <strong>modules</strong> with <strong>GO over-representation analysis</strong> via <strong>clusterProfiler::enrichGO</strong> for the <strong>chosen ontology</strong>. It ranks <strong>modules</strong> by their <strong>best adjusted P value</strong>, writes a <strong>CSV overview</strong> of <strong>enrichment scores</strong>, and, for the <strong>top modules</strong>, saves <strong>two visuals</strong> per <strong>module</strong>: a focused <strong>network subgraph</strong> colored by <strong>log2FC</strong> and a <strong>dotplot</strong> summarizing the most significant <strong>GO terms</strong>. Where available, <strong>patchwork</strong> composes the two into a single <strong>side-by-side panel</strong>, and full <strong>enrichment tables</strong> per <strong>module</strong> are exported to <strong>CSV</strong>. These <strong>outputs</strong> connect <strong>structure</strong> to <strong>function</strong> by showing what <strong>processes</strong> dominate each <strong>module</strong> and which <strong>genes</strong> drive those terms—useful for interpreting <strong>pathways</strong> relevant to <strong>atopic dermatitis</strong>.
 				</li>
 			</ul>
 
@@ -3501,6 +3524,10 @@ for (m in mods_to_plot) {
 			<ul>
 				<li>
 					Finally, the workflow quantifies node importance using standard centralities from igraph. It defines a shortest-path distance as the inverse of STRING score so stronger interactions are “closer,” then computes degree (and normalized degree), weighted strength, betweenness and closeness on the distance metric, and eigenvector centrality on the raw scores. A node-level CSV records all metrics per gene, sorted for easy browsing, and a module-level summary aggregates means and medians and identifies the top-degree hub in each module. These tables support ranking candidate biomarkers or targets, comparing modules by their internal connectivity, and cross-referencing highly central genes with enriched processes discovered earlier.
+				</li>
+
+				<li>
+                 Finally, the workflow quantifies <strong>node importance</strong> using <strong>standard centralities</strong> from <strong>igraph</strong>. It defines a <strong>shortest-path distance</strong> as the <strong>inverse of STRING score</strong> so <strong>stronger interactions</strong> are “closer,” then computes <strong>degree</strong> (and <strong>normalised degree</strong>), <strong>weighted strength</strong>, <strong>betweenness</strong> and <strong>closeness</strong> on the <strong>distance metric</strong>, and <strong>eigenvector centrality</strong> on the <strong>raw scores</strong>. A <strong>node-level CSV</strong> records <strong>all metrics</strong> per gene, and a <strong>module-level summary</strong> aggregates <strong>means and medians</strong> and identifies the <strong>top-degree hub</strong> in each <strong>module</strong>. These <strong>tables</strong> support ranking <strong>candidate biomarkers</strong> or <strong>targets</strong>, comparing <strong>modules</strong> by their <strong>internal connectivity</strong>, and cross-referencing <strong>highly central genes</strong> with <strong>enriched processes</strong> discovered earlier.
 				</li>
 			</ul>
 
