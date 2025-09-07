@@ -2701,11 +2701,13 @@ selected_groups <- c("m0_AL", "cyclosporine_m3_AL")
  <!-- ======================== CODE START ============================ -->
 		<!-- ======= 10.1.1. code chunk =========== -->
 		<!-- Caption for the code block -->
-		<p class="code-caption">Code Block 10.1.1.  CODDDDDE BLLLOOOOOK TITLEEEEE </p>
+		<p class="code-caption">Code Block 10.1.1. Common Setup & Configuration — Packages, parameters, paths, and input checks </p>
 
 		<div class="code-block">
 		    <pre><code class="language-r">
-			
+
+
+				 
 ############################################################
 ## STRING PPI + Modules (Louvain) + Enrichment-driven figures
 ##
@@ -2800,12 +2802,13 @@ if (!exists("res") || !exists("res_shrunk")) {
  <!-- ======================== CODE START ============================ -->
 		<!-- ======= 10.1.2. code chunk =========== -->
 		<!-- Caption for the code block -->
-		<p class="code-caption">Code Block 10.1.2.  CODDDDDE BLLLOOOOOK TITLEEEEE </p>
+		<p class="code-caption">Code Block 10.1.2. DEG Selection & ENSEMBL → SYMBOL Mapping </p>
 
 		<div class="code-block">
 		    <pre><code class="language-r">
-			
-		# ==========================================================
+
+
+# ==========================================================
 # [Section 2/9] DEG selection & ENSEMBL → SYMBOL mapping
 #    Filter DEGs, rank by |LFC|, keep top_k; 1:1 map to HGNC symbols
 # ==========================================================
@@ -2880,12 +2883,12 @@ if (nrow(df2) < 10) stop("Too few SYMBOLs after mapping; increase top_k or check
  <!-- ======================== CODE START ============================ -->
 		<!-- ======= 10.1.3. code chunk =========== -->
 		<!-- Caption for the code block -->
-		<p class="code-caption">Code Block 10.1.3.  CODDDDDE BLLLOOOOOK TITLEEEEE </p>
+		<p class="code-caption">Code Block 10.1.3. STRING Mapping & Interaction Retrieval — Map symbols to STRING IDs and fetch high-confidence edges</p>
 
 		<div class="code-block">
 		    <pre><code class="language-r">
 			
-		  
+
 
 # ==========================================================
 # [Section 3/9] STRING mapping & interaction retrieval
@@ -2957,12 +2960,12 @@ edges <- edges[!duplicated(key), ]
  <!-- ======================== CODE START ============================ -->
 		<!-- ======= 10.1.4. code chunk =========== -->
 		<!-- Caption for the code block -->
-		<p class="code-caption">Code Block 10.1.4.  CODDDDDE BLLLOOOOOK TITLEEEEE </p>
+		<p class="code-caption">Code Block 10.1.4. PPI Graph Construction & Component Filtering — Build igraph and retain components ≥ 3 nodes </p>
 
 		<div class="code-block">
 		    <pre><code class="language-r">
 			
-		  
+
 
 # ==========================================================
 # [Section 4/9] Graph build & component filtering
@@ -3033,12 +3036,12 @@ if (vcount(g) == 0) stop("No components >= 3 nodes; lower score or increase top_
  <!-- ======================== CODE START ============================ -->
 		<!-- ======= 10.1.5. code chunk =========== -->
 		<!-- Caption for the code block -->
-		<p class="code-caption">Code Block 10.1.5.  CODDDDDE BLLLOOOOOK TITLEEEEE </p>
+		<p class="code-caption">Code Block 10.1.5. Node Metrics & Louvain Modules — Degree/sign, community detection, and CSV exports </p>
 
 		<div class="code-block">
 		    <pre><code class="language-r">
 			
-		
+
 # ==========================================================
 # [Section 5/9] Node metrics & Louvain modules (CSV exports)
 #    Degree/sign; Louvain modules; node table and module list
@@ -3131,12 +3134,15 @@ write.csv(mod_map, out_lists_csv, row.names = FALSE)
  <!-- ======================== CODE START ============================ -->
 		<!-- ======= 10.1.6. code chunk =========== -->
 		<!-- Caption for the code block -->
-		<p class="code-caption">Code Block 10.1.6.  CODDDDDE BLLLOOOOOK TITLEEEEE </p>
+		<p class="code-caption">Code Block 10.1.6. Module Summaries & Overview Figure — Full/preview CSVs and module size bar plot </p>
 
 		<div class="code-block">
 		    <pre><code class="language-r">
 			
-		
+ 
+
+
+
 
 # ==========================================================
 # [Section 6/9] Module summaries & overview figure
@@ -3225,12 +3231,14 @@ ggsave(file.path(fig_dir, "ppi_module_sizes_barplot.png"), p_sizes, width = 7, h
  <!-- ======================== CODE START ============================ -->
 		<!-- ======= 10.1.7. code chunk =========== -->
 		<!-- Caption for the code block -->
-		<p class="code-caption">Code Block 10.1.7.  CODDDDDE BLLLOOOOOK TITLEEEEE </p>
+		<p class="code-caption">Code Block 10.1.7. Full-Network Visualizations — FR layout colored by LFC sign and by module </p>
 
 		<div class="code-block">
 		    <pre><code class="language-r">
 			
-		 
+
+
+
 
 # ==========================================================
 # [Section 7/9] Full-network visualizations (PNGs)
@@ -3330,13 +3338,14 @@ ggsave(file.path(fig_dir, "ppi_full_network_modules.png"), p_mod, width = 8, hei
  <!-- ======================== CODE START ============================ -->
 		<!-- ======= 10.1.8.  code chunk =========== -->
 		<!-- Caption for the code block -->
-		<p class="code-caption">Code Block 10.1.8.  CODDDDDE BLLLOOOOOK TITLEEEEE </p>
+		<p class="code-caption">Code Block 10.1.8. GO Enrichment per Module — Rank modules and plot network + GO dotplot panels </p>
 
 		<div class="code-block">
 		    <pre><code class="language-r">
 			
-		
 
+
+ 
 # ==========================================================
 # [Section 8/9] Enrichment-driven module panels (PNGs + CSVs)
 #    - Rank modules by best adj.P (GO); per-module network + GO dotplot
@@ -3494,7 +3503,7 @@ for (m in mods_to_plot) {
  <!-- ======================== CODE START ============================ -->
 		<!-- ======= 10.1.9. code chunk =========== -->
 		<!-- Caption for the code block -->
-		<p class="code-caption">Code Block 10.1.9. CODDDDDE BLLLOOOOOK TITLEEEEE </p>
+		<p class="code-caption">Code Block 10.1.9. Centrality Metrics & Module-Level Summaries — Degree/strength, betweenness/closeness/eigenvector, CSV exports </p>
 
 		<div class="code-block">
 		    <pre><code class="language-r">
