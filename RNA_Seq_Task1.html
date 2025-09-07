@@ -2798,6 +2798,11 @@ if (!exists("res") || !exists("res_shrunk")) {
 				<li>
 					This section selects the gene set that seeds the PPI network (STRING). Using base R operations, it removes ENSEMBL version suffixes, collects the adjusted P values and shrunken log2 fold changes, filters by significance and effect size, ranks by absolute fold change, and trims to the top k. It then converts ENSEMBL IDs to HGNC symbols with clusterProfiler::bitr and org.Hs.eg.db, enforcing a one-to-one mapping to avoid ambiguous identifiers. The output is a clean symbol-level table (df2) that preserves the DE statistics. This table is the hand-off to STRING in the next section and defines the biological scope of the network.
 				</li>
+
+				
+				 <li>
+This section selects the <strong>gene set</strong> that seeds the <strong>PPI network (STRING)</strong>. Using <strong>base R operations</strong>, it removes <strong>ENSEMBL version suffixes</strong>, collects the <strong>adjusted P values</strong> and <strong>shrunken log2 fold changes</strong>, filters by <strong>significance</strong> and <strong>effect size</strong>, ranks by <strong>absolute fold change</strong>, and trims to the <strong>top k</strong>. It then converts <strong>ENSEMBL IDs</strong> to <strong>HGNC symbols</strong> with <strong>clusterProfiler::bitr</strong> and <strong>org.Hs.eg.db</strong>, enforcing a <strong>one-to-one mapping</strong> to avoid <strong>ambiguous identifiers</strong>. The output is a clean <strong>symbol-level table (df2)</strong> that preserves the <strong>DE statistics</strong>. This table is the <strong>hand-off to STRING</strong> in the next section and defines the <strong>biological scope</strong> of the <strong>network</strong>.
+				</li>
 			</ul>
 
  <!-- ======================== CODE START ============================ -->
