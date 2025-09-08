@@ -2913,10 +2913,16 @@ string_db <- STRINGdb$new(
 
 # map symbols to STRING IDs; remove proteins with no mapping
 mapped <- string_db$map(df2, "SYMBOL", removeUnmappedRows = TRUE)
-# Ordering by padj ensures stable, reproducible downstream ordering when ties exist.
+
+
+# Set a deterministic priority for many-to-one mappings (multiple SYMBOLs → same STRING_id).
+# Here we prioritise the smallest padj (most significant). This only affects which duplicate is kept.
 mapped <- mapped[order(mapped$padj), ]
-# Keep a single STRING_id per protein to avoid duplicated nodes in the graph.
+# Keep a single row per STRING protein to avoid duplicate nodes in the graph.
+# Because of the sort above, the retained row is the one with the smallest padj for that STRING_id.
 mapped <- mapped[!duplicated(mapped$STRING_id), ]
+
+	
 if (nrow(mapped) < 10) stop("Too few mapped STRING IDs; adjust thresholds.")
 
 
