@@ -3064,9 +3064,6 @@ if (vcount(g) == 0) stop("No components >= 3 nodes; lower score or increase top_
 		<div class="code-block">
 		    <pre><code class="language-r">
 			
-
-
-
 # ==========================================================
 # [Section 5/9] Node metrics & Louvain modules (CSV exports)
 #    Degree/sign; Louvain modules; node table and module list
@@ -3181,10 +3178,6 @@ mod_map <- do.call(rbind, lapply(names(modules_list), function(m) {
 }))
 
 write.csv(mod_map, out_lists_csv, row.names = FALSE)
-
-
-
-
 
 
 		    </code></pre>
