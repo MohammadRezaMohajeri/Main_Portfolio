@@ -2998,7 +2998,7 @@ edges <- edges[!duplicated(key), ]
 # ==========================================================
 # 4.1 BUILD IGRAPH OBJECT with attributes (nodes: proteins; edges: STRING interactions)
 
-# Assemble a vertex table with the attributes we’ll carry through (labels and DE stats).
+# Assemble a vertex (node or protein) table with the attributes we’ll carry through (labels and DE stats).
 verts <- unique(mapped[, c("STRING_id","SYMBOL","LFC","padj")])
 # Rename STRING_id → name to meet igraph expectations.
 colnames(verts)[1] <- "name"
