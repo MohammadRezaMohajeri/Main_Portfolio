@@ -3065,6 +3065,8 @@ if (vcount(g) == 0) stop("No components >= 3 nodes; lower score or increase top_
 		    <pre><code class="language-r">
 			
 
+
+
 # ==========================================================
 # [Section 5/9] Node metrics & Louvain modules (CSV exports)
 #    Degree/sign; Louvain modules; node table and module list
@@ -3074,42 +3076,84 @@ if (vcount(g) == 0) stop("No components >= 3 nodes; lower score or increase top_
 # ==========================================================
 # 5.1 NODE METRICS (degree, sign) + network stats for figure subtitle
 # ==========================================================
-# Compute unweighted degree per node; store as attribute for plotting and tables.
+# Compute unweighted degree per node (vertex); store as attribute for plotting and tables.
 deg <- degree(g)
-V(g)$deg  <- deg
+
+# ----------------------------------------------------------
+# Creating two vertex attributes on g:
+# 1.deg (numeric): degree of each node
+# 2. sign (character): "Upregulated" or "Downregulated" from V(g)$lfc
+# ----------------------------------------------------------
+
+
+# Store the degree vector as a vertex attribute named "deg".
+# After this, we can access it as V(g)$deg and use it for plotting/tables.
+V(g)$deg  <- deg 
+
+
+# Create a categorical vertex attribute "sign" from log2 fold-change (V(g)$lfc).
+# Nodes with lfc >= 0 are labeled "Upregulated", others "Downregulated".
+# (Assumes V(g)$lfc was set earlier when the graph was built.)
 V(g)$sign <- ifelse(V(g)$lfc >= 0, "Upregulated", "Downregulated")
 
+
+# ----------------------------------------------------------
 # Summary counts for subtitle/context: size of largest component, total nodes, total edges.
+# ----------------------------------------------------------
 comp2   <- components(g) # connected-components summary: $membership, $csize (sizes), $no (count)
 LCC     <- max(comp2$csize) # size of the Largest Connected Component (number of nodes in biggest component)
 nodes   <- vcount(g) # total number of nodes in the current graph
 edges_n <- ecount(g) # total number of edges in the current graph
-# - - - - - - - - - - - -  - - - - - - - - - -
+
+
+# - - - - - - - 
 # comp2$membership → component ID for each node
+
 # comp2$csize → sizes of each component
+
 # comp2$no → total count of components
-# - - - - - - - - - - - - - - - - - - - - - - - 
+# - - - - - - -
 
-
+ 
 # 5.2 COMMUNITY DETECTION (modules via Louvain)
 # - - - - - -  - - -
 #    - Assign module labels per node
 #    - Build a "module -> genes" list and keep modules with >= 3 genes
 #    - Prepare tidy per-node table (vdf) and save CSVs
 # - - - - - -  - - -
-comm <- cluster_louvain(g, weights = E(g)$combined_score)
+
+# detect Louvain communities using STRING scores as edge weights
+comm <- cluster_louvain(g, weights = E(g)$combined_score) 
+
+# store each vertex's community ID as factor attribute "module"
 V(g)$module <- factor(membership(comm))
+
+# vector of community sizes (number of vertices in each)
 sizes_comm  <- sizes(comm)
 
 
 # 5.3 Exports: node table and module→gene mapping
-# Modules as list of gene symbols, keep modules with >= 3 genes
+# ----------------------------------------------------------
+
+# group gene symbols by their module ID
+# split gene symbols (V(g)$label) into a list grouped by each vertex’s module ID (V(g)$module); one element per module
 modules_list <- split(V(g)$label, V(g)$module)
+
+
+# keep only modules with ≥ 3 genes
 modules_list <- modules_list[sapply(modules_list, length) >= 3]
+
+# sort modules by size (descending)
 modules_list <- modules_list[order(sapply(modules_list, length), decreasing = TRUE)]
+
+# vector of retained module IDs
 keep_mods <- names(modules_list)
 
+
+# ----------------------------------------------------------
 # Build a tidy node table (one row per gene) for export/inspection and downstream linking.
+# ----------------------------------------------------------
+
 vdf <- data.frame(
   STRING_id = V(g)$name,
   gene      = V(g)$label,
@@ -3119,18 +3163,23 @@ vdf <- data.frame(
   padj      = V(g)$padj,
   stringsAsFactors = FALSE
 )
+
+
 # Keep only nodes in retained modules; 
 vdf <- subset(vdf, module %in% keep_mods)
+
 
 # sort by module then by degree to surface hubs first. 
 ## Save node table and module gene lists
 write.csv(vdf[order(as.numeric(vdf$module), -vdf$deg), ], out_nodes_csv, row.names = FALSE)
+
 
 # Long-format module→gene map (useful for enrichment, reporting, and reproducibility).
 # Save module -> gene mapping (long format)
 mod_map <- do.call(rbind, lapply(names(modules_list), function(m) {
   data.frame(module = m, gene = modules_list[[m]], stringsAsFactors = FALSE)
 }))
+
 write.csv(mod_map, out_lists_csv, row.names = FALSE)
 
 
