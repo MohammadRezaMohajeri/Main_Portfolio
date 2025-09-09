@@ -3080,11 +3080,15 @@ V(g)$deg  <- deg
 V(g)$sign <- ifelse(V(g)$lfc >= 0, "Upregulated", "Downregulated")
 
 # Summary counts for subtitle/context: size of largest component, total nodes, total edges.
-comp2   <- components(g)
-LCC     <- max(comp2$csize)
-nodes   <- vcount(g)
-edges_n <- ecount(g)
-
+comp2   <- components(g) # connected-components summary: $membership, $csize (sizes), $no (count)
+LCC     <- max(comp2$csize) # size of the Largest Connected Component (number of nodes in biggest component)
+nodes   <- vcount(g) # total number of nodes in the current graph
+edges_n <- ecount(g) # total number of edges in the current graph
+# - - - - - - - - - - - -  - - - - - - - - - -
+# comp2$membership → component ID for each node
+# comp2$csize → sizes of each component
+# comp2$no → total count of components
+# - - - - - - - - - - - - - - - - - - - - - - - 
 
 
 # 5.2 COMMUNITY DETECTION (modules via Louvain)
