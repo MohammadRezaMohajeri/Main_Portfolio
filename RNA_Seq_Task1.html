@@ -2827,8 +2827,16 @@ if (!exists("res") || !exists("res_shrunk")) {
 
 # Collect all gene rownames (ENSEMBL IDs, possibly with version suffix).
 ens_all  <- rownames(res)
-# Remove version suffix (e.g., ENSG000001234.12 → ENSG000001234) to match mapping keys.
-ens_base <- sub("\\..*$", "", ens_all)   # strip version from ENSEMBL
+	
+# Strip Ensembl version suffix if present (e.g., ENSG000001234.12 → ENSG000001234) to match mapping keys.
+ens_base <- sub("\\.\\d+$", "", ens_all)
+# - - - - - - 
+# The above regex  removes a trailing ".<digits>" (e.g., ".12"); otherwise no change:
+
+#   \\.   -> literal dot
+#   \\d+  -> one or more digits
+#   $     -> end of string
+# - - - - - - 
 
 # Build a compact table of IDs and DE statistics that will feed the PPI steps.
 stats_df <- data.frame(
