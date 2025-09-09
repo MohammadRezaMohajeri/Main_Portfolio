@@ -3226,7 +3226,7 @@ write.csv(mod_map, out_lists_csv, row.names = FALSE)
 # 6.1 MODULE SUMMARIES
 # - - - -  - - -
 #     - Full list (all genes in a single cell)
-#     - Preview (first 8 genes) + size bar plot
+#     - Preview (first 10 genes) + size bar plot
 # - - - -  - - -
 # Make sure types are plain character before tabulating to avoid factor pitfalls.
 mod_map$module <- as.character(mod_map$module) 
@@ -3253,7 +3253,7 @@ write.csv(module_summary_full, out_summary_csv, row.names = FALSE)
 
 # Build a short “preview” summary: first 8 genes per module for quick scanning.
 examples_preview <- lapply(split(mod_map$gene, mod_map$module), function(x) {
-  ux <- unique(x); paste(ux[seq_len(min(8, length(ux)))], collapse = ", ")
+  ux <- unique(x); paste(ux[seq_len(min(10, length(ux)))], collapse = ", ")
 })
 examples_preview <- examples_preview[names(mod_counts)]
 module_summary_preview <- data.frame(
