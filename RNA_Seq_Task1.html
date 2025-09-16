@@ -3200,8 +3200,7 @@ write.csv(mod_map, out_lists_csv, row.names = FALSE)
 					This block rolls the <strong>module membership</strong> into concise, <strong>publication-friendly summaries</strong>. Using <strong>base R aggregation</strong>, it creates a <strong>“full” CSV</strong> where each <strong>module</strong> lists <strong>all genes</strong> in a <strong>single cell</strong> and a <strong>“preview” CSV</strong> with the <strong>first few example genes</strong>, alongside <strong>module sizes</strong>. It then draws a compact <strong>bar chart of module sizes</strong> with <strong>ggplot2</strong> and saves it as a <strong>PNG</strong>. 
 				</li>
 
-				<li>
-This step aggregates the PPI community assignments into two ready-to-cite tables and two helper tables. First, it builds a full summary with every gene per module collapsed into a single cell, and a preview summary that lists only the first few example genes for quick scanning, alongside module sizes. It also keeps the long “module–gene map” (one gene per row) for downstream joins and exports the DEG table annotated with module IDs for statistics and enrichment work. Finally, it draws a compact bar chart of module sizes (ppi_module_sizes_barplot.png) to show which communities dominate the network.				</li>
+			 
 			   
 
        		  <li>
