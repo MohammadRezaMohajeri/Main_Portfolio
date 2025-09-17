@@ -3275,12 +3275,24 @@ write.csv(module_summary_preview, out_summary_preview_csv, row.names = FALSE)
 
 
 # 6.2 Quick bar plot of module sizes (for overview)
-p_sizes <- ggplot(module_summary_preview, aes(x = reorder(module, -n_genes), y = n_genes)) +
-  geom_col() +
+library(ggplot2)
+
+p_sizes <- ggplot(module_summary_preview,
+                  aes(x = reorder(module, -n_genes), y = n_genes, fill = factor(module))) +
+  geom_col(width = 0.8, color = "grey60") +
+  geom_text(aes(label = n_genes), vjust = -0.35, size = 3) +
+  scale_fill_viridis_d(option = "C", end = 0.95) +  # rich, non-white colors
   labs(x = "Module ID", y = "Number of genes", title = "PPI module sizes") +
-  theme_minimal()
+  theme_minimal(base_size = 12) +
+  theme(legend.position = "none",
+        panel.grid.major.x = element_blank(),
+        plot.title = element_text(face = "bold", size = 16),
+        axis.title = element_text(face = "bold")) +
+  expand_limits(y = max(module_summary_preview$n_genes) * 1.12)
+
 # saved as PNG for documentation.
-ggsave(file.path(fig_dir, "ppi_module_sizes_barplot.png"), p_sizes, width = 7, height = 4, dpi = 300, bg = "white")
+ggsave(file.path(fig_dir, "ppi_module_sizes_barplot_colored.png"),
+       p_sizes, width = 8, height = 4.5, dpi = 320, bg = "white")
 
 
 
