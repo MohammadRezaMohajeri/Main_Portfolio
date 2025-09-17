@@ -3200,54 +3200,8 @@ write.csv(mod_map, out_lists_csv, row.names = FALSE)
 This block rolls the <strong>module membership</strong> into concise, publication-friendly summaries. Using <strong>base R aggregation</strong>, it creates a <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/ppi_module_summary_full.csv" target="_blank"><strong>“full” CSV</strong></a> (<strong>“full” CSV (PPI module full summary)</strong>) where each module lists all genes in a single cell and a <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/ppi_module_summary_preview.csv" target="_blank"><strong>“preview” CSV</strong></a> <strong>(PPI module preview summary (top 10 genes in each module))</strong>strong> with the first few example genes, alongside <strong>module sizes</strong>. In addition, it outputs a <strong>long module–gene list CSV</strong> (one row per <code>module</code>–<code>gene</code> pair) and a <strong>node attribute CSV</strong> (DEGs with <code>module</code> assignments and statistics). It then draws a compact <strong>bar chart of module sizes</strong> with <strong>ggplot2</strong> and saves it as a <strong>PNG</strong>.				</li>
 
 			  <!-- ======================= bellow just for test. delete it later ============================ -->
-<!-- Controls + containers -->
-<ul>
-  <li><strong>Full module summary (interactive table)</strong><div id="tbl-full"></div></li>
-  <li><strong>Preview module summary (interactive table)</strong><div id="tbl-prev"></div></li>
-  <li><strong>Long module–gene list (interactive table)</strong><div id="tbl-map"></div></li>
-  <li><strong>Node attributes with stats (interactive table)</strong><div id="tbl-nodes"></div></li>
-</ul>
+  <a href="/Main_Portfolio/csv-viewer.html?title=Full%20module%20summary&src=/Main_Portfolio/RNA_Seq_Task1_Files/ppi_module_summary_full.csv" target="_blank" rel="noopener"><strong>“full” CSV</strong></a>
 
-<!-- Styles for DataTables -->
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-
-<!-- Dependencies -->
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-
-<script>
-  // Helper: render one CSV into a DataTable
-  function renderCSV(url, containerId) {
-    Papa.parse(url, {
-      download: true,
-      header: true,
-      skipEmptyLines: true,
-      complete: function(results) {
-        const cols = Object.keys(results.data[0] || {}).map(k => ({ title: k, data: k }));
-        const table = document.createElement('table');
-        table.id = containerId + "-table";
-        table.style.width = "100%";
-        document.getElementById(containerId).appendChild(table);
-        $(table).DataTable({
-          data: results.data,
-          columns: cols,
-          pageLength: 25,
-          deferRender: true
-        });
-      }
-    });
-  }
-
-  // Render all four
-  renderCSV("https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/ppi_module_summary_full.csv",   "tbl-full");
-  renderCSV("https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/ppi_module_summary_preview.csv","tbl-prev");
-  renderCSV("https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/ppi_modules_louvain_gene_lists.csv","tbl-map");
-  renderCSV("https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/ppi_modules_louvain_nodes.csv","tbl-nodes");
-</script>
-
-	
-			   
 			  <!-- ======================= above just for test. delete it later ============================ -->
 
        		  <li>
