@@ -3197,11 +3197,60 @@ write.csv(mod_map, out_lists_csv, row.names = FALSE)
 			<ul>
 				
 				<li>
-This block rolls the <strong>module membership</strong> into concise, publication-friendly summaries. Using <strong>base R aggregation</strong>, (delete it: <iframe src="https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/ppi_module_summary_full.csv" 
-        width="100%" height="600"></iframe> ) it creates a <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/ppi_module_summary_full.csv" target="_blank"><strong>“full” CSV</strong></a> (<strong>“full” CSV (PPI module full summary)</strong>) where each module lists all genes in a single cell and a <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/ppi_module_summary_preview.csv" target="_blank"><strong>“preview” CSV</strong></a> <strong>(PPI module preview summary (top 10 genes in each module))</strong>strong> with the first few example genes, alongside <strong>module sizes</strong>. In addition, it outputs a <strong>long module–gene list CSV</strong> (one row per <code>module</code>–<code>gene</code> pair) and a <strong>node attribute CSV</strong> (DEGs with <code>module</code> assignments and statistics). It then draws a compact <strong>bar chart of module sizes</strong> with <strong>ggplot2</strong> and saves it as a <strong>PNG</strong>.				</li>
+This block rolls the <strong>module membership</strong> into concise, publication-friendly summaries. Using <strong>base R aggregation</strong>, it creates a <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/ppi_module_summary_full.csv" target="_blank"><strong>“full” CSV</strong></a> (<strong>“full” CSV (PPI module full summary)</strong>) where each module lists all genes in a single cell and a <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/ppi_module_summary_preview.csv" target="_blank"><strong>“preview” CSV</strong></a> <strong>(PPI module preview summary (top 10 genes in each module))</strong>strong> with the first few example genes, alongside <strong>module sizes</strong>. In addition, it outputs a <strong>long module–gene list CSV</strong> (one row per <code>module</code>–<code>gene</code> pair) and a <strong>node attribute CSV</strong> (DEGs with <code>module</code> assignments and statistics). It then draws a compact <strong>bar chart of module sizes</strong> with <strong>ggplot2</strong> and saves it as a <strong>PNG</strong>.				</li>
 
-			 
+			  <!-- ======================= bellow just for test. delete it later ============================ -->
+A) Simple embeds with <iframe> (quickest)
+
+Opens right inside your page, scrollable, no downloads.
+
+<ul>
+  <li>
+    <strong>Full module summary (CSV)</strong> —
+    <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/ppi_module_summary_full.csv" target="_blank" rel="noopener">open in new tab</a>
+    <div style="margin-top:8px;">
+      <iframe
+        src="https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/ppi_module_summary_full.csv"
+        width="100%" height="420" style="border:1px solid #ddd;"></iframe>
+    </div>
+  </li>
+
+  <li>
+    <strong>Preview module summary (CSV)</strong> —
+    <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/ppi_module_summary_preview.csv" target="_blank" rel="noopener">open in new tab</a>
+    <div style="margin-top:8px;">
+      <iframe
+        src="https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/ppi_module_summary_preview.csv"
+        width="100%" height="420" style="border:1px solid #ddd;"></iframe>
+    </div>
+  </li>
+
+  <li>
+    <strong>Long module–gene list (CSV)</strong> —
+    <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/ppi_modules_louvain_gene_lists.csv" target="_blank" rel="noopener">open in new tab</a>
+    <div style="margin-top:8px;">
+      <iframe
+        src="https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/ppi_modules_louvain_gene_lists.csv"
+        width="100%" height="420" style="border:1px solid #ddd;"></iframe>
+    </div>
+  </li>
+
+  <li>
+    <strong>Node attributes with stats (CSV)</strong> —
+    <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/ppi_modules_louvain_nodes.csv" target="_blank" rel="noopener">open in new tab</a>
+    <div style="margin-top:8px;">
+      <iframe
+        src="https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/ppi_modules_louvain_nodes.csv"
+        width="100%" height="420" style="border:1px solid #ddd;"></iframe>
+    </div>
+  </li>
+</ul>
+
+
+
+	
 			   
+			  <!-- ======================= above just for test. delete it later ============================ -->
 
        		  <li>
 				  This block starts from the <strong>tidy module–gene map</strong> created earlier (<code>mod_map</code>, columns <code>module</code> and <code>gene</code>), coerces both columns to <strong>character</strong> to avoid factor issues, counts how many <strong>genes per module</strong> with <code>table()</code> and orders modules from <strong>largest to smallest</strong> (<code>mod_counts</code>), then groups genes by module with <code>split()</code>, removes <strong>duplicates</strong> with <code>unique()</code>, and collapses names into <strong>comma-separated strings</strong> in two flavors: a <strong>full list</strong> and a <strong>short preview</strong>. The <strong>full list</strong> is written as <strong>ppi_module_summary_full.csv</strong> with columns <code>module</code>, <code>n_genes</code>, <code>genes_all</code>, one row per module containing every member gene as a single string; the <strong>short version</strong> keeps only the <strong>first ten genes per module</strong> and is written as <strong>ppi_module_summary_preview.csv</strong> with columns <code>module</code>, <code>n_genes</code>, <code>example_genes</code>, which is convenient for quick scanning. For <strong>transparency</strong> and <strong>downstream work</strong> you also publish two additional tables: <strong>ppi_modules_louvain_gene_lists.csv</strong>, a <strong>long table</strong> with one row per membership (<code>module</code>, <code>gene</code>) that mirrors <code>mod_map</code> and is ideal for <strong>joins or filtering</strong>, and <strong>ppi_modules_louvain_nodes.csv</strong>, the <strong>node attribute table</strong> for every DEG that entered the PPI with columns <code>STRING_id</code>, <code>gene</code>, <code>module</code>, <code>deg</code>, <code>lfc</code>, <code>padj</code>, which supports <strong>statistics per module</strong>, <strong>ranking nodes</strong> by degree or effect size, and <strong>enrichment tests</strong>. Finally, the code draws a <strong>bar chart of module sizes</strong> with <strong>ggplot2</strong> (<code>p_sizes</code>) and saves it as <strong>ppi_module_sizes_barplot.png</strong>, so readers can see at a glance which <strong>communities are largest</strong> and then click through to the <strong>detailed CSVs</strong>.
