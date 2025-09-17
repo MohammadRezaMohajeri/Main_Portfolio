@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title id="page-title">CSV Viewer</title>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h1 { font-size: 1.2rem; margin-bottom: 12px; }
+    table.dataTable { width: 100% !important; }
+  </style>
+</head>
+<body>
+  <h1 id="title"></h1>
+  <div id="table-container"></div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const src   = params.get("src");
+    const title = params.get("title") || "CSV Viewer";
+
+    document.getElementById("title").textContent = title;
+    document.getElementById("page-title").textContent = title;
+
+    Papa.parse(src, {
+      download: true,
+      header: true,
+      skipEmptyLines: true,
+      complete: function(results) {
+        const cols = Object.keys(results.data[0] || {}).map(k => ({ title: k, data: k }));
+        const table = document.createElement("table");
+        table.id = "csv-table";
+        table.style.width = "100%";
+        document.getElementById("table-container").appendChild(table);
+        $(table).DataTable({
+          data: results.data,
+          columns: cols,
+          pageLength: 25,
+          deferRender: true
+        });
+      }
+    });
+  </script>
+</body>
+</html>
