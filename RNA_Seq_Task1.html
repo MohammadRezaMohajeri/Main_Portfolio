@@ -3332,7 +3332,26 @@ ggsave(file.path(fig_dir, "ppi_module_sizes_barplot_colored.png"),
 				 
 
 			    <li>
-					To contextualize the network at a glance, this section renders <strong>two complementary overviews</strong> using <strong>tidygraph::as_tbl_graph</strong> and <strong>ggraph</strong> with a <strong>Fruchterman–Reingold layout</strong>. One plot colors nodes by <strong>regulation direction</strong> to highlight <strong>expression patterns</strong> across the network; the other colors by <strong>module</strong> to display <strong>community structure</strong>. In both, <strong>node size</strong> reflects <strong>degree</strong>, a fixed number of <strong>high-degree hubs</strong> are labeled with <strong>ggraph::geom_node_text</strong>, and output images are saved as <strong>high-resolution PNGs</strong>. These figures help readers see <strong>overall architecture</strong>—<strong>dense regions</strong>, <strong>cross-module links</strong>, and <strong>prominent hubs</strong>—before drilling into <strong>functional details</strong>.
+					OLD: To contextualize the network at a glance, this section renders <strong>two complementary overviews</strong> using <strong>tidygraph::as_tbl_graph</strong> and <strong>ggraph</strong> with a <strong>Fruchterman–Reingold layout</strong>. One plot colors nodes by <strong>regulation direction</strong> to highlight <strong>expression patterns</strong> across the network; the other colors by <strong>module</strong> to display <strong>community structure</strong>. In both, <strong>node size</strong> reflects <strong>degree</strong>, a fixed number of <strong>high-degree hubs</strong> are labeled with <strong>ggraph::geom_node_text</strong>, and output images are saved as <strong>high-resolution PNGs</strong>. These figures help readers see <strong>overall architecture</strong>—<strong>dense regions</strong>, <strong>cross-module links</strong>, and <strong>prominent hubs</strong>—before drilling into <strong>functional details</strong>.
+				</li>
+
+
+
+				
+				<li>
+					The first visualization (<a href="#figure-10-1-7-1" onclick="highlightFigure('10-1-7-1')">Figure 10.1.7.1</a>) shows the protein–protein interaction (PPI) subnetwork of the top differentially expressed genes (DEGs), with nodes sized according to their connectivity (degree) and colored by regulation status. Red nodes indicate upregulated genes, while blue nodes indicate downregulated genes. The labels highlight the top 25 hub genes with the highest connectivity, providing insight into potential key drivers within the network. This plot emphasizes how highly connected upregulated genes dominate the central network structure, while downregulated genes appear less frequent and more peripheral.
+				</li>
+			
+				<li>
+					The second visualization (<a href="#figure-10-1-7-2" onclick="highlightFigure('10-1-7-2')">Figure 10.1.7.2</a>) displays the same network, but this time nodes are colored by Louvain-detected modules, which represent functionally or topologically distinct gene communities. Each color corresponds to a different module, with the legend identifying all 16 modules that meet the minimum size threshold (≥ 3 genes). This view highlights modular structure within the PPI network, making it easier to identify groups of genes that may be co-regulated or share related biological functions.
+				</li>
+		
+				<li>
+					The code begins by converting the network object g into a tidygraph format (as_tbl_graph) suitable for visualization with ggraph. It defines the number of hub labels (n_labels_target = 25) and selects the top-degree genes to reduce clutter. For the first plot, the layout is fixed with a random seed for reproducibility, and edges are drawn in faint black lines. Nodes are sized by degree and colored according to their regulation sign (Upregulated or Downregulated), with hub labels placed using repulsion to avoid overlap. Titles and subtitles provide key statistics such as the number of nodes, edges, and largest connected component (LCC).
+				</li>
+		
+				<li>
+					For the second plot, the focus shifts to community structure. The Louvain module assignments are ensured to be factors for consistent categorical coloring. A custom color palette is generated using RColorBrewer’s "Set2" scheme, extended with colorRampPalette to produce distinct colors for all modules. Each module is then assigned a unique color, and nodes are drawn with size proportional to degree and colored by module. Hub labels are again selectively displayed to maintain readability. The result is a pair of complementary visualizations: one showing regulatory status across the full PPI network, and the other revealing its modular community structure.
 				</li>
 				
 			</ul>
@@ -3428,6 +3447,39 @@ ggsave(file.path(fig_dir, "7.2.ppi_full_network_modules.png"), p_mod, width = 8,
 <!-- ======================= ======= ======================  ====== -->
 
 
+
+<!-- Full-network visualizations (Section 10.1.7) -->
+<div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 16px;">
+
+  <!-- Figure 10.1.7.1 — LFC sign -->
+  <figure id="figure-10-1-7-1" style="text-align: justify; margin: 10px; flex: 1 1 520px; max-width: 820px;">
+    <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/10.1.7.1.ppi_full_network_lfc.png" target="_blank" rel="noopener">
+      <img src="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/10.1.7.1.ppi_full_network_lfc.png"
+           alt="PPI subnetwork of top DEGs colored by LFC sign with node size proportional to degree"
+           style="display: block; background-color: #0c4b4f; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0,0,0,0.2); width: 85%; height: 80%;">
+    </a>
+    <figcaption id="figure-caption-10-1-7-1">
+      Figure 10.1.7.1. PPI subnetwork of top DEGs colored by log-fold-change (red: upregulated; blue: downregulated);
+      node size reflects degree (connectivity). Labels show the top 25 hubs.
+    </figcaption>
+  </figure>
+
+  <!-- Figure 10.1.7.2 — Louvain modules -->
+  <figure id="figure-10-1-7-2" style="text-align: justify; margin: 10px; flex: 1 1 520px; max-width: 820px;">
+    <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/10.1.7.2.ppi_full_network_modules.png" target="_blank" rel="noopener">
+      <img src="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/10.1.7.2.ppi_full_network_modules.png"
+           alt="PPI network colored by Louvain modules with node size proportional to degree"
+           style="display: block; background-color: #0c4b4f; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0,0,0,0.2); width: 85%; height: 80%;">
+    </a>
+    <figcaption id="figure-caption-10-1-7-2">
+      Figure 10.1.7.2. Same network colored by Louvain modules (communities; ≥ 3 genes per module);
+      node size reflects degree. Labels highlight the highest-degree hubs.
+    </figcaption>
+  </figure>
+
+</div>
+
+	
 
 
 						
