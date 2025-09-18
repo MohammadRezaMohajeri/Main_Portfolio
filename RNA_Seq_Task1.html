@@ -3202,7 +3202,7 @@ This block rolls the <strong>module membership</strong> into concise, publicatio
 			  
 
        		  <li>
-				  This block starts from the <strong>tidy module–gene map</strong> created earlier (<code>mod_map</code>, columns <code>module</code> and <code>gene</code>), coerces both columns to <strong>character</strong> to avoid factor issues, counts how many <strong>genes per module</strong> with <code>table()</code> and orders modules from <strong>largest to smallest</strong> (<code>mod_counts</code>), then groups genes by module with <code>split()</code>, removes <strong>duplicates</strong> with <code>unique()</code>, and collapses names into <strong>comma-separated strings</strong> in two flavors: a <strong>full list</strong> and a <strong>short preview</strong>. The <strong>full list</strong> is written as <strong>ppi_module_summary_full.csv</strong> with columns <code>module</code>, <code>n_genes</code>, <code>genes_all</code>, one row per module containing every member gene as a single string; the <strong>short version</strong> keeps only the <strong>first ten genes per module</strong> and is written as <strong>ppi_module_summary_preview.csv</strong> with columns <code>module</code>, <code>n_genes</code>, <code>example_genes</code>, which is convenient for quick scanning. For <strong>transparency</strong> and <strong>downstream work</strong> you also publish two additional tables: <strong>ppi_modules_louvain_gene_lists.csv</strong>, a <strong>long table</strong> with one row per membership (<code>module</code>, <code>gene</code>) that mirrors <code>mod_map</code> and is ideal for <strong>joins or filtering</strong>, and <strong>ppi_modules_louvain_nodes.csv</strong>, the <strong>node attribute table</strong> for every DEG that entered the PPI with columns <code>STRING_id</code>, <code>gene</code>, <code>module</code>, <code>deg</code>, <code>lfc</code>, <code>padj</code>, which supports <strong>statistics per module</strong>, <strong>ranking nodes</strong> by degree or effect size, and <strong>enrichment tests</strong>. Finally, the code draws a <strong>bar chart of module sizes</strong> with <strong>ggplot2</strong> (<code>p_sizes</code>) and saves it as <strong>ppi_module_sizes_barplot.png</strong>, so readers can see at a glance which <strong>communities are largest</strong> and then click through to the <strong>detailed CSVs</strong>.
+				  This block starts from the <strong>tidy module–gene map</strong> created earlier (<code>mod_map</code>, columns <code>module</code> and <code>gene</code>), coerces both columns to <strong>character</strong> to avoid factor issues, counts how many <strong>genes per module</strong> with <code>table()</code> and orders modules from <strong>largest to smallest</strong> (<code>mod_counts</code>), then groups genes by module with <code>split()</code>, removes <strong>duplicates</strong> with <code>unique()</code>, and collapses names into <strong>comma-separated strings</strong> in two flavors: a <strong>full list</strong> and a <strong>short preview</strong>. The <strong>full list</strong> is written as <strong>ppi_module_summary_full.csv</strong> with columns <code>module</code>, <code>n_genes</code>, <code>genes_all</code>, one row per module containing every member gene as a single string; the <strong>short version</strong> keeps only the <strong>first ten genes per module</strong> and is written as <strong>ppi_module_summary_preview.csv</strong> with columns <code>module</code>, <code>n_genes</code>, <code>example_genes</code>, which is convenient for quick scanning. For <strong>transparency</strong> and <strong>downstream work</strong> we also publish two additional tables: <strong>ppi_modules_louvain_gene_lists.csv</strong>, a <strong>long table</strong> with one row per membership (<code>module</code>, <code>gene</code>) that mirrors <code>mod_map</code> and is ideal for <strong>joins or filtering</strong>, and <strong>ppi_modules_louvain_nodes.csv</strong>, the <strong>node attribute table</strong> for every DEG that entered the PPI with columns <code>STRING_id</code>, <code>gene</code>, <code>module</code>, <code>deg</code>, <code>lfc</code>, <code>padj</code>, which supports <strong>statistics per module</strong>, <strong>ranking nodes</strong> by degree or effect size, and <strong>enrichment tests</strong>. Finally, the code draws a <strong>bar chart of module sizes</strong> with <strong>ggplot2</strong> (<code>p_sizes</code>) and saves it as <strong>ppi_module_sizes_barplot.png</strong>, so readers can see at a glance which <strong>communities are largest</strong> and then click through to the <strong>detailed CSVs</strong>.
 			 
 			  </li>
 			
@@ -3345,15 +3345,11 @@ ggsave(file.path(fig_dir, "ppi_module_sizes_barplot_colored.png"),
 		<div class="code-block">
 		    <pre><code class="language-r">
 			
-
-
-
-
 # ==========================================================
 # [Section 7/9] Full-network visualizations (PNGs)
 #    - FR layout, (a) colored by LFC sign, (b) colored by module
 # ==========================================================
- 
+
 # 7.1 Plot: full network colored by LFC sign
 # Convert to a tidygraph object for ggraph plotting.
 tg <- as_tbl_graph(g) 
@@ -3361,7 +3357,6 @@ n_labels_target <- 25
 # Choose which nodes to label in the plot: top-degree hubs to reduce text clutter.
 label_nodes <- names(sort(deg, decreasing = TRUE))[seq_len(min(n_labels_target, length(deg)))]
 
- 
 edge_col <- "black"
 # Main title and subtitle showing key network stats for context.
 title_main <- sprintf("PPI subnetwork of top DEGs (STRING score >= %d)", min_score)
@@ -3391,13 +3386,20 @@ p_lfc <- ggraph(tg, layout = "fr") +
         legend.position = "right",
         plot.margin = margin(20, 60, 20, 20))
 
-ggsave(file.path(fig_dir, "ppi_full_network_lfc.png"), p_lfc, width = 8, height = 6, dpi = 300, bg = "white")
+ggsave(file.path(fig_dir, "7.1.ppi_full_network_lfc.png"), p_lfc, width = 8, height = 6, dpi = 300, bg = "white")
 
 
 # 7.2 Plot: full network colored by module (categorical palette per Louvain community)
+# Ensure module is a factor (so colors are discrete and stable).
+V(g)$module <- as.factor(V(g)$module)
 module_levels <- levels(V(g)$module)
+
+
 # Distinct categorical palette for modules; one color per Louvain community.
-pal_mod <- scales::hue_pal()(length(module_levels))
+# Here we use RColorBrewer 'Set2' and extend it with colorRampPalette 
+# to provide clearer separation when many modules are present.
+n_mod <- length(module_levels)
+pal_mod <- colorRampPalette(RColorBrewer::brewer.pal(8, "Set2"))(n_mod)
 names(pal_mod) <- module_levels
 
 set.seed(42)
@@ -3411,19 +3413,14 @@ p_mod <- ggraph(tg, layout = "fr") +
     segment.size = 0.12, size = 3.0
   ) +
   scale_size(range = c(2.2, 6.0), name = "Degree") +
-  scale_color_manual(values = pal_mod, name = "Module") +
+  scale_color_manual(values = pal_mod, breaks = module_levels, name = "Module") +
   ggtitle(sprintf("PPI modules (Louvain). %d modules (>= 3 genes)", length(keep_mods))) +
   theme_void() +
   theme(plot.title = element_text(hjust = 0.5, face = "bold", size = 16),
         legend.position = "right",
         plot.margin = margin(20, 60, 20, 20))
 
-
-ggsave(file.path(fig_dir, "ppi_full_network_modules.png"), p_mod, width = 8, height = 6, dpi = 300, bg = "white")
-
-
-
-
+ggsave(file.path(fig_dir, "7.2.ppi_full_network_modules.png"), p_mod, width = 8, height = 6, dpi = 300, bg = "white")
 
 		    </code></pre>
 		</div>
