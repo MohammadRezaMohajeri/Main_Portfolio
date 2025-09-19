@@ -1,0 +1,12 @@
+"module","n_genes","best_term","best_padj","n_sig_terms","score"
+"11",19,"chemokine-mediated signaling pathway",7.86184138743297e-36,332,35.1044757223141
+"1",21,"keratinization",1.34652840063792e-32,14,31.870784482126
+"7",60,"regulation of T cell activation",4.24808161062152e-24,349,23.371807148541
+"8",25,"cytokine-mediated signaling pathway",4.77344472871127e-12,232,11.3211681017269
+"2",29,"positive regulation of epidermal growth factor receptor signaling pathway",1.58697400368547e-08,205,7.79943018739035
+"15",5,"cellular hormone metabolic process",3.30330036413398e-06,116,5.48105193476904
+"6",14,"defense response to fungus",1.7766256279886e-05,112,4.7504040774439
+"4",5,"intercellular transport",0.000305649380681571,58,3.51477647985735
+"10",6,"immune response-inhibiting signal transduction",0.000836976396043937,164,3.07728678957235
+"3",6,"positive regulation of leukocyte tethering or rolling",0.00160665075627023,218,2.79407851720587
+"12",6,"DNA replication initiation",0.00337988835279071,38,2.47109764545245
