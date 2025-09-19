@@ -3521,11 +3521,7 @@ ggsave(file.path(fig_dir, "7.2.ppi_full_network_modules.png"), p_mod, width = 8,
 In <strong>8.1.1</strong>, the code performs <strong>GO enrichment analysis</strong> for each <strong>network module</strong>, but only keeps modules with at least <strong>min_genes_module ≥ 5</strong> genes, since very small modules are not reliable for ORA. With the current settings (<strong>min_genes_module = 5</strong>, ontology <strong>ontol = "BP"</strong>), it applies <strong>clusterProfiler::enrichGO()</strong> to each remaining module. From each <strong>enrichment result</strong>, it extracts the <strong>best term</strong>—the row with the smallest adjusted p-value (using <strong>GeneRatio </strong>as a tie-breaker)—and calculates a <strong>module enrichment score</strong> as <strong>−log10(best adjusted p-value)</strong>.
 
 In <strong>8.1.2</strong>, these one-line summaries are merged into a single <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/csv-viewer.html?src=https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/module_enrichment_overview.csv&title=Module%20Enrichment%20Overview" target="_blank" rel="noopener"><strong>module enrichment overview</strong></a> (CSV). This file includes the columns <strong>module</strong>, <strong>n_genes</strong>, <strong>best_term</strong>, <strong>best_padj</strong>, <strong>n_sig_terms</strong> (number of significant GO terms with adjusted p ≤ 0.05), and <strong>score</strong>. Each of these columns provides complementary insights: <strong>best_term</strong> highlights the most characteristic biological process, <strong>best_padj</strong> and <strong>score</strong> quantify its statistical strength, <strong>n_sig_terms</strong> indicates the thematic breadth of enrichment, and <strong>n_genes</strong> records module size.
-In 8.1.3, the code generates two overview figures from this table: (1) a bar plot of module enrichment scores (<a href="#figure-10-1-8-1" onclick="highlightFigure('10-1-8-1')">Figure 10.1.8.1</a>) where higher bars indicate stronger enrichment; (2) a plot of the best GO term per module (<a href="#figure-10-1-8-2" onclick="highlightFigure('10-1-8-2')">Figure 10.1.8.2</a>), which positions each module by its score and labels it with its top BP term.
-
-OLDIn <strong>8.1.3</strong>, the code generates two overview figures from this table:
-(A) a <strong>bar plot of module enrichment scores</strong>, where higher bars indicate stronger enrichment;
-(B) a <strong>plot of the best GO term per module</strong>, which positions each module by its score and labels it with its top BP term. These visualizations provide an intuitive overview of which modules are statistically strongest and what biological processes they represent.
+In 8.1.3, the code generates two overview figures from this table: (1) a bar plot of module enrichment scores (<a href="#figure-10-1-8-1" onclick="highlightFigure('10-1-8-1')">Figure 10.1.8.1</a>) where higher bars indicate stronger enrichment; (2) a plot of the best GO term per module (<a href="#figure-10-1-8-2" onclick="highlightFigure('10-1-8-2')">Figure 10.1.8.2</a>), which positions each module by its score and labels it with its top BP term. These visualizations provide an intuitive overview of which modules are statistically strongest and what biological processes they represent.
 
 In <strong>8.1.4</strong>, the code selects the <strong>top N enriched modules</strong> for detailed visualization using <code>mods_to_plot <- head(enrich_summary$module, top_n_enriched)</code>. With the setting <strong>top_n_enriched = 3</strong>, the three highest-scoring modules are selected for detailed outputs. Finally, in 8.2, the code produces per-module outputs for the <strong>top three enriched modules</strong> (11, 1, and 7), and the code also writes CSV files containing the <strong>GO enrichment results</strong> for <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/csv-viewer.html?src=https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/module_11_GO_BP.csv&title=Module%2011%20enrichment" target="_blank" rel="noopener"><strong>Module 11</strong></a>, <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/csv-viewer.html?src=https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/module_1_GO_BP.csv&title=Module%201%20enrichment" target="_blank" rel="noopener"><strong>Module 1</strong></a>, and <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/csv-viewer.html?src=https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/module_7_GO_BP.csv&title=Module%207%20enrichment" target="_blank" rel="noopener"><strong>Module 7</strong></a>. For every selected module, it writes a <strong>full enrichment CSV</strong> containing all enriched GO terms, with standard <strong>clusterProfiler</strong> fields: <strong>ID</strong> (GO identifier), <strong>Description</strong> (term name), <strong>GeneRatio</strong> (proportion of module genes involved), <strong>BgRatio</strong> (proportion in the background set), <strong>p.adjust</strong> (adjusted p-value, BH correction), <strong>geneID</strong> (list of associated genes), and <strong>Count</strong> (number of genes contributing). In addition, a <strong>combined panel image</strong> is generated for each module that shows side-by-side: (1) the <strong>sub-network</strong> of the module (FR layout; node size = within-module degree; node color = log2FC), and (2) the <strong>GO dot plot</strong> of the top enriched terms (x = −log10 adj.P, dot size = hit count). These combined figures integrate structural network context with functional biological interpretation.
 
@@ -3768,6 +3764,37 @@ for (m in mods_to_plot) {
 <!-- ======================= ======= ======================  ====== -->
 
 
+		
+<!-- Module enrichment overview plots (Section 10.1.8) -->
+<div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 16px;">
+
+  <!-- Figure 10.1.8.1 — Module enrichment scores -->
+  <figure id="figure-10-1-8-1" style="text-align: justify; margin: 10px; flex: 1 1 520px; max-width: 820px;">
+    <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/10.1.8.1.module_enrichment_scores_barplot.png" target="_blank" rel="noopener">
+      <img src="https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/10.1.8.1.module_enrichment_scores_barplot.png"
+           alt="Bar plot of enrichment scores per module"
+           style="display: block; background-color: #0c4b4f; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0,0,0,0.2); width: 85%; height: 80%;">
+    </a>
+    <figcaption id="figure-caption-10-1-8-1">
+      Figure 10.1.8.1. Bar plot of enrichment scores for each module (−log10 of the best adjusted p-value).  
+      Higher bars indicate stronger enrichment, allowing modules to be ranked by statistical strength.
+    </figcaption>
+  </figure>
+
+  <!-- Figure 10.1.8.2 — Best GO term per module -->
+  <figure id="figure-10-1-8-2" style="text-align: justify; margin: 10px; flex: 1 1 520px; max-width: 820px;">
+    <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/10.1.8.2.module_enrichment_best_terms.png" target="_blank" rel="noopener">
+      <img src="https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/10.1.8.2.module_enrichment_best_terms.png"
+           alt="Plot of best GO terms per module with enrichment scores"
+           style="display: block; background-color: #0c4b4f; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0,0,0,0.2); width: 85%; height: 80%;">
+    </a>
+    <figcaption id="figure-caption-10-1-8-2">
+      Figure 10.1.8.2. Plot of the best GO BP term per module, positioned by its enrichment score  
+      (−log10 adjusted p-value). Labels display the top biological process term for each module.
+    </figcaption>
+  </figure>
+
+</div>
 
 
 
