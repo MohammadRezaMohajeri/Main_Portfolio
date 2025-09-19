@@ -3487,7 +3487,7 @@ ggsave(file.path(fig_dir, "7.2.ppi_full_network_modules.png"), p_mod, width = 8,
 
 
 				<li>
-					<strong>What this section does & what it produces (in the order the code runs)</strong> — The block first <strong>tests GO enrichment per module</strong> but only for modules large enough to be meaningful in ORA, i.e. <strong>min_genes_module ≥ 5</strong>. With your settings (<strong>min_genes_module = 5</strong>, ontology <strong>ontol = "BP"</strong>), it runs <code>clusterProfiler::enrichGO()</code> for each remaining module, then for each enrichment table it records the <strong>best term</strong> (the row with the smallest <strong>adjusted P</strong>, with <strong>GeneRatio</strong> as a tie-breaker), and computes a module “strength” <strong>score = −log10(best_p.adjust)</strong>. These one-line summaries are merged and saved as <strong>module_enrichment_overview.csv</strong> with columns <strong>module</strong>, <strong>n_genes</strong>, <strong>best_term</strong>, <strong>best_padj</strong>, <strong>n_sig_terms</strong> (number of terms with adj.P ≤ 0.05), and the <strong>score</strong>. This file is your sortable dashboard: <strong>best_term</strong> names the most characteristic process, <strong>best_padj</strong>/ <strong>score</strong> measure strength, <strong>n_sig_terms</strong> gives thematic breadth, and <strong>n_genes</strong> reminds you of the module’s size. Next, the code makes two overview figures from that table: a <strong>bar plot of module enrichment scores</strong> (higher bars = stronger enrichment) and a <strong>“best GO term per module” plot</strong> that places each module by its score and labels it with its top BP term—great for a quick narrative of “who does what.” Finally, it selects the <strong>top N modules</strong> to visualize in detail, via <code>mods_to_plot <- head(enrich_summary$module, top_n_enriched)</code>. With your setting <strong>top_n_enriched = 3</strong>, that’s why you see modules <strong>1, 7, and 11</strong>. For each of those, the code writes a full enrichment table <strong>module_<em>M</em>GO_BP.csv</strong> (all terms, not just the top one) and produces a <strong>combined panel</strong> image <strong>module<em>M</em>_combo.png</strong> that shows the <strong>module sub-network</strong> (FR layout; node size = within-module degree; node color = log2FC) side-by-side with a <strong>GO dot plot</strong> of the top terms (x = −log10 adj.P; dot size = hit <strong>Count</strong>). The per-module CSV includes the standard <strong>clusterProfiler</strong> fields you’ll actually use: <strong>ID</strong> (GO id), <strong>Description</strong> (term name), <strong>GeneRatio</strong> (hits/genes in this module), <strong>BgRatio</strong> (hits/background genes), <strong>p.adjust</strong> (BH), <strong>geneID</strong> (hit list), and <strong>Count</strong> (hit number). Together, the overview table/plots tell you <em>which</em> modules matter most; the per-module CSV + combo figure tell you <em>why</em> (which processes) and <em>how</em> (which genes/edges).
+					<strong>What this section does & what it produces (in the order the code runs)</strong> — The block first <strong>tests GO enrichment per module</strong> but only for modules large enough to be meaningful in ORA, i.e. <strong>min_genes_module ≥ 5</strong>. With our settings (<strong>min_genes_module = 5</strong>, ontology <strong>ontol = "BP"</strong>), it runs <code>clusterProfiler::enrichGO()</code> for each remaining module, then for each enrichment table it records the <strong>best term</strong> (the row with the smallest <strong>adjusted P</strong>, with <strong>GeneRatio</strong> as a tie-breaker), and computes a module “strength” <strong>score = −log10(best_p.adjust)</strong>. These one-line summaries are merged and saved as <strong>module_enrichment_overview.csv</strong> with columns <strong>module</strong>, <strong>n_genes</strong>, <strong>best_term</strong>, <strong>best_padj</strong>, <strong>n_sig_terms</strong> (number of terms with adj.P ≤ 0.05), and the <strong>score</strong>. This file is your sortable dashboard: <strong>best_term</strong> names the most characteristic process, <strong>best_padj</strong>/ <strong>score</strong> measure strength, <strong>n_sig_terms</strong> gives thematic breadth, and <strong>n_genes</strong> reminds you of the module’s size. Next, the code makes two overview figures from that table: a <strong>bar plot of module enrichment scores</strong> (higher bars = stronger enrichment) and a <strong>“best GO term per module” plot</strong> that places each module by its score and labels it with its top BP term—great for a quick narrative of “who does what.” Finally, it selects the <strong>top N modules</strong> to visualize in detail, via <code>mods_to_plot <- head(enrich_summary$module, top_n_enriched)</code>. With your setting <strong>top_n_enriched = 3</strong>, that’s why you see modules <strong>1, 7, and 11</strong>. For each of those, the code writes a full enrichment table <strong>module_<em>M</em>GO_BP.csv</strong> (all terms, not just the top one) and produces a <strong>combined panel</strong> image <strong>module<em>M</em>_combo.png</strong> that shows the <strong>module sub-network</strong> (FR layout; node size = within-module degree; node color = log2FC) side-by-side with a <strong>GO dot plot</strong> of the top terms (x = −log10 adj.P; dot size = hit <strong>Count</strong>). The per-module CSV includes the standard <strong>clusterProfiler</strong> fields you’ll actually use: <strong>ID</strong> (GO id), <strong>Description</strong> (term name), <strong>GeneRatio</strong> (hits/genes in this module), <strong>BgRatio</strong> (hits/background genes), <strong>p.adjust</strong> (BH), <strong>geneID</strong> (hit list), and <strong>Count</strong> (hit number). Together, the overview table/plots tell you <em>which</em> modules matter most; the per-module CSV + combo figure tell you <em>why</em> (which processes) and <em>how</em> (which genes/edges).
 				</li>
 
 				<li>
@@ -3505,24 +3505,19 @@ ggsave(file.path(fig_dir, "7.2.ppi_full_network_modules.png"), p_mod, width = 8,
 		<div class="code-block">
 		    <pre><code class="language-r">
 			
-
-
- 
+# enrich_summary 
 # ==========================================================
 # [Section 8/9] Enrichment-driven module panels (PNGs + CSVs)
 #    - Rank modules by best adj.P (GO); per-module network + GO dotplot
 # ==========================================================
  
  
+ 
 # 8.1 Rank modules by enrichment and write overview CSV
-
-# - - - - - - - - - 
-# 12) ENRICHMENT-DRIVEN MODULE PANELS
-#     - Rank modules by best adjusted P-value (GO)
-# - - - - - - - - -
-# Helper to create GO dotplot for a module
-# turn a clusterProfiler enrichGO result into a compact dotplot-ready data frame. 
-# Ranks terms by adjusted p-value (then by gene ratio) and keeps the top N.
+# -----------------------------------------------------
+# Helper function: Create GO dotplot for a module
+#   - Turns a clusterProfiler enrichGO result into a compact dotplot-ready data frame
+#   - Ranks terms by adjusted p-value (then by gene ratio) and keeps the top N.
 make_enrich_plot <- function(eg, mod_id, top_n = 10) {
   df <- tryCatch(as.data.frame(eg), error = function(e) NULL)
   if (is.null(df) || nrow(df) == 0) {
@@ -3541,8 +3536,10 @@ make_enrich_plot <- function(eg, mod_id, top_n = 10) {
     theme_minimal(base_size = 11)
 }
 
-# Enrichment per module to rank modules by best adjusted P
-# Only test modules with sufficient size to be meaningful in ORA (e.g., ≥5 genes).
+
+# 8.1.1 Run enrichment per module and extract one-line summaries:
+#  - Enrichment per module to rank modules by best adjusted P
+#  - Only test modules with sufficient size to be meaningful in ORA (e.g., ≥5 genes).
 modules_list_f <- modules_list[sapply(modules_list, length) >= min_genes_module]
 
 # For each module, run enrichGO and extract a one-line summary (best term and its adjusted p-value). 
@@ -3568,12 +3565,69 @@ enrich_per_module <- lapply(names(modules_list_f), function(m) {
   }
 })
 
-# Overview of enrichment across modules (sortable CSV used to pick top modules for plotting).
+# 8.1.2 Generate enrichment summary table (sortable CSV):
+#  - Overview of enrichment across modules (sortable CSV used to pick top modules for plotting).
 enrich_summary <- do.call(rbind, enrich_per_module)
 enrich_summary <- enrich_summary[order(-enrich_summary$score, -enrich_summary$n_genes), ]
 write.csv(enrich_summary, file.path(fig_dir, "module_enrichment_overview.csv"), row.names = FALSE)
 
-# Pick the top N modules by -log10(best adjusted p-value) for focused panels.
+ 
+# 8.1.3 Create overview plots from enrich_summary
+library(ggplot2)
+library(stringr)
+
+# keep modules that were tested and have a score (score = -log10(best_padj))
+enrich_plot_df <- subset(enrich_summary, is.finite(score) & score > 0)
+
+# order modules by score (desc), then by size to keep ties stable
+enrich_plot_df$module <- factor(
+  enrich_plot_df$module,
+  levels = enrich_plot_df$module[order(-enrich_plot_df$score, -enrich_plot_df$n_genes)]
+)
+
+# 8.1.3 (A) Bar chart of enrichment scores per module
+p_scores <- ggplot(enrich_plot_df,
+                   aes(x = module, y = score, fill = module)) +
+  geom_col(width = 0.8, color = "grey60") +
+  geom_text(aes(label = round(score, 1)), vjust = -0.35, size = 3) +
+  scale_fill_viridis_d(option = "C", end = 0.95, guide = "none") +
+  labs(x = "Module ID", y = "-log10(best adj P)",
+       title = "Module enrichment scores") +
+  theme_minimal(base_size = 12) +
+  theme(legend.position = "none",
+        panel.grid.major.x = element_blank(),
+        plot.title = element_text(face = "bold", size = 16),
+        axis.title = element_text(face = "bold")) +
+  expand_limits(y = max(enrich_plot_df$score, na.rm = TRUE) * 1.12)
+
+ggsave(file.path(fig_dir, "module_enrichment_scores_barplot.png"),
+       p_scores, width = 8, height = 4.5, dpi = 320, bg = "white")
+
+
+# 8.1.3 (B) Best term per module (dot + label), positioned by score
+# Wrap long term names so labels don’t run off the page
+enrich_plot_df$best_term_wrapped <- stringr::str_wrap(enrich_plot_df$best_term, width = 40)
+
+p_best <- ggplot(enrich_plot_df,
+                 aes(x = score, y = reorder(module, score))) +
+  geom_point(size = 2.8) +
+  geom_text(aes(label = best_term_wrapped),
+            hjust = 0, nudge_x = 0.25, size = 3) +
+  labs(x = "-log10(best adj P)", y = "Module ID",
+       title = "Top GO BP term per module") +
+  theme_minimal(base_size = 12) +
+  theme(plot.title = element_text(face = "bold", size = 16)) +
+  # leave space on the right for labels
+  coord_cartesian(xlim = c(0, max(enrich_plot_df$score, na.rm = TRUE) * 1.35))
+
+ggsave(file.path(fig_dir, "module_enrichment_best_terms.png"),
+       p_best, width = 10, height = 5.5, dpi = 320, bg = "white")
+# ============================================================================
+
+
+
+
+# 8.1.4 Pick the top N modules by enrichment score, -log10(best adjusted p-value),  for detailed panels
 mods_to_plot <- head(enrich_summary$module, top_n_enriched)
 
 
@@ -3581,7 +3635,7 @@ mods_to_plot <- head(enrich_summary$module, top_n_enriched)
 # 8.2 Per-module network + GO dotplot (+ optional combined)
 # Loop over selected modules: save network + GO dotplot (+ combined)
 for (m in mods_to_plot) {
-  # Enrichment table (full) for this module
+  # 8.2.1 Write full enrichment table for this module
   gsym <- unique(modules_list_f[[m]])
   eg <- tryCatch(
     enrichGO(gene = gsym, OrgDb = org.Hs.eg.db, keyType = "SYMBOL",
@@ -3595,7 +3649,7 @@ for (m in mods_to_plot) {
     write.csv(df_full, file.path(fig_dir, paste0("module_", m, "_GO_", ontol, ".csv")), row.names = FALSE)
   }
 
-  # Build a subgraph of the current module to plot local structure sized by within-module degree.
+  # 8.2.2 Build and plot network for this module, sized by within-module degree.
   g_sub <- induced_subgraph(g, vids = V(g)[module == m])
   deg_sub <- degree(g_sub)
   V(g_sub)$deg_sub <- deg_sub
@@ -3622,24 +3676,29 @@ for (m in mods_to_plot) {
     panel.background = element_rect(fill = "white", colour = NA)
   )
   
-  
-  # GO dotplot for this module (top terms)
+
+  # 8.2.3 GO dotplot for this module (top terms)
   p_enr <- make_enrich_plot(eg, m, top_n = top_terms_show) +
     theme(
     plot.background  = element_rect(fill = "white", colour = NA),
     panel.background = element_rect(fill = "white", colour = NA)
   )
 
+  # 8.2.4 Save outputs:
   # Save per-module network and GO dotplot figures.
   ggsave(file.path(fig_dir, paste0("module_", m, "_network.png")), p_net, width = 7, height = 5, dpi = 300, bg = "white")
   ggsave(file.path(fig_dir, paste0("module_", m, "_GO_", ontol, "_dotplot.png")), p_enr, width = 6, height = 5, dpi = 300, bg = "white")
 
+    # 8.2.5 combined panel (network + enrichment)
   # If patchwork is available, also save a side-by-side composite (network + enrichment) for quick review.
   if (requireNamespace("patchwork", quietly = TRUE)) {
     combined <- p_net + p_enr + patchwork::plot_layout(widths = c(1.6, 1))
     ggsave(file.path(fig_dir, paste0("module_", m, "_combo.png")), combined, width = 12, height = 5, dpi = 300, bg = "white")
   }
 }
+
+
+ 
 
 
 		    </code></pre>
