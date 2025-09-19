@@ -3555,11 +3555,14 @@ make_enrich_plot <- function(eg, mod_id, top_n = 10) {
          title = paste0("GO ", ontol, " enrichment • module ", mod_id)) +
     theme_minimal(base_size = 11)
 }
+#  - Only test modules with sufficient size to be meaningful in ORA (e.g., ≥5 genes).
 
 
 # 8.1.1 Run enrichment per module and extract one-line summaries:
-#  - Enrichment per module to rank modules by best adjusted P
-#  - Only test modules with sufficient size to be meaningful in ORA (e.g., ≥5 genes).
+#   - Start with modules_list, which contains all detected modules (module ID → vector of genes).
+#   - Very small modules (fewer than min_genes_module genes) usually cannot produce reliable GO enrichment.
+#   - Therefore, we filter modules_list to keep only those with at least min_genes_module genes (e.g., ≥5 genes).
+#   - The result, modules_list_f, is the filtered list of modules used for all downstream enrichment analysis.
 modules_list_f <- modules_list[sapply(modules_list, length) >= min_genes_module]
 
 # For each module, run enrichGO and extract a one-line summary (best term and its adjusted p-value). 
