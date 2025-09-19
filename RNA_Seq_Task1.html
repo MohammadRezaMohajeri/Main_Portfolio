@@ -3531,32 +3531,44 @@ ggsave(file.path(fig_dir, "7.2.ppi_full_network_modules.png"), p_mod, width = 8,
 #    - Rank modules by best adj.P (GO); per-module network + GO dotplot
 # ==========================================================
  
- 
- 
-# 8.1 Rank modules by enrichment and write overview CSV
+ # 8.1 Rank modules by enrichment and write overview CSV
 # -----------------------------------------------------
 # Helper function: Create GO dotplot for a module
-#   - Turns a clusterProfiler enrichGO result into a compact dotplot-ready data frame
-#   - Ranks terms by adjusted p-value (then by gene ratio) and keeps the top N.
 make_enrich_plot <- function(eg, mod_id, top_n = 10) {
+  # Convert enrichGO result to a data frame (returns NULL if error)
   df <- tryCatch(as.data.frame(eg), error = function(e) NULL)
+  
+  # If no enrichment results, return a placeholder empty plot
   if (is.null(df) || nrow(df) == 0) {
-    return(ggplot() + theme_void() + ggtitle(paste("No significant GO terms for module", mod_id)))
+    return(ggplot() + theme_void() +
+             ggtitle(paste("No significant GO terms for module", mod_id)))
   }
+  
+  # Add –log10 adjusted p-values for ranking/plotting
   df$neglog10padj <- -log10(df$p.adjust)
+  
+  # Convert GeneRatio from "5/20" to numeric (0.25)
   df$GeneRatioNum <- vapply(strsplit(df$GeneRatio, "/"),
-                            function(x) as.numeric(x[1]) / as.numeric(x[2]), numeric(1))
+                            function(x) as.numeric(x[1]) / as.numeric(x[2]),
+                            numeric(1))
+  
+  # Rank terms by adjusted p-value (smallest first), then by gene ratio
   df <- df[order(df$p.adjust, -df$GeneRatioNum), ]
+  
+  # Keep only the top N terms (default 10)
   df <- head(df, top_n)
 
-  ggplot(df, aes(x = neglog10padj, y = reorder(Description, neglog10padj), size = Count)) +
+  # Create dot plot:
+  #   x = –log10(adj P), y = GO terms, dot size = gene count
+  ggplot(df, aes(x = neglog10padj,
+                 y = reorder(Description, neglog10padj),
+                 size = Count)) +
     geom_point() +
     labs(x = "-log10(adj P)", y = NULL,
          title = paste0("GO ", ontol, " enrichment • module ", mod_id)) +
     theme_minimal(base_size = 11)
 }
-#  - Only test modules with sufficient size to be meaningful in ORA (e.g., ≥5 genes).
-
+	    
 
 # 8.1.1 Run enrichment per module and extract one-line summaries:
 #   - Start with modules_list, which contains all detected modules (module ID → vector of genes).
