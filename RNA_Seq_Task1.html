@@ -3836,16 +3836,19 @@ for (m in mods_to_plot) {
 
 
 				<li>
-					This section starts by defining how <strong>edge distances</strong> should be treated for <strong>path-based centralities</strong>. The <strong>STRING database</strong> gives each <strong>protein–protein interaction</strong> a <strong>confidence score</strong> stored as E(g)$combined_score, where larger values mean stronger evidence. For <strong>centrality measures</strong> like betweenness and closeness, we need distances where <strong>stronger edges are shorter</strong>. The code achieves this with <em>E(g)$dist <- 1 / pmax(E(g)$combined_score, .Machine$double.eps).</em>
+					This section starts by defining how <strong>edge distances</strong> should be treated for <strong>path-based centralities</strong>. The <strong>STRING database</strong> gives each <strong>protein–protein interaction</strong> a <strong>confidence score</strong> stored as E(g)$combined_score, where larger values mean stronger evidence. For <strong>centrality measures</strong> like betweenness and closeness, we need distances where <strong>stronger edges are shorter</strong>. The code achieves this with <em><strong>E(g)$dist <- 1 / pmax(E(g)$combined_score, .Machine$double.eps)</strong></em> .
 				</li>
+				
 
 
 				<li>
+					Here, <em><strong>1 / … </strong></em>inverts the <strong>score</strong>, so that <strong>higher confidence</strong> produces a <strong>shorter distance</strong>, while <em><strong>pmax(…, .Machine$double.eps)</strong></em> prevents division by zero by replacing any <strong>zero</strong> or <strong>near-zero score</strong> with <em><strong>.Machine$double.eps</strong></em>, the <strong>smallest positive number</strong> R can store.
 				</li>
 
 
 
 				<li>
+					With <strong>distances set</strong>, the code calculates a panel of <strong>node centralities</strong>. First, <em><strong>degree(g)</strong></em> measures how many <strong>direct edges</strong> each node has. This is also normalized (deg_norm) by dividing by the maximum possible degree (vcount(g) - 1), so values fall between 0 and 1. Next, strength(g, weights = E(g)$combined_score) computes the <strong>weighted degree</strong>, where edges contribute in proportion to their STRING confidence, so nodes with many strong links stand out.
 				</li>
 
 
