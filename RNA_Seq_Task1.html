@@ -3848,24 +3848,27 @@ for (m in mods_to_plot) {
 
 
 				<li>
-					With <strong>distances set</strong>, the code calculates a panel of <strong>node centralities</strong>. First, <em><strong>degree(g)</strong></em> measures how many <strong>direct edges</strong> each node has. This is also normalized (deg_norm) by dividing by the maximum possible degree (vcount(g) - 1), so values fall between 0 and 1. Next, strength(g, weights = E(g)$combined_score) computes the <strong>weighted degree</strong>, where edges contribute in proportion to their STRING confidence, so nodes with many strong links stand out.
+					With <strong>distances set</strong>, the code calculates a panel of <strong>node centralities</strong>. First, <em><strong>degree(g)</strong></em> measures how many <strong>direct edges</strong> each node has. This is also normalized (<em><strong>deg_norm</strong></em>) by dividing by the <strong>maximum possible degree </strong>(<em><strong>vcount(g) - 1</strong></em>), so values fall between 0 and 1. Next, <em><strong>strength(g, weights = E(g)$combined_score)</strong></em> computes the <strong>weighted degree</strong>, where <strong>edges</strong> contribute in proportion to their <strong>STRING confidence</strong>, so nodes with many strong links stand out.
 				</li>
 
 
 				
 				<li>
-				</li>
-
-
-
-				
-				<li>
+					<strong>Path-based centralities</strong> follow. <em><strong>betweenness(g, weights = E(g)$dist, normalized = TRUE)</strong></em> counts how often a node lies on <strong>shortest paths</strong>, where <strong>“shortest”</strong> is defined by the <strong>high-confidence edges</strong>. <em><strong>closeness(g, weights = E(g)$dist, normalized = TRUE)</strong></em> scores how close a node is on average to all others; if the graph is disconnected, infinite values are replaced with NA. Finally, <em><strong>eigen_centrality(g, weights = E(g)$combined_score)</strong></em> evaluates a <strong>node’s influence</strong> based not only on its own connections but also on whether it connects to other <strong>highly connected nodes</strong>.
 				</li>
 
 
 
 				
 				<li>
+					The results are combined into a tidy <strong>node-level data frame</strong>, storing <strong>gene identifiers</strong> (STRING_id, gene), <strong>module membership</strong>, <strong>centrality scores</strong> (<strong>degree</strong>, <strong>normalized degree</strong>, <strong>weighted strength</strong>, <strong>betweenness</strong>, <strong>closeness</strong>, <strong>eigenvector</strong>), and also the gene’s <strong>log-fold change</strong> (lfc) and <strong>adjusted p-value</strong> (padj). <strong>Nodes</strong> are sorted within each <strong>module</strong> by degree so <strong>hubs</strong> appear first, and the file is exported as <em><strong>ppi_node_centrality.csv</strong></em>.
+				</li>
+
+
+
+				
+				<li>
+					Finally, the code summarizes these values at the <strong>module level</strong>. It records the <strong>module size</strong> (n_genes), calculates <strong>mean centralities</strong> and <strong>median centralities</strong> across genes in each module, and identifies the <strong>top hub gene</strong> by degree. These summaries are merged into one table, ordered by descending <strong>module size</strong>, and saved as <em><strong>ppi_module_centrality_summary.csv</strong></em>.
 				</li>
 
 
