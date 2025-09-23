@@ -3833,6 +3833,41 @@ for (m in mods_to_plot) {
 				<li>
                  Finally, the workflow quantifies <strong>node importance</strong> using <strong>standard centralities</strong> from <strong>igraph</strong>. It defines a <strong>shortest-path distance</strong> as the <strong>inverse of STRING score</strong> so <strong>stronger interactions</strong> are “closer,” then computes <strong>degree</strong> (and <strong>normalised degree</strong>), <strong>weighted strength</strong>, <strong>betweenness</strong> and <strong>closeness</strong> on the <strong>distance metric</strong>, and <strong>eigenvector centrality</strong> on the <strong>raw scores</strong>. A <strong>node-level CSV</strong> records <strong>all metrics</strong> per gene, and a <strong>module-level summary</strong> aggregates <strong>means and medians</strong> and identifies the <strong>top-degree hub</strong> in each <strong>module</strong>. These <strong>tables</strong> support ranking <strong>candidate biomarkers</strong> or <strong>targets</strong>, comparing <strong>modules</strong> by their <strong>internal connectivity</strong>, and cross-referencing <strong>highly central genes</strong> with <strong>enriched processes</strong> discovered earlier.
 				</li>
+
+
+				<li>
+					This section starts by defining how <strong>edge distances</strong> should be treated for <strong>path-based centralities</strong>. The <strong>STRING database</strong> gives each <strong>protein–protein interaction</strong> a <strong>confidence score</strong> stored as E(g)$combined_score, where larger values mean stronger evidence. For <strong>centrality measures</strong> like betweenness and closeness, we need distances where <strong>stronger edges are shorter</strong>. The code achieves this with <em>E(g)$dist <- 1 / pmax(E(g)$combined_score, .Machine$double.eps).</em>
+				</li>
+
+
+				<li>
+				</li>
+
+
+
+				<li>
+				</li>
+
+
+				
+				<li>
+				</li>
+
+
+
+				
+				<li>
+				</li>
+
+
+
+				
+				<li>
+				</li>
+
+
+
+				
 			</ul>
 
  <!-- ======================== CODE START ============================ -->
