@@ -3829,11 +3829,48 @@ for (m in mods_to_plot) {
 
 			<ul>
 				 
-
+===================== 1
 				<li>
                  Finally, the workflow quantifies <strong>node importance</strong> using <strong>standard centralities</strong> from <strong>igraph</strong>. It defines a <strong>shortest-path distance</strong> as the <strong>inverse of STRING score</strong> so <strong>stronger interactions</strong> are “closer,” then computes <strong>degree</strong> (and <strong>normalised degree</strong>), <strong>weighted strength</strong>, <strong>betweenness</strong> and <strong>closeness</strong> on the <strong>distance metric</strong>, and <strong>eigenvector centrality</strong> on the <strong>raw scores</strong>. A <strong>node-level CSV</strong> records <strong>all metrics</strong> per gene, and a <strong>module-level summary</strong> aggregates <strong>means and medians</strong> and identifies the <strong>top-degree hub</strong> in each <strong>module</strong>. These <strong>tables</strong> support ranking <strong>candidate biomarkers</strong> or <strong>targets</strong>, comparing <strong>modules</strong> by their <strong>internal connectivity</strong>, and cross-referencing <strong>highly central genes</strong> with <strong>enriched processes</strong> discovered earlier.
 				</li>
+====================== 2
+<li> <strong>What this section does & what it produces</strong>. Section 9 computes a panel of <strong>centrality metrics</strong> on the <strong>protein–protein interaction (PPI) network</strong> and summarizes them at both the <strong>node level</strong> and the <strong>module level</strong>. These measures quantify how important individual genes (nodes) are in the network and how modules differ in their connectivity. The outputs are exported to two CSV files.
 
+The first file, <strong>ppi_node_centrality.csv</strong>, contains one row per gene with the following columns:
+
+<strong>STRING_id</strong> and <strong>gene</strong>: identifiers linking the node to STRING and its gene symbol.
+
+<strong>module</strong>: the Louvain module membership of the gene.
+
+<strong>degree</strong> and <strong>degree_norm</strong>: the number of direct neighbors of the node (raw and normalized by network size). These highlight <strong>hub genes</strong>.
+
+<strong>strength_w</strong>: weighted degree, summing STRING confidence scores of all edges — this distinguishes hubs that are strongly vs. weakly connected.
+
+<strong>betweenness_w</strong>: how often a node lies on the shortest paths between other nodes (weighted by edge distance). Genes with high values act as <strong>bottlenecks</strong> or <strong>bridges</strong>.
+
+<strong>closeness_w</strong>: the inverse of the average shortest-path length to all other nodes. Genes with high closeness are <strong>well-positioned</strong> to reach the rest of the network quickly.
+
+<strong>eigenvector</strong>: assigns higher values to nodes connected to other central nodes, capturing influence in the network.
+
+<strong>lfc</strong> and <strong>padj</strong>: differential expression statistics, linking network centrality with transcriptomic changes.
+
+This table allows direct <strong>ranking of genes</strong> within or across modules to prioritize candidates for follow-up analysis (e.g., identifying hub genes that are also strongly upregulated).
+
+The second file, <strong>ppi_module_centrality_summary.csv</strong>, condenses these measures at the <strong>module level</strong>. It includes:
+
+<strong>module</strong> and <strong>n_genes</strong>: module ID and size.
+
+Means (<strong>_mean</strong>) and medians (<strong>_median</strong>) for degree, strength, betweenness, closeness, and eigenvector centralities, providing a profile of typical node connectivity within the module.
+
+<strong>top_hub_gene</strong>: the single gene with the highest degree in each module.
+
+Together, these summaries let readers compare modules by connectivity (e.g., which modules are dense vs. sparse) and identify <strong>key hubs</strong> driving each module’s structure. They complement the enrichment analyses by showing not only what processes dominate a module, but also which genes hold central positions in those processes.
+
+</li>
+
+
+======================= 3
+				
 
 				<li>
 					This section starts by defining how <strong>edge distances</strong> should be treated for <strong>path-based centralities</strong>. The <strong>STRING database</strong> gives each <strong>protein–protein interaction</strong> a <strong>confidence score</strong> stored as E(g)$combined_score, where larger values mean stronger evidence. For <strong>centrality measures</strong> like betweenness and closeness, we need distances where <strong>stronger edges are shorter</strong>. The code achieves this with <em><strong>E(g)$dist <- 1 / pmax(E(g)$combined_score, .Machine$double.eps)</strong></em> .
