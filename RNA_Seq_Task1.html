@@ -3888,27 +3888,24 @@ Together, these summaries let readers compare modules by connectivity (e.g., whi
 </ul>
 
 
-				<!-- Candidate gene filtering (Section 10.1.9) -->
-<div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 16px;">
 
-  <!-- Figure 10.1.9.1 — Candidate filtering -->
-  <figure id="figure-10-1-9-1" style="text-align: justify; margin: 10px; flex: 1 1 520px; max-width: 820px;">
-    <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_10.1.9.1_.png" target="_blank" rel="noopener">
-      <img src="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_10.1.9.1_.png"
-           alt="Filtered candidate genes showing thresholds applied for network centrality, log fold change, and adjusted p-value"
-           style="display: block; background-color: #0c4b4f; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0,0,0,0.2); width: 85%; height: 80%;">
-    </a>
-    <figcaption id="figure-caption-10-1-9-1">
-      <strong>Figure 10.1.9.1.</strong> Candidate gene selection based on combined network centrality and differential expression filters. 
-      All genes were first sorted in descending order by <strong>Degree</strong>, and then the top 10% were identified for <strong>Degree</strong>, 
-      <strong>Betweenness</strong>, and <strong>Eigenvector centrality</strong>. From this overlap, only genes with 
-      <strong>log fold change &gt; 1</strong> and <strong>adjusted p-value &lt; 0.0001</strong> were retained. 
-      Columns highlighted in colour indicate whether a gene passed each threshold, and the blue-highlighted rows mark the final set of 
-      candidates that satisfied all criteria.
-    </figcaption>
-  </figure>
+				<!-- ======================== (start) 10-1-9-1 section (Figure after code section) ============================ -->
+<!-- Candidate gene selection table -->
+<div style="display: flex; justify-content: space-around;">
+    
+    <figure id="figure-10-1-9-1" style="text-align: justify; margin: 10px;">
+        <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_10.1.9.1_.png" target="_blank">
+            <img src="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_10.1.9.1_.png" 
+                 alt="Candidate gene selection table with applied filters" 
+                 style="display: block; background-color: #0c4b4f; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 85%; height: 80%;">
+        </a>
+        <figcaption id="figure-caption-10-1-9-1">
+            <strong>Figure 10.1.9.1.</strong> Candidate gene selection based on combined network centrality and differential expression filters. All genes were first sorted in descending order by <strong>Degree</strong>, and then the top 10% were identified for <strong>Degree</strong>, <strong>Betweenness</strong>, and <strong>Eigenvector centrality</strong>. From this overlap, only genes with <strong>log fold change &gt; 1</strong> and <strong>adjusted p-value &lt; 0.0001</strong> were retained. Columns highlighted in colour indicate whether a gene passed each threshold, and the blue-highlighted rows mark the final set of candidates that satisfied all criteria.
+        </figcaption>
+    </figure>
 
 </div>
+
 
  
 				
