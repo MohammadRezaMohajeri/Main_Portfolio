@@ -3867,6 +3867,7 @@ Means (<strong>_mean</strong>) and medians (<strong>_median</strong>) for degree
 Together, these summaries let readers compare modules by connectivity (e.g., which modules are dense vs. sparse) and identify <strong>key hubs</strong> driving each module’s structure. They complement the enrichment analyses by showing not only what processes dominate a module, but also which genes hold central positions in those processes.
 
 </li>
+			</ul>
 ====================
 <ul>
   <li>
@@ -3907,12 +3908,7 @@ Together, these summaries let readers compare modules by connectivity (e.g., whi
 
 </div>
 
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
+	<ul>
 
 				
 				<li>
@@ -3940,7 +3936,7 @@ Together, these summaries let readers compare modules by connectivity (e.g., whi
 					Altogether, the module-level analysis reveals that the most central communities of the network align closely with the dual pathology of atopic dermatitis: immune hyperactivation anchored by cytokines and T-cell regulators, alongside barrier compromise and tissue remodelling driven by structural and enzymatic proteins. By examining not just individual nodes but also the modules that organise them, this file highlights coordinated groups of genes that may act as collective drivers of disease biology, strengthening their candidacy as biomarkers and potential therapeutic entry points.
 				</li>
 
-
+ </ul>
 
 <!-- ======================================= start  Figure 10.1.9.2========================================  -->
 
@@ -3972,6 +3968,7 @@ Together, these summaries let readers compare modules by connectivity (e.g., whi
 
 				
 ==================================
+		<ul>
 				<li>
 					This section starts by defining how <strong>edge distances</strong> should be treated for <strong>path-based centralities</strong>. The <strong>STRING database</strong> gives each <strong>protein–protein interaction</strong> a <strong>confidence score</strong> stored as E(g)$combined_score, where larger values mean stronger evidence. For <strong>centrality measures</strong> like betweenness and closeness, we need distances where <strong>stronger edges are shorter</strong>. The code achieves this with <em><strong>E(g)$dist <- 1 / pmax(E(g)$combined_score, .Machine$double.eps)</strong></em> .
 				</li>
