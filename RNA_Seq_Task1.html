@@ -3959,7 +3959,7 @@ Together, these summaries let readers compare modules by connectivity (e.g., whi
 					        </a>
 					        <figcaption id="figure-caption-10-1-9-2">
 					          <strong>Figure 10.1.9.2.</strong> Highlighting hub modules based on top-quartile centrality thresholds. 
-					          Cutoff values for each centrality measure were calculated using the formula 
+					          Cutoff values for each centrality measure were calculated in Microsoft Excel using the formula 
 					          <code>=BYCOL($C$2:$O$18, LAMBDA(c, QUARTILE.INC(FILTER(c, c&lt;&gt;0), 3)))</code>, which returns the 75th percentile (Q3) while excluding zeros. 
 					          Conditional formatting (<code>=AND(C2&lt;&gt;"", C2 &gt;= C$20)</code>) was applied to highlight all module values above these thresholds, 
 					          corresponding to the top 25% for each measure. Modules <strong>11, 7, 1, and 8</strong> consistently exceeded multiple cutoffs, 
