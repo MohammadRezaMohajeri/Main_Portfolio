@@ -3943,38 +3943,35 @@ Together, these summaries let readers compare modules by connectivity (e.g., whi
  </ul>
 
 <!-- ======================================= start  Figure 10.1.9.2========================================  -->
-
-							<ul>
-							<li style="list-style:none; margin:0; padding:0;">
-
-		
-				<!-- Hub module highlighting table -->
-				<div style="display: flex; justify-content: space-around;">
-				    
-				    <figure id="figure-10-1-9-2" style="text-align: justify; margin: 10px;">
-				        <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_10.1.9.2.png" target="_blank">
-				            <img src="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_10.1.9.2.png" 
-				                 alt="Highlighting hub modules based on top-quartile centrality thresholds" 
-				                 style="display: block; background-color: #0c4b4f; padding: 10px; border-radius: 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); width: 85%; height: 80%;">
-				        </a>
-				        <figcaption id="figure-caption-10-1-9-2">
-				            <strong>Figure 10.1.9.2.</strong> Highlighting hub modules based on top-quartile centrality thresholds. 
-				            Cutoff values for each centrality measure were calculated using the formula 
-				            <code>=BYCOL($C$2:$O$18, LAMBDA(c, QUARTILE.INC(FILTER(c, c&lt;&gt;0), 3)))</code>, which returns the 75th percentile (Q3) while excluding zeros. 
-				            Conditional formatting (<code>=AND(C2&lt;&gt;"", C2 &gt;= C$20)</code>) was applied to highlight all module values above these thresholds, 
-				            corresponding to the top 25% for each measure. Modules <strong>11, 7, 1, and 8</strong> consistently exceeded multiple cutoffs, 
-				            designating them as robust hubs, while <strong>module 2</strong> showed near-threshold values and was considered a borderline hub. 
-				            The associated top hub genes (<strong>CCR7, PTPRC, SPRR1B, IL1B, MMP9</strong>) are functionally linked to immune regulation, 
-				            inflammation, and barrier dysfunction in atopic dermatitis, reinforcing their biological importance.
-				        </figcaption>
-				    </figure>
-				
-				</div>
-
-
-
-								 </li> 
-									  </ul> 
+		<!-- Figure block lives inside its own list item -->
+					<ul>
+					  <li style="list-style:none; margin:0; padding:0;">
+					    <!-- ======================== (start) 10-1-9-2 section (Figure after code section) ============================ -->
+					    <div style="display:flex; justify-content:space-around; flex-wrap:wrap; gap:16px; align-items:flex-start;">
+					      <figure id="figure-10-1-9-2" style="text-align: justify; margin: 10px;">
+					        <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_10.1.9.2.png"
+					           target="_blank" rel="noopener">
+					          <img
+					            src="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_10.1.9.2.png"
+					            alt="Highlighting hub modules based on top-quartile centrality thresholds"
+					            style="display:block; background-color:#0c4b4f; padding:10px; border-radius:15px;
+					                   box-shadow:0 4px 8px rgba(0,0,0,0.2); width:85%; height:auto; max-width:100%;">
+					        </a>
+					        <figcaption id="figure-caption-10-1-9-2">
+					          <strong>Figure 10.1.9.2.</strong> Highlighting hub modules based on top-quartile centrality thresholds. 
+					          Cutoff values for each centrality measure were calculated using the formula 
+					          <code>=BYCOL($C$2:$O$18, LAMBDA(c, QUARTILE.INC(FILTER(c, c&lt;&gt;0), 3)))</code>, which returns the 75th percentile (Q3) while excluding zeros. 
+					          Conditional formatting (<code>=AND(C2&lt;&gt;"", C2 &gt;= C$20)</code>) was applied to highlight all module values above these thresholds, 
+					          corresponding to the top 25% for each measure. Modules <strong>11, 7, 1, and 8</strong> consistently exceeded multiple cutoffs, 
+					          designating them as robust hubs, while <strong>module 2</strong> showed near-threshold values and was considered a borderline hub. 
+					          The associated top hub genes (<strong>CCR7, PTPRC, SPRR1B, IL1B, MMP9</strong>) are functionally linked to immune regulation, 
+					          inflammation, and barrier dysfunction in atopic dermatitis, reinforcing their biological importance.
+					        </figcaption>
+					      </figure>
+					    </div>
+					  </li>
+					</ul>
+ 						
 				<!-- ======================================= end  Figure 10.1.9.2========================================  -->
 
 				
