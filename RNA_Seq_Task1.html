@@ -3975,10 +3975,10 @@ Together, these summaries let readers compare modules by connectivity (e.g., whi
 				<!-- ======================================= end  Figure 10.1.9.2========================================  -->
 
 				
-==================================
+ 
 		<ul>
 				<li>
-					This section starts by defining how <strong>edge distances</strong> should be treated for <strong>path-based centralities</strong>. The <strong>STRING database</strong> gives each <strong>protein–protein interaction</strong> a <strong>confidence score</strong> stored as E(g)$combined_score, where larger values mean stronger evidence. For <strong>centrality measures</strong> like betweenness and closeness, we need distances where <strong>stronger edges are shorter</strong>. The code achieves this with <em><strong>E(g)$dist <- 1 / pmax(E(g)$combined_score, .Machine$double.eps)</strong></em> .
+					Regarding the code Block 10.1.9, we start by defining how <strong>edge distances</strong> should be treated for <strong>path-based centralities</strong>. The <strong>STRING database</strong> gives each <strong>protein–protein interaction</strong> a <strong>confidence score</strong> stored as E(g)$combined_score, where larger values mean stronger evidence. For <strong>centrality measures</strong> like betweenness and closeness, we need distances where <strong>stronger edges are shorter</strong>. The code achieves this with <em><strong>E(g)$dist <- 1 / pmax(E(g)$combined_score, .Machine$double.eps)</strong></em> .
 				</li>
 				
 
