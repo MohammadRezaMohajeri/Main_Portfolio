@@ -3921,7 +3921,7 @@ Together, these summaries let readers compare modules by connectivity (e.g., whi
 
 				
 				<li>
-					When modules are sorted by mean degree, the top 10% stand out as the most densely interconnected groups, containing genes with the highest average numbers of strong STRING-based interactions. For example, Module 11 (hub gene CCR7) shows a mean degree near 19 and a mean strength exceeding 16,000, while Modules 7 (PTPRC) and 8 (IL1B) also emerge among the top-ranked. These modules are structurally dominant because they concentrate multiple highly connected nodes, suggesting they may coordinate functionally important pathways. Strikingly, the same key players that were prioritised at the per-gene level reappear here as module hubs: CCR7 directs T-cell and dendritic-cell trafficking, PTPRC (CD45) regulates T-cell activation signalling, and IL1B encodes a pro-inflammatory cytokine central to the initiation and persistence of skin inflammation. Their recurrence across both analyses underscores their functional centrality in atopic dermatitis.
+					When modules are sorted by mean degree, the top quartile (top 25%) stand out as the most densely interconnected groups, containing genes with the highest average numbers of strong STRING-based interactions. <strong>These thresholds were calculated in Excel using a formula that identifies the 75th percentile (Q3) for each centrality measure while excluding zeros, and conditional formatting was applied to highlight modules exceeding these cutoffs.</strong> For example, Module 11 (hub gene CCR7) shows a mean degree near 19 and a mean strength exceeding 16,000, while Modules 7 (PTPRC) and 8 (IL1B) also emerge among the top-ranked. These modules are structurally dominant because they concentrate multiple highly connected nodes, suggesting they may coordinate functionally important pathways. Strikingly, the same key players that were prioritised at the per-gene level reappear here as module hubs: CCR7 directs T-cell and dendritic-cell trafficking, PTPRC (CD45) regulates T-cell activation signalling, and IL1B encodes a pro-inflammatory cytokine central to the initiation and persistence of skin inflammation. Their recurrence across both analyses underscores their functional centrality in atopic dermatitis.
 				</li>
 
 
@@ -3938,6 +3938,12 @@ Together, these summaries let readers compare modules by connectivity (e.g., whi
 				
 				<li>
 					Altogether, the module-level analysis reveals that the most central communities of the network align closely with the dual pathology of atopic dermatitis: immune hyperactivation anchored by cytokines and T-cell regulators, alongside barrier compromise and tissue remodelling driven by structural and enzymatic proteins. By examining not just individual nodes but also the modules that organise them, this file highlights coordinated groups of genes that may act as collective drivers of disease biology, strengthening their candidacy as biomarkers and potential therapeutic entry points.
+				</li>
+
+				<li>
+					<strong>
+						Our network analysis, based on top-quartile centrality thresholds (excluding zeros), revealed that modules 11, 7, 1, and 8 consistently emerge as hubs across multiple centrality measures, with module 2 also included as a borderline candidate due to its close similarity. The top hub genes within these modules include CCR7, PTPRC, SPRR1B, IL1B, and MMP9, many of which have well-established roles in immune regulation, leukocyte trafficking, barrier integrity, and inflammatory signalling—key processes underlying atopic dermatitis (AD). For instance, CCR7 and PTPRC highlight aberrant immune cell recruitment and activation, while IL1B and MMP9 are classic mediators of tissue inflammation and remodelling. SPRR1B, associated with epidermal differentiation, reflects the barrier dysfunction central to AD pathogenesis. Together, these hub modules and their genes represent biologically coherent drivers of the lesional versus non-lesional skin state, pointing to potential biomarker candidates and therapeutic targets for AD.
+					</strong>
 				</li>
 
  </ul>
