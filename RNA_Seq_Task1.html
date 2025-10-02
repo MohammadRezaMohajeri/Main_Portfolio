@@ -2697,6 +2697,12 @@ selected_groups <- c("m0_AL", "cyclosporine_m3_AL")
 				<li>
 					This block prepares the <strong>PPI workflow’s shared environment</strong> so everything downstream uses the same <strong>thresholds</strong>, <strong>folders</strong>, and <strong>dependencies</strong>. It loads packages for <strong>STRING queries (STRINGdb)</strong>, <strong>GO enrichment (clusterProfiler, org.Hs.eg.db)</strong>, <strong>graph construction and layouts (igraph, tidygraph, ggraph)</strong>, and <strong>plotting utilities (ggplot2, ggrepel, grid, scales)</strong>. It then defines the <strong>analysis “knobs”</strong> such as the <strong>STRING confidence cutoff</strong>, <strong>DEG filters</strong>, and <strong>how many genes to carry forward</strong>, creates a single <strong>output directory</strong>, registers filenames for tables generated later, and sets <strong>GO enrichment options</strong>. Finally, it checks that the <strong>DESeq2 objects</strong> exist. This section doesn’t write results; it standardizes <strong>configuration</strong> so all later sections read and write consistently under <strong>fig_dir</strong>.
 				</li>	
+
+				
+                <li>
+In the raw STRING database, the combined score ranges from 0 to 1000, and common confidence thresholds are >150 (low), >400 (medium), >700 (high), and >900 (very high) (as used by STRING wrappers like rbioapi). In DEG-based PPI network analyses, many studies use ≥400 (medium confidence) to retain a broader network, whereas ≥700 (high confidence) is preferred when focusing on more reliable interactions, and ≥900 (very high confidence) is sometimes used as a strict filter for validation or visualization (https://rbioapi.moosa-r.com/reference/rba_string_interactions_network.html#:~:text=Numeric%3A%20A%20minimum%20of%20interaction%20score%20for%20an%20interaction%20to%20be%20included%20in%20the%20image.,Highest%20confidence%20%3D%20900)).				</li>
+
+				
 			</ul>
 
  <!-- ======================== CODE START ============================ -->
