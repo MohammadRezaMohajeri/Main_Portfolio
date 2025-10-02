@@ -3088,7 +3088,7 @@ deg <- degree(g)
 V(g)$deg  <- deg 
 
 
-# Create a categorical vertex attribute "sign" from log2 fold-change (V(g)$lfc).
+# Create a categorical vertex (node) attribute "sign" from log2 fold-change (V(g)$lfc).
 # Nodes with lfc >= 0 are labeled "Upregulated", others "Downregulated".
 # (Assumes V(g)$lfc was set earlier when the graph was built.)
 V(g)$sign <- ifelse(V(g)$lfc >= 0, "Upregulated", "Downregulated")
@@ -3963,7 +3963,7 @@ for (m in mods_to_plot) {
  
 		<ul>
 				<li>
-					The following code (<strong>Code Block 10.1.9</strong>) implements these calculations step by step, beginning with the definition of edge distances for path-based centralities. The <strong>STRING database</strong> gives each <strong>protein–protein interaction</strong> a <strong>confidence score</strong> stored as E(g)$combined_score, where larger values mean stronger evidence. For <strong>centrality measures</strong> like betweenness and closeness, we need distances where <strong>stronger edges are shorter</strong>. The code achieves this with <em><strong>E(g)$dist <- 1 / pmax(E(g)$combined_score, .Machine$double.eps)</strong></em> .
+					The following code (<strong>Code Block 10.1.9</strong>) implements these calculations step by step, beginning with the definition of edge distances for path-based centralities. The <strong>STRING database</strong> gives each <strong>protein–protein interaction</strong> a <strong>confidence score</strong> stored as <strong>E(g)$combined_score</strong>, where larger values mean stronger evidence. For <strong>centrality measures</strong> like betweenness and closeness, we need distances where <strong>stronger edges are shorter</strong>. The code achieves this with <em><strong>E(g)$dist <- 1 / pmax(E(g)$combined_score, .Machine$double.eps)</strong></em> .
 				</li>
 				
 
