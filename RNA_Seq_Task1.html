@@ -301,7 +301,7 @@
 	library(umap)            # Dimensionality reduction for visualization
 	library(ggplot2)         # General-purpose plotting
 	library(clusterProfiler) # For functional enrichment analysis
-	library(org.Hs.eg.db)    # Human genome annotations
+	library(org.Hs.eg.db)    # Human genome annotations (the Human Genome Annotation package)
 	library(VennDiagram)     # Venn diagram visualization
 	library(knitr)           # Report generation and table formatting (for kable)
 	library(tinytex)         # LaTeX support for report generation
@@ -2695,7 +2695,7 @@ selected_groups <- c("m0_AL", "cyclosporine_m3_AL")
 			<ul>
 				
 				<li>
-					This block prepares the <strong>PPI workflow’s shared environment</strong> so everything downstream uses the same <strong>thresholds</strong>, <strong>folders</strong>, and <strong>dependencies</strong>. It loads packages for <strong>STRING queries (STRINGdb)</strong>, <strong>GO enrichment (clusterProfiler, org.Hs.eg.db)</strong>, <strong>graph construction and layouts (igraph, tidygraph, ggraph)</strong>, and <strong>plotting utilities (ggplot2, ggrepel, grid, scales)</strong>. It then defines the <strong>analysis “knobs”</strong> such as the <strong>STRING confidence cutoff</strong>, <strong>DEG filters</strong>, and <strong>how many genes to carry forward</strong>, creates a single <strong>output directory</strong>, registers filenames for tables generated later, and sets <strong>GO enrichment options</strong>. Finally, it checks that the <strong>DESeq2 objects</strong> exist. This section doesn’t write results; it standardizes <strong>configuration</strong> so all later sections read and write consistently under <strong>fig_dir</strong>.
+					This block prepares the <strong>PPI workflow’s shared environment</strong> so everything downstream uses the same <strong>thresholds</strong>, <strong>folders</strong>, and <strong>dependencies</strong>. It loads packages for <strong>STRING queries (STRINGdb)</strong>, (<strong>GO enrichment clusterProfiler, org.Hs.eg.db</strong>(human genome annotation package)), <strong>graph construction and layouts (igraph, tidygraph, ggraph)</strong>, and <strong>plotting utilities (ggplot2, ggrepel, grid, scales)</strong>. It then defines the <strong>analysis “knobs”</strong> such as the <strong>STRING confidence cutoff</strong>, <strong>DEG filters</strong>, and <strong>how many genes to carry forward</strong>, creates a single <strong>output directory</strong>, registers filenames for tables generated later, and sets <strong>GO enrichment options</strong>. Finally, it checks that the <strong>DESeq2 objects</strong> exist. This section doesn’t write results; it standardizes <strong>configuration</strong> so all later sections read and write consistently under <strong>fig_dir</strong>.
 				</li>	
 
 				
