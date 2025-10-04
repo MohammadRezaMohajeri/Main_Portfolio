@@ -2808,6 +2808,32 @@ if (!exists("res") || !exists("res_shrunk")) {
 				 </li>
 			</ul>
 
+
+	<!-- ======================================= start  Figure 10.1.2.1 (df2) ========================================  -->
+<ul>
+  <li style="list-style:none; margin:0; padding:0;">
+    <!-- ======================== (start) 10-1-2-1 section (Figure after code section) ============================ -->
+    <div style="display:flex; justify-content:space-around; flex-wrap:wrap; gap:16px; align-items:flex-start;">
+      <figure id="figure-10-1-2-1" style="text-align: justify; margin: 10px;">
+        <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_10.1.2.1.png"
+           target="_blank" rel="noopener">
+          <img
+            src="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_10.1.2.1.png"
+            alt="Filtered DEG table (df2) used as seed input for STRING PPI network"
+            style="display:block; background-color:#0c4b4f; padding:10px; border-radius:15px;
+                   box-shadow:0 4px 8px rgba(0,0,0,0.2); width:85%; height:auto; max-width:650px;">
+        </a>
+        <figcaption id="figure-caption-10-1-2-1">
+<strong>Figure 10.1.2.1.</strong> Clean DEG table (<strong>df2</strong>) prepared as input for STRING. ENSEMBL IDs were converted to HGNC symbols after filtering by significance and effect size, ranking by absolute log2 fold change, and selecting the top genes. This table preserves DE statistics and defines the gene set seeding the PPI network.
+        </figcaption>
+      </figure>
+    </div>
+  </li>
+</ul>
+<!-- ======================================= end  Figure 10.1.2.1 (df2) ========================================  -->
+
+	
+
  <!-- ======================== CODE START ============================ -->
 		<!-- ======= 10.1.2. code chunk =========== -->
 		<!-- Caption for the code block -->
@@ -2883,28 +2909,7 @@ if (nrow(df2) < 10) stop("Too few SYMBOLs after mapping; increase top_k or check
 
 
 
-	<!-- ======================================= start  Figure 10.1.2.1 (df2) ========================================  -->
-<ul>
-  <li style="list-style:none; margin:0; padding:0;">
-    <!-- ======================== (start) 10-1-2-1 section (Figure after code section) ============================ -->
-    <div style="display:flex; justify-content:space-around; flex-wrap:wrap; gap:16px; align-items:flex-start;">
-      <figure id="figure-10-1-2-1" style="text-align: justify; margin: 10px;">
-        <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_10.1.2.1.png"
-           target="_blank" rel="noopener">
-          <img
-            src="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_10.1.2.1.png"
-            alt="Filtered DEG table (df2) used as seed input for STRING PPI network"
-            style="display:block; background-color:#0c4b4f; padding:10px; border-radius:15px;
-                   box-shadow:0 4px 8px rgba(0,0,0,0.2); width:85%; height:auto; max-width:650px;">
-        </a>
-        <figcaption id="figure-caption-10-1-2-1">
-<strong>Figure 10.1.2.1.</strong> Clean DEG table (<strong>df2</strong>) prepared as input for STRING. ENSEMBL IDs were converted to HGNC symbols after filtering by significance and effect size, ranking by absolute log2 fold change, and selecting the top genes. This table preserves DE statistics and defines the gene set seeding the PPI network.
-        </figcaption>
-      </figure>
-    </div>
-  </li>
-</ul>
-<!-- ======================================= end  Figure 10.1.2.1 (df2) ========================================  -->
+	
 
 
 
