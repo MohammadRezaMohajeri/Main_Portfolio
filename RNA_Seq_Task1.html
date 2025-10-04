@@ -2934,7 +2934,7 @@ OLD:
 
 
 				<li>
-					
+					Next, we fetch all <strong>high-confidence interactions</strong> among the <strong>mapped proteins</strong> using <strong>string_db$get_interactions()</strong>. This produces an <strong>edge list  </strong>containing <strong>protein–protein pairs</strong> (<strong>from</strong>, <strong>to</strong>) and their combined confidence scores <strong>(Figure 10.1.3.2)</strong>. Using <strong>subset()</strong>function, we then filter this list to keep only interactions above the chosen score threshold, and only those where both proteins are part of our mapped set. At this stage, the table may still contain duplicated interactions written in opposite directions (e.g., A→B and B→A).
 				</li>
 
 
