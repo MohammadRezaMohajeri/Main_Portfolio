@@ -2920,13 +2920,6 @@ if (nrow(df2) < 10) stop("Too few SYMBOLs after mapping; increase top_k or check
 			<ul>
 
 
-				
-OLD:
-				<li>
-					This step moves from genes to <strong>protein IDs</strong> for <strong>human (version 12)</strong> and gathers the <strong>interaction edges</strong>. Using <strong>STRINGdb$new</strong>, <strong>map</strong>, and <strong>get_interactions</strong>, symbols are mapped to <strong>STRING protein IDs</strong>, ordered by significance (<strong>padj</strong>), and <strong>duplicates are removed</strong> so that only the most significant entry per STRING protein remains (Figure 10.1.3.1).<strong> High-confidence interactions</strong> among the mapped set were then retrieved, as <strong>edges</strong>, at the chosen <strong>score threshold</strong> (Figure 10.1.3.2). Before <strong>graph construction</strong>, <strong>HGNC symbols</strong> are mapped to <strong>STRING protein IDs</strong> with <strong>removeUnmappedRows=TRUE</strong> (<strong>unmapped rows</strong> are dropped); when multiple <strong>symbols</strong> map to the same <strong>STRING_id</strong>, rows are ordered by <strong>padj</strong> (ascending) and duplicates are removed with <strong>!duplicated(STRING_id)</strong> so a <strong>single, most significant entry</strong> remains per <strong>protein</strong>. Edges are pruned to <strong>undirected unique pairs</strong> by building a <strong>pairwise key</strong>, ensuring each protein pair appears once. The result is an <strong>edge list</strong> with <strong>combined_score weights</strong> plus a vetted <strong>node table</strong> of <strong>mapped proteins</strong>. These two objects are the inputs for <strong>graph construction</strong> in the next section and encode both <strong>network membership</strong> and <strong>interaction strength</strong>.
-				</li>
-
-==================== Start NEW: ============
 
 				<li>
 					This step first creates a <strong>STRING object </strong> (<strong>string_db</strong>) for the human database (version 12), setting a <strong>confidence cutoff</strong> (<strong>min_score <- 700</strong>), that instructs STRING to return only interactions at or above our chosen confidence, so that only reliable, high confidence interactions are considered. Then, using this <strong>string_db</strong> object, we map our HGNC <strong>symbols</strong> from <strong>df2</strong> to <strong>STRING protein IDs</strong> with the function <strong>string_db$map()</strong>. Any genes without a STRING match (<strong>removeUnmappedRows = TRUE</strong>) are removed. Because some symbols can map to the same STRING protein, we order rows by significance (<strong>padj</strong>) and then keep only the most significant match per protein using <strong>!duplicated(STRING_id)</strong>. The result is a clean table of unique STRING protein IDs (<strong>STRING_id</strong>) and retained DE statistics (<strong>Symbol</strong>, <strong>Ensembl</strong>, <strong>padj</strong>, <strong>LFC</strong>) (<Strong>Figure 10.1.3.1</Strong>).
@@ -2942,8 +2935,8 @@ OLD:
 					To make the network <strong>undirected </strong>(an <strong>undirected network</strong> means that the <strong>relationship</strong> between interacting proteins is <strong>mutual</strong> and not directional) and unique, we build a new column called <strong>key</strong>. This uses <strong>ifelse(edges$from < edges$to, paste(edges$from, edges$to), paste(edges$to, edges$from))</strong> to always put the smaller protein ID first. Since STRING IDs are character strings, “smaller” here means alphabetically earlier. This guarantees that (A,B) and (B,A) are always written the same way. We then use <strong>!duplicated(key)</strong> to remove repeats, leaving each protein pair only once. The result is a streamlined <strong>edge</strong> list <strong>(Figure 10.1.3.3)</strong> where every interaction is unique and <strong>undirected</strong>, ready for graph construction .
 				</li>
 
-==================== End NEW: ============
 
+						
 			</ul>
 
  <!-- ======================== CODE START ============================ -->
