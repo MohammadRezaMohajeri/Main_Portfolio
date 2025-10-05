@@ -3129,26 +3129,27 @@ edges <- edges[!duplicated(key), ]
 				
 <!-- ========================================== Start Paragraph 2 ============================ -->
 				<li>
-					Next, we build an undirected graph from the edge list and vertex table using the igraph::graph_from_data_frame() function. This function converts tabular edge and vertex data into an igraph network object in R. Here, d = edges provides the list of protein–protein connections (columns: from, to, and combined_score from Section 3), while vertices = verts supplies metadata for each node. Setting directed = FALSE specifies that the graph is undirected, reflecting that STRING protein–protein interactions (PPIs) are mutual relationships without directionality.
+					This section creates the actual network graph using the previously mapped proteins and their interactions. We first extract the vertex information from the mapped data to form the verts object, which includes only the essential attributes for each node: STRING_id, SYMBOL, LFC, and padj. These attributes provide each protein’s identifier, gene symbol, log fold change, and adjusted p-value, respectively. The command colnames(verts)[1] <- "name" renames the STRING_id column to name, which is the standard naming convention expected by igraph when building a graph. Each row in this table represents a unique protein node, and its attributes will later appear as vertex metadata in the network visualization (Figure 10.1.4.1).
 				</li>
 
 
 			
 				<li>
-					In this construction, each vertex inherits the attributes label (gene symbol), lfc (log fold change), and padj (adjusted p-value). If vertices is provided, the first column (name) is automatically used as the vertex identifier, and all other columns are stored as vertex attributes, enabling downstream visualization and analysis.
-				</li>
+					Next, we build an undirected graph from the edge list and vertex table using the igraph::graph_from_data_frame() function. This function converts tabular edge and vertex data into an igraph network object in R. Here, d = edges provides the list of protein–protein connections (columns: from, to, and combined_score, obtained from Section 3), while vertices = verts supplies metadata for each node. Setting directed = FALSE specifies that the graph is undirected, reflecting that STRING protein–protein interactions (PPIs) are mutual relationships without directionality. In this construction, each vertex inherits the attributes label (gene symbol), lfc (log fold change), and padj (adjusted p-value). If the vertices argument is provided, the first column (name) is automatically used as the vertex identifier, and all other columns are stored as vertex attributes. This ensures that each vertex is annotated with the information required for biological interpretation and visualization.
+
+ 				</li>
 
 				<li>
-					Afterward, we simplify the graph using the simplify() function to remove loops (self-connections) and multiple edges (repeated links between the same proteins). Loops and redundant edges are biologically meaningless in this context, as a protein cannot interact with itself, and duplicate edges inflate connectivity artificially. Simplifying ensures a clean, non-redundant network ready for component analysis.
-				</li>
+					Afterward, we simplify the graph using the simplify() function to remove loops (self-connections) and multiple edges (repeated links between the same proteins). Loops and redundant edges are biologically meaningless in this context because a protein cannot interact with itself, and duplicate edges would artificially inflate network connectivity. Simplifying ensures a clean, non-redundant network ready for component analysis.
+ 				</li>
 <!-- ========================================== End Paragraph 2 ============================ -->
 
 
 
 <!-- ========================================== Start Paragraph 3 ============================ -->
 				<li>
-					The next step identifies and retains only meaningful connected components — groups of proteins that are directly or indirectly linked in the network. The function components(g) returns a list (Figure 10.1.4.2) describing the structure of these clusters with: <strong>membership</strong>: assigns each node to a component, <strong>csize</strong>: gives the size (number of nodes) of each component, and <strong>no</strong>: reports the total number of detected components.
-				</li>
+					The next step identifies and retains only meaningful connected components—groups of proteins that are directly or indirectly linked in the network. The function components(g) returns a list describing the structure of these clusters <a href="#figure-10-1-4-2" onclick="highlightFigure('10-1-4-2')"><strong>(Figure 10.1.4.2)</strong></a>. This list contains several elements: membership, which assigns each node to a component; csize, which gives the number of nodes in each component; and no, which reports the total number of components detected. To exclude very small or isolated subgraphs, we use keep <- which(comp$csize[comp$membership] >= 3) to retain only components with three or more nodes, ensuring that each remaining subnetwork is large enough to be biologically meaningful. Finally, induced_subgraph(g, vids = keep) constructs a new graph that includes only the selected components. The resulting filtered graph represents only connected protein subnetworks that will be further analyzed for modular organization and centrality in the next section.
+ 				</li>
 
 
 <!-- ============================ Figure 10.1.4.2 (comp) ============================ -->
@@ -3172,8 +3173,7 @@ edges <- edges[!duplicated(key), ]
 
 				
 				<li>
-					To exclude very small or isolated subgraphs, we use keep <- which(comp$csize[comp$membership] >= 3) to retain only components with three or more nodes, ensuring that each remaining subnetwork has biological relevance. Finally, induced_subgraph(g, vids = keep) constructs a new graph containing only the selected components. This filtered graph forms the backbone for network topology analysis and module detection in the next section.
-				</li>
+ 				</li>
 
 				
 <!-- ========================================== End Paragraph 3 ============================ -->
