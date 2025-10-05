@@ -3091,9 +3091,95 @@ edges <- edges[!duplicated(key), ]
 
 			<ul>
 
+				
+================== OLD: ====
 				<li>
 				The code now assembles a <strong>weighted protein network</strong>. With <strong>igraph::graph_from_data_frame</strong>, it builds an <strong>undirected igraph</strong> whose nodes carry <strong>gene labels</strong>, <strong>log2FC</strong>, and <strong>padj</strong>, and whose edges carry <strong>STRING combined_score</strong>. <strong>igraph::simplify</strong> removes <strong>loops</strong> and <strong>multiple edges</strong> while averaging scores if needed, producing a <strong>canonical representation</strong>. Using <strong>components</strong> and <strong>induced_subgraph</strong>, it keeps only <strong>connected components</strong> with <strong>at least three nodes</strong> so small fragments do not dominate the <strong>figures</strong> or <strong>summaries</strong>. The output is a <strong>tidy igraph object (g)</strong> that captures the <strong>substantive structure</strong> used by all <strong>downstream computations</strong> and <strong>plots</strong>.	
 				</li>
+
+
+==================== NEW =================
+				
+<!-- ========================================== Start Paragraph 1 ============================ -->
+
+				<li>
+					This step begins by creating a vertex table (verts) using the mapped results from the previous section. We select the key columns — "STRING_id", "SYMBOL", "LFC", and "padj" — to retain both the protein identifiers and their differential expression statistics. The "STRING_id" is then renamed to "name" (colnames(verts)[1] <- "name") because the igraph package expects a vertex attribute called "name" to uniquely identify each node. This ensures compatibility when constructing the network graph. The resulting table <a href="#figure-10-1-4-1" onclick="highlightFigure('10-1-4-1')"><strong>(Figure 10.1.4.1)</strong></a> forms the foundation for node attributes, linking STRING protein IDs with their corresponding gene symbols, log fold change (LFC), and adjusted p-values.
+				</li>
+				
+<!-- ============================ Figure 10.1.4.1 (verts) ============================ -->
+<div style="display:flex; justify-content:center;">
+  <figure id="figure-10-1-4-1" style="text-align: justify; margin: 10px;">
+    <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_10.1.4.1.png"
+       target="_blank" rel="noopener">
+      <img src="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_10.1.4.1.png"
+           alt="verts object containing unique STRING protein IDs with SYMBOL, LFC, and padj columns"
+           style="display:block; background-color:#0c4b4f; padding:10px; border-radius:15px;
+                  box-shadow:0 4px 8px rgba(0,0,0,0.2); width:100%; height:auto; max-width: 650px;">
+    </a>
+    <figcaption id="figure-caption-10-1-4-1">
+      <strong>Figure 10.1.4.1.</strong> View of the <code>verts</code> object created from the mapped data,
+      containing unique STRING protein IDs (<code>name</code>) along with <code>SYMBOL</code>, <code>LFC</code>,
+      and <code>padj</code>. This table defines the node attributes used when constructing the igraph network.
+    </figcaption>
+  </figure>
+</div>
+<!-- ========================================== End Paragraph 1 ============================ -->
+
+
+				
+<!-- ========================================== Start Paragraph 2 ============================ -->
+				<li>
+					Next, we build an undirected graph from the edge list and vertex table using the igraph::graph_from_data_frame() function. This function converts tabular edge and vertex data into an igraph network object in R. Here, d = edges provides the list of protein–protein connections (columns: from, to, and combined_score from Section 3), while vertices = verts supplies metadata for each node. Setting directed = FALSE specifies that the graph is undirected, reflecting that STRING protein–protein interactions (PPIs) are mutual relationships without directionality.
+				</li>
+
+
+			
+				<li>
+					In this construction, each vertex inherits the attributes label (gene symbol), lfc (log fold change), and padj (adjusted p-value). If vertices is provided, the first column (name) is automatically used as the vertex identifier, and all other columns are stored as vertex attributes, enabling downstream visualization and analysis.
+				</li>
+
+				<li>
+					Afterward, we simplify the graph using the simplify() function to remove loops (self-connections) and multiple edges (repeated links between the same proteins). Loops and redundant edges are biologically meaningless in this context, as a protein cannot interact with itself, and duplicate edges inflate connectivity artificially. Simplifying ensures a clean, non-redundant network ready for component analysis.
+				</li>
+<!-- ========================================== End Paragraph 2 ============================ -->
+
+
+
+<!-- ========================================== Start Paragraph 3 ============================ -->
+				<li>
+					The next step identifies and retains only meaningful connected components — groups of proteins that are directly or indirectly linked in the network. The function components(g) returns a list (Figure 10.1.4.2) describing the structure of these clusters with: <strong>membership</strong>: assigns each node to a component, <strong>csize</strong>: gives the size (number of nodes) of each component, and <strong>no</strong>: reports the total number of detected components.
+				</li>
+
+
+<!-- ============================ Figure 10.1.4.2 (comp) ============================ -->
+<div style="display:flex; justify-content:center;">
+  <figure id="figure-10-1-4-2" style="text-align: justify; margin: 10px;">
+    <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_10.1.4.2.png"
+       target="_blank" rel="noopener">
+      <img src="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_10.1.4.2.png"
+           alt="comp object showing membership, csize, and number of components in igraph"
+           style="display:block; background-color:#0c4b4f; padding:10px; border-radius:15px;
+                  box-shadow:0 4px 8px rgba(0,0,0,0.2); width:100%; height:auto; max-width: 650px;">
+    </a>
+    <figcaption id="figure-caption-10-1-4-2">
+      <strong>Figure 10.1.4.2.</strong> The <code>comp</code> object returned by <code>components(g)</code>,
+      showing connected component membership for each protein, the component sizes (<code>csize</code>),
+      and the total number of detected components (<code>no</code>).
+    </figcaption>
+  </figure>
+</div>
+
+
+				
+				<li>
+					To exclude very small or isolated subgraphs, we use keep <- which(comp$csize[comp$membership] >= 3) to retain only components with three or more nodes, ensuring that each remaining subnetwork has biological relevance. Finally, induced_subgraph(g, vids = keep) constructs a new graph containing only the selected components. This filtered graph forms the backbone for network topology analysis and module detection in the next section.
+				</li>
+
+				
+<!-- ========================================== End Paragraph 3 ============================ -->
+
+
+				
 			</ul>
 
  <!-- ======================== CODE START ============================ -->
