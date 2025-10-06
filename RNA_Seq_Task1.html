@@ -3131,14 +3131,11 @@ Paragraph 1: For verts, I am showing it as Figure (Figure 10.1.4.1: first image 
 				
 <!-- ========================================== Start Paragraph 2 ============================ -->
 				<li>
-					Next, we build an undirected graph from the edge list and vertex table using the igraph::graph_from_data_frame() function. This function converts tabular edge and vertex data into an igraph network object in R. The d argument in the igraph graph_from_data_frame() function is a data frame that serves as the edge list for the graph. It must contain at least two columns, which represent the "from" and "to" nodes for each edge. Any additional columns in this data frame are automatically used as edge attributes, such as combined_score. The vertices argument is an optional data frame that defines the graph’s nodes and their attributes. Its first column (name = verts$name) specifies the vertex identifiers, while the remaining columns—such as label, lfc, and padj—are automatically added as vertex attributes. Setting directed = FALSE specifies that the graph is undirected, reflecting that STRING protein–protein interactions (PPIs) are mutual relationships without directionality.
+					Next, we build an undirected graph from the edge list and vertex table using the igraph::graph_from_data_frame() function. This function converts tabular edge and vertex data into an igraph network object in R. The d argument (edges, shown in <a href="#figure-10-1-3-3" onclick="highlightFigure('10-1-3-3')"><strong>Figure 10.1.3.3</strong></a>) in the igraph graph_from_data_frame() function is a data frame that serves as the edge list for the graph. It must contain at least two columns, which represent the "from" and "to" nodes for each edge. Any additional columns in this data frame are automatically used as edge attributes, such as combined_score. Setting directed = FALSE specifies that the graph is undirected, reflecting that STRING protein–protein interactions (PPIs) are mutual relationships without directionality. The vertices argument is an optional data frame that defines the graph’s nodes and their attributes. Its first column (name = verts$name) specifies the vertex identifiers, while the remaining columns—such as label, lfc, and padj—are automatically added as vertex attributes. 
 				</li>
 
 
 			
-				<li>
-				In this construction, each vertex inherits the attributes label (gene symbol), lfc (log fold change), and padj (adjusted p-value). If vertices is provided, the first column (name) is automatically used as the vertex identifier, and all other columns are stored as vertex attributes, enabling downstream visualization and analysis.
- 				</li>
 
 				<li>
 					Afterward, we simplify the graph using the simplify() function to remove loops (self-connections) and multiple edges (repeated links between the same proteins). Loops and redundant edges are biologically meaningless in this context, as a protein cannot interact with itself, and duplicate edges inflate connectivity artificially. Simplifying ensures a clean, non-redundant network ready for component analysis.
