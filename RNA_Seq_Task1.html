@@ -3131,7 +3131,7 @@ Paragraph 1: For verts, I am showing it as Figure (Figure 10.1.4.1: first image 
 				
 <!-- ========================================== Start Paragraph 2 ============================ -->
 				<li>
-					Next, we build an undirected graph from the edge list and vertex table using the igraph::graph_from_data_frame() function. This function converts tabular edge and vertex data into an igraph network object in R. Here, d = edges provides the list of protein–protein connections (columns: from, to, and combined_score from Section 3), while vertices = verts supplies metadata for each node. Setting directed = FALSE specifies that the graph is undirected, reflecting that STRING protein–protein interactions (PPIs) are mutual relationships without directionality.
+					Next, we build an undirected graph from the edge list and vertex table using the igraph::graph_from_data_frame() function. This function converts tabular edge and vertex data into an igraph network object in R. The d argument in the igraph graph_from_data_frame() function is a data frame that serves as the edge list for the graph. It must contain at least two columns, which represent the "from" and "to" nodes for each edge. Any additional columns in this data frame are automatically used as edge attributes, such as combined_score. The vertices argument is an optional data frame that defines the graph’s nodes and their attributes. Its first column (name = verts$name) specifies the vertex identifiers, while the remaining columns—such as label, lfc, and padj—are automatically added as vertex attributes. Setting directed = FALSE specifies that the graph is undirected, reflecting that STRING protein–protein interactions (PPIs) are mutual relationships without directionality.
 				</li>
 
 
