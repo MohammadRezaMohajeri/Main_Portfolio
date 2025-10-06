@@ -3138,7 +3138,7 @@ Paragraph 1: For verts, I am showing it as Figure (Figure 10.1.4.1: first image 
 			
 
 				<li>
-					Afterward, we simplify the graph using the simplify() function to remove loops (self-connections) and multiple edges (repeated links between the same proteins). Loops and redundant edges are biologically meaningless in this context, as a protein cannot interact with itself, and duplicate edges inflate connectivity artificially. Simplifying ensures a clean, non-redundant network ready for component analysis.
+					The graph is then simplified using the simplify() function to remove self-loops (edges connecting a vertex to itself) and multiple edges (two or more edges connecting the same pair of vertices). Loops and redundant edges are biologically meaningless in this context, as a protein cannot interact with itself, and duplicate edges inflate connectivity artificially. Simplifying ensures a clean, non-redundant network ready for component analysis.
  				</li>
 <!-- ========================================== End Paragraph 2 ============================ -->
 
@@ -3171,8 +3171,7 @@ Paragraph 1: For verts, I am showing it as Figure (Figure 10.1.4.1: first image 
 
 				
 				<li>
-					To exclude very small or isolated subgraphs, we use keep <- which(comp$csize[comp$membership] >= 3) to retain only components with three or more nodes, ensuring that each remaining subnetwork has biological relevance. Finally, induced_subgraph(g, vids = keep) constructs a new graph containing only the selected components. This filtered graph forms the backbone for network topology analysis and module detection in the next section.
- 				</li>
+					To exclude very small or isolated subgraphs, we use keep <- which(comp$csize[comp$membership] >= 3) to retain only components with three or more nodes, ensuring that each remaining subnetwork has biological relevance. Finally, induced_subgraph(g, vids = keep) constructs a new graph containing only the selected components, where vids specifies the vector of vertex IDs (or names) to retain. This filtered graph forms the backbone for network topology analysis and module detection in the next section.
 
 				
 <!-- ========================================== End Paragraph 3 ============================ -->
