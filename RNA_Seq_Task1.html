@@ -3405,16 +3405,7 @@ This block rolls the <strong>module membership</strong> into concise, publicatio
 			 
 			  </li>
 			
-			====================
-				NEW:
-
-<li>
-This block rolls the <strong>module membership</strong> into concise, publication-friendly summaries. Using <strong>base R aggregation</strong>, it creates a <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/csv-viewer.html?src=https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/ppi_module_summary_full.csv&title=Full%20module%20summary" target="_blank" rel="noopener"><strong>“full” CSV</strong></a> <strong>(PPI module full summary)</strong> where each module lists all genes in a single cell and a <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/csv-viewer.html?src=https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/ppi_module_summary_preview.csv&title=Preview%20module%20summary" target="_blank" rel="noopener"><strong>“preview” CSV</strong></a> <strong>(PPI module preview summary)</strong> with the top 10 genes in each module, alongside <strong>module sizes</strong>.
-</li>
-
-<li>
-This block starts from the <strong>tidy module–gene map</strong> created earlier (<code>mod_map</code>, columns <code>module</code> and <code>gene</code>), coerces both columns to <strong>character</strong> to avoid factor issues, counts how many <strong>genes per module</strong> with <code>table()</code> and orders modules from <strong>largest to smallest</strong> (<code>mod_counts</code>), then groups genes by module with <code>split()</code>, removes <strong>duplicates</strong> with <code>unique()</code>, and collapses names into <strong>comma-separated strings</strong> in two flavors: a <strong>full list</strong> and a <strong>short preview</strong>. The <strong>full list</strong> is written as <strong>ppi_module_summary_full.csv</strong> with columns <code>module</code>, <code>n_genes</code>, <code>genes_all</code>, one row per module containing every member gene as a single string; the <strong>short version</strong> keeps only the <strong>first ten genes per module</strong> and is written as <strong>ppi_module_summary_preview.csv</strong> with columns <code>module</code>, <code>n_genes</code>, <code>example_genes</code>, which is convenient for quick scanning.
-</li>
+			
 
 				
 			</ul>
