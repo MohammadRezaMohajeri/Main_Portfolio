@@ -3246,10 +3246,7 @@ if (vcount(g) == 0) stop("No components >= 3 nodes; lower score or increase top_
 				</li>
 
 				
-1. Transfered from section 6 to 5:
-				<li>
-				 In addition, it outputs a <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/csv-viewer.html?src=https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/ppi_modules_louvain_gene_lists.csv&title=Long%20module–gene%20list" target="_blank" rel="noopener"><strong>long module–gene list CSV</strong></a> (one row per <code>module</code>–<code>gene</code> pair) and a <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/csv-viewer.html?src=https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/ppi_modules_louvain_nodes.csv&title=Node%20attributes%20with%20stats" target="_blank" rel="noopener"><strong>node attribute CSV</strong></a> (DEGs with <code>module</code> assignments and statistics). 
-				</li>
+
 2. Transfered from section 6 to 5:
 				<li>
 For <strong>transparency</strong> and <strong>downstream work</strong> we also publish two additional tables: <strong>ppi_modules_louvain_gene_lists.csv</strong>, a <strong>long table</strong> with one row per membership (<code>module</code>, <code>gene</code>) that mirrors <code>mod_map</code> and is ideal for <strong>joins or filtering</strong>, and <strong>ppi_modules_louvain_nodes.csv</strong>, the <strong>node attribute table</strong> for every DEG that entered the PPI with columns <code>STRING_id</code>, <code>gene</code>, <code>module</code>, <code>deg</code>, <code>lfc</code>, <code>padj</code>, which supports <strong>statistics per module</strong>, <strong>ranking nodes</strong> by degree or effect size, and <strong>enrichment tests</strong>. Finally, the code draws a <strong>bar chart of module sizes</strong> with <strong>ggplot2</strong> (<code>p_sizes</code>) and saves it as <strong>ppi_module_sizes_barplot.png</strong>, so readers can see at a glance which <strong>communities are largest</strong> and then click through to the <strong>detailed CSVs</strong>.				</li>
