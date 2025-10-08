@@ -3247,9 +3247,7 @@ if (vcount(g) == 0) stop("No components >= 3 nodes; lower score or increase top_
 
 				
 
-2. Transfered from section 6 to 5:
-				<li>
-For <strong>transparency</strong> and <strong>downstream work</strong> we also publish two additional tables: <strong>ppi_modules_louvain_gene_lists.csv</strong>, a <strong>long table</strong> with one row per membership (<code>module</code>, <code>gene</code>) that mirrors <code>mod_map</code> and is ideal for <strong>joins or filtering</strong>, and <strong>ppi_modules_louvain_nodes.csv</strong>, the <strong>node attribute table</strong> for every DEG that entered the PPI with columns <code>STRING_id</code>, <code>gene</code>, <code>module</code>, <code>deg</code>, <code>lfc</code>, <code>padj</code>, which supports <strong>statistics per module</strong>, <strong>ranking nodes</strong> by degree or effect size, and <strong>enrichment tests</strong>. Finally, the code draws a <strong>bar chart of module sizes</strong> with <strong>ggplot2</strong> (<code>p_sizes</code>) and saves it as <strong>ppi_module_sizes_barplot.png</strong>, so readers can see at a glance which <strong>communities are largest</strong> and then click through to the <strong>detailed CSVs</strong>.				</li>
+
 			</ul>
 
  <!-- ======================== CODE START ============================ -->
@@ -3392,7 +3390,8 @@ write.csv(mod_map, out_lists_csv, row.names = FALSE)
 
 			<ul>
 				<li>
-This block rolls the <strong>module membership</strong> into concise, publication-friendly summaries. Using <strong>base R aggregation</strong>, it creates a <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/csv-viewer.html?src=https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/ppi_module_summary_full.csv&title=Full%20module%20summary" target="_blank" rel="noopener"><strong>“full” CSV</strong></a> <strong>(PPI module full summary)</strong> where each module lists all genes in a single cell and a <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/csv-viewer.html?src=https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/ppi_module_summary_preview.csv&title=Preview%20module%20summary" target="_blank" rel="noopener"><strong>“preview” CSV</strong></a> <strong>(PPI module preview summary)</strong> with the top 10 genes in each module, alongside <strong>module sizes</strong>. It then draws a compact <strong>bar chart of module sizes</strong> with <strong>ggplot2</strong> and saves it as a <strong>PNG</strong> <a href="#figure-10-1-6-1" onclick="highlightFigure('10-1-6-1')">(Figure 10.1.6.1)</a>.				</li>
+This block rolls the <strong>module membership</strong> into concise, publication-friendly summaries. Using <strong>base R aggregation</strong>, it creates a <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/csv-viewer.html?src=https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/ppi_module_summary_full.csv&title=Full%20module%20summary" target="_blank" rel="noopener"><strong>“full” CSV</strong></a> <strong>(PPI module full summary)</strong> where each module lists all genes in a single cell and a <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/csv-viewer.html?src=https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/ppi_module_summary_preview.csv&title=Preview%20module%20summary" target="_blank" rel="noopener"><strong>“preview” CSV</strong></a> <strong>(PPI module preview summary)</strong> with the top 10 genes in each module, alongside <strong>module sizes</strong>. It then draws a compact <strong>bar chart of module sizes</strong> with <strong>ggplot2</strong> and saves it as a <strong>PNG</strong> <a href="#figure-10-1-6-1" onclick="highlightFigure('10-1-6-1')">(Figure 10.1.6.1)</a>, so readers can see at a glance which communities are largest and then click through to the detailed CSVs.
+				</li>
 
 			  
 
