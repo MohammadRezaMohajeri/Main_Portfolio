@@ -3157,9 +3157,7 @@ edges <- edges[!duplicated(key), ]
 
 
 				
-				<li>
-					To exclude very small or isolated <strong>subgraphs</strong>, we use <strong>keep <- which(comp$csize[comp$membership] >= 3)</strong> to retain only <strong>components with three or more nodes</strong>, ensuring that each remaining subnetwork has biological relevance. Finally, <strong>induced_subgraph(g, vids = keep)</strong> constructs a new graph containing only the selected components, where <strong>vids</strong> specifies the vector of <strong>vertex IDs</strong> (or names) to retain. This filtered graph forms the backbone for network topology analysis and module detection in the next section.
-
+				
 				
 <!-- ========================================== End Paragraph 3 ============================ -->
 
