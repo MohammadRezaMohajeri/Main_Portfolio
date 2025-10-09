@@ -3289,7 +3289,33 @@ if (vcount(g) == 0) stop("No components >= 3 nodes; lower score or increase top_
 
 
 					
-<li>Examining the structure of the igraph object <strong>g</strong> in RStudio confirms this relationship. The object appears as a list of 211 elements, each representing a <strong>vertex </strong>(node) and the indices of other <strong>vertices </strong>to which it is directly connected. For example, as shown in Figure 10.1.5.2, the node <strong>9606.ENSP00000357726</strong>, visible as <strong>g[[6]]</strong>, lists five integers — 17, 40, 41, 153, 154 — which correspond to the <strong>vertex indices</strong> of its direct neighbours, showing that this protein is connected to five others. In contrast, <strong>g[[5]]</strong>, representing <strong>9606.ENSP00000310170</strong>, contains only one index (189), indicating a <strong>single connection</strong>. These internal lists directly correspond to the degree values produced by <strong>degree(g)</strong>: the number of integers within each list equals the number of connections per node.</li>
+<li>Examining the structure of the igraph object <strong>g</strong> (<a href="#figure-10-1-5-2" onclick="highlightFigure('10-1-5-2')">Figure 10.1.5.2</a>) in RStudio confirms this relationship. The object appears as a list of 211 elements, each representing a <strong>vertex </strong>(node) and the indices of other <strong>vertices </strong>to which it is directly connected. For example, as shown in Figure 10.1.5.2, the node <strong>9606.ENSP00000357726</strong>, visible as <strong>g[[6]]</strong>, lists five integers — 17, 40, 41, 153, 154 — which correspond to the <strong>vertex indices</strong> of its direct neighbours, showing that this protein is connected to five others. In contrast, <strong>g[[5]]</strong>, representing <strong>9606.ENSP00000310170</strong>, contains only one index (189), indicating a <strong>single connection</strong>. These internal lists directly correspond to the degree values produced by <strong>degree(g)</strong>: the number of integers within each list equals the number of connections per node.</li>
+<!-- ============================ Figure 10.1.5.2 (igraph object structure) ============================ -->
+<div style="display:flex; justify-content:center;">
+  <figure id="figure-10-1-5-2" style="text-align: justify; margin: 10px;">
+    <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_10.1.5.2.png"
+       target="_blank" rel="noopener">
+      <img src="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_10.1.5.2.png"
+           alt="Structure of igraph object g showing vertex connections"
+           style="display:block; background-color:#0c4b4f; padding:10px; border-radius:15px;
+                  box-shadow:0 4px 8px rgba(0,0,0,0.2); width:100%; height:auto; max-width:650px;">
+    </a>
+    <figcaption id="figure-caption-10-1-5-2">
+      <strong>Figure 10.1.5.2.</strong> View of the <code>igraph</code> object <code>g</code> 
+      in RStudio, showing each of its 211 elements (nodes) and their direct connections. 
+      For example, <code>g[[6]]</code> lists five linked vertices, while <code>g[[5]]</code> 
+      lists only one, illustrating how the number of connected vertices corresponds to the 
+      node’s degree in the protein–protein interaction network.
+    </figcaption>
+  </figure>
+</div>
+<!-- ========================================== End Paragraph ============================ -->
+
+
+					
+					
+					
+					
 <li>The <strong>computed degree</strong> values (the variable <strong>deg </strong>on the right side of the assignment) are then added to the graph as a <strong>vertex attribute</strong> using <strong>V(g)$deg <- deg</strong>. This stores the degree of each node within the <strong>graph object</strong>, making it available for later use in plots, tables, or filtering steps. The list of vertex attributes can be viewed with <strong>vertex_attr_names(g)</strong>, which now includes “<strong>deg</strong>” alongside previously assigned attributes such as “<strong>name</strong>”, “<strong>label</strong>”, “<strong>lfc</strong>”, and “<strong>padj</strong>”. A categorical attribute named <strong>sign </strong>is then created from the log2 fold-change values (<strong>V(g)$lfc</strong>) using <strong>ifelse(V(g)$lfc >= 0, "Upregulated", "Downregulated")</strong>, assigning each protein a label based on its <strong>regulation direction</strong> in lesional versus non-lesional samples. At this point, each vertex (node) in the network carries both its <strong>degree </strong>(connectivity) and <strong>regulation status</strong> (sign), linking structural and biological information within the same object.</li>					
 <li>Next, basic statistics are collected to describe the network’s scale and connectivity. The command <strong>components(g)</strong> recomputes <strong>connected components</strong> in the current graph, returning the <strong>component membership</strong> of each node (<strong>$membership</strong>), the <strong>size of every component</strong> (<strong>$csize</strong>), and the <strong>total component count</strong> (<strong>$no</strong>). The largest connected component size is determined with <strong>max(comp2$csize)</strong>, while <strong>vcount(g)</strong> and <strong>ecount(g)</strong> report the total numbers of <strong>vertices </strong>and <strong>edges</strong>. These values are useful for figure subtitles or descriptive text accompanying visualisations of the network.</li>
 <li>The analysis then applies the <strong>Louvain community-detection algorithm</strong> to identify <strong>modules </strong>of densely connected proteins. Running <strong>cluster_louvain(g, weights = E(g)$combined_score)</strong> partitions the network into <strong>communities </strong>using the <strong>STRING combined score</strong> as the weighting factor, giving more influence to stronger interactions. The resulting object, <strong>comm</strong>, contains both the module assignments and their sizes. Each node’s community ID is stored as a factor attribute using <strong>V(g)$module <- factor(membership(comm))</strong>, and <strong>sizes(comm)</strong> provides a summary of <strong>module sizes</strong> before any filtering.</li>
