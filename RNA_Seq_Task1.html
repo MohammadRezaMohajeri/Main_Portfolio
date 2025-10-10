@@ -3316,47 +3316,45 @@ if (vcount(g) == 0) stop("No components >= 3 nodes; lower score or increase top_
 
 					
 <li>Next, basic statistics are collected to describe the network’s scale and connectivity. The command <strong>components(g)</strong> recomputes <strong>connected components (subgraphs)</strong> in the current graph, returning the <strong>component membership</strong> of each node (<strong>$membership</strong>) (Figure 10.1.5.4), the <strong>size of every component</strong> (<strong>$csize</strong>) (Figure 10.1.5.5), and the <strong>total component count</strong> (<strong>$no</strong>). </li>
-
-
-					<!-- ========= Start Figure 10.1.5.4 / Figure 10.1.5.6 ============================ -->
-<!-- Section 10.1.5 panels (Node Table & Module→Gene Map) -->
+<!-- ========= Start Figure 10.1.5.4 / Figure 10.1.5.5 ============================ -->
+<!-- Section 10.1.5 — Connected Components (comp2: membership & csize) -->
 <div style="display: flex; justify-content: space-around; flex-wrap: nowrap; gap: 16px;">
 
-  <!-- Figure 10.1.5.4 — vdf node table -->
+  <!-- Figure 10.1.5.4 — comp2$membership -->
   <figure id="figure-10-1-5-4" style="text-align: justify; margin: 10px; width: 48%;">
     <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio//Pictures/RNA_Seq_Task1/Figure_10.1.5.4.png" target="_blank" rel="noopener">
       <img
         src="https://mohammadrezamohajeri.github.io/Main_Portfolio//Pictures/RNA_Seq_Task1/Figure_10.1.5.4.png"
-        alt="vdf node table: STRING_id, gene, module, degree, lfc, padj"
+        alt="comp2 membership view showing component ID assigned to each protein"
         style="display: block; background-color: #0c4b4f; padding: 10px; border-radius: 15px;
                box-shadow: 0px 4px 8px rgba(0,0,0,0.2); width: 100%; height: 300px;">
     </a>
     <figcaption id="figure-caption-10-1-5-4">
-      <strong>Figure 10.1.5.4.</strong> Node table <code>vdf</code> after Louvain community detection and filtering
-      (modules ≥ 3 genes), showing <code>STRING_id</code>, <code>gene</code>, <code>module</code>,
-      <code>deg</code>, <code>lfc</code>, and <code>padj</code>. Rows are sorted by module (asc)
-      then degree (desc) to highlight hub proteins.
+      <strong>Figure 10.1.5.4.</strong> View of <code>comp2$membership</code> showing the component ID assigned to each
+      protein in the filtered graph. Each entry corresponds to one of the eight detected connected components.
     </figcaption>
   </figure>
 
-  <!-- Figure 10.1.5.6 — module→gene long map -->
-  <figure id="figure-10-1-5-6" style="text-align: justify; margin: 10px; width: 48%;">
+  <!-- Figure 10.1.5.5 — comp2$csize -->
+  <figure id="figure-10-1-5-5" style="text-align: justify; margin: 10px; width: 48%;">
     <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio//Pictures/RNA_Seq_Task1/Figure_10.1.5.5.png" target="_blank" rel="noopener">
       <img
         src="https://mohammadrezamohajeri.github.io/Main_Portfolio//Pictures/RNA_Seq_Task1/Figure_10.1.5.5.png"
-        alt="Long-format module→gene mapping (mod_map)"
+        alt="comp2 csize view showing sizes of eight connected components"
         style="display: block; background-color: #0c4b4f; padding: 10px; border-radius: 15px;
                box-shadow: 0px 4px 8px rgba(0,0,0,0.2); width: 100%; height: 300px;">
     </a>
-    <figcaption id="figure-caption-10-1-5-6">
-      <strong>Figure 10.1.5.6.</strong> Long-format <code>module → gene</code> mapping (<code>mod_map</code>)
-      derived from <code>modules_list</code>. Each row represents one module–gene pair,
-      enabling straightforward enrichment and reproducibility tracking.
+    <figcaption id="figure-caption-10-1-5-5">
+      <strong>Figure 10.1.5.5.</strong> View of <code>comp2$csize</code> listing the sizes of all eight connected
+      components detected in <code>comp2</code>. The largest component (size = 185) dominates the network,
+      followed by smaller clusters containing 3–6 nodes.
     </figcaption>
   </figure>
 
 </div>
-<!-- ========= End Figure 10.1.5.4 / Figure 10.1.5.6 ============================ -->
+<!-- ========= End Figure 10.1.5.4 / Figure 10.1.5.5 ============================ -->
+
+ 
 
 					
 <li>The object <strong>comp2</strong>, which is generated with the function <strong>components(g)</strong>, summarizes the <strong>connected component</strong> structure of the network after filtering out <strong>components with fewer than three nodes</strong>. This updated graph (<strong>comp2</strong>) reflects only the <strong>meaningful clusters</strong> retained for downstream analyses. The <strong>membership vector</strong> now has 211 entries, corresponding to the remaining vertices, and the <strong>number of components</strong> (<strong>no</strong>) has been reduced from 155 to 8, indicating that most <strong>smaller or weakly connected clusters</strong> were removed during earlier filtering, leaving only the main, <strong>biologically relevant subnetworks</strong> for analysis. The <strong>csize</strong> values indicate that the <strong>largest connected component (LCC)</strong> still contains 185 nodes, while the smaller retained subnetworks each have between 3 and 6 nodes. As illustrated in <a href="#figure-10-1-5-3" onclick="highlightFigure('10-1-5-3')">Figure 10.1.5.3</a>, compared with <strong>comp</strong> from Section 4, this reduction in <strong>component count</strong> shows that <strong>isolated or weakly connected nodes</strong> have been removed, leaving a more coherent and biologically interpretable network. This refined structure serves as the foundation for computing <strong>node metrics</strong> and identifying <strong>functional modules</strong> in the subsequent analysis steps.</li>
