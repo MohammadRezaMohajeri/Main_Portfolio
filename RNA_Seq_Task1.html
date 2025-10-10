@@ -3315,8 +3315,8 @@ if (vcount(g) == 0) stop("No components >= 3 nodes; lower score or increase top_
 <li>The <strong>computed degree</strong> values (the variable <strong>deg </strong>on the right side of the assignment) are then added to the graph as a <strong>vertex attribute</strong> using <strong>V(g)$deg <- deg</strong>. This stores the degree of each node within the <strong>graph object</strong>, making it available for later use in plots, tables, or filtering steps. The list of vertex attributes can be viewed with <strong>vertex_attr_names(g)</strong>, which now includes “<strong>deg</strong>” alongside previously assigned attributes such as “<strong>name</strong>”, “<strong>label</strong>”, “<strong>lfc</strong>”, and “<strong>padj</strong>”. A categorical attribute named <strong>sign </strong>is then created from the log2 fold-change values (<strong>V(g)$lfc</strong>) using <strong>ifelse(V(g)$lfc >= 0, "Upregulated", "Downregulated")</strong>, assigning each protein a label based on its <strong>regulation direction</strong> in lesional versus non-lesional samples. At this point, each vertex (node) in the network carries both its <strong>degree </strong>(connectivity) and <strong>regulation status</strong> (sign), linking structural and biological information within the same object.</li>					
 
 					
-<li>Next, basic statistics are collected to describe the network’s scale and connectivity. The command <strong>components(g)</strong> recomputes <strong>connected components (subgraphs)</strong> in the current graph, returning the <strong>component membership</strong> of each node (<strong>$membership</strong>) (Figure 10.1.5.4), the <strong>size of every component</strong> (<strong>$csize</strong>) (Figure 10.1.5.5), and the <strong>total component count</strong> (<strong>$no</strong>). </li>
-                   <!-- ========= Start Figure 10.1.5.3 / Figure 10.1.5.4 ============================ -->
+<li>Next, basic statistics are collected to describe the network’s scale and connectivity. The command <strong>components(g)</strong> recomputes <strong>connected components (subgraphs)</strong> in the current graph, returning the <strong>component membership</strong> of each node (<strong>$membership</strong>) (<a href="#figure-10-1-5-3" onclick="highlightFigure('10-1-5-3')">Figure 10.1.5.3</a>), the <strong>size of every component</strong> (<strong>$csize</strong>) (<a href="#figure-10-1-5-4" onclick="highlightFigure('10-1-5-4')">Figure 10.1.5.4</a>), and the <strong>total component count</strong> (<strong>$no</strong>). </li>
+<!-- ===================== Start Figure 10.1.5.3 / Figure 10.1.5.4 ============================ -->
 							<!-- Section 10.1.5 — Connected Components (comp2: membership & csize) -->
 							<div style="display: flex; justify-content: space-around; flex-wrap: nowrap; gap: 16px;">
 							
@@ -3352,35 +3352,35 @@ if (vcount(g) == 0) stop("No components >= 3 nodes; lower score or increase top_
 							  </figure>
 							
 							</div>
-							<!-- ========= End Figure 10.1.5.3 / Figure 10.1.5.4 ============================ -->
+<!-- ====================================== End Figure 10.1.5.3 / Figure 10.1.5.4 ============================ -->
 							
 							 
 
 					
-<li>The object <strong>comp2</strong>, which is generated with the function <strong>components(g)</strong>, summarizes the <strong>connected component</strong> structure of the network after filtering out <strong>components with fewer than three nodes</strong>. This updated graph (<strong>comp2</strong>) reflects only the <strong>meaningful clusters</strong> retained for downstream analyses. The <strong>membership vector</strong> now has 211 entries, corresponding to the remaining vertices, and the <strong>number of components</strong> (<strong>no</strong>) has been reduced from 155 to 8, indicating that most <strong>smaller or weakly connected clusters</strong> were removed during earlier filtering, leaving only the main, <strong>biologically relevant subnetworks</strong> for analysis. The <strong>csize</strong> values indicate that the <strong>largest connected component (LCC)</strong> still contains 185 nodes, while the smaller retained subnetworks each have between 3 and 6 nodes. As illustrated in <a href="#figure-10-1-5-3" onclick="highlightFigure('10-1-5-3')">Figure 10.1.5.3</a>, compared with <strong>comp</strong> from Section 4, this reduction in <strong>component count</strong> shows that <strong>isolated or weakly connected nodes</strong> have been removed, leaving a more coherent and biologically interpretable network. This refined structure serves as the foundation for computing <strong>node metrics</strong> and identifying <strong>functional modules</strong> in the subsequent analysis steps.</li>
+<li>The object <strong>comp2</strong>, which is generated with the function <strong>components(g)</strong>, summarizes the <strong>connected component</strong> structure of the network after filtering out <strong>components with fewer than three nodes</strong>. This updated graph (<strong>comp2</strong>) reflects only the <strong>meaningful clusters</strong> retained for downstream analyses. The <strong>membership vector</strong> now has 211 entries, corresponding to the remaining vertices, and the <strong>number of components</strong> (<strong>no</strong>) has been reduced from 155 to 8, indicating that most <strong>smaller or weakly connected clusters</strong> were removed during earlier filtering, leaving only the main, <strong>biologically relevant subnetworks</strong> for analysis. The <strong>csize</strong> values indicate that the <strong>largest connected component (LCC)</strong> still contains 185 nodes, while the smaller retained subnetworks each have between 3 and 6 nodes. As illustrated in <a href="#figure-10-1-5-5" onclick="highlightFigure('10-1-5-5')">Figure 10.1.5.5</a>, compared with <strong>comp</strong> from Section 4, this reduction in <strong>component count</strong> shows that <strong>isolated or weakly connected nodes</strong> have been removed, leaving a more coherent and biologically interpretable network. This refined structure serves as the foundation for computing <strong>node metrics</strong> and identifying <strong>functional modules</strong> in the subsequent analysis steps.</li>
+<!-- ============================ Figure 10.1.5.5 (comp2 components summary) ============================ -->
+				<div style="display:flex; justify-content:center;">
+				  <figure id="figure-10-1-5-5" style="text-align: justify; margin: 10px;">
+				    <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_10.1.5.5.png"
+				       target="_blank" rel="noopener">
+				      <img src="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_10.1.5.5.png"
+				           alt="comp2 object showing connected components summary after attribute updates"
+				           style="display:block; background-color:#0c4b4f; padding:10px; border-radius:15px;
+				                  box-shadow:0 4px 8px rgba(0,0,0,0.2); width:100%; height:auto; max-width:650px;">
+				    </a>
+				    <figcaption id="figure-caption-10-1-5-5">
+				      <strong>Figure 10.1.5.5.</strong> View of the <code>comp2</code> object generated by 
+				      <code>components(g)</code>, summarizing the connected components of the updated graph. 
+				      Similar to <code>comp</code> from Section 4, it includes <code>membership</code> (component ID per node), 
+				      <code>csize</code> (size of each component), and <code>no</code> (total number of components). 
+				      Here, the number of components has been reduced from 155 to 8 after filtering, reflecting 
+				      the refined connectivity of the network once degree and sign attributes were incorporated.
+				    </figcaption>
+				  </figure>
+				</div>
+<!-- ========================================== End Figure 10.1.5.5 ============================ -->
 
-					<!-- ============================ Figure 10.1.5.3 (comp2 components summary) ============================ -->
-<div style="display:flex; justify-content:center;">
-  <figure id="figure-10-1-5-3" style="text-align: justify; margin: 10px;">
-    <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_10.1.5.3..png"
-       target="_blank" rel="noopener">
-      <img src="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_10.1.5.3..png"
-           alt="comp2 object showing connected components summary"
-           style="display:block; background-color:#0c4b4f; padding:10px; border-radius:15px;
-                  box-shadow:0 4px 8px rgba(0,0,0,0.2); width:100%; height:auto; max-width:650px;">
-    </a>
-    <figcaption id="figure-caption-10-1-5-3">
-        <strong>Figure 10.1.5.3.</strong> View of the <code>comp2</code> object generated by 
-		<code>components(g)</code>, summarizing the connected components of the final filtered network. 
-		Similar to <code>comp</code> from Section 4, it reports <code>membership</code> (component ID per node), 
-		<code>csize</code> (size of each component), and <code>no</code> (total number of components), 
-		but here it reflects the post-filtered graph after degree and sign attributes were added, 
-		providing updated connectivity statistics for the refined protein–protein interaction network.
 
-    </figcaption>
-  </figure>
-</div>
-<!-- ========================================== End Paragraph ============================ -->
 
 <li>The largest connected component size is determined with <strong>max(comp2$csize)</strong>, while <strong>vcount(g)</strong> and <strong>ecount(g)</strong> report the total numbers of <strong>vertices </strong>and <strong>edges</strong>. These values are useful for figure subtitles or descriptive text accompanying visualisations of the network.</li>
 
