@@ -3403,6 +3403,8 @@ if (vcount(g) == 0) stop("No components >= 3 nodes; lower score or increase top_
 
 
 <li>Each node’s community ID is stored as a factor attribute using <strong>V(g)$module <- factor(membership(comm))</strong>, and <strong>sizes(comm)</strong> provides a summary of <strong>module sizes</strong> before any filtering.</li>
+
+<li>To prepare results for export, gene symbols are grouped by their assigned module with <strong>split(V(g)$label, V(g)$module)</strong>, producing a list where each element corresponds to one module and contains its constituent genes (<a href="#figure-10-1-5-7" onclick="highlightFigure('10-1-5-7')">Figure 10.1.5.7</a>). By using <strong><code>split(V(g)$label, V(g)$module)</code></strong>, we’re <strong>grouping the gene symbols by their module ID</strong>. So, the output <strong><code>modules_list</code></strong> becomes a list of modules, where each <strong>list element</strong> corresponds to one <strong>module</strong>. Only modules with at least three genes are retained, and the list is sorted by decreasing size for easier interpretation. </li>	 
 <!-- ============================ Figure 10.1.5.7 (modules_list showing grouped genes per module) ============================ -->
 <div style="display:flex; justify-content:center;">
   <figure id="figure-10-1-5-7" style="text-align: justify; margin: 10px;">
@@ -3423,11 +3425,6 @@ if (vcount(g) == 0) stop("No components >= 3 nodes; lower score or increase top_
   </figure>
 </div>
 <!-- ========================================== End Figure 10.1.5.7 ============================ -->
-
-
-	
-<li>To prepare results for export, gene symbols are grouped by their assigned module with <strong>split(V(g)$label, V(g)$module)</strong>, producing a list where each element corresponds to one module and contains its constituent genes (<a href="#figure-10-1-5-7" onclick="highlightFigure('10-1-5-7')">Figure 10.1.5.7</a>). By using <strong><code>split(V(g)$label, V(g)$module)</code></strong>, we’re <strong>grouping the gene symbols by their module ID</strong>. So, the output <strong><code>modules_list</code></strong> becomes a list of modules, where each <strong>list element</strong> corresponds to one <strong>module</strong>. Only modules with at least three genes are retained, and the list is sorted by decreasing size for easier interpretation. </li>	 
-
 	
 	
 <li>A data frame named <strong>vdf </strong>is then constructed, containing one row per protein with its STRING identifier <strong>(V(g)$name)</strong>, gene symbol <strong>(V(g)$label)</strong>, module assignment (<strong>V(g)$module</strong>), degree (<strong>V(g)$deg</strong>), log2 fold change (<strong>V(g)$lfc</strong>), and adjusted p-value (<strong>V(g)$padj</strong>). This table is filtered to keep only nodes belonging to retained modules and sorted by module and decreasing degree so that the most connected proteins appear first. The node table is exported as a CSV file for documentation and further analysis.</li>
