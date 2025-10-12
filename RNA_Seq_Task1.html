@@ -3403,8 +3403,33 @@ if (vcount(g) == 0) stop("No components >= 3 nodes; lower score or increase top_
 
 
 <li>Each node’s community ID is stored as a factor attribute using <strong>V(g)$module <- factor(membership(comm))</strong>, and <strong>sizes(comm)</strong> provides a summary of <strong>module sizes</strong> before any filtering.</li>
+<!-- ============================ Figure 10.1.5.7 (modules_list showing grouped genes per module) ============================ -->
+<div style="display:flex; justify-content:center;">
+  <figure id="figure-10-1-5-7" style="text-align: justify; margin: 10px;">
+    <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_10.1.5.7.png"
+       target="_blank" rel="noopener">
+      <img src="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_10.1.5.7.png"
+           alt="modules_list object displaying Louvain modules and their associated genes"
+           style="display:block; background-color:#0c4b4f; padding:10px; border-radius:15px;
+                  box-shadow:0 4px 8px rgba(0,0,0,0.2); width:100%; height:auto; max-width:650px;">
+    </a>
+    <figcaption id="figure-caption-10-1-5-7">
+      <strong>Figure 10.1.5.7.</strong> View of the <code>modules_list</code> object created using 
+      <code>split(V(g)$label, V(g)$module)</code>. Each element of the list represents a Louvain module 
+      (identified by module ID) and contains the corresponding genes assigned to that module. 
+      The list shows a total of 17 retained modules after filtering those with fewer than three genes, 
+      sorted in decreasing order of module size.
+    </figcaption>
+  </figure>
+</div>
+<!-- ========================================== End Figure 10.1.5.7 ============================ -->
+
+
 	
-<li>To prepare results for export, gene symbols are grouped by their assigned module with <strong>split(V(g)$label, V(g)$module)</strong>, producing a list where each element corresponds to one module and contains its constituent genes (Figure 10.1.5.7). By using <strong><code>split(V(g)$label, V(g)$module)</code></strong>, we’re <strong>grouping the gene symbols by their module ID</strong>. So, the output <strong><code>modules_list</code></strong> becomes a list of modules, where each <strong>list element</strong>corresponds to one <strong>module</strong>. Only modules with at least three genes are retained, and the list is sorted by decreasing size for easier interpretation. </li>	 
+<li>To prepare results for export, gene symbols are grouped by their assigned module with <strong>split(V(g)$label, V(g)$module)</strong>, producing a list where each element corresponds to one module and contains its constituent genes (<a href="#figure-10-1-5-7" onclick="highlightFigure('10-1-5-7')">Figure 10.1.5.7</a>). By using <strong><code>split(V(g)$label, V(g)$module)</code></strong>, we’re <strong>grouping the gene symbols by their module ID</strong>. So, the output <strong><code>modules_list</code></strong> becomes a list of modules, where each <strong>list element</strong> corresponds to one <strong>module</strong>. Only modules with at least three genes are retained, and the list is sorted by decreasing size for easier interpretation. </li>	 
+
+	
+	
 <li>A data frame named <strong>vdf </strong>is then constructed, containing one row per protein with its STRING identifier <strong>(V(g)$name)</strong>, gene symbol <strong>(V(g)$label)</strong>, module assignment (<strong>V(g)$module</strong>), degree (<strong>V(g)$deg</strong>), log2 fold change (<strong>V(g)$lfc</strong>), and adjusted p-value (<strong>V(g)$padj</strong>). This table is filtered to keep only nodes belonging to retained modules and sorted by module and decreasing degree so that the most connected proteins appear first. The node table is exported as a CSV file for documentation and further analysis.</li>
 <li>Finally, a <strong>long-format</strong> mapping of modules to genes is created using <strong>do.call(rbind, lapply(...))</strong>, producing a two-column data frame with <strong>module IDs</strong> and <strong>gene names</strong>. This file is also exported as a CSV and is particularly useful for <strong>pathway-enrichment analysis</strong> or supplementary reporting.</li>
 <li>Together, these steps <strong>quantify the connectivity of each protein</strong>, <strong>associate it with its regulation direction</strong>, <strong>identify community structures</strong> within the network, and generate organised <strong>outputs </strong>that capture both the topological and biological organisation of the protein-protein interaction graph.</li>					
