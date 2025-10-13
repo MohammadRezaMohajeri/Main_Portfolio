@@ -3429,7 +3429,44 @@ if (vcount(g) == 0) stop("No components >= 3 nodes; lower score or increase top_
 	
 
   <li>similar to above: When gene symbols are grouped by their module ID, filtered, and ordered in decreasing size, the next step <strong>prepares the results for export</strong> by creating a <strong>structured node table</strong>. A vector of retained module identifiers is first extracted using <strong><code>keep_mods <- names(modules_list)</code></strong>, ensuring that only the modules meeting the size threshold are carried forward. A new data frame named <strong><code>vdf</code></strong> is then constructed, containing one row per protein and summarising key node-level information, including its <strong>STRING identifier</strong> (<strong><code>V(g)$name</code></strong>), <strong>gene symbol</strong> (<strong><code>V(g)$label</code></strong>), <strong>module assignment</strong> (<strong><code>V(g)$module</code></strong>), <strong>degree</strong> (<strong><code>V(g)$deg</code></strong>), <strong>log2 fold change</strong> (<strong><code>V(g)$lfc</code></strong>), and <strong>adjusted p-value</strong> (<strong><code>V(g)$padj</code></strong>) <a href="#figure-10-1-5-8" onclick="highlightFigure('10-1-5-8')"><strong>(Figure 10.1.5.8)</strong></a>. To ensure that the table includes only relevant proteins, it is filtered to retain rows corresponding to the selected modules using <strong><code>vdf <- subset(vdf, module %in% keep_mods)</code></strong> <a href="#figure-10-1-5-9" onclick="highlightFigure('10-1-5-9')"><strong>(Figure 10.1.5.9)</strong></a>, and finally sorted by module and decreasing degree so that the most connected hub proteins appear first. The resulting node table is exported as a CSV file for documentation, visualisation, and downstream analysis.</li>	
-		<!-- ============================ Figure 10.1.5.8 (vdf after data.frame) ============================ --> <div style="display:flex; justify-content:center;"> <figure id="figure-10-1-5-8" style="text-align: justify; margin: 10px;"> <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio//Pictures/RNA_Seq_Task1/Figure_10.1.5.8.png" target="_blank" rel="noopener"> <img src="https://mohammadrezamohajeri.github.io/Main_Portfolio//Pictures/RNA_Seq_Task1/Figure_10.1.5.8.png" alt="vdf table right after it is constructed" style="display:block; background-color:#0c4b4f; padding:10px; border-radius:15px; box-shadow:0 4px 8px rgba(0,0,0,0.2); width:100%; height:auto; max-width:650px;"> </a> <figcaption id="figure-caption-10-1-5-8"> <strong>Figure 10.1.5.8.</strong> View of <code>vdf</code> immediately after it is built with <code>vdf &lt;- data.frame(STRING_id, gene, module, deg, lfc, padj)</code>. One row per protein (211 rows total) summarising STRING ID, symbol, assigned module, degree, log<sub>2</sub>FC, and adjusted p-value. </figcaption> </figure> </div> <!-- ============================ End Figure 10.1.5.8 ============================ --> <!-- ============================ Figure 10.1.5.9 (vdf after subset to keep_mods) ============================ --> <div style="display:flex; justify-content:center;"> <figure id="figure-10-1-5-9" style="text-align: justify; margin: 10px;"> <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio//Pictures/RNA_Seq_Task1/Figure_10.1.5.9.png" target="_blank" rel="noopener"> <img src="https://mohammadrezamohajeri.github.io/Main_Portfolio//Pictures/RNA_Seq_Task1/Figure_10.1.5.9.png" alt="vdf table after subsetting to retained modules" style="display:block; background-color:#0c4b4f; padding:10px; border-radius:15px; box-shadow:0 4px 8px rgba(0,0,0,0.2); width:100%; height:auto; max-width:650px;"> </a> <figcaption id="figure-caption-10-1-5-9"> <strong>Figure 10.1.5.9.</strong> <code>vdf</code> after filtering to retained modules with <code>vdf &lt;- subset(vdf, module %in% keep_mods)</code>. Rows drop from 211 to 209, keeping only proteins belonging to modules that passed the ≥3-genes cutoff. </figcaption> </figure> </div> <!-- ============================ End Figure 10.1.5.9 ============================ -->
+				<!-- ========= Start Figure 10.1.5.8 / Figure 10.1.5.9 ============================ -->
+					<!-- Node table before and after filtering (Section 10.1.5) -->
+					<div style="display: flex; justify-content: space-around; flex-wrap: nowrap; gap: 16px;">
+					
+					  <!-- Figure 10.1.5.8 — vdf after data.frame -->
+					  <figure id="figure-10-1-5-8" style="text-align: justify; margin: 10px; width: 48%;">
+					    <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio//Pictures/RNA_Seq_Task1/Figure_10.1.5.8.png" target="_blank" rel="noopener">
+					      <img
+					        src="https://mohammadrezamohajeri.github.io/Main_Portfolio//Pictures/RNA_Seq_Task1/Figure_10.1.5.8.png"
+					        alt="vdf table right after it is constructed"
+					        style="display: block; background-color: #0c4b4f; padding: 10px; border-radius: 15px;
+					               box-shadow: 0px 4px 8px rgba(0,0,0,0.2); width: 100%; height: auto;">
+					    </a>
+					    <figcaption id="figure-caption-10-1-5-8">
+					      <strong>Figure 10.1.5.8.</strong> View of <code>vdf</code> immediately after construction with
+					      <code>vdf &lt;- data.frame(STRING_id, gene, module, deg, lfc, padj)</code>.  
+					      It lists 211 proteins, each represented by one row summarising its STRING ID, symbol, module, degree, log<sub>2</sub>FC, and adjusted p-value.
+					    </figcaption>
+					  </figure>
+					
+					  <!-- Figure 10.1.5.9 — vdf after subset to keep_mods -->
+					  <figure id="figure-10-1-5-9" style="text-align: justify; margin: 10px; width: 48%;">
+					    <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio//Pictures/RNA_Seq_Task1/Figure_10.1.5.9.png" target="_blank" rel="noopener">
+					      <img
+					        src="https://mohammadrezamohajeri.github.io/Main_Portfolio//Pictures/RNA_Seq_Task1/Figure_10.1.5.9.png"
+					        alt="vdf table after subsetting to retained modules"
+					        style="display: block; background-color: #0c4b4f; padding: 10px; border-radius: 15px;
+					               box-shadow: 0px 4px 8px rgba(0,0,0,0.2); width: 100%; height: auto;">
+					    </a>
+					    <figcaption id="figure-caption-10-1-5-9">
+					      <strong>Figure 10.1.5.9.</strong> <code>vdf</code> after filtering to retained modules with
+					      <code>vdf &lt;- subset(vdf, module %in% keep_mods)</code>.  
+					      The number of rows decreases from 211 to 209, retaining only proteins from modules with at least three genes.
+					    </figcaption>
+					  </figure>
+					
+					</div>
+					<!-- ========= End Figure 10.1.5.8 / Figure 10.1.5.9 ============================ -->
 
 	  
 	
