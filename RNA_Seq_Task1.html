@@ -3642,7 +3642,7 @@ write.csv(mod_map, out_lists_csv, row.names = FALSE)
 			<ul>
 				
 
-				<li>The section begins by normalizing data types so later tabulations behave predictably. Converting module IDs and gene symbols to plain character with <strong><code>mod_map$module <- as.character(mod_map$module)</code></strong> and <strong><code>mod_map$gene <- as.character(mod_map$gene)</code></strong> prevents factor-level issues when splitting and pasting strings. We then count how many genes fall into each module using <strong><code>mod_counts <- sort(table(mod_map$module), decreasing = TRUE)</code></strong>, which yields a size-ordered list of module counts so the largest modules appear first throughout the summaries <a href="#figure-10-1-6-1" onclick="highlightFigure('10-1-6-1')">(Figure 10.1.6.1)</a>.</li>
+				<li>The section begins by normalizing data types so later tabulations behave predictably. Converting <strong>module IDs</strong> and <strong>gene symbols</strong> to plain character with <strong><code>mod_map$module <- as.character(mod_map$module)</code></strong> and <strong><code>mod_map$gene <- as.character(mod_map$gene)</code></strong> prevents factor-level issues when splitting and pasting strings. We then count how many genes fall into each module using <strong><code>mod_counts <- sort(table(mod_map$module), decreasing = TRUE)</code></strong>, which yields a size-ordered list of module counts so the largest modules appear first throughout the summaries <a href="#figure-10-1-6-1" onclick="highlightFigure('10-1-6-1')">(Figure 10.1.6.1)</a>.</li>
 						<!-- ============================ Figure 10.1.6.1 (mod_counts) ============================ -->
 						<div style="display:flex; justify-content:center;">
 						  <figure id="figure-10-1-6-1" style="text-align: justify; margin: 10px;">
@@ -3655,7 +3655,7 @@ write.csv(mod_map, out_lists_csv, row.names = FALSE)
 						               box-shadow:0 4px 8px rgba(0,0,0,0.2); width:100%; height:auto; max-width:650px;">
 						    </a>
 						    <figcaption id="figure-caption-10-1-6-1">
-						      <strong>Figure 10.1.6.1.</strong> Size-ordered counts of genes per module (<code>mod_counts</code>) computed from <code>table(mod_map$module)</code> and sorted in decreasing order.
+						      <strong>Figure 10.1.6.1.</strong> Size-ordered counts of genes per module (<strong><code>mod_counts</code></strong>) computed from <strong><code>table(mod_map$module)</code></strong> and sorted in decreasing order.
 						    </figcaption>
 						  </figure>
 						</div>
