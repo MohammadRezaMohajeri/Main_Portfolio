@@ -2258,12 +2258,8 @@ selected_groups <- c("m0_AL", "cyclosporine_m3_AL")
 <!-- ========================================= 4  ======================================== -->
 		<div class="explanation">
 		    <h3>4.	Filtering and Subsetting Samples for Analysis</h3>
-		    <ul>
-	   	      <li>
-			TEXTTTTTTTTTTT FOR title 4.		     
-		      </li>
-		    </ul> 
 		</div>
+	
 <!-- ======================================== Sub title e.g. 4.1.================================================ -->
 		<div class="explanation">
 		    <h3>4.1.	Keep Only Target Groups in Metadata</h3>
@@ -2284,14 +2280,29 @@ selected_groups <- c("m0_AL", "cyclosporine_m3_AL")
 	  <!-- ======================== CODE START ============================ -->
 		<!-- ======= 4.1. code chunk =========== -->
 		<!-- Caption for the code block -->
-		<p class="code-caption">Code Block 4.1.1.  CODDDDDE BLLLOOOOOK TITLEEEEE </p>
+		<p class="code-caption">Code Block 4.1.1. Filtering and Subsetting Samples for DESeq2 Analysis</p>
 
 		<div class="code-block">
 		    <pre><code class="language-r">
-			
-		# CODE HHHHEEERRRRR 
-		# CODE HHHHEEERRRRR 
+				
+# Step 4: Subset baseline lesional/non‑lesional (m0) and align with counts
 
+# 4.1 keep only m0_AL / m0_AN
+metadata_subset <- metadata[metadata$source_name_ch1 %in% c("m0_AL", "m0_AN"), ]
+
+# 4.2 subset counts by titles (your counts colnames are titles)
+keep <- intersect(colnames(counts_matrix), metadata_subset$title)
+counts_subset <- counts_matrix[, keep, drop = FALSE]
+
+# 4.3 reorder metadata to match counts columns
+metadata_subset <- metadata_subset[match(colnames(counts_subset), metadata_subset$title), ]
+
+# 4.4 condition factor
+metadata_subset$condition <- ifelse(metadata_subset$source_name_ch1 == "m0_AL", "lesional", "non_lesional")
+metadata_subset$condition <- factor(metadata_subset$condition, levels = c("non_lesional", "lesional"))
+
+	
+	
 		    </code></pre>
 		</div>
 		<!-- ======================== CODE END ============================ -->
