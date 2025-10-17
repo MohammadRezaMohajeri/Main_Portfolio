@@ -2256,13 +2256,14 @@ selected_groups <- c("m0_AL", "cyclosporine_m3_AL")
 		 <!-- ################################################################################### --> 
 
 <!-- ========================================= 4  ======================================== -->
-		<div class="explanation">
-		    <h3>4.	Filtering and Subsetting Samples for Analysis</h3>
-		</div>
+		 
+		    
+		 
 	
 <!-- ======================================== Sub title e.g. 4.1.================================================ -->
 		<div class="explanation">
-		    <h3>4.1.	Keep Only Target Groups in Metadata</h3>
+			<h3>4.	Filtering and Subsetting Samples for Analysis</h3>
+		    
  		    <ul>
 					<li> This section focuses on selecting only the relevant samples for the differential expression analysis. In this study, we are interested in comparing <strong>baseline lesional (m0_AL)</strong> and <strong>baseline non-lesional (m0_AN)</strong> samples. The following steps ensure that only these samples are included, that their corresponding counts are properly aligned with the metadata, and that the grouping variable (<strong>condition</strong>) is correctly defined for downstream DESeq2 analysis. </li> 
 					<li> <strong>Step 4.1 — Subset baseline lesional/non-lesional samples:</strong> The code below filters the <strong><code>metadata</code></strong> data frame, keeping only rows where the value in the <strong><code>source_name_ch1</code></strong> column is either <strong><code>"m0_AL"</code></strong> (lesional) or <strong><code>"m0_AN"</code></strong> (non-lesional). This ensures that only baseline samples are retained for analysis. </li> </ul> <pre><code class="language-r"> metadata_subset <- metadata[metadata$source_name_ch1 %in% c("m0_AL", "m0_AN"), ] </code></pre> </li> 
