@@ -2285,10 +2285,48 @@ selected_groups <- c("m0_AL", "cyclosporine_m3_AL")
 
 				
 				
-					<li> <strong>Step 4.1 — Subset baseline lesional/non-lesional samples:</strong> The code below filters the <strong><code>metadata</code></strong> data frame, keeping only rows where the value in the <strong><code>source_name_ch1</code></strong> column is either <strong><code>"m0_AL"</code></strong> (lesional) or <strong><code>"m0_AN"</code></strong> (non-lesional). This ensures that only baseline samples are retained for analysis. </li> <pre><code class="language-r"> metadata_subset <- metadata[metadata$source_name_ch1 %in% c("m0_AL", "m0_AN"), ] </code></pre> </li> 
+					<li> <strong>Step 4.1 — Subset baseline lesional/non-lesional samples:</strong> The code below filters the <strong><code>metadata</code></strong> data frame, keeping only rows where the value in the <strong><code>source_name_ch1</code></strong> column is either <strong><code>"m0_AL"</code></strong> (lesional) or <strong><code>"m0_AN"</code></strong> (non-lesional). This ensures that only baseline samples are retained for analysis. </li> <pre><code class="language-r"> metadata_subset <- metadata[metadata$source_name_ch1 %in% c("m0_AL", "m0_AN"), ] </code></pre> </li>
+					<li>After applying this filtering step, the metadata is reduced to include only baseline lesional (m0_AL) and non-lesional (m0_AN) samples, as shown in <a href="#figure-4-2" onclick="highlightFigure('4-2')">Figure 4.2</a>.</li>
+									<!-- ============================ Figure 4.2 (Metadata After Subsetting) ============================ -->
+									<div style="display:flex; justify-content:center;">
+									  <figure id="figure-4-2" style="text-align:justify; margin:10px;">
+									    <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_4.2.png"
+									       target="_blank" rel="noopener">
+									      <img src="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_4.2.png"
+									           alt="Metadata after subsetting showing baseline lesional and non-lesional samples only"
+									           style="display:block; background-color:#0c4b4f; padding:10px; border-radius:15px;
+									                  box-shadow:0 4px 8px rgba(0,0,0,0.2); width:100%; height:auto; max-width:800px;">
+									    </a>
+									    <figcaption id="figure-caption-4-2">
+									      <strong>Figure 4.2.</strong> Metadata after subsetting, showing only baseline lesional (m0_AL) and non-lesional (m0_AN) samples retained for analysis.
+									    </figcaption>
+									  </figure>
+									</div>
+
+
+				
 					<li> <strong>Step 4.2 — Subset the count matrix to match filtered metadata:</strong> After selecting the relevant samples, the count matrix (<strong><code>counts_matrix</code></strong>) is filtered to keep only those columns whose names match the <strong><code>title</code></strong> values from <strong><code>metadata_subset</code></strong>. This ensures that the count data corresponds exactly to the subsetted metadata. </li>  <pre><code class="language-r"> keep <- intersect(colnames(counts_matrix), metadata_subset$title) counts_subset <- counts_matrix[, keep, drop = FALSE] </code></pre> </li> 
 					<li> <strong>Step 4.3 — Reorder metadata to align with count matrix columns:</strong> Although the metadata and count matrix may already be in the same order, this line ensures perfect alignment. It reorders <strong><code>metadata_subset</code></strong> so that its rows match the exact order of the columns in <strong><code>counts_subset</code></strong>. This step prevents potential mismatches during DESeq2 object creation. </li>  <pre><code class="language-r"> metadata_subset <- metadata_subset[match(colnames(counts_subset), metadata_subset$title), ] </code></pre> </li> 
+					
 					<li> <strong>Step 4.4 — Define the condition factor for DESeq2:</strong> Here, a new column named <strong><code>condition</code></strong> is created based on the <strong><code>source_name_ch1</code></strong> values. Samples labeled <strong><code>m0_AL</code></strong> are assigned as <strong><code>"lesional"</code></strong>, while <strong><code>m0_AN</code></strong> samples are labeled as <strong><code>"non_lesional"</code></strong>. The condition is then converted into a factor with <strong><code>"non_lesional"</code></strong> set as the reference level for downstream DESeq2 differential expression analysis. </li> <pre><code class="language-r"> metadata_subset$condition <- ifelse(metadata_subset$source_name_ch1 == "m0_AL", "lesional", "non_lesional") metadata_subset$condition <- factor(metadata_subset$condition, levels = c("non_lesional", "lesional")) </code></pre> </li> 
+					<li>The final metadata now includes an additional column named <strong><code>condition</code></strong>, which classifies each sample as either lesional or non-lesional, as shown in <a href="#figure-4-3" onclick="highlightFigure('4-3')">Figure 4.3</a>.</li>
+										<!-- ============================ Figure 4.3 (Metadata with Condition Column) ============================ -->
+										<div style="display:flex; justify-content:center;">
+										  <figure id="figure-4-3" style="text-align:justify; margin:10px;">
+										    <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_4.3.png"
+										       target="_blank" rel="noopener">
+										      <img src="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_4.3.png"
+										           alt="Metadata after adding condition column indicating lesional and non-lesional samples"
+										           style="display:block; background-color:#0c4b4f; padding:10px; border-radius:15px;
+										                  box-shadow:0 4px 8px rgba(0,0,0,0.2); width:100%; height:auto; max-width:800px;">
+										    </a>
+										    <figcaption id="figure-caption-4-3">
+										      <strong>Figure 4.3.</strong> Final metadata after adding the <code>condition</code> column, showing classification of each sample as lesional or non-lesional.
+										    </figcaption>
+										  </figure>
+										</div>
+
+				
 					<li> <strong>Optional validation step:</strong> To confirm that the count matrix and metadata are perfectly aligned before proceeding, run the following: </li>  <pre><code class="language-r"> all(colnames(counts_subset) == metadata_subset$title) </code></pre> </li> 
 					<li> If this returns <strong><code>TRUE</code></strong>, the data are properly aligned and ready for DESeq2 object creation. </li> 
  			</ul> 
