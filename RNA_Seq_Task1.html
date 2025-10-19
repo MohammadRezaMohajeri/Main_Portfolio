@@ -2265,7 +2265,26 @@ selected_groups <- c("m0_AL", "cyclosporine_m3_AL")
 			<h3>4.	Filtering and Subsetting Samples for Analysis</h3>
 		    
  		    <ul>
-					<li> This section focuses on selecting only the relevant samples for the differential expression analysis. In this study, we are interested in comparing <strong>baseline lesional (m0_AL)</strong> and <strong>baseline non-lesional (m0_AN)</strong> samples. The following steps ensure that only these samples are included, that their corresponding counts are properly aligned with the metadata, and that the grouping variable (<strong>condition</strong>) is correctly defined for downstream DESeq2 analysis. </li> 
+					<li> This section focuses on selecting only the relevant samples for the differential expression analysis. In this study, we are interested in comparing <strong>baseline lesional (m0_AL)</strong> and <strong>baseline non-lesional (m0_AN)</strong> samples. The following steps ensure that only these samples are included, that their corresponding <strong>counts</strong> are properly aligned with the <strong>metadata</strong>, and that the <strong>grouping variable</strong> (<strong>condition</strong>) is correctly defined for downstream DESeq2 analysis. </li> 
+					<li>Before subsetting, the complete metadata table included all 160 samples across different treatment groups and timepoints, as shown in <a href="#figure-4-1" onclick="highlightFigure('4-1')">Figure 4.1</a>.</li>
+								<!-- ============================ Figure 4.1 (Metadata Before Subsetting) ============================ -->
+									<div style="display:flex; justify-content:center;">
+									  <figure id="figure-4-1" style="text-align:justify; margin:10px;">
+									    <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_4.1-metadataBeforeSubseting.png"
+									       target="_blank" rel="noopener">
+									      <img src="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_4.1-metadataBeforeSubseting.png"
+									           alt="Overview of metadata table before subsetting showing 160 samples across all groups and timepoints"
+									           style="display:block; background-color:#0c4b4f; padding:10px; border-radius:15px;
+									                  box-shadow:0 4px 8px rgba(0,0,0,0.2); width:100%; height:auto; max-width:800px;">
+									    </a>
+									    <figcaption id="figure-caption-4-1" style="text-align:center; margin-top:8px;">
+									      <strong>Figure 4.1.</strong> Metadata table before subsetting, showing 160 samples across baseline, cyclosporine, and dupilumab groups.
+									    </figcaption>
+									  </figure>
+									</div>
+
+				
+				
 					<li> <strong>Step 4.1 — Subset baseline lesional/non-lesional samples:</strong> The code below filters the <strong><code>metadata</code></strong> data frame, keeping only rows where the value in the <strong><code>source_name_ch1</code></strong> column is either <strong><code>"m0_AL"</code></strong> (lesional) or <strong><code>"m0_AN"</code></strong> (non-lesional). This ensures that only baseline samples are retained for analysis. </li> <pre><code class="language-r"> metadata_subset <- metadata[metadata$source_name_ch1 %in% c("m0_AL", "m0_AN"), ] </code></pre> </li> 
 					<li> <strong>Step 4.2 — Subset the count matrix to match filtered metadata:</strong> After selecting the relevant samples, the count matrix (<strong><code>counts_matrix</code></strong>) is filtered to keep only those columns whose names match the <strong><code>title</code></strong> values from <strong><code>metadata_subset</code></strong>. This ensures that the count data corresponds exactly to the subsetted metadata. </li>  <pre><code class="language-r"> keep <- intersect(colnames(counts_matrix), metadata_subset$title) counts_subset <- counts_matrix[, keep, drop = FALSE] </code></pre> </li> 
 					<li> <strong>Step 4.3 — Reorder metadata to align with count matrix columns:</strong> Although the metadata and count matrix may already be in the same order, this line ensures perfect alignment. It reorders <strong><code>metadata_subset</code></strong> so that its rows match the exact order of the columns in <strong><code>counts_subset</code></strong>. This step prevents potential mismatches during DESeq2 object creation. </li>  <pre><code class="language-r"> metadata_subset <- metadata_subset[match(colnames(counts_subset), metadata_subset$title), ] </code></pre> </li> 
