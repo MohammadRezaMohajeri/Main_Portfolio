@@ -2375,12 +2375,97 @@ metadata_subset$condition <- factor(metadata_subset$condition, levels = c("non_l
 		<div class="explanation">
 		    <h3>5.	Creating the DESeq2 Dataset Object</h3>
 		    <ul>
-	   	      
+	   	      ============ version 1 =============
 				<li>We first align the sample identifiers between the metadata and the count matrix by setting the row names of the filtered metadata to the sample titles: rownames(metadata_subset) <- metadata_subset$title. This makes each row of metadata_subset directly correspond to a sample column in the count matrix and is the convention DESeq2 expects when constructing a dataset. You can see the row names populated with sample titles in <a href="#figure-5-1" onclick="highlightFigure('5-1')">Figure 5.1</a>.</li>
 			  	<li>Next, we ensure the counts are stored as an integer matrix. DESeq2 models read counts using discrete distributions and therefore requires integers. The lines counts_subset <- as.matrix(counts_subset) and storage.mode(counts_subset) <- "integer" convert the object to a base matrix (not a data frame or tibble) and set its internal storage to integer type. Visually, nothing “changes” in how the table looks, but the underlying type does, which is essential for DESeq2 to proceed; an example view of the integer count matrix is shown in <a href="#figure-5-2" onclick="highlightFigure('5-2')">Figure 5.2</a>.</li>
 				<li>With identifiers aligned and counts in the right type, we build the DESeq2 dataset using DESeqDataSetFromMatrix(). This constructor takes three core inputs. countData is the integer matrix of raw counts (genes as rows, samples as columns). colData is the sample-level metadata (a DataFrame whose row names must match the count matrix column names), which includes our analysis grouping variable. design is a formula that tells DESeq2 how to model the counts; here ~ condition specifies that differences in expression will be attributed to the condition factor we created (“non_lesional” as reference, “lesional” as the comparison). Together, these lines instantiate dds, which is an object of class DESeqDataSet ready for normalization, dispersion estimation, and differential testing.</li>
 				<li>The resulting dds contains several important slots you’ll use downstream. assays(dds) holds the raw count matrix (and later transformed matrices). colData(dds) stores the sample metadata you supplied, including the condition factor. rowRanges(dds) carries gene-level annotations (a GRangesList, which can be minimal at this stage). The design(dds) slot records the modeling formula you provided. A compact view of these components and their dimensions is shown in <a href="#figure-5-3" onclick="highlightFigure('5-3')">Figure 5.3</a>.</li>
-				
+
+
+						   	      ============ version 2 =============
+
+					<!-- ========================================= 5 ======================================== -->
+
+<div class="explanation">
+  <h3>5. Creating the DESeq2 Dataset Object</h3>
+
+  <ul>
+    <li>
+      In this section, we prepare the filtered data and metadata for DESeq2 analysis. Before running any normalization or differential expression testing, we first need to combine the integer count matrix and sample metadata into a single structured object that DESeq2 can recognize, called a <strong><code>DESeqDataSet</code></strong>. The following steps create this dataset object (<strong><code>dds</code></strong>) and verify that all required inputs are properly formatted.
+    </li>
+
+    <li>
+      <strong>Step 5.1 — Assign row names to metadata:</strong>  
+      The line <strong><code>rownames(metadata_subset) &lt;- metadata_subset$title</code></strong> sets the row names of the metadata to the corresponding sample titles. DESeq2 requires that each row of the metadata has a unique identifier matching the column names of the count matrix. This ensures perfect correspondence between samples in both data structures, as shown in <a href="#figure-5-1" onclick="highlightFigure('5-1')">Figure 5.1</a>.
+    </li>
+
+    <pre><code class="language-r">
+rownames(metadata_subset) <- metadata_subset$title
+    </code></pre>
+
+    <li>
+      <strong>Step 5.2 — Convert count matrix to integer mode:</strong>  
+      The two lines below guarantee that the count matrix is stored as an integer matrix, since DESeq2 models discrete count data using the negative binomial distribution. The <strong><code>as.matrix()</code></strong> function converts the data frame to a base matrix, and <strong><code>storage.mode()</code></strong> explicitly sets the data type to integer. The resulting count matrix, now ready for DESeq2 input, is illustrated in <a href="#figure-5-2" onclick="highlightFigure('5-2')">Figure 5.2</a>.
+    </li>
+
+    <pre><code class="language-r">
+counts_subset <- as.matrix(counts_subset)
+storage.mode(counts_subset) <- "integer"
+    </code></pre>
+
+    <li>
+      <strong>Step 5.3 — Create the DESeq2 dataset object:</strong>  
+      The function <strong><code>DESeqDataSetFromMatrix()</code></strong> constructs the DESeq2 dataset. It takes three arguments:
+      <ul>
+        <li><strong><code>countData</code></strong> — the integer matrix of gene counts (rows = genes, columns = samples);</li>
+        <li><strong><code>colData</code></strong> — the metadata table containing sample information, including our <strong><code>condition</code></strong> variable; and</li>
+        <li><strong><code>design</code></strong> — a formula describing the experimental design, here <strong><code>~ condition</code></strong>, which tells DESeq2 to model expression changes based on the lesional vs. non-lesional grouping.</li>
+      </ul>
+      The code below creates the dataset and stores it in an object named <strong><code>dds</code></strong>.  
+    </li>
+
+    <pre><code class="language-r">
+dds <- DESeqDataSetFromMatrix(
+  countData = counts_subset,
+  colData   = metadata_subset,
+  design    = ~ condition
+)
+    </code></pre>
+
+    <li>
+      <strong>Step 5.4 — Understanding the dds object:</strong>  
+      The resulting <strong><code>dds</code></strong> is an S4 object of class <code>DESeqDataSet</code>. It integrates gene-level counts and sample-level metadata into a single container. The main internal components include:
+      <ul>
+        <li><strong><code>assays(dds)</code></strong> — the raw (and later normalized) count matrices;</li>
+        <li><strong><code>colData(dds)</code></strong> — sample annotations such as <code>condition</code>;</li>
+        <li><strong><code>rowRanges(dds)</code></strong> — genomic feature information for each gene; and</li>
+        <li><strong><code>design(dds)</code></strong> — the model formula <code>~ condition</code> used in downstream analysis.</li>
+      </ul>
+      A compact view of these components and their dimensions is shown in <a href="#figure-5-3" onclick="highlightFigure('5-3')">Figure 5.3</a>.
+    </li>
+
+  </ul>
+</div>
+
+<!-- ======================== CODE START ============================ -->
+<p class="code-caption"><strong>Code Block 5.1.1.</strong> Creating the DESeq2 Dataset Object (dds)</p>
+<div class="code-block">
+  <pre><code class="language-r">
+# Step 5 – Create DESeq2 Dataset Object
+rownames(metadata_subset) <- metadata_subset$title
+counts_subset <- as.matrix(counts_subset)
+storage.mode(counts_subset) <- "integer"
+
+dds <- DESeqDataSetFromMatrix(
+  countData = counts_subset,
+  colData   = metadata_subset,
+  design    = ~ condition
+)
+  </code></pre>
+</div>
+<!-- ======================== CODE END ============================ -->
+
+
 		    </ul> 
 		</div>
  
