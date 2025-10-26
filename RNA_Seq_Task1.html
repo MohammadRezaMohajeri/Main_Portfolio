@@ -2391,12 +2391,12 @@ metadata_subset$condition <- factor(metadata_subset$condition, levels = c("non_l
 
   <ul>
     <li>
-      In this section, we prepare the filtered data and metadata for DESeq2 analysis. Before running any normalization or differential expression testing, we first need to combine the integer count matrix and sample metadata into a single structured object that DESeq2 can recognize, called a <strong><code>DESeqDataSet</code></strong>. The following steps create this dataset object (<strong><code>dds</code></strong>) and verify that all required inputs are properly formatted.
+      In this section, we prepare the filtered <strong>data</strong> and <strong>metadata</strong> for DESeq2 analysis. Before running any normalization or differential expression testing, we first need to combine the integer <strong>count matrix</strong> and sample <strong>metadata</strong>  into a single structured object that DESeq2 can recognize, called a <strong><code>DESeqDataSet</code></strong> <strong>dds</strong>. The following steps create this dataset object (<strong><code>dds</code></strong>) and verify that all required inputs are properly formatted.
     </li>
 
     <li>
       <strong>Step 5.1 — Assign row names to metadata:</strong>  
-      The line <strong><code>rownames(metadata_subset) &lt;- metadata_subset$title</code></strong> sets the row names of the metadata to the corresponding sample titles. DESeq2 requires that each row of the metadata has a unique identifier matching the column names of the count matrix. This ensures perfect correspondence between samples in both data structures, as shown in <a href="#figure-5-1" onclick="highlightFigure('5-1')">Figure 5.1</a>.
+      The line <strong><code>rownames(metadata_subset) &lt;- metadata_subset$title</code></strong> sets the row names of the metadata to the corresponding sample titles. DESeq2 requires that each row of the <strong>metadata</strong> has a unique identifier matching the column names of the <strong>count matrix</strong>. This ensures perfect correspondence between samples in both data structures, as shown in <a href="#figure-5-1" onclick="highlightFigure('5-1')">Figure 5.1</a>.
     </li>
 
     <pre><code class="language-r">
@@ -2433,7 +2433,7 @@ dds <- DESeqDataSetFromMatrix(
     </code></pre>
 
     <li>
-      <strong>Step 5.4 — Understanding the dds object:</strong>  
+      <strong>Understanding the dds object:</strong>  
       The resulting <strong><code>dds</code></strong> is an S4 object of class <code>DESeqDataSet</code>. It integrates gene-level counts and sample-level metadata into a single container. The main internal components include:
       <ul>
         <li><strong><code>assays(dds)</code></strong> — the raw (and later normalized) count matrices;</li>
@@ -2452,10 +2452,15 @@ dds <- DESeqDataSetFromMatrix(
 <div class="code-block">
   <pre><code class="language-r">
 # Step 5 – Create DESeq2 Dataset Object
+
+# Step 5.1 — Assign row names to metadata
 rownames(metadata_subset) <- metadata_subset$title
+
+# Step 5.2 — Convert count matrix to integer mode	
 counts_subset <- as.matrix(counts_subset)
 storage.mode(counts_subset) <- "integer"
 
+# Step 5.3 — Create the DESeq2 dataset object
 dds <- DESeqDataSetFromMatrix(
   countData = counts_subset,
   colData   = metadata_subset,
@@ -2470,21 +2475,6 @@ dds <- DESeqDataSetFromMatrix(
 		</div>
  
 
-
-	  <!-- ======================== CODE START ============================ -->
-		<!-- ======= 5.1. code chunk =========== -->
-		<!-- Caption for the code block -->
-		<p class="code-caption">Code Block 5.1.1.  CODDDDDE BLLLOOOOOK TITLEEEEE </p>
-
-		<div class="code-block">
-		    <pre><code class="language-r">
-			
-		# CODE HHHHEEERRRRR 
-		# CODE HHHHEEERRRRR 
-
-		    </code></pre>
-		</div>
-		<!-- ======================== CODE END ============================ -->
 
 		
                   
