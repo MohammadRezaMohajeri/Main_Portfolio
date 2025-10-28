@@ -2472,7 +2472,7 @@ storage.mode(counts_subset) <- "integer"
       <strong>Step 5.3 — Create the DESeq2 dataset object:</strong>  
       The function <strong><code>DESeqDataSetFromMatrix()</code></strong> constructs the DESeq2 dataset. It takes three arguments:
       <ul>
-        <li><strong><code>countData</code></strong> — the integer matrix of gene counts (rows = genes, columns = samples);</li>
+        <li><strong><code>countData</code></strong> — the integer matrix of gene counts (rows = genes, columns = samples) <a href="#figure-5-3" onclick="highlightFigure('5-3')">(Figure 5.3)</a>;</li>
         <li><strong><code>colData</code></strong> — the metadata table containing sample information, including our <strong><code>condition</code></strong> variable; and</li>
         <li><strong><code>design</code></strong> — a formula describing the experimental design, here <strong><code>~ condition</code></strong>, which tells DESeq2 to model expression changes based on the lesional vs. non-lesional grouping.</li>
       </ul>
