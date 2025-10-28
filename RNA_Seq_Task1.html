@@ -2394,12 +2394,7 @@ metadata_subset$condition <- factor(metadata_subset$condition, levels = c("non_l
       In this section, we prepare the filtered <strong>data</strong> and <strong>metadata</strong> for DESeq2 analysis. Before running any normalization or differential expression testing, we first need to combine the integer <strong>count matrix</strong> and sample <strong>metadata</strong>  into a single structured object that DESeq2 can recognize, called a <strong><code>DESeqDataSet</code></strong> <strong>(dds)</strong>. The following steps create this dataset object (<strong><code>dds</code></strong>) and verify that all required inputs are properly formatted.
     </li>
 
-    <li>
-      <strong>Step 5.1 — Assign row names to metadata:</strong>  
-      The line <strong><code>rownames(metadata_subset) &lt;- metadata_subset$title</code></strong> sets the row names of the metadata to the corresponding sample titles. DESeq2 requires that each row of the <strong>metadata</strong> has a unique identifier matching the column names of the <strong>count matrix</strong>. This ensures perfect correspondence between samples in both data structures, as shown in <a href="#figure-5-1" onclick="highlightFigure('5-1')">Figure 5.1</a>.
-    </li>
-
-	  New:
+ 
 	  <li>
   <strong>Step 5.1 — Assign row names to metadata:</strong>  
   Before assigning row names, the metadata table still displays its default numeric row indices, as shown in <a href="#figure-5-1" onclick="highlightFigure('5-1')">Figure 5.1</a>.  
@@ -2410,6 +2405,48 @@ metadata_subset$condition <- factor(metadata_subset$condition, levels = c("non_l
     <pre><code class="language-r">
 rownames(metadata_subset) <- metadata_subset$title
     </code></pre>
+
+						<!-- ============================ Figures 5.1 and 5.2 (Metadata Before and After Assigning Row Names) ============================ -->
+						<div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:20px;">
+						
+						  <!-- Figure 5.1 -->
+						  <figure id="figure-5-1" style="flex:1; min-width:300px; text-align:justify; margin:10px;">
+						    <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_5.1.png"
+						       target="_blank" rel="noopener">
+						      <img src="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_5.1.png"
+						           alt="Metadata table before assigning row names showing default numeric row indices"
+						           style="display:block; background-color:#0c4b4f; padding:10px; border-radius:15px;
+						                  box-shadow:0 4px 8px rgba(0,0,0,0.2); width:100%; height:auto; max-width:600px;">
+						    </a>
+						    <figcaption id="figure-caption-5-1">
+						      <strong>Figure 5.1.</strong> Metadata table before assigning row names, displaying default numeric indices for each sample.
+						    </figcaption>
+						  </figure>
+						
+						  <!-- Figure 5.2 -->
+						  <figure id="figure-5-2" style="flex:1; min-width:300px; text-align:justify; margin:10px;">
+						    <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_5.2.png"
+						       target="_blank" rel="noopener">
+						      <img src="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_5.2.png"
+						           alt="Metadata table after assigning row names showing sample titles as identifiers"
+						           style="display:block; background-color:#0c4b4f; padding:10px; border-radius:15px;
+						                  box-shadow:0 4px 8px rgba(0,0,0,0.2); width:100%; height:auto; max-width:600px;">
+						    </a>
+						    <figcaption id="figure-caption-5-2">
+						      <strong>Figure 5.2.</strong> Metadata table after assigning row names, now indexed by sample titles matching the count matrix.
+						    </figcaption>
+						  </figure>
+						
+						</div>
+
+
+
+
+
+
+
+
+	  
 
     <li>
       <strong>Step 5.2 — Convert count matrix to integer mode:</strong>  
