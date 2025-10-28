@@ -2458,6 +2458,26 @@ counts_subset <- as.matrix(counts_subset)
 storage.mode(counts_subset) <- "integer"
     </code></pre>
 
+						<!-- ============================ Figure 5.3 (Counts Subset Matrix) ============================ -->
+							<div style="display:flex; justify-content:center;">
+							  <figure id="figure-5-3" style="text-align:justify; margin:10px;">
+							    <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_5.3.png"
+							       target="_blank" rel="noopener">
+							      <img src="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_5.3.png"
+							           alt="Subset of the count matrix showing integer read counts for baseline lesional and non-lesional samples"
+							           style="display:block; background-color:#0c4b4f; padding:10px; border-radius:15px;
+							                  box-shadow:0 4px 8px rgba(0,0,0,0.2); width:100%; height:auto; max-width:800px;">
+							    </a>
+							    <figcaption id="figure-caption-5-3">
+							      <strong>Figure 5.3.</strong> Subset of the count matrix after filtering and subsetting, showing integer read counts for baseline lesional (m0_AL) and non-lesional (m0_AN) samples across selected genes.
+							    </figcaption>
+							  </figure>
+							</div>
+
+
+
+	  
+
     <li>
       <strong>Step 5.3 — Create the DESeq2 dataset object:</strong>  
       The function <strong><code>DESeqDataSetFromMatrix()</code></strong> constructs the DESeq2 dataset. It takes three arguments:
