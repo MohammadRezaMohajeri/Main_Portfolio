@@ -2476,7 +2476,7 @@ storage.mode(counts_subset) <- "integer"
         <li><strong><code>colData</code></strong> — the metadata table containing sample information, including our <strong><code>condition</code></strong> variable; and</li>
         <li><strong><code>design</code></strong> — a formula describing the experimental design, here <strong><code>~ condition</code></strong>, which tells DESeq2 to model expression changes based on the lesional vs. non-lesional grouping.</li>
       </ul>
-      The code below creates the dataset and stores it in an object named <strong><code>dds</code></strong>.  
+      The code below creates the dataset and stores it in an object named <strong><code>dds</code></strong>. The resulting DESeq2 dataset object contains multiple components such as the design formula, row ranges, assays, and sample metadata (<strong><code>colData</code></strong>), as illustrated in <a href="#figure-5-4" onclick="highlightFigure('5-4')">Figure 5.4</a>. 
     </li>
 
     <pre><code class="language-r">
@@ -2487,6 +2487,28 @@ dds <- DESeqDataSetFromMatrix(
 )
     </code></pre>
 
+
+							<!-- ============================ Figure 5.4 (DESeq2 Dataset Object Overview) ============================ -->
+						<div style="display:flex; justify-content:center;">
+						  <figure id="figure-5-4" style="text-align:justify; margin:10px;">
+						    <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_5.4.png"
+						       target="_blank" rel="noopener">
+						      <img src="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_5.4.png"
+						           alt="DESeq2 dataset object structure showing components such as design, assays, colData, and metadata"
+						           style="display:block; background-color:#0c4b4f; padding:10px; border-radius:15px;
+						                  box-shadow:0 4px 8px rgba(0,0,0,0.2); width:100%; height:auto; max-width:800px;">
+						    </a>
+						    <figcaption id="figure-caption-5-4">
+						      <strong>Figure 5.4.</strong> Structure of the <code>dds</code> object created using <code>DESeqDataSetFromMatrix()</code>, showing key components such as the design formula, dispersion function, row ranges, assay data, and sample metadata (<code>colData</code>).
+						    </figcaption>
+						  </figure>
+						</div>
+					
+
+
+
+
+	  
     <li>
       <strong>Understanding the dds object:</strong>  
       The resulting <strong><code>dds</code></strong> is an S4 object of class <code>DESeqDataSet</code>. It integrates gene-level counts and sample-level metadata into a single container. The main internal components include:
