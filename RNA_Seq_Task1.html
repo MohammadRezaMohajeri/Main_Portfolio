@@ -2371,18 +2371,8 @@ metadata_subset$condition <- factor(metadata_subset$condition, levels = c("non_l
 
 
 		
-<!-- ========================================= 5  ======================================== -->
-		<div class="explanation">
-		    <h3>5.	Creating the DESeq2 Dataset Object</h3>
-		    <ul>
-	   	      ============ version 1 =============
-				<li>We first align the sample identifiers between the metadata and the count matrix by setting the row names of the filtered metadata to the sample titles: rownames(metadata_subset) <- metadata_subset$title. This makes each row of metadata_subset directly correspond to a sample column in the count matrix and is the convention DESeq2 expects when constructing a dataset. You can see the row names populated with sample titles in <a href="#figure-5-1" onclick="highlightFigure('5-1')">Figure 5.1</a>.</li>
-			  	<li>Next, we ensure the counts are stored as an integer matrix. DESeq2 models read counts using discrete distributions and therefore requires integers. The lines counts_subset <- as.matrix(counts_subset) and storage.mode(counts_subset) <- "integer" convert the object to a base matrix (not a data frame or tibble) and set its internal storage to integer type. Visually, nothing “changes” in how the table looks, but the underlying type does, which is essential for DESeq2 to proceed; an example view of the integer count matrix is shown in <a href="#figure-5-2" onclick="highlightFigure('5-2')">Figure 5.2</a>.</li>
-				<li>With identifiers aligned and counts in the right type, we build the DESeq2 dataset using DESeqDataSetFromMatrix(). This constructor takes three core inputs. countData is the integer matrix of raw counts (genes as rows, samples as columns). colData is the sample-level metadata (a DataFrame whose row names must match the count matrix column names), which includes our analysis grouping variable. design is a formula that tells DESeq2 how to model the counts; here ~ condition specifies that differences in expression will be attributed to the condition factor we created (“non_lesional” as reference, “lesional” as the comparison). Together, these lines instantiate dds, which is an object of class DESeqDataSet ready for normalization, dispersion estimation, and differential testing.</li>
-				<li>The resulting dds contains several important slots you’ll use downstream. assays(dds) holds the raw count matrix (and later transformed matrices). colData(dds) stores the sample metadata you supplied, including the condition factor. rowRanges(dds) carries gene-level annotations (a GRangesList, which can be minimal at this stage). The design(dds) slot records the modeling formula you provided. A compact view of these components and their dimensions is shown in <a href="#figure-5-3" onclick="highlightFigure('5-3')">Figure 5.3</a>.</li>
-
-
-						   	      ============ version 2 =============
+ 	 
+		     
 
 					<!-- ========================================= 5 ======================================== -->
 
