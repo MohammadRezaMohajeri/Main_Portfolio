@@ -2391,7 +2391,7 @@ metadata_subset$condition <- factor(metadata_subset$condition, levels = c("non_l
 
   <ul>
     <li>
-      In this section, we prepare the filtered <strong>data</strong> and <strong>metadata</strong> for DESeq2 analysis. Before running any normalization or differential expression testing, we first need to combine the integer <strong>count matrix</strong> and sample <strong>metadata</strong>  into a single structured object that DESeq2 can recognize, called a <strong><code>DESeqDataSet</code></strong> <strong>dds</strong>. The following steps create this dataset object (<strong><code>dds</code></strong>) and verify that all required inputs are properly formatted.
+      In this section, we prepare the filtered <strong>data</strong> and <strong>metadata</strong> for DESeq2 analysis. Before running any normalization or differential expression testing, we first need to combine the integer <strong>count matrix</strong> and sample <strong>metadata</strong>  into a single structured object that DESeq2 can recognize, called a <strong><code>DESeqDataSet</code></strong> <strong>(dds)</strong>. The following steps create this dataset object (<strong><code>dds</code></strong>) and verify that all required inputs are properly formatted.
     </li>
 
     <li>
@@ -2399,6 +2399,14 @@ metadata_subset$condition <- factor(metadata_subset$condition, levels = c("non_l
       The line <strong><code>rownames(metadata_subset) &lt;- metadata_subset$title</code></strong> sets the row names of the metadata to the corresponding sample titles. DESeq2 requires that each row of the <strong>metadata</strong> has a unique identifier matching the column names of the <strong>count matrix</strong>. This ensures perfect correspondence between samples in both data structures, as shown in <a href="#figure-5-1" onclick="highlightFigure('5-1')">Figure 5.1</a>.
     </li>
 
+	  New:
+	  <li>
+  <strong>Step 5.1 — Assign row names to metadata:</strong>  
+  Before assigning row names, the metadata table still displays its default numeric row indices, as shown in <a href="#figure-5-1" onclick="highlightFigure('5-1')">Figure 5.1</a>.  
+  The line <strong><code>rownames(metadata_subset) &lt;- metadata_subset$title</code></strong> then sets the row names of the metadata to the corresponding sample titles.  
+  DESeq2 requires that each row of the <strong>metadata</strong> has a unique identifier matching the column names of the <strong>count matrix</strong>.  
+  After this step, the metadata is correctly indexed by sample titles, as illustrated in <a href="#figure-5-2" onclick="highlightFigure('5-2')">Figure 5.2</a>.
+</li>
     <pre><code class="language-r">
 rownames(metadata_subset) <- metadata_subset$title
     </code></pre>
