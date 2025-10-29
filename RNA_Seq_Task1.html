@@ -2595,9 +2595,25 @@ vsd <- vst(dds, blind=TRUE)
 				
 			  <li><strong>6.2. Run PCA:</strong> Reveal clustering and dominant sources of variation.</li> 
 				<li><strong>Principal Component Analysis (PCA)</strong> is an essential exploratory step that helps visualize overall <strong>similarities</strong> and <strong>differences</strong> among samples based on their global <strong>gene expression profiles</strong>. By reducing the dimensionality of the <strong>variance-stabilized dataset</strong>, PCA projects each sample into a two-dimensional space defined by <strong>first two principal components</strong>the  (<strong>PC1</strong> and <strong>PC2</strong>), which capture the majority of variation in the data.</li>
-				<li>In the resulting plot, samples are coloured according to their condition (lesional or non-lesional). A moderate separation can be observed along PC1, where non-lesional samples cluster predominantly on one side while lesional samples shift towards the other. However, some overlap remains, indicating natural biological variability within each group or potential subtle technical effects. This pattern confirms that condition explains a meaningful portion of the variance (26% on PC1 and 15% on PC2), while additional sources of variation contribute to finer sample differences.</li>
+				<li>In the resulting plot, as shown in <a href="#figure-6-2" onclick="highlightFigure('6-2')">Figure 6.2</a>, samples are coloured according to their condition (lesional or non-lesional). A moderate separation can be observed along PC1, where non-lesional samples cluster predominantly on one side while lesional samples shift towards the other. However, some overlap remains, indicating natural biological variability within each group or potential subtle technical effects. This pattern confirms that condition explains a meaningful portion of the variance (26% on PC1 and 15% on PC2), while additional sources of variation contribute to finer sample differences.</li>
 				<li>The PCA plot is generated using the DESeq2 built-in function plotPCA(), which automatically computes the principal components from the variance-stabilized data and labels the axes with the percentage of total variance explained by each component.</li>
-				
+
+				<!-- ============================ Figure 6.2 (PCA Plot of Variance-Stabilized Data) ============================ -->
+						<div style="display:flex; justify-content:center;">
+						  <figure id="figure-6-2" style="text-align:justify; margin:10px;">
+						    <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_6.2.png"
+						       target="_blank" rel="noopener">
+						      <img src="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_6.2.png"
+						           alt="PCA plot of variance-stabilized data showing separation between lesional and non-lesional samples"
+						           style="display:block; background-color:#0c4b4f; padding:10px; border-radius:15px;
+						                  box-shadow:0 4px 8px rgba(0,0,0,0.2); width:100%; height:auto; max-width:800px;">
+						    </a>
+						    <figcaption id="figure-caption-6-2">
+						      <strong>Figure 6.2.</strong> PCA plot of variance-stabilized data (<code>vsd</code>), showing moderate separation between lesional and non-lesional samples along PC1 (26% variance) and PC2 (15% variance). Each point represents one sample, coloured according to condition.
+						    </figcaption>
+						  </figure>
+						</div>
+
 <!-- ======================== CODE START ============================ -->
 		<p class="code-caption"><strong>Code Block 6.2.</strong> PCA Plot of Variance-Stabilized Data Grouped by Condition </p>
 		<div class="code-block">
