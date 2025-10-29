@@ -2563,13 +2563,18 @@ dds <- DESeqDataSetFromMatrix(
 		<div class="explanation">
 		    <h3>6.	Quality Control & Data Exploration (Post-DESeq2 Object Creation)</h3>
 		    <ul>
-	   	     
+
+
+			  <li>This section focuses on evaluating the integrity and structure of the data after creating the <strong><code>DESeqDataSet</code></strong> object (<strong><code>dds</code></strong>). Before running the differential expression analysis with <strong><code>DESeq()</code></strong>, it is essential to confirm that the dataset is technically sound and free from artifacts or outliers that could distort the statistical results.</li>
+			  <li>The analyses here are divided into two parts: initial checks performed on raw counts and subsequent explorations based on variance-stabilized data. The first steps (<strong>6.1</strong> and <strong>6.2</strong>) inspect count distributions and library sizes directly from the raw count matrix to verify sample consistency and sequencing depth. The following steps (<strong>6.3–6.6</strong>) rely on transformed data (using <strong>VST</strong> or <strong>rlog</strong>) to visualize overall expression patterns, detect potential batch effects, and assess sample relationships through PCA and distance heatmaps.</li>
+			  <li>These quality control steps ensure that the input data are biologically meaningful, technically reliable, and properly normalized, forming a robust foundation for accurate and reproducible downstream differential expression analysis.</li>
+			  
 			  <li><strong>6.1. Inspect count distributions</strong></li>
 			  <li><strong>6.2. Check library sizes</strong></li>
 			  <li><strong>6.3.Variance Stabilizing Transformation (VST):</strong></li>
-		      <li><strong>6.4. Run PCA</strong></li> 
+			  <li><strong>6.4. Run PCA</strong></li> 
 			  <li><strong>6.5. Sample-to-Sample Distance Heatmap</strong></li> 
-		      <li><strong>6.6. Identify possible batch effects</strong></li> 
+			  <li><strong>6.6. Identify possible batch effects</strong></li> 
 
 
 		    </ul> 
