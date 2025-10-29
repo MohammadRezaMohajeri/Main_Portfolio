@@ -2594,14 +2594,22 @@ vsd <- vst(dds, blind=TRUE)
 
 				
 			  <li><strong>6.2. Run PCA:</strong> Reveal clustering and dominant sources of variation.</li> 
-			  					<!-- ======================== CODE START ============================ -->
-										<p class="code-caption"><strong>Code Block 6.2.</strong> PCA Plot (All Genes) </p>
-										<div class="code-block">
-										  <pre><code class="language-r">
-										 
-										  </code></pre>
-										</div>
-								<!-- ======================== CODE END ============================ -->
+				<li><strong>Principal Component Analysis (PCA)</strong> is an essential exploratory step that helps visualize overall <strong>similarities</strong> and <strong>differences</strong> among samples based on their global <strong>gene expression profiles</strong>. By reducing the dimensionality of the <strong>variance-stabilized dataset</strong>, PCA projects each sample into a two-dimensional space defined by <strong>first two principal components</strong>the  (<strong>PC1</strong> and <strong>PC2</strong>), which capture the majority of variation in the data.</li>
+				<li>In the resulting plot, samples are coloured according to their condition (lesional or non-lesional). A moderate separation can be observed along PC1, where non-lesional samples cluster predominantly on one side while lesional samples shift towards the other. However, some overlap remains, indicating natural biological variability within each group or potential subtle technical effects. This pattern confirms that condition explains a meaningful portion of the variance (26% on PC1 and 15% on PC2), while additional sources of variation contribute to finer sample differences.</li>
+				<li>The PCA plot is generated using the DESeq2 built-in function plotPCA(), which automatically computes the principal components from the variance-stabilized data and labels the axes with the percentage of total variance explained by each component.</li>
+				
+<!-- ======================== CODE START ============================ -->
+		<p class="code-caption"><strong>Code Block 6.2.</strong> PCA Plot of Variance-Stabilized Data Grouped by Condition </p>
+		<div class="code-block">
+		  <pre><code class="language-r">
+
+# Generate PCA plot of variance-stabilized data, grouping samples by condition (lesional vs non-lesional)
+plotPCA(vsd, intgroup = "condition")
+
+			  
+		  </code></pre>
+		</div>
+<!-- ======================== CODE END ============================ -->
 
 				
 				
