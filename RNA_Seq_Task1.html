@@ -2556,7 +2556,27 @@ dds <- DESeqDataSetFromMatrix(
 		
                   
 <!-- ################################################################################### --> 
+---------------- For test start (a replacement for first paragraph):
+<div class="explanation">
+  <h3>6. Quality Control & Data Exploration (Post-DESeq2 Object Creation)</h3>
 
+  <ul>
+    <li>
+      This section assesses the quality and structure of the dataset after creating the <strong><code>DESeqDataSet</code></strong> object (<strong><code>dds</code></strong>). Earlier, in <strong>Section 3 (Exploratory Data Analysis — Before dds)</strong>, we explored <em>all</em> samples to understand metadata structure, sample distributions, and the raw count matrix prior to modelling. Here, we shift focus to the <strong>selected analysis subset</strong> (baseline lesional and non-lesional samples) and perform post-dds quality checks to ensure the data are biologically consistent and free from technical artefacts or outliers before running <strong><code>DESeq()</code></strong>.
+    </li>
+
+    <li>
+      The workflow begins with the <strong>Variance Stabilising Transformation (VST)</strong> to place counts on a stabilised scale suitable for exploration (<strong>6.1</strong>). We then use <strong>PCA</strong> to reveal dominant sources of variation and clustering among samples (<strong>6.2</strong>), followed by an explicit step to <strong>identify possible batch effects</strong> by colouring samples with relevant metadata such as patient or sequencing batch (<strong>6.3</strong>). Next, a <strong>sample-to-sample distance heatmap</strong> provides a numerical confirmation of relationships and potential groupings (<strong>6.4</strong>). The section closes with checks on <strong>library sizes</strong> to verify sequencing depth uniformity (<strong>6.5</strong>) and <strong>post-transformation count distributions</strong> to confirm that expression values are well behaved after normalisation (<strong>6.6</strong>).
+    </li>
+
+    <li>
+      Together, these quality control steps validate that the selected subset is technically reliable, biologically coherent, and appropriately normalised, providing a robust foundation for accurate and reproducible downstream differential expression analysis.
+    </li>
+  </ul>
+</div>
+
+
+---------------For test end: 
 
 
 <!-- ========================================= 6  ======================================== -->
