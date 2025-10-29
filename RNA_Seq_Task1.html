@@ -2604,7 +2604,13 @@ vsd <- vst(dds, blind=TRUE)
 		  <pre><code class="language-r">
 
 # Generate PCA plot of variance-stabilized data, grouping samples by condition (lesional vs non-lesional)
-plotPCA(vsd, intgroup = "condition")
+pca_plot <- plotPCA(vsd, intgroup = "condition")
+
+# Save PCA plot as high-resolution PNG 
+png("C:/Users/YOUR/PATH/Figure_6.2_PCA_plot.png",
+    width = 2000, height = 1600, res = 300)
+print(pca_plot)
+dev.off()
 
 			  
 		  </code></pre>
