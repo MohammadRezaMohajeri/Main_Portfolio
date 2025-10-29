@@ -2556,27 +2556,7 @@ dds <- DESeqDataSetFromMatrix(
 		
                   
 <!-- ################################################################################### --> 
----------------- For test start (a replacement for first paragraph):
-<div class="explanation">
-  <h3>6. Quality Control & Data Exploration (Post-DESeq2 Object Creation)</h3>
 
-  <ul>
-    <li>
-      This section assesses the quality and structure of the dataset after creating the <strong><code>DESeqDataSet</code></strong> object (<strong><code>dds</code></strong>). Earlier, in <strong>Section 3 (Exploratory Data Analysis — Before dds)</strong>, we explored <em>all</em> samples to understand metadata structure, sample distributions, and the raw count matrix prior to modelling. Here, we shift focus to the <strong>selected analysis subset</strong> (baseline lesional and non-lesional samples) and perform post-dds quality checks to ensure the data are biologically consistent and free from technical artefacts or outliers before running <strong><code>DESeq()</code></strong>.
-    </li>
-
-    <li>
-      The workflow begins with the <strong>Variance Stabilising Transformation (VST)</strong> to place counts on a stabilised scale suitable for exploration (<strong>6.1</strong>). We then use <strong>PCA</strong> to reveal dominant sources of variation and clustering among samples (<strong>6.2</strong>), followed by an explicit step to <strong>identify possible batch effects</strong> by colouring samples with relevant metadata such as patient or sequencing batch (<strong>6.3</strong>). Next, a <strong>sample-to-sample distance heatmap</strong> provides a numerical confirmation of relationships and potential groupings (<strong>6.4</strong>). The section closes with checks on <strong>library sizes</strong> to verify sequencing depth uniformity (<strong>6.5</strong>) and <strong>post-transformation count distributions</strong> to confirm that expression values are well behaved after normalisation (<strong>6.6</strong>).
-    </li>
-
-    <li>
-      Together, these quality control steps validate that the selected subset is technically reliable, biologically coherent, and appropriately normalised, providing a robust foundation for accurate and reproducible downstream differential expression analysis.
-    </li>
-  </ul>
-</div>
-
-
----------------For test end: 
 
 
 <!-- ========================================= 6  ======================================== -->
@@ -2584,7 +2564,7 @@ dds <- DESeqDataSetFromMatrix(
 		    <h3>6.	Quality Control & Data Exploration (Post-DESeq2 Object Creation)</h3>
 		    <ul>
 
-				<li>      This section focuses on assessing the overall quality and structure of the dataset after creating the <strong><code>DESeqDataSet</code></strong> object (<strong><code>dds</code></strong>). Before performing the differential expression analysis with <strong><code>DESeq()</code></strong>, it is essential to verify that the data are biologically consistent and free from technical artifacts or outliers that could compromise the accuracy of the results.</li>
+				<li>      This section assesses the quality and structure of the dataset after creating the <strong><code>DESeqDataSet</code></strong> object (<strong><code>dds</code></strong>). Earlier, in <strong>Section 3 (Exploratory Data Analysis — Before dds)</strong>, we explored <em>all</em> samples to understand metadata structure, sample distributions, and the raw count matrix prior to modelling. Here, we shift focus to the <strong>selected analysis subset</strong> (baseline lesional and non-lesional samples) and perform post-dds quality checks to ensure the data are biologically consistent and free from technical artefacts or outliers before running <strong><code>DESeq()</code></strong>.</li>				
 				<li>      The analyses in this section begin with the <strong>Variance Stabilizing Transformation (VST)</strong>, which converts raw count data into a stabilized scale suitable for visualization and exploratory analysis. Subsequent steps include generating a <strong>PCA plot</strong> to reveal overall clustering patterns, <strong>identifying possible batch effects</strong> by colouring samples based on metadata variables such as patient or sequencing batch, and creating a <strong>sample-to-sample distance heatmap</strong> to confirm these relationships numerically. The section concludes with checks on <strong>library sizes</strong> and <strong>count distributions</strong> to validate normalization consistency and ensure that expression values are evenly distributed after transformation.</li>
 				<li>      Together, these quality control steps confirm that the dataset is technically reliable, biologically coherent, and properly normalized—providing a solid foundation for downstream differential expression analysis and pathway interpretation.</li>
 				 
