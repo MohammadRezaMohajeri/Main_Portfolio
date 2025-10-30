@@ -2652,14 +2652,61 @@ dev.off()
 
 				
 			  <li><strong>6.4. Sample-to-Sample Distance Heatmap:</strong>  Numerical confirmation of sample relationships and potential batch groupings. </li> 
-			  					<!-- ======================== CODE START ============================ -->
-										<p class="code-caption"><strong>Code Block 6.4.</strong> Sample-to-Sample Distance Heatmap </p>
-										<div class="code-block">
-										  <pre><code class="language-r">
-										 
-										  </code></pre>
-										</div>
-								<!-- ======================== CODE END ============================ -->
+<!-- ======================== CODE START ============================ -->
+		<p class="code-caption"><strong>Code Block 6.4.</strong> Sample-to-Sample Distance Heatmap </p>
+		<div class="code-block">
+		  <pre><code class="language-r">
+
+
+# ==============================================================
+# 6.4. Sample-to-Sample Distance Heatmap
+# ==============================================================
+
+# ========= Load Required Package =========
+library(pheatmap)
+
+# ========= Compute Pairwise Sample Distances =========
+# Calculate distances between samples using VST-transformed counts.
+# Transpose the assay matrix so that distance is computed across samples.
+dists <- dist(t(assay(vsd)))
+
+# Convert distance object to a full matrix for visualization
+mat <- as.matrix(dists)
+
+# ========= Generate and Save Heatmap =========
+# Create a sample-to-sample distance heatmap and save as a high-resolution PNG.
+# This heatmap helps visualize overall similarity patterns between samples.
+pheatmap(
+  mat,
+  clustering_distance_rows = dists,  # hierarchical clustering for rows
+  clustering_distance_cols = dists,  # hierarchical clustering for columns
+  main = "Sample-to-sample distances",  # heatmap title
+  color = colorRampPalette(c("navy", "white", "firebrick3"))(50),  # blue-white-red color scale
+  
+  # ========= Font and Label Settings =========
+  fontsize = 28,       # controls general font size (including title)
+  fontsize_row = 6,    # smaller font for row names
+  fontsize_col = 6,    # smaller font for column names
+  angle_col = 90,      # rotate column labels for better visibility
+  
+  # ========= Dendrogram and Legend Settings =========
+  treeheight_row = 80, # row dendrogram height
+  treeheight_col = 80, # column dendrogram height
+  legend = TRUE,       # display color legend
+  
+  # ========= Display and Output Settings =========
+  show_rownames = TRUE,  # show sample names on rows
+  show_colnames = TRUE,  # show sample names on columns
+  filename = "C:/Users/omidm/OneDrive/Desktop/RNA_Seq_Task1/6.EDA/Figure_6.4.png",  # output path
+  width = 18, height = 16  # figure size in inches for crisp rendering
+) 
+			  
+
+
+			  
+		  </code></pre>
+		</div>
+<!-- ======================== CODE END ============================ -->
 
 				
 			  <li><strong>6.5. Check library sizes:</strong>  Confirm normalization and sequencing depth uniformity. </li>
