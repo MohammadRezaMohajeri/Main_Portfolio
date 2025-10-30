@@ -2652,6 +2652,13 @@ dev.off()
 
 				
 			  <li><strong>6.4. Sample-to-Sample Distance Heatmap:</strong>  Numerical confirmation of sample relationships and potential batch groupings. </li> 
+
+
+
+				New:
+				<li>In the resulting heatmap, as shown in <a href="#figure-6-4" onclick="highlightFigure('6-4')">Figure 6.4</a>, each cell represents the <strong>Euclidean distance</strong> between a pair of samples, calculated using <strong>VST-transformed counts</strong> across all genes. The color gradient from <strong>blue (0)</strong> to <strong>red (150)</strong> reflects how similar or dissimilar two samples are in their overall gene expression profiles: blue indicates high similarity (low distance), while red denotes greater dissimilarity (high distance). The diagonal line of dark blue squares corresponds to each sample compared to itself, producing a distance of zero, which naturally appears along the main diagonal of the matrix.</li> 
+				<li>The accompanying dendrograms display hierarchical clustering of samples based on these distances, allowing visual identification of groups with similar expression patterns. In this dataset, several blue blocks along the diagonal suggest clusters of samples that are more alike — for instance, many <strong>lesional</strong> or <strong>non-lesional</strong> samples tend to cluster together — whereas red regions between clusters indicate samples that differ substantially, reflecting the biological contrast between conditions. This structure mirrors the moderate separation observed in the PCA plot, confirming that condition is a key contributor to the variation while additional factors such as inter-patient variability explain finer differences.</li> 
+				<li>Such sample-to-sample distance heatmaps are a vital <strong>quality control diagnostic</strong> tool in RNA-seq analysis. They help detect potential anomalies, sample swaps, or unexpected outliers, and verify that replicates or biologically related samples exhibit high similarity. In this analysis, the consistent clustering pattern and absence of isolated red cells confirm the dataset’s technical soundness and biological coherence, ensuring that it is well-suited for downstream differential expression analysis.</li>
 <!-- ======================== CODE START ============================ -->
 		<p class="code-caption"><strong>Code Block 6.4.</strong> Sample-to-Sample Distance Heatmap </p>
 		<div class="code-block">
