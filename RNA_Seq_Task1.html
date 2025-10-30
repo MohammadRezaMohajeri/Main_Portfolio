@@ -2635,11 +2635,11 @@ dev.off()
 
 				
 				
-			  <li><strong>6.3. Identify possible batch effects:</strong> Investigate PCA patterns by colouring samples by batch, patient, or technical factor.</li> 
+			  <li><strong>6.3. Identify possible batch effects:</strong> </li> 
 
 				<li>In RNA-seq analysis, a batch effect refers to any systematic technical variation unrelated to the biological question of interest. Such effects typically arise from differences in sequencing runs, library preparation dates, reagents, technicians, or instruments used. They can make samples appear more similar or different for technical rather than biological reasons, potentially biasing the results if not detected and corrected.</li>
 				<li>In this study, all samples were generated within a single sequencing project (platform GPL21290) using a consistent experimental protocol, and the metadata does not indicate the presence of multiple batches or sequencing runs. Therefore, no explicit technical batch effect is expected. However, since each patient contributed both lesional and non-lesional samples collected at the same time, the primary source of variation may stem from biological pairing rather than technical processing. This represents a within-patient effect rather than a batch effect.</li>
-				<li>As a result, it is not necessary to perform additional batch correction in this analysis. Nevertheless, if exploratory analyses such as PCA reveal clustering primarily by patient rather than by condition, the design formula in DESeq2 can be adjusted to include patient as a blocking factor (for example, <strong><code>~ patient + condition</code></strong>) to control for within-patient variability.</li>
+				<li>As a result, it is not necessary to perform additional batch correction in this analysis. Nevertheless, if exploratory analyses such as PCA reveal clustering primarily by patient rather than by condition, the design formula in DESeq2 can be adjusted to include patient as a blocking factor (for example, <strong><code>~ patient + condition</code></strong>) to control for within-patient variability. Batch effects can be investigated using PCA patterns by colouring samples by batch, patient, or technical factor.</li>
  
 
 				
