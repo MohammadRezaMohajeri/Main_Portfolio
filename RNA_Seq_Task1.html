@@ -2779,7 +2779,7 @@ The dataset is ready for downstream steps such as normalization and differential
 				===========
 
 ==================================
-				bellow is 3 paragraphs, see if above are mentioned in these 3:
+			===================	start Version 1: ================
 				<li>
 The <strong>library size check</strong> assesses the total sequencing depth for each sample, expressed as the total number of mapped reads. This step is crucial for verifying that sequencing was performed consistently across all samples, as major discrepancies in library size can bias normalization and subsequent differential expression analysis. In <a href="#figure-6-5" onclick="highlightFigure('6-5')">Figure 6.5</a>, library sizes range approximately from <strong>13 to 32 million reads</strong> per sample, reflecting a balanced and well-sequenced dataset. These values indicate that each sample received sufficient sequencing coverage to reliably capture gene expression patterns, without any evidence of failed or under-sequenced libraries.
 </li>
@@ -2791,10 +2791,42 @@ Earlier, as shown in <a href="#figure-2-2-1-2" onclick="highlightFigure('2-2-1-2
 <li>
 The final dataset displays a consistent distribution of library sizes, with no samples deviating significantly from the group average. This uniformity ensures that normalization procedures such as those applied in <strong>DESeq2</strong> can accurately adjust for minor depth variations without being distorted by extreme values. In summary, the library size distribution confirms that the dataset is of <strong>high technical quality</strong>, free from major sequencing biases, and ready for reliable normalization and differential expression analysis.
 </li>
+			===================	start Version 1: ================
+
+
+
 				
 
 
-				
+			===================	start Version 2: ================
+
+<li>
+The <strong>Library Size Check</strong> plot visualizes the total number of reads (counts) obtained for each sample after alignment and counting. Each bar represents one sample, and its height reflects the <strong>sequencing depth</strong> — the total number of reads mapped to genes in that sample. The <strong>y-axis</strong> indicates the total number of reads, ranging from approximately <strong>13 million to 32 million per sample</strong>, while the <strong>x-axis</strong> lists the samples grouped by condition (baseline <strong>lesional</strong> and <strong>non-lesional</strong>). The bars are color-coded to distinguish between conditions (<strong>lesional</strong> = blue, <strong>non-lesional</strong> = yellow). This visualization provides an immediate overview of sequencing consistency across all samples.
+</li>
+
+<li>
+Ideally, RNA-seq libraries should have comparable sequencing depths across all samples, as major deviations can bias normalization and affect downstream analyses. In <a href="#figure-6-5" onclick="highlightFigure('6-5')">Figure 6.5</a>, most samples fall between <strong>20 and 32 million reads</strong>, indicating a balanced and uniform sequencing effort. A few samples toward the left exhibit smaller library sizes (around 13–16 million reads), but these are not drastically lower and therefore remain within an acceptable range. This suggests that sequencing was consistent overall and no major technical issues occurred during library preparation.
+</li>
+
+<li>
+Uniform library sizes are essential because methods such as <strong>DESeq2</strong> assume similar sequencing depths across samples when performing normalization. If one sample had only 5 million reads while another had 80 million, it could lead to biased normalization and inaccurate estimation of differential expression. Ensuring that all libraries fall within a comparable range helps maintain fair comparisons between conditions and supports robust statistical inference.
+</li>
+
+<li>
+From a quality control standpoint, it is important to monitor both the lower and upper extremes of library sizes. Libraries with <strong>very low read counts</strong> (e.g., below 10 million) often indicate <strong>technical problems</strong> such as poor RNA quality, failed library preparation, or insufficient sequencing depth. Conversely, <strong>extremely large libraries</strong> (above 60–70 million reads) can disproportionately influence normalization, masking subtle expression differences among the rest of the samples. In this dataset, however, all libraries fall comfortably within a healthy range (13–32 million reads), reflecting <strong>excellent sequencing quality</strong>.
+</li>
+
+<li>
+As illustrated earlier in <a href="#figure-2-2-1-2" onclick="highlightFigure('2-2-1-2')">Figure 2.2.1.2</a>, six outlier samples were identified and removed during preprocessing — three with unusually low library sizes (approximately 10 million reads) and three with abnormally high library sizes (exceeding 40 million). Although high-count samples can sometimes represent biologically interesting cases, they can also distort global normalization and obscure population-wide trends. Removing both the low- and high-end outliers improved the uniformity of the dataset, ensuring that subsequent analyses reflect the core biological signal rather than technical variation.
+</li>
+
+<li>
+This diagnostic visualization confirms that no major sequencing depth imbalance exists, no sample dominates or underperforms significantly, and the dataset is technically robust. The resulting distribution of library sizes demonstrates <strong>high data integrity</strong> and supports reliable normalization, making the dataset ready for downstream steps such as <strong>differential expression analysis</strong> and <strong>functional exploration</strong>.
+</li>
+
+
+							===================	start Version 2: ================
+
 			  					<!-- ======================== CODE START ============================ -->
 										<p class="code-caption"><strong>Code Block 6.5.</strong> Checking library sizes  </p>
 										<div class="code-block">
