@@ -2742,6 +2742,7 @@ pheatmap(
 										<p class="code-caption"><strong>Code Block 6.5.</strong> Checking library sizes  </p>
 										<div class="code-block">
 										  <pre><code class="language-r">
+											  
 # ==============================================================
 # 6.5. Library Size Check (Enhanced Visualization)
 # ==============================================================
@@ -2764,6 +2765,8 @@ library_df$Sample <- factor(library_df$Sample, levels = library_df$Sample[order(
 # Generate the bar plot
 ggplot(library_df, aes(x = Sample, y = LibrarySize, fill = Condition)) +
   geom_bar(stat = "identity", color = "black", width = 0.9) +
+   geom_text(aes(label = scales::comma(LibrarySize)), 
+            vjust = 0.4, hjust= 0,size = 3.5, angle = 90, fontface = "bold") +  # add labels
   scale_fill_manual(values = c("lesional" = "#0072FF", "non_lesional" = "#FFFF00")) +
   theme_bw() +
   theme(
@@ -2782,7 +2785,7 @@ ggplot(library_df, aes(x = Sample, y = LibrarySize, fill = Condition)) +
   )
 
 # Optional: Save as a high-resolution PNG
-ggsave("C:/Users/YOUR/PATH/AND/FOLDER/Figure_6.5.png",
+ggsave("C:/Users/omidm/OneDrive/Desktop/RNA_Seq_Task1/6.EDA/Figure_6.5.png",
        width = 25, height = 8, dpi = 300)
 											  
 										  </code></pre>
