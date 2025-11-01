@@ -2742,7 +2742,49 @@ pheatmap(
 										<p class="code-caption"><strong>Code Block 6.5.</strong> Checking library sizes  </p>
 										<div class="code-block">
 										  <pre><code class="language-r">
-										 
+# ==============================================================
+# 6.5. Library Size Check (Enhanced Visualization)
+# ==============================================================
+
+library(ggplot2)
+
+# Extract library sizes (total read counts per sample)
+library_sizes <- colSums(counts(dds))
+
+# Create a data frame for plotting
+library_df <- data.frame(
+  Sample = names(library_sizes),
+  LibrarySize = library_sizes,
+  Condition = colData(dds)$condition  # assumes condition column exists
+)
+
+# Order samples by library size for visual clarity
+library_df$Sample <- factor(library_df$Sample, levels = library_df$Sample[order(library_df$LibrarySize)])
+
+# Generate the bar plot
+ggplot(library_df, aes(x = Sample, y = LibrarySize, fill = Condition)) +
+  geom_bar(stat = "identity", color = "black", width = 0.9) +
+  scale_fill_manual(values = c("lesional" = "#0072FF", "non_lesional" = "#FFFF00")) +
+  theme_bw() +
+  theme(
+    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1, size = 14),
+    axis.text.y = element_text(size = 14),
+    axis.title = element_text(size = 24, face = "bold"),
+    plot.title = element_text(size = 34, face = "bold", hjust = 0.5),
+    legend.title = element_text(size = 24),
+    legend.text = element_text(size = 14)
+  ) +
+  labs(
+    title = "Library Sizes per Sample",
+    x = "Samples",
+    y = "Total Read Counts",
+    fill = "Condition"
+  )
+
+# Optional: Save as a high-resolution PNG
+ggsave("C:/Users/YOUR/PATH/AND/FOLDER/Figure_6.5.png",
+       width = 25, height = 8, dpi = 300)
+											  
 										  </code></pre>
 										</div>
 								<!-- ======================== CODE END ============================ -->
