@@ -2824,7 +2824,7 @@ The <strong>Library Size Check</strong> plot visualizes the total number of read
 
 				
 <li>
-Uniform library sizes are essential because methods such as <strong>DESeq2</strong> assume similar sequencing depths across samples when performing normalization. If one sample had only 5 million reads while another had 80 million, it could lead to biased normalization and inaccurate estimation of differential expression. Ensuring that all libraries fall within a comparable range helps maintain fair comparisons between conditions and supports robust statistical inference.
+Uniform library sizes are essential because methods such as <strong>DESeq2</strong> assume similar sequencing depths across samples when performing normalization. Large discrepancies (e.g., one sample with 5M reads and another with 80M) could bias normalization and lead to inaccurate estimation of differential expression results. Ensuring that all libraries fall within a comparable range helps maintain fair comparisons between conditions and supports robust statistical inference.
 </li>
 
 <li>
