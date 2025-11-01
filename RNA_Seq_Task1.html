@@ -2743,27 +2743,38 @@ pheatmap(
 = ========= check see if it has added and mentioned everything initially told me?====
 this is for check only:
 ========
-<ul>
-<li>
-The <strong>Library Size Check</strong> plot visualizes the total number of reads (counts) obtained for each sample after alignment and counting. Each bar corresponds to one sample, and its height reflects the <strong>sequencing depth</strong> — the total number of reads mapped to genes in that sample. The <strong>y-axis</strong> (Total Read Counts) shows the total number of reads, ranging here from about <strong>13 million to 32 million</strong> per sample, while the <strong>x-axis</strong> lists the samples (baseline <strong>lesional</strong> and <strong>non-lesional</strong>). The colors distinguish the two conditions (<strong>lesional</strong> = blue, <strong>non-lesional</strong> = yellow).
-</li>
+<li></li> 
+				<li>🧬 What the Plot Represents</li> 
+				<li>This Library Size Check plot visualizes the total number of reads (counts) obtained for each sample after alignment and counting. Each bar corresponds to one sample, and its height reflects the sequencing depth — the total number of reads mapped to genes in that sample.</li> 
+				<li>- The y-axis (Total Read Counts) shows the total number of reads, ranging here from about 13 million to 32 million per sample.</li> 
+				<li>- The x-axis lists the samples (baseline lesional and non-lesional).</li> 
+				<li>- Colors distinguish conditions (lesional = blue, non-lesional = yellow).</li> 
 
-<li>
-Ideally, RNA-seq libraries should have comparable sequencing depths across all samples. In <a href="#figure-6-5" onclick="highlightFigure('6-5')">Figure 6.5</a>, the majority of samples cluster between <strong>20 and 32 million reads</strong>, indicating balanced sequencing coverage. A few samples on the left (e.g., 13–16 million reads) have smaller libraries, but these are not drastically lower, suggesting that sequencing was still sufficient to capture meaningful gene expression data.
-</li>
+				<li>🧭 How to Interpret It</li> 
+				<li>Consistency across samples:
+Ideally, RNA-seq libraries should have comparable sequencing depths across all samples. Here, the majority of samples cluster between 20 and 32 million reads, which indicates balanced sequencing coverage.
 
-<li>
-Uniform library sizes are essential because <strong>DESeq2</strong> assumes similar sequencing depth across samples when normalizing counts. Large discrepancies — for example, one sample with 5 million reads and another with 80 million — could bias normalization and lead to false differential expression results. In this dataset, all samples fall within a healthy range, which reflects <strong>excellent sequencing quality</strong> and ensures fair comparison across conditions.
-</li>
+A few samples on the left (e.g., 13–16 million reads) have smaller libraries, but they are not drastically lower, so these samples remain acceptable.</li> 
+				<li>Why this matters:
+Uniform library sizes are essential because DESeq2 assumes similar sequencing depth across samples when normalizing counts. Large discrepancies (e.g., one sample with 5M reads and another with 80M) could bias normalization and lead to false differential expression results.</li> 
+				<li>Thresholds for concern:
 
-<li>
-Libraries with <strong>very low read counts</strong> (e.g., below 10 million) are often considered poor quality or under-sequenced, while <strong>extremely large libraries</strong> (above 60–70 million) can distort normalization if not properly accounted for. Since none of the samples in the filtered dataset fall within these problematic ranges, the data can be considered technically sound and balanced for downstream analysis.
-</li>
+Libraries with very low read counts (e.g., <10 million) may be considered poor quality or under-sequenced.
 
-<li>
-This diagnostic step helps confirm that no major sequencing depth imbalance exists, no single sample dominates or underperforms significantly, and the dataset is ready for subsequent stages such as <strong>normalization</strong> and <strong>differential expression analysis</strong>. In summary, the library size distribution demonstrates high data integrity and supports reliable downstream interpretation.
-</li>
-</ul>
+Extremely large libraries (e.g., >60–70 million) could also distort normalization if not properly accounted for.
+In your dataset, all samples fall within a healthy range — this is excellent sequencing quality.</li> 
+				<li>✅ How We Use This Plot
+
+This diagnostic step helps confirm:
+
+No major sequencing depth imbalance exists.
+
+No single sample dominates or underperforms significantly.
+
+The dataset is ready for downstream steps such as normalization and differential expression analysis.</li> 
+				<li></li> 
+				<li></li> 
+				
 
 				===========
 
