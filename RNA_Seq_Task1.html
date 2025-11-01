@@ -160,18 +160,31 @@
 		
 
 /* =================START NEWLY ADDED FOR ALL FIGURES' CAPTIONS==================== */ 
-	/* ========== Figure Captions (global style for all .caption inside .figure) ========== */
+ /* ========== Unified Figure Caption Styling (for both structures) ========== */
+
+/* For figures using <div class="figure"><div class="caption"> */
 .figure .caption {
-    font-size: 16px;          /* Matches code-caption for consistency */
-    font-style: italic;       /* Optional – makes captions look polished */
-    color: #555;              /* Neutral grey for good contrast */
-    margin-top: 6px;          /* Small gap above caption */
-    text-align: justify;       /* Centered text under images */
+    font-size: 16px;
+    font-style: italic;
+    color: #555;
+    margin-top: 6px;
+    text-align: justify;   /* not centered */
     line-height: 1.5;
     max-width: 95%;
-    margin-left: auto;
-    margin-right: auto;
 }
+
+/* For figures using <figure><figcaption> */
+figure figcaption,
+figcaption[id^="figure-caption-"] {
+    font-size: 16px;
+    font-style: italic;
+    color: #555;
+    margin-top: 6px;
+    text-align: justify;   /* consistent with body text */
+    line-height: 1.5;
+    max-width: 95%;
+}
+
 	
 /* =================END NEWLY ADDED FOR ALL FIGURES' CAPTIONS====================== */ 
 
