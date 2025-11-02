@@ -2902,6 +2902,8 @@ ggsave("C:/Users/omidm/OneDrive/Desktop/RNA_Seq_Task1/6.EDA/Figure_6.5.png",
 				<li><div id="figure-6-6-1" class="figure"> <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_6.6.1.png" target="_blank" rel="noopener"> <img src="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_6.6.1.png" alt="Pre-normalisation boxplots of log2(counts + 1) per sample, coloured by condition." style="display:block;width:100%;height:auto;max-width:1400px;"> </a> <div class="caption"> <strong>Figure 6.6.1.</strong> Pre-normalisation count distributions using <code>log2(counts(dds) + 1)</code>. Boxes reflect per-sample distributions of log-transformed raw counts. Modest shifts in medians and box widths indicate residual technical variation prior to normalisation. </div> </div></li>
 				<li>Figure 6.6.2 (post-normalisation, VST)</li>
 				<li><div id="figure-6-6-2" class="figure"> <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_6.6.2.png" target="_blank" rel="noopener"> <img src="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_6.6.2.png" alt="Post-normalisation VST boxplots per sample, coloured by condition, with global median line." style="display:block;width:100%;height:auto;max-width:1400px;"> </a> <div class="caption"> <strong>Figure 6.6.2.</strong> Post-normalisation count distributions using VST (<code>assay(vsd)</code>). Boxes align closely across samples, demonstrating successful removal of mean–variance dependence and effective size-factor normalisation. The dashed line marks the global median VST value. </div> </div></li>
+				
+				
 				<li><strong>Code walkthrough (what each part does)</strong></li>
 				<li><ul>
   <li>
@@ -2972,20 +2974,134 @@ global_median  &lt;- median(vst_long$VST, na.rm = TRUE)</code></pre>
        plot = p2, width = 18, height = 8, dpi = 300)</code></pre>
   </li>
 </ul>
-::contentReference[oaicite:0]{index=0}</li>
+				<li> -------------- Version2 of code walkthrough --------------</li>
 				<li></li>
 				<li></li>
 				<li></li>
 				<li></li>
-				<li></li>
+Below is a step-by-step code walkthrough for generating both figures. Each item explains the intent and is followed by the exact line(s) you can place in your script.
+
+<li><strong>Load plotting and reshaping packages:</strong> Required for tidy reshaping and publication-quality figures. <pre><code class="language-r">library(ggplot2) library(reshape2)</code></pre></li> <li><strong>Pull raw counts from the DESeqDataSet:</strong> These are integer counts before any normalisation. <pre><code class="language-r">raw_counts &lt;- counts(dds)</code></pre></li> <li><strong>Apply a log₂ transform (visualisation only):</strong> The +1 avoids taking log of zero; this does not normalise library size. <pre><code class="language-r">log_counts &lt;- log2(raw_counts + 1)</code></pre></li> <li><strong>Prepare a tidy data frame and keep gene IDs for melting:</strong> We’ll pivot to long format for ggplot. <pre><code class="language-r">log_counts_df &lt;- as.data.frame(log_counts) log_counts_df$Gene &lt;- rownames(log_counts_df)</code></pre></li> <li><strong>Reshape to long format for the pre-normalization plot:</strong> Each row becomes a gene–sample pair with a log₂ value. <pre><code class="language-r">log_counts_long &lt;- melt(log_counts_df, id.vars = "Gene", variable.name = "Sample", value.name = "Log2Counts")</code></pre></li> <li><strong>Add condition labels for colouring:</strong> Map each sample to its condition (lesional/non_lesional). <pre><code class="language-r">log_counts_long$Condition &lt;- colData(dds)$condition[ match(log_counts_long$Sample, rownames(colData(dds))) ]</code></pre></li> <li><strong>Build the pre-normalization boxplot and save it as Figure 6.6.1:</strong> Outliers are faint to reduce clutter. <pre><code class="language-r">p1 &lt;- ggplot(log_counts_long, aes(x = Sample, y = Log2Counts, fill = Condition)) + geom_boxplot(outlier.alpha = 0.1, lwd = 0.3) + scale_fill_manual(values = c("lesional" = "#0072FF", "non_lesional" = "#FFFF00")) + labs(title = "Pre-normalization Count Distributions (log2(counts + 1))", x = "Samples", y = "Log2 Expression (Raw Counts)", fill = "Condition") + theme_bw() + theme(plot.title = element_text(size = 16, face = "bold", hjust = 0.5), axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1, size = 6), axis.title = element_text(size = 12, face = "bold"))
+
+ggsave("C:/Users/omidm/OneDrive/Desktop/RNA_Seq_Task1/6.EDA/Figure_6.6.1.png",
+plot = p1, width = 18, height = 8, dpi = 300)</code></pre></li>
+
+<li><strong>Obtain the VST matrix (post-normalization):</strong> If you haven’t run VST yet, create <code>vsd &lt;- vst(dds, blind=TRUE)</code> first. <pre><code class="language-r">vst_mat &lt;- assay(vsd)</code></pre></li> <li><strong>Tidy the VST matrix for plotting:</strong> Convert to long format, as with the log₂ data. <pre><code class="language-r">vst_df &lt;- as.data.frame(vst_mat) vst_df$Gene &lt;- rownames(vst_df) vst_long &lt;- melt(vst_df, id.vars = "Gene", variable.name = "Sample", value.name = "VST")</code></pre></li> <li><strong>Add condition and order samples by their median VST:</strong> Ordering improves readability; the global median is a visual reference. <pre><code class="language-r">vst_long$Condition &lt;- colData(dds)$condition[ match(vst_long$Sample, rownames(colData(dds))) ] sample_order &lt;- aggregate(VST ~ Sample, data = vst_long, median) vst_long$Sample &lt;- factor(vst_long$Sample, levels = sample_order$Sample[order(sample_order$VST)]) global_median &lt;- median(vst_long$VST, na.rm = TRUE)</code></pre></li> <li><strong>Build the post-normalization VST boxplot and save it as Figure 6.6.2:</strong> Boxes should align tightly if normalisation succeeded. <pre><code class="language-r">p2 &lt;- ggplot(vst_long, aes(x = Sample, y = VST, fill = Condition)) + geom_boxplot(outlier.alpha = 0.1, lwd = 0.3) + geom_hline(yintercept = global_median, linetype = "dashed", linewidth = 0.4, alpha = 0.6) + scale_fill_manual(values = c("lesional" = "#0072FF", "non_lesional" = "#FFFF00")) + labs(title = "Post-normalization Count Distributions (VST)", x = "Samples (ordered by median VST)", y = "VST Expression (log2-like Units)", fill = "Condition") + theme_bw() + theme(plot.title = element_text(size = 16, face = "bold", hjust = 0.5), axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1, size = 6), axis.title = element_text(size = 12, face = "bold"))
+
+ggsave("C:/Users/omidm/OneDrive/Desktop/RNA_Seq_Task1/6.EDA/Figure_6.6.2.png",
+plot = p2, width = 18, height = 8, dpi = 300)</code></pre></li>
+				
 
 				
 								<!-- ======================== CODE START ============================ -->
 										<p class="code-caption"><strong>Code Block 6.6.</strong> count distributions </p>
 										<div class="code-block">
 										  <pre><code class="language-r">
-										 
-										  </code></pre>
+# ==============================================================
+# 6.6. Count Distribution — Pre- and Post-Normalization Comparison
+# ==============================================================
+
+library(ggplot2)
+library(reshape2)
+
+# -------------------------
+# Step 1: Raw log2(counts + 1)
+# -------------------------
+
+# Extract raw counts from DESeqDataSet
+raw_counts <- counts(dds)
+
+# Log2 transform with +1 to avoid log(0)
+log_counts <- log2(raw_counts + 1)
+
+# Convert to data frame (samples as columns)
+log_counts_df <- as.data.frame(log_counts)
+log_counts_df$Gene <- rownames(log_counts_df)
+
+# Melt to long format for ggplot2
+log_counts_long <- melt(log_counts_df, id.vars = "Gene",
+                        variable.name = "Sample", value.name = "Log2Counts")
+
+# Add condition information
+log_counts_long$Condition <- colData(dds)$condition[match(log_counts_long$Sample, rownames(colData(dds)))]
+
+# Create pre-normalization boxplot
+p1 <- ggplot(log_counts_long, aes(x = Sample, y = Log2Counts, fill = Condition)) +
+  geom_boxplot(outlier.alpha = 0.1, lwd = 0.3) +
+  scale_fill_manual(values = c("lesional" = "#0072FF", "non_lesional" = "#FFFF00")) +
+  labs(
+    title = "Pre-normalization Count Distributions (log2(counts + 1))",
+    x = "Samples",
+    y = "Log2 Expression (Raw Counts)",
+    fill = "Condition"
+  ) +
+  theme_bw() +
+  theme(
+    plot.title  = element_text(size = 16, face = "bold", hjust = 0.5),
+    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1, size = 6),
+    axis.title  = element_text(size = 12, face = "bold"),
+    legend.title= element_text(size = 10),
+    legend.text = element_text(size = 9)
+  )
+
+# Save pre-normalization plot
+ggsave("C:/Users/omidm/OneDrive/Desktop/RNA_Seq_Task1/6.EDA/Figure_6.6a_PreNormalization.png",
+       plot = p1, width = 18, height = 8, dpi = 300)
+
+
+# -------------------------
+# Step 2: Post-normalization (VST)
+# -------------------------
+
+# Compute variance-stabilized data if not already done
+# vsd <- vst(dds, blind = TRUE)
+
+vst_mat <- assay(vsd)
+
+# Convert to data frame for ggplot2
+vst_df <- as.data.frame(vst_mat)
+vst_df$Gene <- rownames(vst_df)
+
+# Melt to long format
+vst_long <- melt(vst_df, id.vars = "Gene",
+                 variable.name = "Sample", value.name = "VST")
+
+# Add condition info
+vst_long$Condition <- colData(dds)$condition[match(vst_long$Sample, rownames(colData(dds)))]
+
+# Compute median per sample for ordering
+sample_order <- aggregate(VST ~ Sample, data = vst_long, median)
+vst_long$Sample <- factor(vst_long$Sample, levels = sample_order$Sample[order(sample_order$VST)])
+
+# Global median line
+global_median <- median(vst_long$VST, na.rm = TRUE)
+
+# Create post-normalization boxplot
+p2 <- ggplot(vst_long, aes(x = Sample, y = VST, fill = Condition)) +
+  geom_boxplot(outlier.alpha = 0.1, lwd = 0.3) +
+  geom_hline(yintercept = global_median, linetype = "dashed", linewidth = 0.4, alpha = 0.6) +
+  scale_fill_manual(values = c("lesional" = "#0072FF", "non_lesional" = "#FFFF00")) +
+  labs(
+    title = "Post-normalization Count Distributions (VST)",
+    x = "Samples (ordered by median VST)",
+    y = "VST Expression (log2-like Units)",
+    fill = "Condition"
+  ) +
+  theme_bw() +
+  theme(
+    plot.title  = element_text(size = 16, face = "bold", hjust = 0.5),
+    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1, size = 6),
+    axis.title  = element_text(size = 12, face = "bold"),
+    legend.title= element_text(size = 10),
+    legend.text = element_text(size = 9)
+  )
+
+# Save post-normalization plot
+ggsave("C:/Users/omidm/OneDrive/Desktop/RNA_Seq_Task1/6.EDA/Figure_6.6b_PostNormalization.png",
+       plot = p2, width = 18, height = 8, dpi = 300)
+
+
+</code></pre>
 										</div>
 								<!-- ======================== CODE END ============================ -->
 
