@@ -2609,7 +2609,7 @@ dds <- DESeqDataSetFromMatrix(
 
   
     
-			  <li><strong>6.1.Variance Stabilizing Transformation (VST):</strong> </li>
+			  <h4><strong>6.1.Variance Stabilizing Transformation (VST):</strong> </h4>
 			  <li>VST transformation prepares data for visualization. <strong>DESeq2</strong> provides two <strong>transformation methods</strong> for this purpose: the <strong>variance stabilizing transformation</strong> (<strong>vst()</strong>) and the <strong>regularized logarithm transformation</strong> (<strong>rlog()</strong>). Both are designed to make the variance roughly independent of the mean across genes, which is essential for reliable visualizations and distance-based analyses. The <strong>VST</strong> is typically recommended for medium-to-large datasets (<strong>n > 30</strong>) due to its speed and efficiency, whereas the <strong>rlog</strong> transformation can be more suitable for smaller datasets (<strong>n < 30</strong>), offering slightly improved variance stabilization at the cost of higher computational time. <strong>These transformations are used solely for visualization</strong> and exploratory quality control; the actual differential expression analysis (<strong>DESeq()</strong>) is always performed on the raw count data.</li>
 
 <!-- ======================== CODE START ============================ -->
@@ -2628,7 +2628,7 @@ vsd <- vst(dds, blind=TRUE)
 
 
 				
-			  <li><strong>6.2. Run PCA:</strong></li> 
+			  <h4><strong>6.2. Run PCA:</strong></h4> 
 				<li><strong>Principal Component Analysis (PCA)</strong> is an essential exploratory step that helps reveal <strong>clustering</strong> and dominant <strong>sources of variation</strong>. It also helps visualize overall <strong>similarities</strong> and <strong>differences</strong> among samples based on their global <strong>gene expression profiles</strong>. By reducing the dimensionality of the <strong>variance-stabilized dataset</strong>, PCA projects each sample into a two-dimensional space defined by <strong>first two principal components</strong> the  (<strong>PC1</strong> and <strong>PC2</strong>), which capture the majority of variation in the data.</li>
 				
 				
@@ -2676,7 +2676,7 @@ dev.off()
 
 				
 				
-			  <li><strong>6.3. Identify possible batch effects:</strong> </li> 
+			  <h4><strong>6.3. Identify possible batch effects:</strong> </h4> 
 
 				<li>In RNA-seq analysis, a <strong>batch effect</strong> refers to any systematic <strong>technical variation unrelated to the biological question of interest</strong>. Such effects typically arise from differences in sequencing runs, library preparation dates, reagents, technicians, or instruments used. They can make samples appear more similar or different for <strong>technical</strong> rather than <strong>biological</strong> reasons, potentially biasing the results if not detected and corrected. <strong>Batch effects</strong> can be investigated using <strong>PCA patterns</strong> by colouring samples by batch, patient, or technical factor.</li>
 				<li>In this study, all samples were generated within a <strong>single sequencing project</strong> (<strong>platform GPL21290</strong>) using a consistent experimental protocol, and the metadata does not indicate the presence of multiple batches or sequencing runs. Therefore, no explicit <strong>technical batch effect</strong> is expected. However, since each patient contributed both lesional and non-lesional samples collected at the same time, the primary source of variation may stem from <strong>biological pairing</strong> rather than <strong>technical processing</strong>. This represents a <strong>within-patient effect</strong> rather than a <strong>batch effect</strong>.</li>
@@ -2686,7 +2686,7 @@ dev.off()
 				
 
 				
-			  <li><strong>6.4. Sample-to-Sample Distance Heatmap:</strong> </li> 
+			  <h4><strong>6.4. Sample-to-Sample Distance Heatmap:</strong> </h4> 
 
 
 				<li>In the resulting heatmap, as shown in <a href="#figure-6-4" onclick="highlightFigure('6-4')">Figure 6.4</a>, each cell represents the <strong>Euclidean distance</strong> between a pair of samples, calculated using <strong>VST-transformed counts</strong> across all genes. The <strong>color gradient</strong> from <strong><span style="background-color: #28c6fa;">blue </span></strong> (0) to <strong><span style="background-color: #ff0833;">red</span></strong> (150) reflects how <strong>similar</strong> or <strong>dissimilar</strong> two samples are in their overall <strong>gene expression profiles</strong>: <strong><span style="background-color: #28c6fa;">blue </span></strong> indicates <strong>high similarity</strong> (<strong>low distance</strong>), while <strong><span style="background-color: #ff0833;">red</span></strong> denotes greater <strong>dissimilarity</strong> (<strong>high distance</strong>).  </li>
@@ -2772,7 +2772,7 @@ pheatmap(
 <!-- ======================== CODE END ============================ -->
 
 				
-			  <li><strong>6.5. Check library sizes:</strong>  </li>
+			  <h4><strong>6.5. Check library sizes:</strong>  </h4>
  
 <li>The <strong>Library Size Check</strong> plot confirms <strong>normalization</strong> and <strong>sequencing depth uniformity</strong> and visualizes the <strong>total number of reads (counts)</strong> obtained for each sample after alignment and counting. Each bar represents one sample, and its height reflects the <strong>sequencing depth</strong> — <strong>the total number of reads mapped to genes in that sample</strong>. The <strong>y-axis</strong> indicates the <strong>total number of reads</strong>, and in this dataset, ranging from approximately <strong>13 million to 32 million per sample</strong>, while the <strong>x-axis</strong> lists the samples grouped by condition (baseline <strong>lesional</strong> and <strong>non-lesional</strong>). The bars are color-coded to distinguish between conditions (<strong>lesional</strong> = <strong><span style="background-color: #28c6fa;">blue </span></strong>, <strong>non-lesional</strong> = <strong><span style="background-color: #FFFF00;">yellow</span></strong>). This visualization provides an immediate overview of <strong>sequencing consistency</strong> across all samples.</li>
 
@@ -2862,7 +2862,7 @@ ggsave("C:/Users/omidm/OneDrive/Desktop/RNA_Seq_Task1/6.EDA/Figure_6.5.png",
 								<!-- ======================== CODE END ============================ -->
 
 				
-			  <li><strong>6.6. Inspect count distributions:</strong>  Final check showing post-normalization expression distribution. </li>
+			  <h4><strong>6.6. Inspect count distributions:</strong>  Final check showing post-normalization expression distribution. </li>
 
  				<li>After normalization, a crucial diagnostic step is to visualize how the transformed expression values are distributed across all samples. This helps verify that the normalization method has successfully stabilized the variance and balanced the overall distribution of gene expression levels between samples. The plot shown in <a href="#figure-6-6" onclick="highlightFigure('6-6')">Figure 6.6</a> represents this post-normalization quality assessment using variance-stabilizing transformation (VST), applied through DESeq2. Each box corresponds to one RNA-seq sample, and the values reflect VST-transformed expression levels (on a log2-like scale). The VST is designed to remove the strong mean–variance relationship inherent in raw counts, ensuring that both highly and lowly expressed genes contribute comparably to visual summaries and downstream statistical analyses.</li> 
 				<li>This approach differs from the earlier pre-normalization check using <code>boxplot(log2(counts(dds) + 1))</code>, which simply log-transforms the raw counts. While the log2 transformation makes the data more interpretable, it does not fully correct for the dependency between mean and variance. As a result, samples with high sequencing depth tend to dominate the distribution, and the differences may reflect technical artifacts rather than true biological variation. In contrast, <code>assay(vsd)</code> from DESeq2 generates a variance-stabilized dataset where this dependency is minimized. Consequently, plotting <code>assay(vsd)</code> provides a more reliable and biologically meaningful representation of per-sample distributions after normalization.</li> 
@@ -2890,7 +2890,7 @@ ggsave("C:/Users/omidm/OneDrive/Desktop/RNA_Seq_Task1/6.EDA/Figure_6.5.png",
 
 				<li>Version 2 (log2 and vst approache: see if it is good the above can be deleted)</li>
  
-				<li>6.6. Count Distribution — Pre- and Post-Normalization.</li>
+				<h>6.6. Count Distribution — Pre- and Post-Normalization.</li>
 				<li><strong>Inspecting count distributions with two complementary approaches.</strong></li>
 				<li>To diagnose data quality after creating the DESeq2 object, it is useful to visualise how per-sample expression values are distributed both before and after normalisation. The first approach applies a simple log₂ transform to the raw counts, log2(counts(dds) + 1), which compresses large values but still reflects differences in sequencing depth and composition. The second approach uses the DESeq2 variance stabilising transformation (VST), assay(vsd), which removes the mean–variance relationship and places samples on a common, log2-like scale that is more appropriate for distance-based exploratory analysis. Together, these plots provide a before/after view that helps confirm normalisation has behaved as expected and that no samples have atypical distributions.</li>
 				<br>
