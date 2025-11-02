@@ -2863,6 +2863,32 @@ ggsave("C:/Users/omidm/OneDrive/Desktop/RNA_Seq_Task1/6.EDA/Figure_6.5.png",
 
 				
 			  <li><strong>6.6. Inspect count distributions:</strong>  Final check showing post-normalization expression distribution. </li>
+
+ 				<li>After normalization, a crucial diagnostic step is to visualize how the transformed expression values are distributed across all samples. This helps verify that the normalization method has successfully stabilized the variance and balanced the overall distribution of gene expression levels between samples. The plot shown in <a href="#figure-6-6" onclick="highlightFigure('6-6')">Figure 6.6</a> represents this post-normalization quality assessment using variance-stabilizing transformation (VST), applied through DESeq2. Each box corresponds to one RNA-seq sample, and the values reflect VST-transformed expression levels (on a log2-like scale). The VST is designed to remove the strong mean–variance relationship inherent in raw counts, ensuring that both highly and lowly expressed genes contribute comparably to visual summaries and downstream statistical analyses.</li> 
+				<li>This approach differs from the earlier pre-normalization check using <code>boxplot(log2(counts(dds) + 1))</code>, which simply log-transforms the raw counts. While the log2 transformation makes the data more interpretable, it does not fully correct for the dependency between mean and variance. As a result, samples with high sequencing depth tend to dominate the distribution, and the differences may reflect technical artifacts rather than true biological variation. In contrast, <code>assay(vsd)</code> from DESeq2 generates a variance-stabilized dataset where this dependency is minimized. Consequently, plotting <code>assay(vsd)</code> provides a more reliable and biologically meaningful representation of per-sample distributions after normalization.</li> 
+				<li>In <a href="#figure-6-6" onclick="highlightFigure('6-6')">Figure 6.6</a>, the samples are ordered by their median VST values, allowing subtle shifts to be visually assessed. The blue and yellow colors distinguish lesional and non-lesional skin samples, respectively. The horizontal dashed line represents the overall median expression level across all samples. The key observation here is the striking uniformity of distributions: the medians are nearly aligned, and the spread of boxes is consistent. This indicates that the DESeq2 normalization and variance-stabilizing transformation have effectively corrected for sequencing depth and sample-specific technical biases. The absence of wide discrepancies or skewed boxes confirms that all samples now contribute evenly to the overall analysis, and no sample dominates or underperforms due to uneven sequencing.</li> 
+				<li>From a quality control perspective, this figure provides strong evidence that the dataset is well-balanced and ready for downstream analysis, such as principal component analysis (PCA) or differential expression testing. Had any samples exhibited noticeably shifted medians or markedly wider distributions, it would suggest normalization issues or residual technical noise requiring further inspection. In this case, however, the even distribution across all samples supports the conclusion that the post-DESeq2 data are reliable and analytically stable, making <a href="#figure-6-6" onclick="highlightFigure('6-6')">Figure 6.6</a> an essential validation plot in the data exploration workflow.</li> 
+			
+					<div id="figure-6-6" class="figure">
+					  <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_6.6.png" target="_blank">
+					    <img src="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_6.6.png" 
+					         alt="Post-normalization Count Distributions (VST) per Sample" width="100%">
+					  </a>
+					  <div class="caption">
+					    <strong>Figure 6.6.</strong> Post-normalization Count Distributions (VST) per Sample.  
+					    Each box represents the distribution of variance-stabilized expression values for a single sample.  
+					    Samples are ordered by their median VST values, and colored by condition  
+					    (<strong>lesional</strong> = blue, <strong>non-lesional</strong> = yellow).  
+					    The dashed line indicates the overall median across all samples.  
+					    The consistent medians and similar box spreads across conditions confirm  
+					    that normalization has successfully stabilized expression variance  
+					    and achieved balanced sequencing depth across all samples.
+					  </div>
+					</div>
+
+
+
+				
 								<!-- ======================== CODE START ============================ -->
 										<p class="code-caption"><strong>Code Block 6.6.</strong> count distributions </p>
 										<div class="code-block">
