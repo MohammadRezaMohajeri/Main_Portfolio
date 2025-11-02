@@ -2916,21 +2916,21 @@ library(reshape2)
 </li>
 
 <li>
-	<strong>Start from the raw material:</strong> We extract the integer count matrix from the <strong><code>DESeqDataSet</code></strong>. At this stage nothing is normalised; the values reflect the number of reads assigned to each gene per sample.
+	<strong>Start from the raw material:</strong> We extract the integer <strong>count matrix</strong> from the <strong><code>DESeqDataSet</code></strong>. At this stage nothing is normalised; the values reflect the number of reads assigned to each gene per sample.
 	<pre><code class="language-r">
 raw_counts <- counts(dds)
 	</code></pre>
 </li>
 
 <li>
-	<strong>Compress the dynamic range for visibility:</strong> Taking log base 2 of the counts makes large values manageable and separates low values enough to see structure. Adding 1 prevents problems where a gene has zero counts in a sample. This is a visual convenience, not a normalisation step.
+	<strong>Compress the dynamic range for visibility:</strong> Taking <strong>log base 2</strong> of the counts makes <strong>large values</strong> manageable and separates low values enough to see structure. <strong>Adding 1</strong> prevents problems where <strong>a gene has zero counts</strong> in a sample. This is a visual convenience, not a normalisation step.
 	<pre><code class="language-r">
 log_counts <- log2(raw_counts + 1)
 	</code></pre>
 </li>
 
 <li>
-	<strong>Switch to a data-frame workflow and retain gene IDs:</strong> <strong>ggplot</strong> works most smoothly with data frames. We convert the matrix and preserve the gene names in a dedicated column so they are not lost when reshaping.
+	<strong>Switch to a data-frame workflow and retain gene IDs:</strong> <strong>ggplot</strong> works most smoothly with data frames. We convert the matrix and preserve the <strong>gene names</strong> in a dedicated column so they are not lost when reshaping.
 	<pre><code class="language-r">
 log_counts_df <- as.data.frame(log_counts)
 log_counts_df$Gene <- rownames(log_counts_df)
@@ -2938,7 +2938,7 @@ log_counts_df$Gene <- rownames(log_counts_df)
 </li>
 
 <li>
-	<strong>Reshape to long format for sample-wise boxplots:</strong> Each row becomes one gene–sample measurement. The sample name moves into a variable column, and the transformed expression values live in a single numeric column. This is the grammar <strong>ggplot</strong> expects for faceted or grouped summaries.
+	<strong>Reshape to long format for sample-wise boxplots:</strong> <strong>Each row</strong> becomes one <strong>gene–sample</strong> measurement. The sample name moves into a variable column, and the transformed expression values live in a single numeric column. This is the grammar <strong>ggplot</strong> expects for faceted or grouped summaries.
 	<pre><code class="language-r">
 log_counts_long <- melt(
   log_counts_df,
@@ -2950,7 +2950,7 @@ log_counts_long <- melt(
 </li>
 
 <li>
-	<strong>Attach biological labels for colouring:</strong> We join each sample to its condition (<strong>lesional</strong> or <strong>non_lesional</strong>) using a safe match against the column metadata. This enables clear colour grouping in the boxplots without changing the underlying data.
+	<strong>Attach biological labels for colouring:</strong> We join each sample to its condition (<strong>lesional</strong> or <strong>non_lesional</strong>) using a safe match against the column metadata. This enables clear <strong>colour grouping</strong> in the boxplots without changing the underlying data.
 	<pre><code class="language-r">
 log_counts_long$Condition <- colData(dds)$condition[
   match(log_counts_long$Sample, rownames(colData(dds)))
@@ -2959,7 +2959,7 @@ log_counts_long$Condition <- colData(dds)$condition[
 </li>
 
 <li>
-	<strong>Build the pre-normalisation boxplot:</strong> We plot the log₂ counts per sample with boxes coloured by condition. Outliers are faint to reduce clutter on wide plots. Labels and theme choices aim for legibility with many samples.
+	<strong>Build the pre-normalisation (Raw Count Distribution) boxplot using <code>log₂(counts + 1)</code>:</strong> We plot <strong>the log₂ counts</strong> per sample with boxes coloured by condition. <strong>Outliers</strong> are shown lightly to reduce clutter on wide plots. <strong>Labels</strong> and <strong>theme</strong> choices aim for legibility with many samples.
 	<pre><code class="language-r">
 p1 <- ggplot(log_counts_long, aes(x = Sample, y = Log2Counts, fill = Condition)) +
   geom_boxplot(outlier.alpha = 0.1, lwd = 0.3) +
@@ -2984,20 +2984,20 @@ p1 <- ggplot(log_counts_long, aes(x = Sample, y = Log2Counts, fill = Condition))
 <li>
 	<strong>Save a crisp, wide image for your site:</strong> We write the pre-normalisation panel to disk at high DPI to keep labels sharp on a wide canvas.
 	<pre><code class="language-r">
-ggsave("C:/Users/omidm/OneDrive/Desktop/RNA_Seq_Task1/6.EDA/Figure_6.6.1.png",
+ggsave("C:/Users/YOUR/PATH/Figure_6.6.1.png",
        plot = p1, width = 18, height = 8, dpi = 300)
 	</code></pre>
 </li>
 
 <li>
-	<strong>Move to the normalised scale (VST):</strong> Assuming you have already created <strong><code>vsd</code></strong> with <strong><code>vst(dds, blind = TRUE)</code></strong>, we pull the variance-stabilised matrix. VST removes library-size effects and stabilises variance across the mean, making samples comparable.
+	<strong>Move to the normalised scale (VST):</strong> while we have already created <strong><code>vsd</code></strong> with <strong><code>vst(dds, blind = TRUE)</code></strong>, we pull the variance-stabilised matrix. <strong>VST</strong> removes library-size effects and stabilises variance across the mean, making samples comparable.
 	<pre><code class="language-r">
 vst_mat <- assay(vsd)
 	</code></pre>
 </li>
 
 <li>
-	<strong>Prepare and reshape the VST matrix for plotting:</strong> As before, we convert to a data frame, preserve gene IDs, and melt to a long layout. The resulting table mirrors the pre-normalisation data shape, which simplifies plotting and comparison.
+	<strong>Prepare and reshape the VST matrix for plotting:</strong> As before, we convert to a <strong>data frame</strong>, preserve <strong>gene IDs</strong>, and melt to a <strong>long layout</strong>. The resulting table mirrors the pre-normalisation data shape, which simplifies plotting and comparison.
 	<pre><code class="language-r">
 vst_df <- as.data.frame(vst_mat)
 vst_df$Gene <- rownames(vst_df)
@@ -3011,7 +3011,7 @@ vst_long <- melt(
 </li>
 
 <li>
-	<strong>Reapply condition labels and impose a meaningful sample order:</strong> We colour by condition, then compute each sample’s median VST and order the x-axis by this statistic. Ordering reduces visual noise and helps you scan for global shifts.
+	<strong>Reapply condition labels and impose a meaningful sample order:</strong> We colour by <strong>condition</strong>, then compute <strong>each sample’s median VST</strong> and <strong>order</strong> the x-axis by this statistic. Ordering reduces visual noise and helps we scan for global shifts.
 	<pre><code class="language-r">
 vst_long$Condition <- colData(dds)$condition[
   match(vst_long$Sample, rownames(colData(dds)))
@@ -3023,14 +3023,14 @@ vst_long$Sample <- factor(vst_long$Sample,
 </li>
 
 <li>
-	<strong>Add a global reference line:</strong> We compute the overall median VST across all samples. A dashed horizontal line helps you visually confirm that medians sit on a common scale after normalisation.
+	<strong>Add a global reference line:</strong> We compute the <strong>overall median VST</strong> across all samples. A <strong>dashed horizontal line</strong> helps us visually confirm that medians sit on a common scale after normalisation.
 	<pre><code class="language-r">
 global_median <- median(vst_long$VST, na.rm = TRUE)
 	</code></pre>
 </li>
 
 <li>
-	<strong>Build the post-normalisation boxplot:</strong> With VST values, boxes should align closely if normalisation succeeded. The dashed line is the global median for quick reference.
+	<strong>Build the post-normalisation boxplot using VST (Variance Stabilizing Transformation):</strong> With VST values, boxes should align closely if normalisation succeeded. The <strong>dashed line</strong> is the <strong>global median</strong> for quick reference.
 	<pre><code class="language-r">
 p2 <- ggplot(vst_long, aes(x = Sample, y = VST, fill = Condition)) +
   geom_boxplot(outlier.alpha = 0.1, lwd = 0.3) +
@@ -3054,9 +3054,9 @@ p2 <- ggplot(vst_long, aes(x = Sample, y = VST, fill = Condition)) +
 </li>
 
 <li>
-	<strong>Export the VST panel for your site:</strong> Same geometry as the first figure so the two views are directly comparable on the page.
+	<strong>Export the VST panel:</strong> Same geometry as the first figure so the two views are directly comparable on the page.
 	<pre><code class="language-r">
-ggsave("C:/Users/omidm/OneDrive/Desktop/RNA_Seq_Task1/6.EDA/Figure_6.6.2.png",
+ggsave("C:/Users/YOUR/PATH/Figure_6.6.2.png",
        plot = p2, width = 18, height = 8, dpi = 300)
 	</code></pre>
 </li>
