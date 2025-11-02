@@ -2865,19 +2865,19 @@ ggsave("C:/Users/omidm/OneDrive/Desktop/RNA_Seq_Task1/6.EDA/Figure_6.5.png",
 			   
  
 				<h4>6.6. Count Distribution — Pre- and Post-Normalization.</h4>
-				<li><strong>Inspecting count distributions with two complementary approaches:</strong></li>
+				<h4><strong>Inspecting count distributions with two complementary approaches:</strong></h4>
 				<li>To diagnose data quality after creating the DESeq2 object, it is useful to visualise how per-sample expression values are distributed both before and after normalisation. The first approach applies a simple log₂ transform to the raw counts, log2(counts(dds) + 1), which compresses large values but still reflects differences in sequencing depth and composition. The second approach uses the DESeq2 variance stabilising transformation (VST), assay(vsd), which removes the mean–variance relationship and places samples on a common, log2-like scale that is more appropriate for distance-based exploratory analysis. Together, these plots provide a before/after view that helps confirm normalisation has behaved as expected and that no samples have atypical distributions.</li>
 				<br>
-				<li><strong>How each view helps:</strong></li>
+				<h4><strong>How each view helps:</strong></h4>
 				<li>The pre-normalisation boxes in <a href="#figure-6-6-1" onclick="highlightFigure('6-6-1')">Figure 6.6.1</a> typically show slightly different medians and spreads across samples because technical factors (library size and composition) are still present. This is a healthy sign at this stage and can reveal obviously under-sequenced or over-sequenced libraries if they exist. The post-normalisation boxes in <a href="#figure-6-6-2" onclick="highlightFigure('6-6-2')">Figure 6.6.2</a> should align closely across samples, with similar medians and interquartile ranges. That tighter alignment indicates that size-factor normalisation and VST have removed unwanted technical variability while preserving the underlying biological signal for PCA and downstream differential testing.</li>
 				
-				<li><strong>Interpreting the results in this dataset:</strong></li>
+				<h4><strong>Interpreting the results in this dataset:</strong></h4>
 				<li>The pre-normalisation plot shows modest variability in medians and spreads, which is expected given natural differences in sequencing depth. After VST, the boxplots cluster tightly with a shared central tendency, and the global median line falls sensibly through the middle of the boxes. This pattern confirms that the dataset is well normalised and suitable for subsequent steps such as PCA, sample-to-sample distances, and DE analysis. Note that VST does not aim to separate lesional from non-lesional groups at this stage; it aims to equalise technical variation so that group structure can be evaluated reliably by PCA and DEA rather than by raw distribution shape.</li>
 				
-				<li><strong>Figure 6.6.1 (pre-normalisation)</strong></li>
+				 
 				<li><div id="figure-6-6-1" class="figure"> <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_6.6.1.png" target="_blank" rel="noopener"> <img src="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_6.6.1.png" alt="Pre-normalisation boxplots of log2(counts + 1) per sample, coloured by condition." style="display:block;width:100%;height:auto;max-width:1400px;"> </a> <div class="caption"> <strong>Figure 6.6.1.</strong> Pre-normalisation count distributions using <code>log2(counts(dds) + 1)</code>. Boxes reflect per-sample distributions of log-transformed raw counts. Modest shifts in medians and box widths indicate residual technical variation prior to normalisation. </div> </div></li>
 				
-				<li>Figure 6.6.2 (post-normalisation, VST)</li>
+			 
 				<li><div id="figure-6-6-2" class="figure"> <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_6.6.2.png" target="_blank" rel="noopener"> <img src="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_6.6.2.png" alt="Post-normalisation VST boxplots per sample, coloured by condition, with global median line." style="display:block;width:100%;height:auto;max-width:1400px;"> </a> <div class="caption"> <strong>Figure 6.6.2.</strong> Post-normalisation count distributions using VST (<code>assay(vsd)</code>). Boxes align closely across samples, demonstrating successful removal of mean–variance dependence and effective size-factor normalisation. The dashed line marks the global median VST value. </div> </div></li>
 				
 		<br>
