@@ -3174,10 +3174,90 @@ ggsave("C:/Users/YOUR/PATHS/Figure_6.6.2_PostNormalization.png",
 			 
 
 
-	  
+	  **********   V1 for section 7, see bellow, is it good?  **********888
+<!-- ========================================= 7 ======================================== --> <!-- =============================== 7.1 =================================== --> <div class="explanation"> <h3>7.1. Fit the DESeq2 model</h3> <ul> <li> This step runs <strong><code>DESeq()</code></strong> on the prepared <strong><code>dds</code></strong> object. DESeq2 estimates size factors, dispersions, and fits a negative binomial GLM per gene based on the design (<strong><code>~ condition</code></strong>). The fitted model is then used for statistical testing in the next steps. </li> </ul> </div> <p class="code-caption">Code Block 7.1. Run DESeq to estimate size factors, dispersions, and fit the GLM</p> <div class="code-block"> <pre><code class="language-r"> # ============================================================== # 7.1. Fit the DESeq2 model # ==============================================================
+The DESeq() function performs:
+- size factor estimation (library size normalization)
+- dispersion estimation
+- negative binomial GLM fitting and Wald tests by default
 
+dds <- DESeq(dds)
+</code></pre>
+
+</div> <!-- =============================== 7.2 =================================== --> <div class="explanation"> <h3>7.2. Extract results for lesional vs non_lesional and filter significant genes</h3> <ul> <li> We extract the contrast <strong>lesional vs non_lesional</strong>, which yields log2 fold changes interpreted as <strong>lesional / non_lesional</strong>. We set common thresholds for significance, for example adjusted P value <strong>&lt; 0.05</strong> and absolute log2 fold change <strong>&ge; 1</strong>. The summary shows overall test diagnostics, and we count how many genes pass the thresholds. </li> </ul> </div> <p class="code-caption">Code Block 7.2. Get results for the target contrast and select significant DEGs</p> <div class="code-block"> <pre><code class="language-r"> # ============================================================== # 7.2. Results for lesional vs non_lesional and basic filtering # ==============================================================
+-------- Define contrast --------
+Contrast order: c("condition", "lesional", "non_lesional")
+log2FoldChange is log2(lesional / non_lesional)
+
+res <- results(dds, contrast = c("condition", "lesional", "non_lesional"))
+
+-------- Set significance criteria --------
+
+alpha <- 0.05 # adjusted p-value threshold (Benjamini-Hochberg by default)
+lfc_cut <- 1 # minimum absolute log2 fold change
+
+-------- Filter significant genes --------
+
+res_sig <- res[
+!is.na(res$padj) &
+res$padj < alpha &
+abs(res$log2FoldChange) >= lfc_cut
+]
+
+-------- Inspect summary and counts --------
+
+summary(res)
+cat("Significant genes (padj <", alpha, ", |log2FC| >= ", lfc_cut, "): ",
+nrow(res_sig), "\n", sep = "")
+</code></pre>
+
+</div> <!-- =============================== 7.3 =================================== --> <div class="explanation"> <h3>7.3. Shrink log2 fold changes with apeglm for more stable effect sizes</h3> <ul> <li> Log2 fold changes from the raw Wald test can be noisy for lowly expressed genes. <strong><code>apeglm</code></strong> shrinkage stabilizes effect sizes while keeping direction and relative ranking useful for interpretation and plotting. We identify the correct coefficient name from <strong><code>resultsNames(dds)</code></strong>, apply <strong><code>lfcShrink()</code></strong>, then reapply the same significance thresholds to obtain a shrunk set of DEGs. </li> </ul> </div> <p class="code-caption">Code Block 7.3. LFC shrinkage with apeglm and re-filter significant DEGs</p> <div class="code-block"> <pre><code class="language-r"> # ============================================================== # 7.3. LFC shrinkage with apeglm # ==============================================================
+-------- Load shrinkage method --------
+
+library(apeglm)
+
+-------- Inspect available coefficients --------
+Use this to confirm the exact name of the contrast coefficient
+
+resultsNames(dds)
+
+-------- Identify the 'lesional vs non_lesional' coefficient --------
+This pattern typically matches "condition_lesional_vs_non_lesional"
+
+coef_name <- resultsNames(dds)[
+grep("condition_lesional_vs_non_lesional", resultsNames(dds))
+]
+
+-------- Get non-shrunk results for the same contrast (for reference) --------
+
+res <- results(dds, contrast = c("condition", "lesional", "non_lesional"))
+
+-------- Apply LFC shrinkage (apeglm) --------
+coef takes the name or index of the coefficient to shrink
+
+res_shrunk <- lfcShrink(dds, coef = coef_name, type = "apeglm")
+
+-------- Reuse thresholds and filter significant genes on shrunk LFCs --------
+
+alpha <- 0.05
+lfc_cut <- 1
+
+res_sig <- res_shrunk[
+!is.na(res_shrunk$padj) &
+res_shrunk$padj < alpha &
+abs(res_shrunk$log2FoldChange) >= lfc_cut
+]
+
+-------- Quick diagnostics --------
+
+summary(res) # on the non-shrunk results
+cat("Significant genes after shrinkage (padj <", alpha,
+", |log2FC| >= ", lfc_cut, "): ", nrow(res_sig), "\n", sep = "")
+</code></pre>
+
+</div>
 		
-                  
+    ***************** END V1 ABOVE ******************************************           
 <!-- ################################################################################### --> 
 
         
