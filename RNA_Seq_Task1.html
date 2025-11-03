@@ -3257,7 +3257,102 @@ cat("Significant genes after shrinkage (padj <", alpha,
 
 </div>
 		
-    ***************** END V1 ABOVE ******************************************           
+    ***************** END V1 ABOVE ******************************************    
+
+
+
+
+    ***************** start V2 bellow ******************************************    
+<p class="code-caption">
+Code Block 7.1. Fit the DESeq2 model to estimate size factors, dispersions, and GLMs
+</p>
+<pre><code class="language-r">
+# ==============================================================
+# 7.1. Fit the DESeq2 model
+# ==============================================================
+
+# The DESeq() function performs:
+# - normalization (size factors)
+# - dispersion estimation per gene
+# - negative binomial GLM fitting
+dds <- DESeq(dds)
+</code></pre>
+
+
+<p class="code-caption">
+Code Block 7.2. Extract and filter significant results for the lesional vs non-lesional contrast
+</p>
+<pre><code class="language-r">
+# ==============================================================
+# 7.2. Results extraction and significance filtering
+# ==============================================================
+
+# Contrast definition: log2(lesional / non_lesional)
+res <- results(dds, contrast = c("condition", "lesional", "non_lesional"))
+
+# Define thresholds
+alpha   <- 0.05  # adjusted p-value cutoff
+lfc_cut <- 1     # absolute log2FC threshold
+
+# Filter significant genes
+res_sig <- res[
+  !is.na(res$padj) &
+  res$padj < alpha &
+  abs(res$log2FoldChange) >= lfc_cut,
+]
+
+# Summarize and print number of DEGs
+summary(res)
+cat("Significant genes (padj <", alpha, ", |log2FC| >=", lfc_cut, "):",
+    nrow(res_sig), "\n")
+</code></pre>
+
+
+<p class="code-caption">
+Code Block 7.3. Apply log2 fold change shrinkage with apeglm for stable effect-size estimation
+</p>
+<pre><code class="language-r">
+# ==============================================================
+# 7.3. LFC shrinkage with apeglm
+# ==============================================================
+
+# Load required library
+library(apeglm)
+
+# Check available coefficients to locate the target contrast
+resultsNames(dds)
+
+# Identify coefficient for "lesional vs non_lesional"
+coef_name <- resultsNames(dds)[
+  grep("condition_lesional_vs_non_lesional", resultsNames(dds))
+]
+
+# Compute unshrunk results for reference
+res <- results(dds, contrast = c("condition", "lesional", "non_lesional"))
+
+# Apply shrinkage
+res_shrunk <- lfcShrink(dds, coef = coef_name, type = "apeglm")
+
+# Filter significant genes using the same thresholds
+alpha   <- 0.05
+lfc_cut <- 1
+res_sig <- res_shrunk[
+  !is.na(res_shrunk$padj) &
+  res_shrunk$padj < alpha &
+  abs(res_shrunk$log2FoldChange) >= lfc_cut,
+]
+
+# Summary
+summary(res)
+cat("Significant genes after shrinkage:",
+    nrow(res_sig), "\n")
+</code></pre>
+
+
+
+	***************** end V2 above  ******************************************    
+
+	
 <!-- ################################################################################### --> 
 
         
