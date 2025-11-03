@@ -3179,6 +3179,7 @@ ggsave("C:/Users/YOUR/PATHS/Figure_6.6.2_PostNormalization.png",
 	
 	<!-- =============================== 7.1 =================================== --> 
 	<div class="explanation"> 
+		<h3>7. Differential Expression Analysis:</h3>
 		<h3>7.1. Fit the DESeq2 model</h3> 
 		<ul> 
 			<li> This step runs <strong><code>DESeq()</code></strong> on the prepared <strong><code>dds</code></strong> object. DESeq2 estimates size factors, dispersions, and fits a negative binomial GLM per gene based on the design (<strong><code>~ condition</code></strong>). The fitted model is then used for statistical testing in the next steps. </li> 
@@ -3242,7 +3243,19 @@ res_sig <- res[
 summary(res)
 cat("Significant genes (padj <", alpha, ", |log2FC| >=", lfc_cut, "):",
     nrow(res_sig), "\n")
-	
+
+#======================== Output: ==================
+out of 16862 with nonzero total read count
+adjusted p-value < 0.1
+LFC > 0 (up)       : 5085, 30%
+LFC < 0 (down)     : 4924, 29%
+outliers [1]       : 0, 0%
+low counts [2]     : 0, 0%
+(mean count < 9)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+
+Significant genes (padj < 0.05 , |log2FC| >= 1 ): 515 	
         </code></pre>
 	
 
@@ -3278,7 +3291,7 @@ coef_name <- resultsNames(dds)[
   grep("condition_lesional_vs_non_lesional", resultsNames(dds))
 ]
 
-# Compute unshrunk results for reference
+# Perform DE analysis (non-shrunk)
 res <- results(dds, contrast = c("condition", "lesional", "non_lesional"))
 
 # Apply shrinkage
@@ -3297,7 +3310,22 @@ res_sig <- res_shrunk[
 summary(res)
 cat("Significant genes after shrinkage:",
     nrow(res_sig), "\n")
-	  
+
+
+# ----------------- Output --------------------
+out of 16862 with nonzero total read count
+adjusted p-value < 0.1
+LFC > 0 (up)       : 5085, 30%
+LFC < 0 (down)     : 4924, 29%
+outliers [1]       : 0, 0%
+low counts [2]     : 0, 0%
+(mean count < 9)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+
+Significant genes: 515 
+
+	
         </code></pre>
 
 </div>
@@ -3306,58 +3334,7 @@ cat("Significant genes after shrinkage:",
 	
 <!-- ################################################################################### --> 
 
-        
-<!-- ========================================= 7  ======================================== -->
-		<div class="explanation">
-		    <h3>7.	Run the DESeq2 Pipeline</h3>
-		    <ul>
-	   	      <li>
-			TEXTTTTTTTTTTT FOR 7.	     
-		      </li>
-		    </ul> 
-		</div>
-<!-- ======================================== Sub title e.g. 7.1.================================================ -->
-		<div class="explanation">
-
-			
-		    <h3>7.1. Estimating Size Factors and Dispersions</h3>
- 		    <ul>
-	   	      <li>
-			TEXTTTTTTTTTTT FOR 7.1.	     
-		      </li>
-		     </ul> 
-
-
-
-		    <h3>7.2. Running DESeq Model</h3>
- 		    <ul>
-	   	      <li>
-			TEXTTTTTTTTTTT FOR 7.2.	     
-		      </li>
-		     </ul> 
-
-			
-
-			
-		</div>
-
-
-	  <!-- ======================== CODE START ============================ -->
-		<!-- ======= 7.1. code chunk =========== -->
-		<!-- Caption for the code block -->
-		<p class="code-caption">Code Block 7.1.1.  CODDDDDE BLLLOOOOOK TITLEEEEE </p>
-
-		<div class="code-block">
-		    <pre><code class="language-r">
-			
-		# CODE HHHHEEERRRRR 
-		# CODE HHHHEEERRRRR 
-
-		    </code></pre>
-		</div>
-		<!-- ======================== CODE END ============================ -->
-
-		
+   
                   
 <!-- ################################################################################### -->   
 		 
