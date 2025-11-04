@@ -3345,8 +3345,7 @@ Significant genes: 515
 		    <h3>8.	DEG Interpretation, Visualization, and Export</h3>
 		    <ul>
 	   	      <li>
-			This section focuses on the interpretation and visualization of <strong>differential expression results</strong> obtained from <strong>DESeq2.</strong> It transitions from numerical outputs to <strong>biological insights</strong>, summarizing <strong>significant genes</strong>, evaluating global <strong>data patterns</strong>, and <strong>visualizing DEGs</strong> through multiple perspectives before exporting the final results.	     
-		      </li>
+After the DESeq2 model fitting and shrinkage (Section 7), this section focuses on interpreting the differential expression results and exploring the data visually. The goal is to translate statistical outputs into biologically meaningful patterns. Here, we summarize significant genes, evaluate the overall structure of the dataset through diagnostic plots, and visualize DEGs in multiple ways before exporting the results for downstream functional analyses.		      </li>
 		    </ul> 
 		</div>
 
@@ -3357,13 +3356,13 @@ Significant genes: 515
 			
 		    <h3>8.1. Overview and Summary of DEG Results</h3>
 		    <ul>
-				
-	   	      <li><strong>Purpose:</strong></li>
-			  <li>Summarize significant genes after shrinkage; include counts of up- and down-regulated genes; possibly a small bar plot or table.</li>
-			  <li>Basic interpretation of results (e.g., “x genes up, y genes down”).</li>	
-				
-			
-			
+					   	    
+<li>After performing differential expression analysis and log2 fold-change shrinkage, we identified significant genes using two main thresholds: an adjusted <em>p</em>-value (< 0.05) and an absolute log2 fold change (≥ 1). This filtering step highlights genes showing biologically meaningful and statistically reliable changes between lesional and non-lesional skin.</li>
+
+<li>To provide an overview of the results, we summarized the total number of significant DEGs and categorized them into <strong>upregulated</strong> and <strong>downregulated</strong> groups. This summary helps capture the global transcriptional response, showing whether the lesional skin displays widespread activation or suppression relative to the non-lesional state.</li>
+
+<li>We visualized these findings using a <strong>summary bar plot</strong> and a <strong>compact results table</strong> that report DEG counts under the defined thresholds. Together, they provide an immediate and interpretable view of the global transcriptional alterations in the dataset.</li>
+
 			</ul> 
 			
 
@@ -3371,28 +3370,31 @@ Significant genes: 515
 						
 		    <h3>8.2. Global Diagnostic Visualizations (QC & Data Patterns)</h3>
 		    <ul>
-<li><strong>Purpose:</strong></li>
-<li>Evaluate variance structure and sample clustering.</li>
-				<li>8.2.1 PCA Plot of VST data</li>
-				<li>8.2.2 Sample-to-Sample Distance Heatmap</li>
- 
+
+				<li>Before focusing on individual DEGs, it is essential to confirm that the dataset behaves as expected globally. At this stage, we examined whether normalization and model fitting accurately captured biological variation while minimizing technical noise. Two visualizations were generated to evaluate these properties: a <strong>PCA plot</strong> and a <strong>sample-to-sample distance heatmap</strong>.</li>
+
+	 				<li><strong>8.2.1 PCA Plot of VST Data:</strong> The PCA plot displays the first two principal components derived from the variance-stabilized data, summarizing the largest sources of variation across all genes. In our analysis, samples were colored by condition (lesional or non-lesional). A clear clustering pattern was observed, with non-lesional samples grouping on one side and lesional samples shifting toward the other. This confirms that condition is a major driver of variance in the dataset, validating the normalization process.</li>
+	
+	                <li><strong>8.2.2 Sample-to-Sample Distance Heatmap:</strong> The heatmap visualizes pairwise Euclidean distances between samples after variance stabilization. Blue shades indicate samples with highly similar expression patterns, while red shades indicate greater dissimilarity. In our dataset, lesional and non-lesional samples formed distinct blocks of internal similarity, consistent with biological grouping and the PCA results. This further confirmed strong within-group consistency and reliable separation between conditions.</li>
+
 		    </ul> 
 
 
 						
 		    <h3>8.3. DEG-Focused Visualizations (Result Exploration)</h3>
 			 <ul>
-<li><strong>Purpose:</strong>Visualize differential results to understand biological effects.</li>
  
-				 <li><strong>8.3.1 Volcano Plot of DEGs</strong></li>
-				 <li><strong>8.3.2 MA Plot</strong></li>
-				 <li><strong>8.3.3 Heatmap of Top DEGs</strong></li>
-				 <li><strong>8.3.4 Expression Density Plots (top DEGs)</strong></li>
-				 <li><strong>8.3.5 Enhanced Heatmap with Annotations</strong></li>
+<li>After confirming data structure and quality, we focused on the DEGs themselves to better understand their biological patterns. Several visualization approaches were used to interpret the direction, magnitude, and distribution of gene expression changes across samples.</li>
 
+<li><strong>8.3.1 Volcano Plot of DEGs:</strong> The volcano plot displays each gene’s log2 fold change (x-axis) versus its statistical significance (–log10 adjusted <em>p</em>-value; y-axis). Upregulated genes appear on the right, downregulated genes on the left, and highly significant DEGs toward the top. This plot allows quick identification of genes with strong and consistent expression differences between lesional and non-lesional skin.</li>
 
+<li><strong>8.3.2 MA Plot:</strong> The MA plot shows log2 fold change (M) as a function of average normalized expression (A). It confirms whether differential expression occurs across a wide expression range. In this dataset, DEGs were distributed symmetrically around zero, indicating balanced up- and downregulation and reliable normalization.</li>
 
+<li><strong>8.3.3 Heatmap of Top Differentially Expressed Genes:</strong> A clustered heatmap of the top DEGs was generated to visualize overall expression trends. Rows represent genes, columns represent samples, and colors indicate normalized expression. The clear separation between lesional and non-lesional samples highlights the discriminatory power of these top DEGs.</li>
 
+<li><strong>8.3.4 Expression Density Plots (Top DEGs):</strong> Density plots of expression values for selected top DEGs illustrate how normalized expression distributions differ between conditions. These plots confirm that lesional samples show consistent directional shifts in expression, reinforcing the statistical findings.</li>
+
+<li><strong>8.3.5 Enhanced Heatmap with Annotations:</strong> An enhanced version of the DEG heatmap was created, combining expression data with sample annotations (such as condition or patient ID). This layout enhances interpretability by linking molecular expression trends to sample metadata, making the visualization suitable for publication and interactive web display.</li>
 
 			 </ul> 
 
@@ -3400,7 +3402,9 @@ Significant genes: 515
 						
 		    <h3>8.4. Exporting DEG Tables</h3>
 		    <ul>
-<li><strong>Purpose:</strong>Save both full and filtered DEG tables for external analysis.</li>
+<li>To ensure reproducibility and facilitate downstream analyses, both <strong>full</strong> and <strong>filtered</strong> DEG tables were exported. The full table includes all genes tested along with their log2 fold changes, standard errors, <em>p</em>-values, and adjusted <em>p</em>-values. This comprehensive dataset is particularly suitable for analyses such as GSEA that require ranked gene lists.</li>
+
+<li>The filtered table includes only the significant DEGs that meet the specified thresholds, offering a concise dataset ideal for reporting, visualization, or functional analysis. Both outputs are formatted for reuse, ensuring consistency and transparency in downstream steps.</li>
 
 
 				
