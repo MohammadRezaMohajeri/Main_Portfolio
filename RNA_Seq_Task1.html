@@ -2663,14 +2663,38 @@ vsd <- vst(dds, blind=TRUE)
 		<div class="code-block">
 		  <pre><code class="language-r">
 
-# Generate PCA plot of variance-stabilized data, grouping samples by condition (lesional vs non-lesional)
-pca_plot <- plotPCA(vsd, intgroup = "condition")
+ # ==============================================================
+# 6.2. PCA of Variance-Stabilized Data (Global Overview)
+# ==============================================================
 
-# Save PCA plot as high-resolution PNG 
-png("C:/Users/YOUR/PATH/Figure_6.2_PCA_plot.png",
-    width = 2000, height = 1600, res = 300)
-print(pca_plot)
-dev.off()
+library(ggplot2)
+library(DESeq2)
+
+# Extract PCA data from the variance-stabilized matrix (vsd)
+pca_df <- plotPCA(vsd, intgroup = "condition", returnData = TRUE)
+percentVar <- round(100 * attr(pca_df, "percentVar"))
+
+# Build PCA plot manually for full control over aesthetics
+p_pca_global <- ggplot(pca_df, aes(x = PC1, y = PC2, colour = condition)) +
+  geom_point(size = 2.5, alpha = 0.85) +
+  scale_colour_manual(values = c("lesional" = "#0072FF",
+                                 "non_lesional" = "#66FF00")) +
+  xlab(paste0("PC1: ", percentVar[1], "% variance")) +
+  ylab(paste0("PC2: ", percentVar[2], "% variance")) +
+  labs(title = "PCA of Variance-Stabilized Data (Global Gene Set)",
+       colour = "Condition") +
+  theme_bw(base_size = 14) +
+  theme(
+    plot.title = element_text(size = 18, face = "bold", hjust = 0.5),
+    axis.title = element_text(size = 14, face = "bold"),
+    axis.text = element_text(size = 12),
+    legend.title = element_text(size = 13),
+    legend.text = element_text(size = 11)
+  )
+
+# Save as high-resolution PNG
+ggsave("C:/Users/YOUR/PATH/Figure_6.2.png",
+       plot = p_pca_global, width = 10, height = 8, dpi = 300)
 
 			  
 		  </code></pre>
