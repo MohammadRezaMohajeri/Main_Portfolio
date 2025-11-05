@@ -3217,6 +3217,7 @@ ggsave("C:/Users/YOUR/PATHS/Figure_6.6.2_PostNormalization.png",
 	<p class="code-caption">
 		Code Block 7.1. Run DESeq to estimate size factors, dispersions, and fit the GLM
 	</p> 
+	
 	<div class="code-block">
 		
 		<pre><code class="language-r"> 
@@ -3284,9 +3285,9 @@ low counts [2]     : 0, 0%
 
 Significant genes (padj < 0.05 , |log2FC| >= 1 ): 515 	
         </code></pre>
-	
 
 </div> 
+	
 	<!-- =============================== 7.3 =================================== --> 
 	<div class="explanation"> 
 		<h3>7.3. Shrink log2 fold changes with apeglm for more stable effect sizes</h3>
@@ -3377,11 +3378,108 @@ Significant genes: 515
 		    </ul> 
 		</div>
 
+
+<!-- ========================================= 8.0  ======================================== -->
+
+
+<div class="explanation"> 
+		<h3>8.0 Setup & Common Helpers</h3>
+		<ul> 
+			<li></li>
+		</ul> 
+	
+	</div> 
+
+	
+<!-- ===================================  CODE 8.0  ========================================================== -->	
+<!-- =============== Start Code Caption  ==================== -->
+<p class="code-caption">
+	Code Block 8.0. Setup & Common Helpers
+</p> 
+<!-- =============== End Code Caption  ==================== -->
+
+
+	
+		 
+<!-- =============== Start Code Block  ==================== -->
+<div class="code-block">
+		
+		<pre>
+			<code class="language-r">
+
+				
+# ==================================================================
+# 8.0 Setup & Common Helpers
+# ==================================================================
+suppressPackageStartupMessages({
+  library(DESeq2)
+  library(ggplot2)
+  library(pheatmap)
+  library(RColorBrewer)
+  library(reshape2)
+  library(dplyr)
+  library(readr)
+  library(AnnotationDbi)  # mapping
+  library(org.Hs.eg.db)   # human gene symbols
+})
+
+# ============= Output & Colors =============
+out_dir <- "C:/Users/omidm/OneDrive/Desktop/RNA_Seq_Task1/8.DEG_Visualization"
+if (!dir.exists(out_dir)) dir.create(out_dir, recursive = TRUE)
+
+# Use one consistent palette everywhere
+cond_cols <- c("lesional" = "#0072FF", "non_lesional" = "#66ff00")
+
+# ============= Shared thresholds =============
+alpha   <- 0.05
+lfc_cut <- 1
+
+# ============= Results frame from Section 7 (with shrinkage) =============
+# Expects 'res_shrunk' from Section 7.
+res_df <- as.data.frame(res_shrunk) %>%
+  mutate(gene = rownames(res_shrunk)) %>%
+  filter(!is.na(padj)) %>%
+  mutate(
+    sig = case_when(
+      padj < alpha & log2FoldChange >=  lfc_cut ~ "Up",
+      padj < alpha & log2FoldChange <= -lfc_cut ~ "Down",
+      TRUE                                      ~ "NS"
+    )
+  )
+
+# ============= VST matrix from Section 6 =============
+vsd_mat <- assay(vsd)
+
+# ============= Ensembl -> HGNC mapping helpers =============
+strip_ver <- function(x) sub("\\..*$", "", x)  # remove version suffixes
+all_ens <- unique(c(rownames(vsd_mat), res_df$gene))
+sym_map <- AnnotationDbi::mapIds(
+  org.Hs.eg.db,
+  keys      = unique(strip_ver(all_ens)),
+  column    = "SYMBOL",
+  keytype   = "ENSEMBL",
+  multiVals = "first"
+)
+ens_to_symbol <- function(ids) {
+  ids_stripped <- strip_ver(ids)
+  syms <- unname(sym_map[ids_stripped])
+  syms[is.na(syms) | syms == ""] <- ids[is.na(syms) | syms == ""]
+  syms
+}
+
+# Also store symbols on the results frame for later plots/tables
+res_df <- res_df %>% mutate(gene_symbol = ens_to_symbol(gene))
+
+			</code>
+		</pre>
+</div> 
+<!-- =============== End Code Block  ==================== -->
+<!-- ===================================  CODE 8.0  ========================================================== -->	
+
+	
 	
 <!-- ======================================== 8.1 ================================================ -->
 		<div class="explanation">
-
-			
 		    <h3>8.1. Overview and Summary of DEG Results</h3>
 		    <ul>
 					   	    
@@ -3392,73 +3490,444 @@ Significant genes: 515
 <li>We visualized these findings using a <strong>summary bar plot</strong> and a <strong>compact results table</strong> that report <strong>DEG counts</strong> under the defined thresholds. Together, they provide an immediate and interpretable view of the global transcriptional alterations in the dataset.</li>
 
 			</ul> 
-			
+		</div>
 
 
-						
+<!-- ===================================  START CODE 8.1  ========================================================== -->	
+<!-- =============== Start Code Caption  ==================== -->
+<p class="code-caption">
+	Code Block 8.1. Overview & Summary of DEG Results
+</p> 
+<!-- =============== End Code Caption  ==================== -->
+
+
+	
+		 
+<!-- =============== Start Code Block  ==================== -->
+<div class="code-block">
+		
+		<pre>
+			<code class="language-r">
+				
+# ==================================================================
+# 8.1 Overview & Summary of DEG Results
+# ==================================================================
+
+# ============= Counts & Console Summary =============
+deg_total <- sum(res_df$sig != "NS")
+deg_up    <- sum(res_df$sig == "Up")
+deg_down  <- sum(res_df$sig == "Down")
+
+cat("DEG summary (shrinkage applied):\n",
+    "  Total significant:", deg_total, "\n",
+    "  Up-regulated     :", deg_up, "\n",
+    "  Down-regulated   :", deg_down, "\n")
+
+# ============= Bar Plot Summary (Figure 8.1) =============
+deg_df <- data.frame(
+  Direction = factor(c("Up-regulated", "Down-regulated"),
+                     levels = c("Up-regulated", "Down-regulated")),
+  Count = c(deg_up, deg_down)
+)
+p_deg_bar <- ggplot(deg_df, aes(Direction, Count, fill = Direction)) +
+  geom_col(color = "black", width = 0.8) +
+  scale_fill_manual(values = c("Up-regulated" = "#EF476F", "Down-regulated" = "#118AB2")) +
+  theme_bw(base_size = 12) +
+  labs(title = "Significant DEGs (after shrinkage)", x = NULL, y = "Gene count") +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"))
+ggsave(file.path(out_dir, "Figure_8.1_DEG_Summary_Bar.png"),
+       p_deg_bar, width = 7, height = 5, dpi = 300)
+
+	
+			</code>
+		</pre>
+</div> 
+<!-- =============== End Code Block  ==================== -->
+<!-- ===================================  END CODE 8.1  ========================================================== -->	
+
+
+
+
+	
+	<div class="explanation">
 		    <h3>8.2. DEG-Focused Diagnostic Visualizations (QC & Data Patterns)</h3>
 		    <ul>
 
 				<li>Before focusing on individual DEGs, it is essential to confirm that the dataset behaves as expected globally. At this stage, we examined whether <strong>normalization</strong> and <strong>model fitting</strong> accurately captured <strong>biological variation</strong> while minimizing technical noise. Two visualizations were generated to evaluate these properties: a <strong>PCA plot</strong> and a <strong>sample-to-sample distance heatmap</strong>.</li>
 
-	 				<li><strong>8.2.1 PCA Plot on Top DEGs:</strong>SHOULD CHNAGE: The <strong>PCA</strong> plot displays the first two <strong>principal components</strong> derived from the <strong>variance-stabilized data</strong>, summarizing the <strong>largest sources of variation</strong> across all genes. In our analysis, <strong>samples</strong> were colored by <strong>condition (lesional or non-lesional)</strong>. A clear <strong>clustering pattern</strong> was observed, with non-lesional samples grouping on one side and lesional samples shifting toward the other. This confirms that <strong>condition</strong> is a <strong>major driver of variance</strong> in the dataset, validating the normalization process.</li>
-	
-	                <li><strong>8.2.2 Sample-to-Sample Distance Heatmap on Top DEGs:</strong> SHOULD CHNAGE: The heatmap visualizes <strong>pairwise Euclidean distances</strong> between samples after variance stabilization. <strong>Blue shades</strong> indicate samples with <strong>highly similar expression patterns</strong>, while <strong>red shades</strong> indicate greater <strong>dissimilarity.</strong> In our dataset, lesional and non-lesional samples formed distinct <strong>blocks of similarity</strong>, consistent with biological grouping and the PCA results. This further confirmed strong within-group consistency and reliable <strong>separation between conditions</strong>.</li>
-
+	 	
 		    </ul> 
+	</div>
+
+	<!-- ===================================  START CODE 8.2  ========================================================== -->	
+<!-- =============== Start Code Caption  ==================== -->
+<p class="code-caption">
+	Code Block 8.2. DEG-Focused Diagnostic Visualizations (QC & Data Patterns)
+</p> 
+<!-- =============== End Code Caption  ==================== -->
 
 
-						
+	
+		 
+<!-- =============== Start Code Block  ==================== -->
+<div class="code-block">
+		
+		<pre>
+			<code class="language-r">
+# ==================================================================
+# 8.2. DEG-Focused Diagnostic Visualizations (QC & Data Patterns)
+#      (PCA and sample–sample distances using top DEGs)
+# ==================================================================
+
+# ============= Select Top DEGs by padj =============
+top_k <- 500
+top_deg_ids <- as.data.frame(res_shrunk) %>%
+  mutate(gene = rownames(res_shrunk)) %>%
+  filter(!is.na(padj)) %>%
+  arrange(padj) %>%
+  slice(1:min(top_k, n())) %>%
+  pull(gene)
+
+# VST expression restricted to top DEGs
+vst_top <- vsd_mat[top_deg_ids, , drop = FALSE]
+	
+			</code>
+		</pre>
+</div> 
+<!-- =============== End Code Block  ==================== -->
+<!-- ===================================  END CODE 8.2 ========================================================== -->	
+
+
+	
+	<div class="explanation">
+<h3>8.2.1 PCA Plot on Top DEGs:</h3>
+		<ul>
+			<li>SHOULD CHNAGE: The <strong>PCA</strong> plot displays the first two <strong>principal components</strong> derived from the <strong>variance-stabilized data</strong>, summarizing the <strong>largest sources of variation</strong> across all genes. In our analysis, <strong>samples</strong> were colored by <strong>condition (lesional or non-lesional)</strong>. A clear <strong>clustering pattern</strong> was observed, with non-lesional samples grouping on one side and lesional samples shifting toward the other. This confirms that <strong>condition</strong> is a <strong>major driver of variance</strong> in the dataset, validating the normalization process.</li>
+	    </ul>
+	</div>
+
+<!-- ===================================  START CODE 8.2.1  ========================================================== -->	
+<!-- =============== Start Code Caption  ==================== -->
+<p class="code-caption">
+	Code Block 8.2.1. captionnnnnnnnnnnnnnnnnnnnnnnnnnnn
+</p> 
+<!-- =============== End Code Caption  ==================== -->
+
+
+	
+		 
+<!-- =============== Start Code Block  ==================== -->
+<div class="code-block">
+		
+		<pre>
+			<code class="language-r">
+				
+			</code>
+		</pre>
+</div> 
+<!-- =============== End Code Block  ==================== -->
+<!-- ===================================  END CODE 8.2.1  ========================================================== -->	
+
+
+
+
+	
+
+
+	
+		<div class="explanation">
+<h3>8.2.2 Sample-to-Sample Distance Heatmap on Top DEGs:</h3> 
+			<ul>
+				<li>SHOULD CHNAGE: The heatmap visualizes <strong>pairwise Euclidean distances</strong> between samples after variance stabilization. <strong>Blue shades</strong> indicate samples with <strong>highly similar expression patterns</strong>, while <strong>red shades</strong> indicate greater <strong>dissimilarity.</strong> In our dataset, lesional and non-lesional samples formed distinct <strong>blocks of similarity</strong>, consistent with biological grouping and the PCA results. This further confirmed strong within-group consistency and reliable <strong>separation between conditions</strong>.</li>
+			</ul>
+		</div>
+
+	
+<!-- ===================================  START CODE 8.2.2  ========================================================== -->	
+<!-- =============== Start Code Caption  ==================== -->
+<p class="code-caption">
+	Code Block 8.2.2. captionnnnnnnnnnnnnnnnnnnnnnnnnnnn
+</p> 
+<!-- =============== End Code Caption  ==================== -->
+
+
+	
+		 
+<!-- =============== Start Code Block  ==================== -->
+<div class="code-block">
+		
+		<pre>
+			<code class="language-r">
+				
+			</code>
+		</pre>
+</div> 
+<!-- =============== End Code Block  ==================== -->
+<!-- ===================================  END CODE 8.2.2 ========================================================== -->	
+
+
+
+
+
+
+
+
+	
+
+	
+	<div class="explanation">
 		    <h3>8.3. DEG-Focused Visualizations (Result Exploration)</h3>
 			 <ul>
  
-<li>After confirming <strong>data structure & quality</strong>, we focused on the <strong>DEGs</strong> themselves to better understand their <strong>biological patterns</strong>. Several visualization approaches were used to interpret the <strong>direction</strong>, <strong>magnitude</strong>, and <strong>distribution of gene expression changes across samples.</strong> </li>
-
-<li><strong>8.3.1 Volcano Plot of DEGs:</strong> The <strong>volcano plot</strong> displays <strong>each gene’s log2 fold change</strong> (x-axis) versus its statistical significance (<strong>–log10 adjusted <em>p</em>-value</strong>; y-axis). <strong>Upregulated</strong> genes appear on the right, <strong>downregulated</strong> genes on the left, and <strong>highly significant DEGs</strong> toward the top. This plot allows quick identification of genes with strong and consistent <strong>expression differences</strong> between lesional and non-lesional skin.</li>
-
-<li><strong>8.3.2 MA Plot:</strong> </strong> The <strong>MA plot</strong> displays <strong>each gene’s log2 fold change (M; Minus)</strong> (difference in expression between conditions) on the y-axis and its <strong>average normalized expression (A; Average)</strong> on the x-axis. It provides an overview of how <strong>gene expression changes</strong> relate to <strong>expression level</strong>. It confirms whether <strong>differential expression</strong> occurs across a <strong>wide expression range</strong>, meaning that both <strong>highly expressed</strong> and <strong>lowly expressed</strong> genes can show <strong>significant changes</strong> between conditions. In this dataset, DEGs were distributed symmetrically around zero, indicating balanced up- and downregulation and reliable normalization.</li>
-<li>In this dataset, most genes cluster closely around zero log2 fold change, indicating that expression levels are largely consistent between lesional and non-lesional samples after normalization. Only a smaller subset of genes deviates notably from zero, reflecting the differentially expressed genes (DEGs). Applying shrinkage (via <code>apeglm</code>) has stabilized these fold-change estimates, especially for low-count genes, resulting in a smoother and more reliable representation of overall gene expression trends.</li>
-<li>An <strong>ideal MA plo</strong>t for <strong>well-normalized data</strong> would show the <strong>majority of genes</strong> near the <strong>log fold change of zero</strong>, with <strong>outliers</strong> representing <strong>differentially expressed genes</strong>. The plot shows a <strong>good distribution of points</strong> with <strong>no systematic bias</strong>, suggesting <strong>the data has been properly normalized</strong>. In an <strong>MA plot</strong>, the data has been <strong>properly normalized</strong> if the <strong>majority of data points</strong> are clustered <strong>symmetrically around the horizontal lin</strong>e at y=0 across the entire range of x-axis values. Conversely, the data has <strong>not been properly normalized</strong> if the points form a <strong>diagonal slope</strong> or a <strong>curve</strong>, indicating a <strong>systematic bias</strong> where <strong>differences between samples</strong> depend on the <strong>magnitude of the values</strong>. </li>			 
-
- <li><strong>8.3.3 Heatmap of Top Differentially Expressed Genes:</strong> A clustered heatmap of the top DEGs was generated to visualize overall expression trends. Rows represent genes, columns represent samples, and colors indicate normalized expression. The clear separation between lesional and non-lesional samples highlights the discriminatory power of these top DEGs.</li>
-
-<li><strong>8.3.4 Expression Density Plots (Top DEGs):</strong> Density plots of expression values for selected top DEGs illustrate how normalized expression distributions differ between conditions. These plots confirm that lesional samples show consistent directional shifts in expression, reinforcing the statistical findings.</li>
-
-<li><strong>8.3.5 Enhanced Heatmap with Annotations:</strong> An enhanced version of the DEG heatmap was created, combining expression data with sample annotations (such as condition or patient ID). This layout enhances interpretability by linking molecular expression trends to sample metadata, making the visualization suitable for publication and interactive web display.</li>
-
-			 </ul> 
+				<li>After confirming <strong>data structure & quality</strong>, we focused on the <strong>DEGs</strong> themselves to better understand their <strong>biological patterns</strong>. Several visualization approaches were used to interpret the <strong>direction</strong>, <strong>magnitude</strong>, and <strong>distribution of gene expression changes across samples.</strong> </li>
+			 
+			 </ul>
+	</div>
 
 
-						
-		    <h3>8.4. Exporting DEG Tables</h3>
-		    <ul>
-<li>To ensure reproducibility and facilitate downstream analyses, both <strong>full</strong> and <strong>filtered</strong> DEG tables were exported. The full table includes all genes tested along with their log2 fold changes, standard errors, <em>p</em>-values, and adjusted <em>p</em>-values. This comprehensive dataset is particularly suitable for analyses such as GSEA that require ranked gene lists.</li>
+<!-- ===================================  START CODE 8.3  ========================================================== -->	
+<!-- =============== Start Code Caption  ==================== -->
+<p class="code-caption">
+	Code Block 8.3. captionnnnnnnnnnnnnnnnnnnnnnnnnnnn
+</p> 
+<!-- =============== End Code Caption  ==================== -->
 
-<li>The filtered table includes only the significant DEGs that meet the specified thresholds, offering a concise dataset ideal for reporting, visualization, or functional analysis. Both outputs are formatted for reuse, ensuring consistency and transparency in downstream steps.</li>
 
-
+	
+		 
+<!-- =============== Start Code Block  ==================== -->
+<div class="code-block">
+		
+		<pre>
+			<code class="language-r">
 				
-		    </ul> 
+			</code>
+		</pre>
+</div> 
+<!-- =============== End Code Block  ==================== -->
+<!-- ===================================  END CODE 8.3  ========================================================== -->	
 
-			
+
+
+	
+
+	
+		<div class="explanation">
+			<h3>8.3.1 Volcano Plot of DEGs:</h3> 
+				<ul>
+					<li>The <strong>volcano plot</strong> displays <strong>each gene’s log2 fold change</strong> (x-axis) versus its statistical significance (<strong>–log10 adjusted <em>p</em>-value</strong>; y-axis). <strong>Upregulated</strong> genes appear on the right, <strong>downregulated</strong> genes on the left, and <strong>highly significant DEGs</strong> toward the top. This plot allows quick identification of genes with strong and consistent <strong>expression differences</strong> between lesional and non-lesional skin.</li>
+				</ul>
+		</div>
+
+<!-- ===================================  START CODE 8.3.1 ========================================================== -->	
+<!-- =============== Start Code Caption  ==================== -->
+<p class="code-caption">
+	Code Block 8.3.1 captionnnnnnnnnnnnnnnnnnnnnnnnnnnn
+</p> 
+<!-- =============== End Code Caption  ==================== -->
+
+
+	
+		 
+<!-- =============== Start Code Block  ==================== -->
+<div class="code-block">
+		
+		<pre>
+			<code class="language-r">
+				
+			</code>
+		</pre>
+</div> 
+<!-- =============== End Code Block  ==================== -->
+<!-- ===================================  END CODE 8.3.1 ========================================================== -->	
+
+
+
+	
+	
+
+		<div class="explanation">
+			<h3>8.3.2 MA Plot:</h3> 
+				<ul>
+					
+					<li></strong> The <strong>MA plot</strong> displays <strong>each gene’s log2 fold change (M; Minus)</strong> (difference in expression between conditions) on the y-axis and its <strong>average normalized expression (A; Average)</strong> on the x-axis. It provides an overview of how <strong>gene expression changes</strong> relate to <strong>expression level</strong>. It confirms whether <strong>differential expression</strong> occurs across a <strong>wide expression range</strong>, meaning that both <strong>highly expressed</strong> and <strong>lowly expressed</strong> genes can show <strong>significant changes</strong> between conditions. In this dataset, DEGs were distributed symmetrically around zero, indicating balanced up- and downregulation and reliable normalization.</li>
+					<li>In this dataset, most genes cluster closely around zero log2 fold change, indicating that expression levels are largely consistent between lesional and non-lesional samples after normalization. Only a smaller subset of genes deviates notably from zero, reflecting the differentially expressed genes (DEGs). Applying shrinkage (via <code>apeglm</code>) has stabilized these fold-change estimates, especially for low-count genes, resulting in a smoother and more reliable representation of overall gene expression trends.</li>
+					<li>An <strong>ideal MA plo</strong>t for <strong>well-normalized data</strong> would show the <strong>majority of genes</strong> near the <strong>log fold change of zero</strong>, with <strong>outliers</strong> representing <strong>differentially expressed genes</strong>. The plot shows a <strong>good distribution of points</strong> with <strong>no systematic bias</strong>, suggesting <strong>the data has been properly normalized</strong>. In an <strong>MA plot</strong>, the data has been <strong>properly normalized</strong> if the <strong>majority of data points</strong> are clustered <strong>symmetrically around the horizontal lin</strong>e at y=0 across the entire range of x-axis values. Conversely, the data has <strong>not been properly normalized</strong> if the points form a <strong>diagonal slope</strong> or a <strong>curve</strong>, indicating a <strong>systematic bias</strong> where <strong>differences between samples</strong> depend on the <strong>magnitude of the values</strong>. </li>			 
+				
+				</ul>
+	</div>
+
+
+<!-- ===================================  START CODE 8.3.2 ========================================================== -->	
+<!-- =============== Start Code Caption  ==================== -->
+<p class="code-caption">
+	Code Block 8.3.2 captionnnnnnnnnnnnnnnnnnnnnnnnnnnn
+</p> 
+<!-- =============== End Code Caption  ==================== -->
+
+
+	
+		 
+<!-- =============== Start Code Block  ==================== -->
+<div class="code-block">
+		
+		<pre>
+			<code class="language-r">
+				
+			</code>
+		</pre>
+</div> 
+<!-- =============== End Code Block  ==================== -->
+<!-- ===================================  END CODE 8.3.2 ========================================================== -->	
+
+
+	
+
+
+		<div class="explanation">
+ 			<h3>8.3.3 Heatmap of Top Differentially Expressed Genes:</h3> 
+			    <ul>
+					<li>A clustered heatmap of the top DEGs was generated to visualize overall expression trends. Rows represent genes, columns represent samples, and colors indicate normalized expression. The clear separation between lesional and non-lesional samples highlights the discriminatory power of these top DEGs.</li>
+				</ul>
+		</div>
+
+<!-- ===================================  START CODE 8.3.3 ========================================================== -->	
+<!-- =============== Start Code Caption  ==================== -->
+<p class="code-caption">
+	Code Block 8.3.3 captionnnnnnnnnnnnnnnnnnnnnnnnnnnn
+</p> 
+<!-- =============== End Code Caption  ==================== -->
+
+
+	
+		 
+<!-- =============== Start Code Block  ==================== -->
+<div class="code-block">
+		
+		<pre>
+			<code class="language-r">
+				
+			</code>
+		</pre>
+</div> 
+<!-- =============== End Code Block  ==================== -->
+<!-- ===================================  END CODE 8.3.3 ========================================================== -->	
+
+
+
+
+
+
+	
+
+
+	
+		<div class="explanation">
+			<h3>8.3.4 Expression Density Plots (Top DEGs):</h3> 
+				<ul>
+					<li>Density plots of expression values for selected top DEGs illustrate how normalized expression distributions differ between conditions. These plots confirm that lesional samples show consistent directional shifts in expression, reinforcing the statistical findings.</li>
+				</ul>
 		</div>
 
 
-	  <!-- ======================== CODE START ============================ -->
-		<!-- ======= 8.1. code chunk =========== -->
-		<!-- Caption for the code block -->
-		<p class="code-caption">Code Block 8.1.1.  CODDDDDE BLLLOOOOOK TITLEEEEE </p>
+<!-- ===================================  START CODE 8.3.4 ========================================================== -->	
+<!-- =============== Start Code Caption  ==================== -->
+<p class="code-caption">
+	Code Block 8.3.4 captionnnnnnnnnnnnnnnnnnnnnnnnnnnn
+</p> 
+<!-- =============== End Code Caption  ==================== -->
 
-		<div class="code-block">
-		    <pre><code class="language-r">
-			
-		# CODE HHHHEEERRRRR 
-		# CODE HHHHEEERRRRR 
 
-		    </code></pre>
+	
+		 
+<!-- =============== Start Code Block  ==================== -->
+<div class="code-block">
+		
+		<pre>
+			<code class="language-r">
+				
+			</code>
+		</pre>
+</div> 
+<!-- =============== End Code Block  ==================== -->
+<!-- ===================================  END CODE 8.3.4 ========================================================== -->	
+
+
+	
+
+
+
+	
+		<div class="explanation">
+			<h3>8.3.5 Enhanced Heatmap with Annotations:</h3> 
+				<ul>
+					<li>An enhanced version of the DEG heatmap was created, combining expression data with sample annotations (such as condition or patient ID). This layout enhances interpretability by linking molecular expression trends to sample metadata, making the visualization suitable for publication and interactive web display.</li>
+
+			 	</ul> 
 		</div>
-		<!-- ======================== CODE END ============================ -->
 
+
+	<!-- ===================================  START CODE 8.3.5 ========================================================== -->	
+<!-- =============== Start Code Caption  ==================== -->
+<p class="code-caption">
+	Code Block 8.3.5 captionnnnnnnnnnnnnnnnnnnnnnnnnnnn
+</p> 
+<!-- =============== End Code Caption  ==================== -->
+
+
+	
+		 
+<!-- =============== Start Code Block  ==================== -->
+<div class="code-block">
+		
+		<pre>
+			<code class="language-r">
+				
+			</code>
+		</pre>
+</div> 
+<!-- =============== End Code Block  ==================== -->
+<!-- ===================================  END CODE 8.3.5 ========================================================== -->	
+
+
+	
+
+
+	
+		<div class="explanation">
+		    <h3>8.4. Exporting DEG Tables</h3>
+		    	<ul>
+					<li>To ensure reproducibility and facilitate downstream analyses, both <strong>full</strong> and <strong>filtered</strong> DEG tables were exported. The full table includes all genes tested along with their log2 fold changes, standard errors, <em>p</em>-values, and adjusted <em>p</em>-values. This comprehensive dataset is particularly suitable for analyses such as GSEA that require ranked gene lists.</li>
+					
+					<li>The filtered table includes only the significant DEGs that meet the specified thresholds, offering a concise dataset ideal for reporting, visualization, or functional analysis. Both outputs are formatted for reuse, ensuring consistency and transparency in downstream steps.</li>
+		    	</ul> 
+
+		 </div>
+
+	<!-- ===================================  START CODE 8.4 ========================================================== -->	
+<!-- =============== Start Code Caption  ==================== -->
+<p class="code-caption">
+	Code Block 8.4 captionnnnnnnnnnnnnnnnnnnnnnnnnnnn
+</p> 
+<!-- =============== End Code Caption  ==================== -->
+
+
+	
+		 
+<!-- =============== Start Code Block  ==================== -->
+<div class="code-block">
+		
+		<pre>
+			<code class="language-r">
+				
+			</code>
+		</pre>
+</div> 
+<!-- =============== End Code Block  ==================== -->
+<!-- ===================================  END CODE 8.4 ========================================================== -->	
+
+
+ 
 		
                   
 <!-- ################################################################################### --> 
