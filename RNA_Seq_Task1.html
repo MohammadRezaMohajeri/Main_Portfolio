@@ -3613,7 +3613,6 @@ ggsave(file.path(out_dir, "Figure_8.1_DEG_Summary_Bar.png"),
 		    <h3>8.2. DEG-Focused Diagnostic Visualizations (QC & Data Patterns)</h3>
 		    <ul>
 
-				<li> In Section 6 we used <em>global</em> PCA and a sample-to-sample distance heatmap built from <strong>all VST-transformed genes</strong> to check overall structure, batch effects, and broad separation by condition. Here we switch to a <strong>DEG-focused view</strong>: both plots are computed using only the <strong>top differentially expressed genes</strong> (ranked by adjusted p-value after LFC shrinkage). This deliberately concentrates the analysis on the features that drive the strongest lesional vs non-lesional signal, so any clustering you see now reflects the biology captured by the DEGs rather than background variation.</li>
 	 	        <li>In Section 6, we generated <strong>global PCA</strong> and <strong>sample-to-sample distance heatmaps</strong> using <strong>all VST-transformed genes</strong> to assess overall dataset structure, normalization, and possible batch effects. In this section, we shift to a <strong>DEG-focused</strong> view by restricting the analysis to the <strong>top differentially expressed genes</strong> (ranked by adjusted p-value after LFC shrinkage). These genes are the main contributors to the biological separation between <strong>lesional</strong> and <strong>non-lesional</strong> samples. This approach highlights patterns driven specifically by disease-associated genes and helps confirm that the identified DEGs form a biologically coherent structure across samples.</li>
 
 		    </ul> 
@@ -3662,9 +3661,25 @@ vst_top <- vsd_mat[top_deg_ids, , drop = FALSE]
 	<div class="explanation">
 <h3>8.2.1 PCA Plot on Top DEGs:</h3>
 		<ul>
-			<li><strong>8.2.1 PCA Plot on Top DEGs.</strong> This PCA is computed on the VST matrix restricted to the top DEGs, row-wise scaled before PCA so each gene contributes comparably. The first two components (PC1 and PC2) summarize the dominant patterns in these genes. In our dataset, PC1 explains about <strong>61%</strong> of the variance and already cleanly separates the groups, with <strong>non-lesional</strong> samples (light green) clustering to the right and <strong>lesional</strong> samples (blue) to the left. PC2 (~<strong>6%</strong>) adds modest within-group spread but no systematic mixing. This tells us that the DEGs capture a strong treatment-state signal and that sample labels are consistent with expression profiles. Practically, you can use this view to confirm label integrity, scan for potential outliers, and gauge whether adding more samples is likely to change the main separation. See <strong>(Figure 8.2.1)</strong>.</li>
+<li><strong>8.2.1 PCA Plot on Top DEGs</strong> — The <strong>Principal Component Analysis (PCA)</strong> shown in <a href="#figure-8-2-1" onclick="highlightFigure('8-2-1')">Figure 8.2.1</a> was generated using only the top 500 DEGs after variance stabilizing transformation (VST) and row-wise scaling. PCA reduces the data into two primary components (PC1 and PC2), capturing the most significant patterns of expression variation. In this dataset, <strong>PC1 accounts for approximately 61% of total variance</strong> and clearly separates <strong>non_lesional</strong> (light green) from <strong>lesional</strong> (blue) samples, while <strong>PC2</strong> explains about <strong>6%</strong>. This demonstrates that the DEGs strongly define the difference between the two biological states. The PCA can also serve as a <strong>quality control</strong> check to confirm label consistency, detect possible outliers, and ensure that biological variation dominates over technical noise.</li>
 	    </ul>
 	</div>
+
+					<!-- ============================ Figure 8.2.1 (PCA on Top DEGs) ============================ -->
+								<figure id="figure-8-2-1" style="margin:12px 0;">
+								  <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_8.2.1.png"
+								     target="_blank" rel="noopener">
+								    <img
+								      src="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_8.2.1.png"
+								      alt="PCA plot on top 500 DEGs showing separation between non_lesional (light green) and lesional (blue) samples. PC1 explains ~61% variance; PC2 explains ~6%."
+								      style="display:block; width:100%; height:auto; max-width:1200px; background:#fff; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.15);">
+								  </a>
+								  <figcaption id="figure-caption-8-2-1">
+								    <strong>Figure 8.2.1.</strong> PCA on the top 500 DEGs (VST, row-scaled). PC1 (~61%) separates non_lesional (light green) from lesional (blue) samples, while PC2 (~6%) captures smaller within-group variation.
+								  </figcaption>
+								</figure>
+
+	
 
 <!-- ===================================  START CODE 8.2.1  ========================================================== -->	
 <!-- =============== Start Code Caption  ==================== -->
@@ -3722,8 +3737,26 @@ ggsave(file.path(out_dir, "Figure_8.2.1_PCA_TopDEGs.png"),
 		<div class="explanation">
 <h3>8.2.2 Sample-to-Sample Distance Heatmap on Top DEGs:</h3> 
 			<ul>
-<li><strong>8.2.2 Sample-to-Sample Distance Heatmap on Top DEGs.</strong> Here we compute Euclidean distances between samples using the VST expression of the top DEGs after <strong>row-wise z-scaling</strong> (each gene centered and scaled to unit variance). In the heatmap, darker navy indicates <strong>small</strong> distances (high similarity) and warmer red indicates <strong>larger</strong> distances (lower similarity). The diagonal is darkest (distance ≈ 0), and we see two prominent within-group blocks of low distance (navy/blue) along the top-left and bottom-right, with cross-group regions showing higher distances (whiter to red). The dendrograms place most <strong>non-lesional</strong> samples together and most <strong>lesional</strong> samples together, with only minor intermixing. This corroborates the PCA: when we focus on DEGs, samples cluster by condition, suggesting a coherent disease signature and no obvious mis-labels. Use this view to verify sample grouping, spot potential outliers (samples with uniformly high distances), and to decide whether additional covariates (patient, batch, site) should be annotated to explain any sub-clusters. See <strong>(Figure 8.2.2)</strong>.</li>			</ul>
+
+				<li><strong>8.2.2 Sample-to-Sample Distance Heatmap on Top DEGs</strong> — <a href="#figure-8-2-2" onclick="highlightFigure('8-2-2')">Figure 8.2.2</a> displays a Euclidean distance heatmap based on the VST expression of the top DEGs after row-wise z-score normalization. In this visualization, <strong>darker navy areas</strong> indicate <strong>higher similarity</strong> between samples, while <strong>red and white regions</strong> represent greater distances (lower similarity). Two well-defined low-distance blocks align with the <strong>lesional</strong> and <strong>non-lesional</strong> groups, confirming that DEGs capture a clear and consistent condition-driven separation. The clustering dendrogram further supports this observation by grouping samples according to their biological condition. This heatmap is useful for assessing <strong>sample grouping</strong>, <strong>data consistency</strong>, and for identifying any <strong>outlier samples</strong> that deviate from their expected cluster.</li>
+
+			</ul>	
 		</div>
+
+
+	<!-- ============================ Figure 8.2.2 (Sample-to-Sample Distance Heatmap) ============================ -->
+					<figure id="figure-8-2-2" style="margin:12px 0;">
+					  <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_8.2.2.png"
+					     target="_blank" rel="noopener">
+					    <img
+					      src="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_8.2.2.png"
+					      alt="Sample-to-sample distance heatmap based on top DEGs showing distinct clustering of lesional and non_lesional samples."
+					      style="display:block; width:100%; height:auto; max-width:1200px; background:#fff; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.15);">
+					  </a>
+					  <figcaption id="figure-caption-8-2-2">
+					    <strong>Figure 8.2.2.</strong> Sample-to-sample distance heatmap computed on the top 500 DEGs (row-scaled). Two distinct low-distance blocks align with the lesional and non_lesional groups, confirming condition-driven clustering.
+					  </figcaption>
+					</figure>
 
 	
 <!-- ===================================  START CODE 8.2.2  ========================================================== -->	
