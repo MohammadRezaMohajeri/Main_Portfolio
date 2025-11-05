@@ -3613,9 +3613,9 @@ ggsave(file.path(out_dir, "Figure_8.1_DEG_Summary_Bar.png"),
 		    <h3>8.2. DEG-Focused Diagnostic Visualizations (QC & Data Patterns)</h3>
 		    <ul>
 
-				<li>Before focusing on individual DEGs, it is essential to confirm that the dataset behaves as expected globally. At this stage, we examined whether <strong>normalization</strong> and <strong>model fitting</strong> accurately captured <strong>biological variation</strong> while minimizing technical noise. Two visualizations were generated to evaluate these properties: a <strong>PCA plot</strong> and a <strong>sample-to-sample distance heatmap</strong>.</li>
+				<li> In Section 6 we used <em>global</em> PCA and a sample-to-sample distance heatmap built from <strong>all VST-transformed genes</strong> to check overall structure, batch effects, and broad separation by condition. Here we switch to a <strong>DEG-focused view</strong>: both plots are computed using only the <strong>top differentially expressed genes</strong> (ranked by adjusted p-value after LFC shrinkage). This deliberately concentrates the analysis on the features that drive the strongest lesional vs non-lesional signal, so any clustering you see now reflects the biology captured by the DEGs rather than background variation.</li>
+	 	        <li>In Section 6, we generated <strong>global PCA</strong> and <strong>sample-to-sample distance heatmaps</strong> using <strong>all VST-transformed genes</strong> to assess overall dataset structure, normalization, and possible batch effects. In this section, we shift to a <strong>DEG-focused</strong> view by restricting the analysis to the <strong>top differentially expressed genes</strong> (ranked by adjusted p-value after LFC shrinkage). These genes are the main contributors to the biological separation between <strong>lesional</strong> and <strong>non-lesional</strong> samples. This approach highlights patterns driven specifically by disease-associated genes and helps confirm that the identified DEGs form a biologically coherent structure across samples.</li>
 
-	 	
 		    </ul> 
 	</div>
 
@@ -3662,7 +3662,7 @@ vst_top <- vsd_mat[top_deg_ids, , drop = FALSE]
 	<div class="explanation">
 <h3>8.2.1 PCA Plot on Top DEGs:</h3>
 		<ul>
-			<li>SHOULD CHNAGE: The <strong>PCA</strong> plot displays the first two <strong>principal components</strong> derived from the <strong>variance-stabilized data</strong>, summarizing the <strong>largest sources of variation</strong> across all genes. In our analysis, <strong>samples</strong> were colored by <strong>condition (lesional or non-lesional)</strong>. A clear <strong>clustering pattern</strong> was observed, with non-lesional samples grouping on one side and lesional samples shifting toward the other. This confirms that <strong>condition</strong> is a <strong>major driver of variance</strong> in the dataset, validating the normalization process.</li>
+			<li><strong>8.2.1 PCA Plot on Top DEGs.</strong> This PCA is computed on the VST matrix restricted to the top DEGs, row-wise scaled before PCA so each gene contributes comparably. The first two components (PC1 and PC2) summarize the dominant patterns in these genes. In our dataset, PC1 explains about <strong>61%</strong> of the variance and already cleanly separates the groups, with <strong>non-lesional</strong> samples (light green) clustering to the right and <strong>lesional</strong> samples (blue) to the left. PC2 (~<strong>6%</strong>) adds modest within-group spread but no systematic mixing. This tells us that the DEGs capture a strong treatment-state signal and that sample labels are consistent with expression profiles. Practically, you can use this view to confirm label integrity, scan for potential outliers, and gauge whether adding more samples is likely to change the main separation. See <strong>(Figure 8.2.1)</strong>.</li>
 	    </ul>
 	</div>
 
@@ -3722,8 +3722,7 @@ ggsave(file.path(out_dir, "Figure_8.2.1_PCA_TopDEGs.png"),
 		<div class="explanation">
 <h3>8.2.2 Sample-to-Sample Distance Heatmap on Top DEGs:</h3> 
 			<ul>
-				<li>SHOULD CHNAGE: The heatmap visualizes <strong>pairwise Euclidean distances</strong> between samples after variance stabilization. <strong>Blue shades</strong> indicate samples with <strong>highly similar expression patterns</strong>, while <strong>red shades</strong> indicate greater <strong>dissimilarity.</strong> In our dataset, lesional and non-lesional samples formed distinct <strong>blocks of similarity</strong>, consistent with biological grouping and the PCA results. This further confirmed strong within-group consistency and reliable <strong>separation between conditions</strong>.</li>
-			</ul>
+<li><strong>8.2.2 Sample-to-Sample Distance Heatmap on Top DEGs.</strong> Here we compute Euclidean distances between samples using the VST expression of the top DEGs after <strong>row-wise z-scaling</strong> (each gene centered and scaled to unit variance). In the heatmap, darker navy indicates <strong>small</strong> distances (high similarity) and warmer red indicates <strong>larger</strong> distances (lower similarity). The diagonal is darkest (distance ≈ 0), and we see two prominent within-group blocks of low distance (navy/blue) along the top-left and bottom-right, with cross-group regions showing higher distances (whiter to red). The dendrograms place most <strong>non-lesional</strong> samples together and most <strong>lesional</strong> samples together, with only minor intermixing. This corroborates the PCA: when we focus on DEGs, samples cluster by condition, suggesting a coherent disease signature and no obvious mis-labels. Use this view to verify sample grouping, spot potential outliers (samples with uniformly high distances), and to decide whether additional covariates (patient, batch, site) should be annotated to explain any sub-clusters. See <strong>(Figure 8.2.2)</strong>.</li>			</ul>
 		</div>
 
 	
