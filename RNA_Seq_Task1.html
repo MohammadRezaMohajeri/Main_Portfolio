@@ -3385,7 +3385,11 @@ Significant genes: 515
 <div class="explanation"> 
 		<h3>8.0 Setup & Common Helpers</h3>
 		<ul> 
-			<li></li>
+			<li>This short “setup” chunk is separated from the rest so everything the later plots and tables depend on is defined once, in one place. It loads the packages we actually call in Section 8; sets a single output folder and a single colour palette so all figures look consistent; declares the analysis thresholds used across the section (adjusted P value and |log2FC|); constructs a tidy results data frame from the shrunken DESeq2 results; brings the VST expression matrix into scope for plotting; and prepares helper functions to map Ensembl gene IDs to human gene symbols. Keeping these shared pieces at the top prevents duplication and makes it easy to change a setting (for example, the colour for “lesional” or the |log2FC| cut-off) without chasing it through multiple blocks.</li>
+			<li>The libraries are loaded inside suppressPackageStartupMessages({ ... }) to keep the console clean. DESeq2 supplies assay(vsd) and the shrunken results object you created in Section 7. ggplot2 is used for the PCA, volcano, and density figures. pheatmap builds the heatmaps; RColorBrewer provides palettes for them. reshape2 contributes melt() when we reshape matrices to long format for ggplot. dplyr powers the data-wrangling verbs (mutate(), filter(), case_when(), relocate()). readr writes the CSVs. Finally, AnnotationDbi + org.Hs.eg.db perform the Ensembl→HGNC symbol mapping used in plot labels and exported tables.</li>
+			<li>out_dir defines where Section-8 outputs are saved and is created if missing; cond_cols fixes a single, consistent mapping from condition values to colours. The shared thresholds alpha (adjusted P value) and lfc_cut (absolute log2 fold change) are declared once and reused everywhere so filtering logic is consistent across the section.</li>
+		    <li>res_df is the tidy data frame most plots read from. We start by coercing the shrunken DESeq2 results (res_shrunk) to a data frame, then add a gene column from the row names (mutate(gene = rownames(...))). We remove rows without an adjusted P value (filter(!is.na(padj))). Next, case_when() creates a simple categorical status: “Up” if padj < alpha and log2FoldChange >= lfc_cut; “Down” if padj < alpha and log2FoldChange <= -lfc_cut; otherwise “NS” (not significant). This three-way label drives the volcano plot colouring and helps with quick summaries.</li>
+			
 		</ul> 
 	
 	</div> 
@@ -3394,7 +3398,7 @@ Significant genes: 515
 <!-- ===================================  CODE 8.0  ========================================================== -->	
 <!-- =============== Start Code Caption  ==================== -->
 <p class="code-caption">
-	Code Block 8.0. Setup & Common Helpers
+	Code Block 8.0. Setup &amp; Common Helpers — libraries, thresholds, results frame, VST matrix, and ID mapping
 </p> 
 <!-- =============== End Code Caption  ==================== -->
 
