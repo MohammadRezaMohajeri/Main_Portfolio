@@ -3538,6 +3538,7 @@ res_df <- res_df %>% mutate(gene_symbol = ens_to_symbol(gene))
 		<pre>
 			<code class="language-r">
 				
+
 # ==================================================================
 # 8.1 Overview & Summary of DEG Results
 # ==================================================================
@@ -3554,18 +3555,36 @@ cat("DEG summary (shrinkage applied):\n",
 
 # ============= Bar Plot Summary (Figure 8.1) =============
 deg_df <- data.frame(
-  Direction = factor(c("Up-regulated", "Down-regulated"),
-                     levels = c("Up-regulated", "Down-regulated")),
-  Count = c(deg_up, deg_down)
+  Category = factor(c("Total DEGs", "Up-regulated", "Down-regulated"),
+                    levels = c("Total DEGs", "Up-regulated", "Down-regulated")),
+  Count = c(deg_total, deg_up, deg_down)
 )
-p_deg_bar <- ggplot(deg_df, aes(Direction, Count, fill = Direction)) +
+
+p_deg_bar <- ggplot(deg_df, aes(Category, Count, fill = Category)) +
   geom_col(color = "black", width = 0.8) +
-  scale_fill_manual(values = c("Up-regulated" = "#EF476F", "Down-regulated" = "#118AB2")) +
+  geom_text(aes(label = Count),
+            vjust = -0.5, size = 4.5, fontface = "bold") +  # display numbers above bars
+  scale_fill_manual(values = c(
+    "Total DEGs" = "#FFD166",       # golden yellow
+    "Up-regulated" = "#EF476F",     # pink/red
+    "Down-regulated" = "#118AB2"    # blue
+  )) +
   theme_bw(base_size = 12) +
-  labs(title = "Significant DEGs (after shrinkage)", x = NULL, y = "Gene count") +
-  theme(plot.title = element_text(hjust = 0.5, face = "bold"))
+  labs(
+    title = "Summary of Differentially Expressed Genes (after shrinkage)",
+    x = NULL,
+    y = "Gene count"
+  ) +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    legend.position = "none"  # hide redundant legend
+  )
+
 ggsave(file.path(out_dir, "Figure_8.1_DEG_Summary_Bar.png"),
        p_deg_bar, width = 7, height = 5, dpi = 300)
+
+
+
 
 	
 			</code>
