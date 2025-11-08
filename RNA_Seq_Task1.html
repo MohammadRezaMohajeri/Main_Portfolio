@@ -3732,7 +3732,24 @@ ggsave(file.path(out_dir, "Figure_8.2.1_PCA_TopDEGs.png"),
 
 
 
+----------------822
+<div class="explanation">
+<h3>8.2.2 Using PC1 Loadings to Identify Disease-Relevant Driver Genes</h3> 
+			<ul>
 
+				<li><strong>Principal Component Analysis (PCA)</strong> on the top <strong>differentially expressed genes (DEGs)</strong> provided a <strong>strong separation</strong> between <strong>lesional</strong> and <strong>non-lesional</strong> samples, with <strong>PC1</strong> explaining <strong61%></strong> of the variance (see <a href="#figure-8-2-1" onclick="highlightFigure('8-2-1')">(Figure 8.2.1)</a>). Because this PCA was fit only on the <strong>top 500 DEGs</strong>, the <strong>variance</strong> captured by <strong>PC1</strong> is <strong>dominantly biological</strong> rather than <strong>technical</strong>. The natural next step is to exploit <strong>PC1</strong> to find the specific <strong>genes that drive this separation</strong>.</li>
+				<li>In PCA, each principal component is a weighted combination of the original variables (here, genes). Those weights are called loadings, and in R’s prcomp() they are stored in the rotation matrix (pca$rotation). For PC1, the loading of a gene tells us both how strongly and in which direction that gene influences the first principal component. High-magnitude loadings mark the genes that most define PC1 and, therefore, the main axis that separates lesional from non-lesional samples in our DEG-focused space.</li>
+				<li>Concretely, the PC1 loadings are the numerical coefficients showing how much each gene “loads onto” PC1. A larger absolute loading means a stronger contribution to that component. The loadings are unit-normalized per component: the sum of squared loadings across genes equals 1 for each PC. The raw sum of loadings does not carry a constraint or interpretation.</li>
+				<li>The sign of a loading indicates the direction relative to the sample scores. In our analysis, lesional samples cluster on the negative side of PC1, and non-lesional on the positive side. That implies genes with negative PC1 loadings are lesional-enriched drivers, while genes with positive PC1 loadings are non-lesional-enriched. This sign convention is not universal: PCA axes can flip with no change to the model’s meaning. We verified the direction by comparing mean PC1 scores across groups and only then mapped negative loadings to lesional enrichment and positive loadings to non-lesional enrichment.</li>
+				<li>With that orientation in hand, we extract three gene sets: all PC1-contributing genes ranked by absolute loading (the comprehensive view), the lesional-enriched set (negative loadings), and the non-lesional-enriched set (positive loadings). Sorting by loading magnitude within each sign gives a biologically ordered list of candidate drivers: the most negative loadings likely represent disease-state drivers in lesions, while the most positive loadings reflect homeostatic or non-lesional programs.</li>
+				
+				 
+				
+
+			</ul>	
+		</div>
+	
+-------------------822
 	
 
 
