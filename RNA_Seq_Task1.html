@@ -3738,34 +3738,34 @@ ggsave(file.path(out_dir, "Figure_8.2.1_PCA_TopDEGs.png"),
 
 	
 		<div class="explanation">
-<h3>8.2.2 Sample-to-Sample Distance Heatmap on Top DEGs:</h3> 
+<h3>8.2.3 Sample-to-Sample Distance Heatmap on Top DEGs:</h3> 
 			<ul>
 
-				<li><strong>8.2.2 Sample-to-Sample Distance Heatmap on Top DEGs</strong> — <a href="#figure-8-2-2" onclick="highlightFigure('8-2-2')">Figure 8.2.2</a> displays a Euclidean distance heatmap based on the VST expression of the top DEGs after row-wise z-score normalization. In this visualization, <strong>darker navy areas</strong> indicate <strong>higher similarity</strong> between samples, while <strong>red and white regions</strong> represent greater distances (lower similarity). Two well-defined low-distance blocks align with the <strong>lesional</strong> and <strong>non-lesional</strong> groups, confirming that DEGs capture a clear and consistent condition-driven separation. The clustering dendrogram further supports this observation by grouping samples according to their biological condition. This heatmap is useful for assessing <strong>sample grouping</strong>, <strong>data consistency</strong>, and for identifying any <strong>outlier samples</strong> that deviate from their expected cluster.</li>
+				<li><strong>8.2.3 Sample-to-Sample Distance Heatmap on Top DEGs</strong> — <a href="#figure-8-2-3" onclick="highlightFigure('8-2-3')">Figure 8.2.3</a> displays a Euclidean distance heatmap based on the VST expression of the top DEGs after row-wise z-score normalization. In this visualization, <strong>darker navy areas</strong> indicate <strong>higher similarity</strong> between samples, while <strong>red and white regions</strong> represent greater distances (lower similarity). Two well-defined low-distance blocks align with the <strong>lesional</strong> and <strong>non-lesional</strong> groups, confirming that DEGs capture a clear and consistent condition-driven separation. The clustering dendrogram further supports this observation by grouping samples according to their biological condition. This heatmap is useful for assessing <strong>sample grouping</strong>, <strong>data consistency</strong>, and for identifying any <strong>outlier samples</strong> that deviate from their expected cluster.</li>
 
 			</ul>	
 		</div>
 
 
-	<!-- ============================ Figure 8.2.2 (Sample-to-Sample Distance Heatmap) ============================ -->
-					<figure id="figure-8-2-2" style="margin:12px 0;">
-					  <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_8.2.2.png"
+	<!-- ============================ Figure 8.2.3 (Sample-to-Sample Distance Heatmap) ============================ -->
+					<figure id="figure-8-2-3" style="margin:12px 0;">
+					  <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_8.2.3.png"
 					     target="_blank" rel="noopener">
 					    <img
-					      src="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_8.2.2.png"
+					      src="https://mohammadrezamohajeri.github.io/Main_Portfolio/Pictures/RNA_Seq_Task1/Figure_8.2.3.png"
 					      alt="Sample-to-sample distance heatmap based on top DEGs showing distinct clustering of lesional and non_lesional samples."
 					      style="display:block; width:100%; height:auto; max-width:1200px; background:#fff; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.15);">
 					  </a>
-					  <figcaption id="figure-caption-8-2-2">
-					    <strong>Figure 8.2.2.</strong> Sample-to-sample distance heatmap computed on the top 500 DEGs (row-scaled). Two distinct low-distance blocks align with the lesional and non_lesional groups, confirming condition-driven clustering.
+					  <figcaption id="figure-caption-8-2-3">
+					    <strong>Figure 8.2.3.</strong> Sample-to-sample distance heatmap computed on the top 500 DEGs (row-scaled). Two distinct low-distance blocks align with the lesional and non_lesional groups, confirming condition-driven clustering.
 					  </figcaption>
 					</figure>
 
 	
-<!-- ===================================  START CODE 8.2.2  ========================================================== -->	
+<!-- ===================================  START CODE 8.2.3  ========================================================== -->	
 <!-- =============== Start Code Caption  ==================== -->
 <p class="code-caption">
-	Code Block 8.2.2 Sample-to-Sample Distance Heatmap on Top DEGs
+	Code Block 8.2.3. Sample-to-Sample Distance Heatmap on Top DEGs
 </p> 
 <!-- =============== End Code Caption  ==================== -->
 
@@ -3778,7 +3778,7 @@ ggsave(file.path(out_dir, "Figure_8.2.1_PCA_TopDEGs.png"),
 		<pre>
 			<code class="language-r">
 
-# ============= 8.2.2 Sample–Sample Distance Heatmap (Top DEGs) =============
+# ============= 8.2.3 Sample–Sample Distance Heatmap (Top DEGs) =============
 # Row-scale (z-score per gene) BEFORE computing distances
 mat_top <- t(scale(t(vst_top)))     # center/scale each gene (row)
 d_top   <- dist(t(mat_top))         # distances across samples
@@ -3804,7 +3804,7 @@ pheatmap(as.matrix(d_top),
 		</pre>
 </div> 
 <!-- =============== End Code Block  ==================== -->
-<!-- ===================================  END CODE 8.2.2 ========================================================== -->	
+<!-- ===================================  END CODE 8.2.3 ========================================================== -->	
 
 
 
