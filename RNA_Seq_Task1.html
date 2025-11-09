@@ -3741,18 +3741,174 @@ ggsave(file.path(out_dir, "Figure_8.2.1_PCA_TopDEGs.png"),
 				<li>In PCA, each <strong>principal component</strong> is a <strong>weighted combination</strong> of the original variables (here, genes). Those weights are called <strong>loadings</strong>, and in R’s <strong>prcomp()</strong> they are stored in the <strong>rotation matrix</strong> (<strong>pca$rotation</strong>). For <strong>PC1</strong>, the <strong>loading of a gene</strong> tells us both <strong>how strongly</strong> and in <strong>which direction</strong> that gene <strong>influences the first principal component</strong>. <strong>High-magnitude loadings</strong> mark the genes that most define PC1 and, therefore, the main axis that separates lesional from non-lesional samples in our DEG-focused space.</li>
 				<li>Concretely, the PC1 <strong>loadings</strong> are the <strong>numerical coefficients</strong> showing how much each gene “<strong>loads onto</strong>” PC1. A <strong>larger absolute loading</strong> means a <strong>stronger contribution</strong> to that component. The loadings are unit-normalized per component: the <strong>sum of squared loadings (∑loading²)</strong> across genes equals <strong>1</strong> for each PC. The raw sum of loadings does not carry a constraint or interpretation.</li>
 				<li>The <strong>sign of a loading</strong> indicates the direction relative to the sample scores. In our analysis, <strong>lesional</strong> samples cluster on the <strong>negative</strong> side of PC1, and <strong>non-lesional</strong> on the <strong>positive</strong> side. That implies <strong>genes with negative PC1 loadings</strong> are <strong>lesional-enriched drivers</strong>, while <strong>genes with positive PC1 loadings</strong> are <strong>non-lesional-enriched</strong>. This sign convention is not universal: PCA axes can flip with no change to the model’s meaning. We verified the direction by comparing mean PC1 scores across groups and only then mapped negative loadings to lesional enrichment and positive loadings to non-lesional enrichment.</li>
-
- 
-				
 				<li>With that orientation in hand, we extract <strong>three gene sets</strong>: 1️⃣ <strong>all PC1-contributing genes</strong> (See <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/csv-viewer.html?src=https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/All_PC1_Gene_Loadings.csv&title=All%20PC1%20Gene%20Loadings" target="_blank" rel="noopener"><strong>“All” CSV</strong></a>; <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/All_PC1_Gene_Loadings.csv" download> ⬇️ <em>Download CSV </em></a>) ranked by absolute loading (the comprehensive view), 2️⃣ the <strong>lesional-enriched set (negative loadings)</strong> (See <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/csv-viewer.html?src=https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/All_Negative_PC1_Genes_Lesional.csv&title=Lesional-Enriched%20Genes%20(Negative%20PC1%20Loadings)" target="_blank" rel="noopener"><strong>“Lesional-enriched” CSV</strong></a>; <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/All_Negative_PC1_Genes_Lesional.csv" download> ⬇️ <em>Download CSV</em></a>), and 3️⃣ the <strong>non-lesional-enriched set (positive loadings)</strong> (See <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/csv-viewer.html?src=https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/All_Positive_PC1_Genes_NonLesional.csv&title=Non-Lesional-Enriched%20Genes%20(Positive%20PC1%20Loadings)" target="_blank" rel="noopener"><strong>“Non-lesional-enriched” CSV</strong></a>; <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/All_Positive_PC1_Genes_NonLesional.csv" download>⬇️ <em>Download CSV</em></a>). Sorting by <strong>loading magnitude</strong> within <strong>each sign</strong> gives a <strong>biologically ordered list of candidate drivers</strong>: the <strong>most negative loadings</strong> likely represent <strong>disease-state drivers</strong> in lesions, while the <strong>most positive loadings</strong> reflect <strong>homeostatic</strong> or <strong>non-lesional programs</strong>.</li>
 				<li>When <strong>molecular profiles</strong> from <strong>treated samples</strong> are available, they can be compared against these <strong>PCA-derived</strong> disease and healthy <strong>gene lists</strong> to determine which treatments most effectively <strong>shift expression patterns toward the non-diseased state</strong>. This can be done by measuring the <strong>degree of overlap</strong>, similarity, or enrichment between <strong>treatment-responsive genes</strong> and the <strong>reference signatures</strong>, allowing for an objective and <strong>biologically grounded assessment</strong> of therapeutic effectiveness.</li>
-
-				<li><strong>Code Block 8.2.2.1</strong> selects the <strong>top 500 DEGs</strong> based on <strong>adjusted p-value</strong>, subsets the <strong>variance-stabilized expression matrix</strong> to those genes, and <strong>performs PCA</strong> on the transposed matrix using <strong><code>prcomp(t(vst_top), scale.=TRUE)</code></strong>. The <strong>PC1 loadings</strong> are extracted from the rotation matrix <strong><code>(pca$rotation[, 1])</code></strong>, and a tidy <strong>data frame</strong> is created containing <strong>Ensembl IDs</strong>, corresponding <strong>gene symbols</strong>, and both the raw and absolute <strong>loading values</strong>. The genes are then <strong>sorted</strong> by the magnitude of their loadings, so that the most influential contributors to PC1 appear at the top. The resulting table provides a comprehensive, ranked overview of all genes contributing to PC1 and is saved as a <strong>CSV file</strong> for downstream analysis. This dataset serves as the foundation for distinguishing between <strong>lesional-</strong> and <strong>non-lesional-enriched</strong> subsets and for conducting subsequent functional or pathway analyses focused on the most biologically impactful genes.</li>
-				<li><strong>Code Block 8.2.2.2</strong> builds upon the complete PC1 table and isolates <strong>genes</strong> with <strong>negative loading values</strong>, which correspond to <strong>lesional-enriched profiles</strong> based on the PCA orientation. The genes are <strong>sorted</strong> in ascending order of PC1 loading so that those with <strong>the most negative loadings</strong>—hence the strongest association with <strong>lesional</strong> samples—appear first. The filtered dataset is then saved as a <strong>CSV file</strong> containing all <strong>lesional-enriched genes</strong>. These genes represent the <strong>key drivers of the lesional</strong> phenotype, capturing <strong>transcriptional programs</strong> that characterize the <strong>disease state</strong>. They form an <strong>essential resource</strong> for downstream <strong>pathway analysis</strong>, identification of <strong>disease-related signatures</strong>, and prioritization of <strong>biomarkers</strong> potentially relevant to <strong>lesional tissue biology</strong>.</li>
-				<li><strong>Code Block 8.2.2.3</strong> <strong></strong>mirrors the previous one but focuses on <strong>genes</strong> with <strong>positive PC1 loadings</strong>, representing those associated with <strong>non-lesional</strong> or homeostatic expression patterns. By sorting the data in descending order of <strong>PC1 loading</strong>, the genes <strong>most positively influencing PC1</strong> are placed at the top. The resulting list is saved as a <strong>CSV file</strong> containing all <strong>non-lesional-enriched genes</strong>. This gene set provides a <strong>counterpart to the lesional-enriched list</strong>, highlighting <strong>biological processes</strong> that define <strong>the healthy</strong> or <strong>non-diseased</strong> state. Comparing these two sets of genes—those driving the <strong>lesional</strong> and <strong>non-lesional</strong> ends of PC1—offers a balanced and <strong>biologically interpretable framework</strong> for understanding how <strong>transcriptional programs</strong> diverge between disease and normal skin.</li>
-				<li>Together, these three analyses provide a comprehensive view of PC1-driven biology, where the full loading table captures the global structure of variation, and the sign-specific subsets reveal directionally distinct gene groups underpinning the separation between lesional and non-lesional samples observed in Figure 8.2.1.</li>
-			</ul>	
+				</ul>	
 		</div>
+
+
+	<div class="explanation">
+		<ul>	
+				<li><strong>Code Block 8.2.2.1</strong> selects the <strong>top 500 DEGs</strong> based on <strong>adjusted p-value</strong>, subsets the <strong>variance-stabilized expression matrix</strong> to those genes, and <strong>performs PCA</strong> on the transposed matrix using <strong><code>prcomp(t(vst_top), scale.=TRUE)</code></strong>. The <strong>PC1 loadings</strong> are extracted from the rotation matrix <strong><code>(pca$rotation[, 1])</code></strong>, and a tidy <strong>data frame</strong> is created containing <strong>Ensembl IDs</strong>, corresponding <strong>gene symbols</strong>, and both the raw and absolute <strong>loading values</strong>. The genes are then <strong>sorted</strong> by the magnitude of their loadings, so that the most influential contributors to PC1 appear at the top. The resulting table provides a comprehensive, ranked overview of all genes contributing to PC1 and is saved as a <strong>CSV file</strong> for downstream analysis. This dataset serves as the foundation for distinguishing between <strong>lesional-</strong> and <strong>non-lesional-enriched</strong> subsets and for conducting subsequent functional or pathway analyses focused on the most biologically impactful genes.</li>
+		</ul>	
+	</div>
+
+
+
+<!-- ===================================  START CODE 8.2.2.1  ========================================================== -->	
+<!-- =============== Start Code Caption  ==================== -->
+<p class="code-caption">
+	Code Block 8.2.2.1. Identifying and Exporting All Genes with PC1 Loadings
+</p> 
+<!-- =============== End Code Caption  ==================== -->
+
+
+	
+		 
+<!-- =============== Start Code Block  ==================== -->
+<div class="code-block">
+		
+		<pre>
+			<code class="language-r">
+
+
+ 
+
+# ==================================================================
+# Save All PC1-Contributing Genes from DEG-Focused PCA (Standalone)
+# ==================================================================
+
+# ============= Select Top DEGs by padj =============
+top_k <- 500
+top_deg_ids <- as.data.frame(res_shrunk) %>%
+  mutate(gene = rownames(res_shrunk)) %>%
+  filter(!is.na(padj)) %>%
+  arrange(padj) %>%
+  slice(1:min(top_k, n())) %>%
+  pull(gene)
+
+# VST expression restricted to top DEGs
+vst_top <- vsd_mat[top_deg_ids, , drop = FALSE]
+
+# ============= PCA on Top DEGs =============
+pca <- prcomp(t(vst_top), scale. = TRUE)
+
+# ============= Save All PC1-Contributing Genes =============
+loadings <- pca$rotation[, 1]  # PC1 loadings for each gene
+
+pc1_gene_df <- data.frame(
+  Ensembl_ID = names(loadings),
+  Gene_Symbol = ens_to_symbol(names(loadings)),
+  PC1_Loading = loadings,
+  abs_PC1_Loading = abs(loadings)
+) %>%
+  arrange(desc(abs_PC1_Loading))
+
+write_csv(pc1_gene_df, file.path(out_dir, "PC1_Gene_Loadings_All.csv"))
+
+cat("\nAll PC1-contributing genes saved to:",
+    file.path(out_dir, "500_PC1_Gene_Loadings_All.csv"), "\n")
+			</code>
+		</pre>
+</div> 
+<!-- =============== End Code Block  ==================== -->
+<!-- ===================================  END CODE 8.2.2.1  ========================================================== -->	
+
+
+
+
+	
+			
+	<div class="explanation">
+		<ul>
+				<li><strong>Code Block 8.2.2.2</strong> builds upon the complete PC1 table and isolates <strong>genes</strong> with <strong>negative loading values</strong>, which correspond to <strong>lesional-enriched profiles</strong> based on the PCA orientation. The genes are <strong>sorted</strong> in ascending order of PC1 loading so that those with <strong>the most negative loadings</strong>—hence the strongest association with <strong>lesional</strong> samples—appear first. The filtered dataset is then saved as a <strong>CSV file</strong> containing all <strong>lesional-enriched genes</strong>. These genes represent the <strong>key drivers of the lesional</strong> phenotype, capturing <strong>transcriptional programs</strong> that characterize the <strong>disease state</strong>. They form an <strong>essential resource</strong> for downstream <strong>pathway analysis</strong>, identification of <strong>disease-related signatures</strong>, and prioritization of <strong>biomarkers</strong> potentially relevant to <strong>lesional tissue biology</strong>.</li>
+		</ul>	
+	</div>
+
+
+	<!-- ===================================  START CODE 8.2.2.2  ========================================================== -->	
+<!-- =============== Start Code Caption  ==================== -->
+<p class="code-caption">
+	Code Block 8.2.2.2. Identifying and Exporting Lesional-Enriched Genes (Negative PC1 Loadings)
+</p> 
+<!-- =============== End Code Caption  ==================== -->
+
+
+	
+		 
+<!-- =============== Start Code Block  ==================== -->
+<div class="code-block">
+		
+		<pre>
+			<code class="language-r">
+
+# Sort by most negative PC1 loadings (lesional-enriched)
+lesional_pc1_genes <- pc1_gene_df %>%
+  arrange(PC1_Loading) %>%        # ascending order (most negative first)
+  filter(PC1_Loading < 0)         # keep only genes with negative loadings
+
+# Save all lesional-enriched genes
+write_csv(lesional_pc1_genes,
+          file.path(out_dir, "All_Negative_PC1_Genes_Lesional.csv"))
+
+			</code>
+		</pre>
+</div> 
+<!-- =============== End Code Block  ==================== -->
+<!-- ===================================  END CODE 8.2.2.2  ========================================================== -->	
+
+
+
+
+
+	
+			
+	<div class="explanation">
+		<ul>
+				<li><strong>Code Block 8.2.2.3</strong> <strong></strong>mirrors the previous one but focuses on <strong>genes</strong> with <strong>positive PC1 loadings</strong>, representing those associated with <strong>non-lesional</strong> or homeostatic expression patterns. By sorting the data in descending order of <strong>PC1 loading</strong>, the genes <strong>most positively influencing PC1</strong> are placed at the top. The resulting list is saved as a <strong>CSV file</strong> containing all <strong>non-lesional-enriched genes</strong>. This gene set provides a <strong>counterpart to the lesional-enriched list</strong>, highlighting <strong>biological processes</strong> that define <strong>the healthy</strong> or <strong>non-diseased</strong> state. Comparing these two sets of genes—those driving the <strong>lesional</strong> and <strong>non-lesional</strong> ends of PC1—offers a balanced and <strong>biologically interpretable framework</strong> for understanding how <strong>transcriptional programs</strong> diverge between disease and normal skin.</li>
+		</ul>	
+	</div>
+
+<!-- ===================================  START CODE 8.2.2.3  ========================================================== -->	
+<!-- =============== Start Code Caption  ==================== -->
+<p class="code-caption">
+	Code Block 8.2.2.3. Identifying and Exporting Non-Lesional-Enriched Genes (Positive PC1 Loadings)
+</p> 
+<!-- =============== End Code Caption  ==================== -->
+
+
+	
+		 
+<!-- =============== Start Code Block  ==================== -->
+<div class="code-block">
+		
+		<pre>
+			<code class="language-r">
+
+
+# Sort by most positive PC1 loadings (non-lesional-enriched)
+nonlesional_pc1_genes <- pc1_gene_df %>%
+  arrange(desc(PC1_Loading)) %>%   # descending order (most positive first)
+  filter(PC1_Loading > 0)          # keep only genes with positive loadings
+
+# Save all non-lesional-enriched genes
+write_csv(nonlesional_pc1_genes,
+          file.path(out_dir, "All_Positive_PC1_Genes_NonLesional.csv"))
+	
+			</code>
+		</pre>
+</div> 
+<!-- =============== End Code Block  ==================== -->
+<!-- ===================================  END CODE 8.2.2.3  ========================================================== -->	
+
+
+
+	
+	<div class="explanation">
+		<ul>				
+			<li>Together, these three analyses provide a comprehensive view of PC1-driven biology, where the full loading table captures the global structure of variation, and the sign-specific subsets reveal directionally distinct gene groups underpinning the separation between lesional and non-lesional samples observed in Figure 8.2.1.</li>
+		</ul>	
+	</div>
 	
 -------------------822
 	
