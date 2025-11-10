@@ -3808,6 +3808,23 @@ table tbody tr:hover {
   transition: background-color 0.2s ease-in-out;
 }
 </style>
+
+
+<p style="font-size:14px; color:#333; width:100%; margin:auto; text-align:justify;">
+This table presents all genes contributing to the <b>first principal component (PC1)</b> — the dominant axis of variation 
+(≈61%) that separates <b>lesional</b> and <b>non-lesional</b> atopic dermatitis (AD) samples. Genes are ranked by 
+<b>absolute PC1 loadings</b>, which quantify how strongly each gene influences this separation, regardless of direction. 
+Negative loadings correspond to <b>lesional-enriched genes</b> (e.g., <b>KRT6A, S100A8, IL4R</b>), while positive loadings 
+represent <b>non-lesional-enriched genes</b> (e.g., <b>CLDN1, ID4, COBL</b>). 
+
+This combined list captures both sides of the disease spectrum and can serve as a <b>quantitative importance map</b> 
+for identifying genes most responsible for the transcriptional differences between lesional and non-lesional states. 
+Intersecting these top-ranked genes with DESeq2 results helps confirm <b>robust differential expression</b> and 
+highlight <b>stable biomarkers</b> that remain influential across analytical approaches. Functionally, these genes span 
+key pathways in <b>keratinocyte activation, cytokine signaling, metabolic regulation, and barrier maintenance</b> — 
+offering a systems-level view of how inflammation and repair processes define AD pathology.
+</p>
+
 <!-- ------------------------------------------------------- END table  colored in website ------------------------------------------ -->
 
 
@@ -4056,6 +4073,22 @@ write_csv(lesional_pc1_genes,
 							  transition: background-color 0.2s ease-in-out;
 							}
 							</style>
+
+<p style="font-size:14px; color:#333; width:100%; margin:auto; text-align:justify;">
+These genes exhibit <b>positive PC1 loadings</b>, indicating higher expression in <b>non-lesional AD skin prior to treatment</b>, 
+which maintains an apparently normal structure but retains subtle molecular differences. Many of these genes are associated 
+with <b>barrier preservation, metabolic activity, and immune homeostasis</b>. For example, <b>CLDN1 (Claudin-1)</b> is a critical 
+tight junction protein that maintains epidermal integrity, while <b>ARHGEF26</b> and <b>COBL</b> are involved in cytoskeletal 
+organization and cellular signaling that sustain epithelial stability. <b>ID4</b>, a transcription factor linked to epithelial 
+renewal, marks ongoing regeneration and balanced differentiation in unaffected areas.
+
+Other genes, such as <b>BTC</b> and <b>IRS2</b>, participate in <b>growth factor and insulin signaling pathways</b> that support 
+keratinocyte proliferation and tissue repair under non-inflammatory conditions. In contrast, genes like <b>RORC</b> and 
+<b>CYP2W1</b> reflect basal metabolic and immunoregulatory activity characteristic of healthy skin. Collectively, these 
+non-lesional-enriched genes represent a transcriptional signature of <b>structural resilience</b> and <b>immunological balance</b>, 
+distinguishing protected skin regions from the inflammatory stress found in lesional AD areas.
+</p>
+
 <!-- ------------------------------------------------------- END table  colored in website ------------------------------------------ -->
 
 
