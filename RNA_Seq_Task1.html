@@ -3743,7 +3743,7 @@ ggsave(file.path(out_dir, "Figure_8.2.1_PCA_TopDEGs.png"),
 				<li>With that orientation in hand, we extract <strong>three gene sets</strong>: 1️⃣ <strong>all PC1-contributing genes</strong> (See <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/csv-viewer.html?src=https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/All_PC1_Gene_Loadings.csv&title=All%20PC1%20Gene%20Loadings" target="_blank" rel="noopener"><strong>“All” CSV</strong></a>; <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/All_PC1_Gene_Loadings.csv" download> ⬇️ <em>Download CSV </em></a>) ranked by absolute loading (the comprehensive view), 2️⃣ the <strong>lesional-enriched set (negative loadings)</strong> (See <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/csv-viewer.html?src=https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/All_Negative_PC1_Genes_Lesional.csv&title=Lesional-Enriched%20Genes%20(Negative%20PC1%20Loadings)" target="_blank" rel="noopener"><strong>“Lesional-enriched” CSV</strong></a>; <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/All_Negative_PC1_Genes_Lesional.csv" download> ⬇️ <em>Download CSV</em></a>), and 3️⃣ the <strong>non-lesional-enriched set (positive loadings)</strong> (See <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/csv-viewer.html?src=https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/All_Positive_PC1_Genes_NonLesional.csv&title=Non-Lesional-Enriched%20Genes%20(Positive%20PC1%20Loadings)" target="_blank" rel="noopener"><strong>“Non-lesional-enriched” CSV</strong></a>; <a href="https://mohammadrezamohajeri.github.io/Main_Portfolio/RNA_Seq_Task1_Files/All_Positive_PC1_Genes_NonLesional.csv" download>⬇️ <em>Download CSV</em></a>). Sorting by <strong>loading magnitude</strong> within <strong>each sign</strong> gives a <strong>biologically ordered list of candidate drivers</strong>: the <strong>most negative loadings</strong> likely represent <strong>disease-state drivers</strong> in lesions, while the <strong>most positive loadings</strong> reflect <strong>homeostatic</strong> or <strong>non-lesional programs</strong>.</li>
 
 
-<!-- ------------------------------------------------------- START table 2 in website ------------------------------------------- -->
+<!-- ------------------------------------------------------- START table in website ------------------------------------------- -->
 						<h3>Top 20 Lesional-Enriched Genes (Negative PC1 Loadings)</h3>
 						<table style="
 						  width:90%;
@@ -3785,13 +3785,67 @@ ggsave(file.path(out_dir, "Figure_8.2.1_PCA_TopDEGs.png"),
 						</table>
 						
 						
-<!-- ----------------------------------------------------------------- end table 2 in website ------------------------------------------- -->
+<!-- ----------------------------------------------------------------- end table   in website ------------------------------------------- -->
 						
 
 
+<!-- ------------------------------------------------------- START table 2 colored in website ------------------------------------------- -->
+<h3>Top 20 Lesional-Enriched Genes (Negative PC1 Loadings)</h3>
+<table style="
+  width:90%;
+  border-collapse:collapse;
+  margin:auto;
+  text-align:center;
+  border:2px solid #ccc;
+  box-shadow:0 3px 6px rgba(0,0,0,0.1);
+  font-family:Arial, sans-serif;
+  font-size:14px;
+">
+  <thead style="
+    background: linear-gradient(to bottom, #0072FF, #66ff00);
+    color:white;
+    font-weight:bold;
+  ">
+    <tr>
+      <th style="padding:8px; border:1px solid #ccc;">Gene Symbol</th>
+      <th style="padding:8px; border:1px solid #ccc;">PC1 Loading</th>
+      <th style="padding:8px; border:1px solid #ccc;">|PC1 Loading|</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="background-color:#f9f9f9;"><td>IL4R</td><td>-0.053845</td><td>0.053845</td></tr>
+    <tr style="background-color:#ffffff;"><td>KRT16</td><td>-0.053590</td><td>0.053590</td></tr>
+    <tr style="background-color:#f9f9f9;"><td>SH2D2A</td><td>-0.052701</td><td>0.052701</td></tr>
+    <tr style="background-color:#ffffff;"><td>USB1</td><td>-0.051762</td><td>0.051762</td></tr>
+    <tr style="background-color:#f9f9f9;"><td>KRT6A</td><td>-0.051754</td><td>0.051754</td></tr>
+    <tr style="background-color:#ffffff;"><td>KRT6C</td><td>-0.051664</td><td>0.051664</td></tr>
+    <tr style="background-color:#f9f9f9;"><td>TPM3</td><td>-0.051535</td><td>0.051535</td></tr>
+    <tr style="background-color:#ffffff;"><td>SHC1</td><td>-0.051374</td><td>0.051374</td></tr>
+    <tr style="background-color:#f9f9f9;"><td>KPNA2</td><td>-0.051296</td><td>0.051296</td></tr>
+    <tr style="background-color:#ffffff;"><td>TUBB6</td><td>-0.051036</td><td>0.051036</td></tr>
+    <tr style="background-color:#f9f9f9;"><td>GJB2</td><td>-0.050875</td><td>0.050875</td></tr>
+    <tr style="background-color:#ffffff;"><td>GPR68</td><td>-0.050738</td><td>0.050738</td></tr>
+    <tr style="background-color:#f9f9f9;"><td>FSCN1</td><td>-0.050728</td><td>0.050728</td></tr>
+    <tr style="background-color:#ffffff;"><td>LRRC59</td><td>-0.050587</td><td>0.050587</td></tr>
+    <tr style="background-color:#f9f9f9;"><td>SERPINB4</td><td>-0.050450</td><td>0.050450</td></tr>
+    <tr style="background-color:#ffffff;"><td>S100A8</td><td>-0.050425</td><td>0.050425</td></tr>
+    <tr style="background-color:#f9f9f9;"><td>CDH3</td><td>-0.050357</td><td>0.050357</td></tr>
+    <tr style="background-color:#ffffff;"><td>S100A9</td><td>-0.050262</td><td>0.050262</td></tr>
+    <tr style="background-color:#f9f9f9;"><td>TYMP</td><td>-0.050234</td><td>0.050234</td></tr>
+    <tr style="background-color:#ffffff;"><td>SRGN</td><td>-0.050182</td><td>0.050182</td></tr>
+  </tbody>
+</table>
+
+<style>
+table tbody tr:hover {
+  background-color: #e6f2ff !important;
+  transition: background-color 0.2s ease-in-out;
+}
+</style>
 
 
-				
+<!-- ------------------------------------------------------- END table 2 colored in website ------------------------------------------- -->
+
 				
 				
 				<li>When <strong>molecular profiles</strong> from <strong>treated samples</strong> are available, they can be compared against these <strong>PCA-derived</strong> disease and healthy <strong>gene lists</strong> to determine which treatments most effectively <strong>shift expression patterns toward the non-diseased state</strong>. This can be done by measuring the <strong>degree of overlap</strong>, similarity, or enrichment between <strong>treatment-responsive genes</strong> and the <strong>reference signatures</strong>, allowing for an objective and <strong>biologically grounded assessment</strong> of therapeutic effectiveness.</li>
