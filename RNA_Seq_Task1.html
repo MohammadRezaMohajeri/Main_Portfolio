@@ -4580,24 +4580,19 @@ cat("\nFiles written to:\n", normalizePath(out_dir), "\n")
 		<div class="explanation">
 		    <h3>10.	Functional Enrichment Analysis</h3>
 		    <ul>
-	   	      <li>
+	   	      
+					  <li> !!!   This section is still a work in progress   !!!</li>	
+					  <li>This section links <strong>differential expression</strong> to <strong>biological meaning</strong> by testing whether specific <strong>pathways</strong>, <strong>processes</strong>, and <strong>networks</strong> are over-represented among DEGs.</li> 
+					  <li>It includes <strong>Protein–Protein Interaction (PPI)</strong>, <strong>Over-Representation Analysis (ORA)</strong> for <strong>GO terms</strong> & <strong>KEGG pathways</strong>, and <strong>Gene Set Enrichment Analysis (GSEA)</strong> for <strong>GO terms</strong> & <strong>KEGG pathways</strong></li> </ul>
+			</ul>
+                     <h3>Status:</h3>
 
-				  !!! <ul> <li>This section links differential expression to biological meaning by testing whether specific pathways, processes, and networks are over-represented among DEGs.</li> <li>It will include Protein–Protein Interaction (PPI), Over-Representation Analysis (ORA) for GO terms and KEGG pathways, and Gene Set Enrichment Analysis (GSEA) on ranked gene lists.</li> </ul>
-
-Status
-
-<ul> <li><strong>Live now:</strong> 10.1 PPI subnetwork of top DEGs using STRING, community detection, GO checks within modules, and centrality-based ranking.</li> <li><strong>In progress:</strong> ORA for GO Biological Process, Molecular Function, Cellular Component, and KEGG pathways, plus GSEA on log2FC-ranked genes. Figures and write-ups are being prepared and will be added here.</li> </ul>
-
-What will be added
-
-<ul> <li><strong>ORA:</strong> pathway and GO term enrichment on DEG sets with multiple-testing correction, clear gene universe definition, background selection, and effect-size style summaries.</li> <li><strong>GSEA:</strong> enrichment on ranked lists to capture coordinated but modest shifts missed by strict DEG cut-offs, including enrichment maps and leading-edge gene tables.</li> <li><strong>Reporting:</strong> top tables, enrichment maps, chord diagrams, and concise interpretations tied to AD biology.</li> </ul>
-
-Reproducibility notes
-
-<ul> <li>Methods, thresholds, and databases will be documented: adjusted P value cut-offs, ranking metric for GSEA, gene universe, and database versions for GO and KEGG.</li> </ul>
-		      </li>
-		    </ul> 
+			<ul> 
+				<li><strong>Live now:</strong> 10.1 PPI subnetwork of top DEGs using STRING, community detection, GO checks within modules, and centrality-based ranking.</li> 
+				<li><strong>In progress:</strong> <strong>Over-Representation Analysis (ORA)</strong> for <strong>GO terms</strong> & <strong>KEGG pathways</strong>, and <strong>Gene Set Enrichment Analysis (GSEA)</strong> for <strong>GO terms</strong> & <strong>KEGG pathways</strong>. Figures and write-ups are being prepared and will be added here.</li> 
+			</ul>
 		</div>
+	
 <!-- ======================================== Sub title e.g. 10.1.================================================ -->
 		<div class="explanation">
 
