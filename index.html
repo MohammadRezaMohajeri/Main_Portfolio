@@ -93,13 +93,27 @@
             justify-content: flex-end; /*  was justify-content: center; */
         }
 
-        .right-section img {
-            width: 250px; /* Adjust the width as desired (first was 400 */
-            height: auto; /* Maintain aspect ratio */
-            object-fit: cover; /* Ensures the image covers the space */
-        } 
-   
 
+		
+     /* uncomment and Use this for 1.jpg (which was my photo with suit and tie)   
+		
+		.right-section img {
+            width: 250px; / * Adjust the width as desired (first was 400 * /
+            height: auto; / * Maintain aspect ratio * /
+            object-fit: cover; / * Ensures the image covers the space * /
+        } */
+
+
+		 /* New instead of above */
+		.right-section img {
+		    width: 340px;
+		    max-width: 100%;
+		    height: auto;
+		    object-fit: cover;
+		}
+
+
+		
         /* Navbar Styles */
         .navbar {
             background-color: #57bbbd;
